@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Forbidden' %}{% endblock %}</title>
+{% block content %}
+<div class="font-c-sans text-gray-800 max-w-xs mx-auto">
+  <h1 class="text-xl text-black my-5">{% if message %}{{ message }}{% else %}{% trans 'Permission denied.' %}{% endif %}</h1>
+  
+</div>
+{% endblock %}
+{#<!-- <p>{% trans '403 error' %}</p> -->#}

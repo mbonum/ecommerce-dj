@@ -1,0 +1,30 @@
+{% extends "newsletter/common.html" %}
+{% load i18n %}
+{% block title %}{% trans "Newsletter Update" %}{% endblock %}
+{% block body %}
+<table>
+  <tr>
+    <th class="font-semibold uppercase mb-2">{{ object.title }}</th>
+  </tr>
+  <tr>
+    <td><a class="hover:underline"
+        href="{% url 'newsletter_subscribe_request' object.slug %}">{% trans "Subscribe" %}</a></td>
+  </tr>
+  {% if not user.is_authenticated %}
+  <tr>
+    <td><a class="hover:underline" href="{% url 'newsletter_update_request' object.slug %}">{% trans "Update" %}</a>
+    </td>
+  </tr>
+  {% endif %}
+  <tr>
+    <td><a class="hover:underline"
+        href="{% url 'newsletter_unsubscribe_request' object.slug %}">{% trans "Unsubscribe" %}</a></td>
+  </tr>
+  <tr>
+    <td><a class="hover:underline" href="{% url 'newsletter_archive' object.slug %}">{% trans "Archive" %}</a></td>
+  </tr>
+  <tr>
+    <td><a class="mt-1 hover:text-gray-800 inline-flex items-center border-gray-400 text-sm px-2 py-1 hover:shadow-inner hover:bg-gray-hover border-4 py-1 px-2 text-xs uppercase rounded-sm focus:outline-none focus:shadow-outline" href="../">← {% trans "Back" %}</a></td>
+  </tr>
+</table>
+{% endblock %}

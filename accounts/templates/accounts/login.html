@@ -1,0 +1,61 @@
+{% extends 'accounts/register_login_base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Log in' %}{% endblock %}
+{% block content %}
+<div x-data="{ click: false }" class="mx-10 mb-6">
+  <div class="text-sm m-1 mb-4">
+    <p>{% trans "Don't have a" %} {{ com }} {% trans "account?" %}</p> <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1">{% trans 'Sign Vp' %}</a>
+  </div>
+  <form method="POST"> {% csrf_token %}
+    <div class="mb-6">
+      {{ form.email }}
+    </div>
+    <div class="relative" x-data="{ show: true }">
+      <input :type="show ? 'password' : 'text'" {{ form.password }}
+      <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
+      <span x-show="show">{% trans 'Show' %}</span>
+      <span x-show="!show">{% trans 'Hide' %}</span>
+      </button>
+    </div>
+    <div class="mr-1 my-2">
+      <a class="text-xs un text-gray-800 hover:text-black focus:outline-none leading-none" href="{{ psw_reset_url }}">{% trans 'Forgot password?' %}</a>
+    </div>
+    {{ form.captcha }}
+
+    <button class="mt-4 w-full text-sm bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" type="submit" id="log">{% trans 'Continue' %}</button>
+  </form>
+  
+</div>
+{% endblock%}
+{% comment %} <form class="max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10">
+<h2 class="text-2xl font-bold text-center">Login</h2>
+<div class="outline relative border-2 focus-within:border-blue-500">
+  <input type="text" name="username" placeholder=" " class="block p-4 w-full text-lg appearance-none focus:outline-none bg-transparent" />
+  <label for="username" class="absolute top-0 text-lg bg-white p-4 -z-1 duration-300 origin-0">Username</label>
+</div>
+</form>{ % include 'accounts/snippets/anti-bot.html' % } if not next_url %}<h1 class="sc text-center font-tex font-bol">Welcome back to {{ com }}</h1>{% endif %}
+action="{% if next_url %}{{ next_url }}{% else %}{{ login_url }}{% endif %}"{% if next_url %}
+<input type='hidden' name='next' value='{{ next_url }}'> {% csrf_token %}
+{% endif % { % blocktrans % }<p class="text-sm pt-4 ml-1">{% trans 'New?' %} <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-400 font-semibold focus:outline-none">Sign up</a></p>{ % block js %}{ % endblock %}
+stay sign in for a week passwordless login
+<script>
+  var reca = document.getElementById('recap').value;
+  function onClick(e) {
+    e.preventDefault();
+    grecaptcha.ready(function() {
+      grecaptcha.execute(reca, {action: 'submit'}).then(function(token) {
+        console.log(token);
+        document.getElementById('g-recaptcha-response').value = token;
+      });
+    });
+  }
+</script>
+<style> resize h-captcha
+#rc-imageselect {transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;}
+</style>
+<script>
+  function onSubmit(token) {document.getElementById("reca").submit();}
+</script><svg class="fill-current h-4 w-4" data-tippy-content="Show" viewbox="0 0 576 512">
+  <use x-show="show" xlink:href="{% static 'img/svg-defs.svg' %}#show-psw"></use>
+  <use x-show="!show" xlink:href="{% static 'img/svg-defs.svg' %}#!show-psw"></use>
+</svg>{% endcomment %}

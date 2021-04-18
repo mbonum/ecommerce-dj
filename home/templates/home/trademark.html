@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% if page_obj.title %}{{ page_obj.title|safe }}{% else %}{% trans 'Trademark' %}{% endif %}{% endblock %}
+{% block content %}
+<div class="font-c-sans max-w-lg mx-auto px-3 sm:px-0">
+  <h1 class="text-3xl mb-2">{% if page_obj.title %}{{ page_obj.title|safe }}{% else %}{% trans 'Trademark' %}{% endif %}</h1>
+  {% if text.updated_at %}<p class="pb-2">Effective date: {{ text.updated_at|date:'Y-m-d' }}</p>{% endif %}
+  <h2 class="text-xl pb-6">{% trans 'Assets and usage guidelines' %}</h2>
+  <div class="space-y-12 text-center mb-4">
+    <div>
+      <p class="text-xl mb-6">{% trans 'Mark' %}</p>
+      <svg class="fill-current w-32 h-32 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    </div>
+    <div>
+      <p class="text-xl">{% trans 'Logotype' %}</p>
+      <svg class="fill-current w-full h-auto mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
+    </div>
+  </div>
+  <div class="text-justify hyphens">
+    {% if page_obj.text %}
+    {{ page_obj.title|safe }}
+    {{ page_obj.subtitle|safe }}
+    {{ page_obj.text|safe }}
+    {% else %}
+    <p>{% trans 'Please do not use the Clavem name or logos in any way that could mistakenly imply any official connection with or endorsement of Clavem Inc. Any use of the Clavem name or logos in a manner that could cause customer confusion is not permitted.' %}</p>
+    <p>{% trans 'This includes naming a product or service in a way that is similar to the Clavem trademark.' %}</p>
+<!--{# like "Clavem Themes" or "Clavem Studio", as well as in domain names like "Clavemkits.com".#}-->
+    <p>{% trans 'Instead, please use your own trademark name in a way that clearly distinguishes it from Clavem.' %}</p>
+<!--{# Examples that are permitted include "ComponentStudio for Clavem" or "UtilityThemes: Templates for Clavem".#}-->
+    <p>{% trans 'Please do not use our trademark names or logos for t-shirts, stickers, or other merchandise without explicit written consent.' %}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+<!--{# https://www.kali.org/docs/policy/trademark/ https://writings.stephenwolfram.com/2018/12/the-story-of-spikey/ #}-->

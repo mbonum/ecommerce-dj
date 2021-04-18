@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /bmltZGEtbWdiLTI1Cg/
+Disallow: /bmltZGEtbWdiLTI1Cg/defender/

@@ -1,0 +1,18 @@
+{% load i18n %}
+{% if address_qs.exists %}
+<form method="POST" action="{{ action_url }}"> {% csrf_token %}
+  {% if next %}
+  <input type="hidden" name="next" value="{{ next_url }}">
+  {% endif %}
+  {% if address_type %}
+  <input type="hidden" name="address_type" value="{{ address_type }}">
+  {% endif %}
+  {% for address in address_qs %}
+  <label for="address-{{ address.id }}">
+    <input id="address-{{ address.id }}" type="radio" name="shipping_address" value="{{ address.id }}">
+    {{ address.street }}, {{ address.city }}, {{ address.state }}, {{ address.postal_code }}, {{ address.country }}
+  </label>
+  {% endfor %}
+  <button type="submit" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Next' %}</button>
+</form>
+{% endif %}

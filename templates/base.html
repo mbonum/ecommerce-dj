@@ -1,0 +1,77 @@
+{% load i18n static meta custom_template_tags %}
+{#<!-- analytical render_bundle from webpack_loader crispy_forms_tags -->#}
+{% now 'Y' as current_year %}
+{% now 'H' as current_hour %}
+{% url 'home:home' as home_url %}
+{% url 'home:trademark' as mark_url %}
+{% url 'home:contact' as contact_url %}
+{% url 'home:cookie' as cookie_url %}
+{% url 'home:privacy' as privacy_url %}
+{% url 'home:terms' as terms_url %}
+{% url 'home:donate' as donate_url %}
+{% url 'team:index' as team_url %}
+{% url 'read:index' as essays_url %}
+{#<!-- % url 'author' as author_bio_url % } url 'pdf' as pdf_url -->#}
+{% url 'learn:booklist' as edu_url %}
+{% url 'products:list' as shop_url %}
+{% url 'register' as register_url %}
+{% url 'login' as login_url %}
+{% url 'logout' as logout_url %}
+{% url 'cart:home' as cart_url %}
+{% url 'cart:update' as update_cart_url %}
+{% url 'cart:checkout' as checkout_url %}
+{% url 'checkout_address_create' as checkout_address_create %}
+{% url 'checkout_address_reuse' as checkout_address_reuse %}
+{% url 'account:user-home' as account_url %}
+{% url 'account:user-product-history' as prod_history_url %}
+{% url 'orders:list' as order_url %}
+{% url 'billing-payment-method' as billing_url %}
+{% url 'marketing-pref' as mkt_url %}
+{% url 'library' as dig_lib_url %}
+{% url 'account:user-update' as usr_update_url %}
+{% url 'password_change' as psw_change_url %}
+{% url 'password_reset' as psw_reset_url %}
+{% url 'clvmurl' as short_url %}
+{% url 'newsletter:newsletter_subscribe_request' as newsletter_url %}
+
+{% with url='https://www.clavem.co' com='Clavem' launched='Dec 20, 2020 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/armoniaworld' twit_url='https://twitter.com/armoniaworld' %}
+{% comment %}<!-- recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' request.url :class="{ { error ? 'text-red-600' : 'text-green-600' }}" address_btc='btc_wallet' address_eth='eth_wallet' yt_url='https://www.youtube.com/channel/' fb_url='https://facebook.com/armoniaworld' ig_url='https://instagram.com/armoniaworld' -->{% endcomment %}
+{% spaceless %}
+{% autoescape off %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head {% meta_namespaces %}>
+{#<!-- % analytical_head_top % { % include 'base/snippets/fullscreen.html' % -->#}
+  {% include 'base/snippets/meta.html' %}
+
+  {% if not request.user.email %}{% include 'base/snippets/cookieconsent.html' %}{% endif %}{#<!-- user.cookie -->#}
+  {% block css %}{% endblock %}
+  <title>{% block title %}{% endblock %} · {{ com }}</title>
+{#<!-- % if cart_url in request.path %}oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"{% endif %}% analytical_head_bottom % ondblclick="focusMode(document.documentElement);" ondblclick="exitFullscreen();" -->#}
+</head>
+<body class="bg-primary antialiased overflow-x-hidden overscroll-contain">
+{#<!-- % analytical_body_top % -->#}
+  <div class="flex-col w-screen h-screen" id="nojs">
+    {% include 'base/nav.html' %}
+    <div class="mb-auto">
+      {% block video %}{% endblock %}
+      <div class="max-w-xs md:max-w-sm lg:max-w-3xl xl:max-w-6xl mx-auto py-8 px-5 lg:px-0">
+        {% include 'base/snippets/message.html' %}
+        {% block leftside %}{% endblock %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    <div class="bg-footer">{% include 'base/footer.html' %}</div>
+  </div>
+  {% include 'base/noscript.html' %}
+  {% include 'base/snippets/tippy.html' %}
+  {% block js %}{% endblock %}
+</body>
+</html>
+{% endautoescape %}
+{% endspaceless %}
+{% endwith %}
+{% comment %}<!--{ % analytical_body_bottom %}Hey, we're still opening up but anyone can join with an invite from an existing user! setTimeout(function() { location.href="https://www.duckduckgo.com/"; }, 500); GDPR-banner <div x-data="{ show: !localStorage.getItem('hide-banner') }"><div x-show="show"><button @click="localStorage.setItem('hide-banner', true); show = false">close</button></div></div>
+<script>export default { data() { return { theme: 'light', } }</script>
+{ % render_bundle 'app' %}Vue production src/frontend/dist/bundle.js <script type="text/javascript" src="{ % static 'bundle.js' %}"></script>-->{% endcomment %}

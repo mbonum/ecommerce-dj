@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+<!--{#/invoice/{{ order.order_id } #}-->
+{% block title %}{% trans 'Order' %} {{ object.order_id }}{% endblock %}
+{% block content %}
+{% if object %}
+<div class="max-w-sm mx-auto">
+  <div class="text-center mb-6">
+    <h1 class="text-lg inline-flex border-b border-gray-300 font-semibold pb-4">{% trans 'Order' %} ID {{ object.order_id }}</h1>
+    <a href="{% url 'order-pdf' order.order_id %}" target="_blank" class="hover:text-yellow-400 inline-flex items-center focus:outline-none focus:shadow-outline my-3" data-tippy-content="Print" target="_blank">
+      PDF <svg class="w-5 h-6 fill-current ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+    </a>
+  </div>
+  <div class="mx-auto">
+    <p>Item{% if object.cart.products.all|length > 1 %}s{% endif %}:
+      {% for product in object.cart.products.all %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p class="pt-1">{% trans 'Billing Address' %}:<br/>{{ object.billing_address.get_address }}</p>
+    {% if object.shipping_address.get_address and object.shipping_total %}
+    <p class="pt-1">{% trans 'Shipping Address' %}:<br/>{{ object.shipping_address.get_address }}</p>
+    <p class="pt-1">{% trans 'Subtotal' %}: {{ user.currency }} {{ object.cart.total }}</p>
+    <p class="pt-1">{% trans 'Shipping Total' %}: {{ user.currency }} {{ object.shipping_total }}</p>
+    {% endif %}
+    <p class="pt-1">{% trans 'Order Total' %}: {{ user.currency }} {{ object.total }}</p>
+    <p>{% trans 'Order Status' %}: {{ object.get_status }}</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

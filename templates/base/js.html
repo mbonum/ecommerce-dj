@@ -1,0 +1,48 @@
+{% load compress static %}
+<script rel="preload" type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/chart-2.9.4.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/jsrender-1.0.11.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/marked.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'jq-confirm/jquery-confirm.min.js' %}"></script>
+
+<script rel="preload" type="text/javascript" src="{% static 'js/alpine.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/popper-2.9.1.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'cookieconsent/cookieconsent.min.js' %}"></script>
+{% if essays_url in request.path or edu_url in request.path %}
+<script rel="preload" type="text/javascript" src="{% static 'js/sharect-2.0.0.min.js' %}"></script>
+{% endif %}
+{% if cart_url in request.path %}
+<script src="https://polyfill.io/v3/polyfill.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/cdev.stripe.js' %}"></script>
+{% endif %}
+{% compress js %}
+<script rel="preload" type="text/javascript" src="{% static 'js/csrf.ajax.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/utils.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/cdev.js' %}"></script>
+<script rel="preload" type="text/javascript" src="{% static 'js/cdev.sales.js' %}"></script>
+{% endcompress %}
+{% comment %}<!--utils.js roman+date https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch
+<script rel="preload" type="text/javascript" src="{% static 'js/aproject.stripe.js' %}"></script><script rel="preload" type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ recaptchav3 }}"></script>
+<script rel="preload" type="text/javascript" src="{ % static 'js/stripe.js' % }"></script></script>nonce="lrEwC5VX0M"<script rel="preload" type="text/javascript" src="{ % static 'js/fittext.js' % }"></script>
+<script rel="preload" type="text/javascript" src="{ % static 'js/fitvids.js' % }"></script><script rel="preload" type="text/javascript" src="{ % static 'js/letterings.min.js' % }"></script><script rel="preload" type="text/javascript" src="{ % static 'js/darkmode.min.js' % }"></script><script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@2.5.0/dist/alpine.js" integrity="sha384-MOdHkwpJ6Vkz2uUWS4XyU6nVUKonbGM1UHBS3//P+E7omEPPA0Qo7pDo4VdLzhGu" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.5.0/dist/alpine.min.js" defer></script>
+<script id="mcjs">!function (c, h, i, m, p) { m = c.createElement(h), p = c.getElementsByTagName(h)[0], m.async = 1, m.src = i, p.parentNode.insertBefore(m, p) }(document, "script", "https://chimpstatic.com/mcjs-connected/js/users/0e61ec17658f41b70da7d62f5/0a42a86cd2c1b1c3c4bc6025d.js");</script>#
+{#<script rel="preload" type="text/javascript" src="https://js.stripe.com/v3/" integrity="sha384-Qcifo3u2VUX41J7C8t1PHSh9OOTaUnfx3fQTxp/9GJk2KMTdesq4ZjgTMmxAJvD9" crossorigin="anonymous"></script><script>if (rel="preload" typeof ($.fn.modal) === 'undefined'){ document.write("<script rel="preload" type='text/javascript' src='{% static 'js/stripe.js' %}'><\/script>")}</script>
+<script rel="preload" type="text/javascript" charset="utf8" src="{% static 'datatables/datatables.min.js' %}"></script>
+<script rel="preload" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha384-i+dHPTzZw7YVZOx9lbH5l6lP74sLRtMtwN2XjVqjf3uAGAREAF4LMIUDTWEVs4LI" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script rel="preload" type='text/javascript' src='{% static 'js/chart-2.9.3.min.js' %}'><\/script>")}</script>
+<script rel="preload" type="text/javascript" src="https://unpkg.com/@popperjs/core@2.4.3/dist/umd/popper.min.js" integrity="sha384-crgn6FzK5+12g3+hVyh0kFW73ScnVCl1jd7zFxhK+Qvc5RLIkwbeS3YlKHAEyXpC" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script rel="preload" type='text/javascript' src='{% static 'js/popper-2.0.6.min.js' %}'><\/script>") }</script>
+<script rel="preload" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.6/jsrender.js" integrity="sha384-HhBxR5LrqLJCHr7/VOqpskc9F8iJ5dZb02Eh53Va0EbFct8nh8TUAVhM2U3j3Egd" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script rel="preload" type='text/javascript' src='{% static 'js/jsrender-1.0.6.min.js' %}'><\/script>")}</script>
+Markdown https://cdnjs.com/libraries/marked https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.2/marked.min.js #}
+<script rel="preload" type="text/javascript" src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" integrity="sha384-mMTkexqfk+Z5Ej4luWgosOjkj49+Rg0hzY7LAjq0V1qqpcHaTZEqV3EuCx0LxPCe" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script rel="preload" type='text/javascript' src='{% static 'js/marked.min.js' %}'><\/script>")}</script> #}
+<!-{# Local fall back if CDN fails Production set static CDN #}->
+<script>window.jQuery || document.write("<script src='{ % static 'js/jquery-3.4.1.min.js' % }'><\/script>")</script>
+<script rel="preload" type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script rel="preload" type='text/javascript' src='{% static 'js/jquery-3.5.1.min.js' %}'><\/script>")</script> <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js" integrity="sha384-kjb3ERfmTd6UCpsYld+ISpM404X6LT804aaMmj/2Ffz3XK2RXIQdWhSdtIFve+OO" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script rel="preload" type='text/javascript' src='{% static 'js/jquery-confirm.min.js' %}'><\/script>")</script>
+<script rel="preload" type="text/javascript" src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js"></script><script>window.jQuery || document.write("<link rel="preload" type='text/javascript' src='{% static 'cookieconsent/cookieconsent.min.js' %}'><\/script>")}</script>
+<script src="{ % static 'js/print.min.js' % }"></script> js_templates <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+Vue for prod <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script rel="preload" type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js" integrity="sha384-bF2gXog8EbftpjuWQY8G0T7aeq+FvNU9YWvxSRHybqv2F/lvV5msKMHvRgoukeQP" crossorigin="anonymous"></script>
+<script rel="preload" type="text/javascript" src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+Icons <script src="https://kit.fontawesome.com/6db89c4710.js" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script src='{ % static 'js/bootstrap.min.js' % }'><\/script>")}</script>
+-->{% endcomment %}

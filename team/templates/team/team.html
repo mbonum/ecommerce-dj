@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Team' %}{% endblock %}
+{% block content %}
+<div class="font-c-sans max-w-xs overflow-hidden {% if team %}md:max-w-sm lg:max-w-3xl xl:max-w-5xl px-5 xl:px-3{% endif %} mx-auto">
+  {% if team %}
+  <div>
+    <svg class="a e s fill-current w-40 h-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+  </div>
+  <div class="text-center mt-8 mb-2 mx-auto">
+    <h1 class="text-lg font-semibold uppercase">{{ title }}</h1>
+    <p class="font-c uppercase text-gray-800 border-b border-gray-300 pb-4 mt-2">{% if motto %}{{ motto }}{% else %}Qualis Super Quantitas{% endif %}</p>
+  </div>
+  {% for m in team %}
+  {% if m.show %}
+  <div class="align-top lg:inline-block mx-auto text-center pt-6 lg:pr-6">
+    <a class="t-img block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-gray-400 hover:shadow-lg focus:outline-none lg:w-aut lg:w- lg:h-auto"
+      {% if m.bio and m.img %}href="{% url 'team:detail' slug=m.slug %}"{% endif %}>
+      {% if m.img %}<img src="{{ m.img.url }}" alt="{{ m.name }}" class="t-img rounded lg:w-40 lg:h-40 object-cover object-center mx-auto">
+      {% else %}
+      <svg class="lg:w-40 lg:h-40 text-gray-400 transition duration-500 ease-in-out hover:text-gray-600 fill-current mx-auto">
+        <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+      </svg>
+      {% endif %}
+      <p class="text-sm text-gray-900 mt-2 mb-1">{{ m.name }}</p>
+      <p class="text-xs text-gray-600">{{ m.job_title }}</p>
+    </a>
+  </div>
+  {% endif %}
+  {% endfor %}
+<div class="text-center text-gray-900 mb-2">
+  <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
+  <p class="text-lg border-t border-gray-300 pt-6 mt-8 mb-4">{% trans 'Time since Clavem was founded' %}</p>
+    <div class="inline-flex border border-gray-300 bg-white shadow rounded-full px-1" id="ctime">
+      <div class="border-r border-gray-300 px-2 py-1">
+        <span class="days pr-1">00</span>
+        <span class="timeRefDays">days</span>
+      </div>
+      <div class="px-2 py-1">
+        <span class="hours pr-1">00</span>
+        <span class="timeRefHours">hours</span>
+      </div>
+    </div>
+  </div>
+{% else %}
+<div class="font-c-sans text-gray-900 max-w-xs mx-auto">
+  <h1 class="text-xl text-black my-5">{% trans 'Call to action' %}</h1>
+    <p>{% trans 'If you have read' %} <a class="un font-semibold" href="{{ essays_url }}why-clavem-exists/">{{ com }} vision</a> {% trans 'and matches your purpose, please' %}
+    <a class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none" href="{{ contact_url }}">{% trans 'contact us' %}</a> {% trans 'and let us know how you can help' %} {{ com }}.</p>
+  </div>
+{% endif %}
+</div>
+{% endblock %}
+<!--{% comment %}<div class="border-r border-gray-400 p-2">{{ team_url }}{{ m.slug }}
+  <span class="years pr-1">00</span>
+  <span class="timeRefYears">years</span>
+</div><div class="hover:bg-gray-hover p-2">
+  <span class="seconds pr-1">00</span>
+  <span class="timeRefSeconds">seconds</span>
+</div>
+<div class="px-2 py-1">
+  <span class="minutes pr-1">00</span>
+  <span class="timeRefMinutes">minutes</span>
+</div>
+// Month Day, Year Hour:Minute:Second, id-of-element-container//2021-05-05 *set date of deployment
+// years  = Math.floor(days / 365)
+  mins = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
+  secs = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
+// idEl.getElementsByClassName('years')[0].innerHTML = years;
+  idEl.getElementsByClassName('minutes')[0].innerHTML = mins;
+  idEl.getElementsByClassName('seconds')[0].innerHTML = secs;
+Add pitch deck https://revealjs.com/installation/ {% endcomment %}-->

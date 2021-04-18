@@ -1,0 +1,13 @@
+{
+  "name": "Clavem",
+  "short_name": "Clavem",
+  "start_url": "clavem.co",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Clavem platform",
+  "icons": [
+    { "src": "img/favicon/c-32.ico", "type": "image/ico", "sizes": "32x32" },
+    { "src": "img/favicon/c-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "img/favicon/c-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}

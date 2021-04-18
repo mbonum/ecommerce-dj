@@ -1,0 +1,14 @@
+{% load compress static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/c-custom.min.css' %}" media="screen,projection">
+{% compress css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="{% static 'cookieconsent/cookieconsent.min.css' %}" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="{% static 'css/stripe-custom-style.css' %}" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="{% static 'jq-confirm/jquery-confirm.min.css' %}" media="screen,projection">
+{% endcompress %}
+{% comment %}<!--
+<link rel="stylesheet" type="text/css" href="{ % static 'datatables/datatables.min.css' % }"> <link rel="stylesheet" type="text/css" href="{ % static 'fa/css/font-awesome.min.css' % }">
+<!- {# https://www.srihash.org #}->
+<link src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css" integrity="sha384-R9LThqrO+8JVlvYKBWkBnlRDVPLm9PikE1hxUJWt6ilXM7B4FFmhWIytUyQnovyZ" crossorigin="anonymous"/><script>if (typeof ($.fn.modal) === 'undefined'){ document.write("<link rel='stylesheet' type='text/css' href='{% static 'jquery-confirm/jquery-confirm.min.js' %}'><\/link>")}</script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"/><script>if (typeof ($.fn.modal) === 'undefined'){ document.write("<link rel='stylesheet' type='text/css' href='{% static 'cookieconsent/cookieconsent.min.css' %}'><\/link>")}</script>
+-->{% endcomment %}

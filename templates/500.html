@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Server Error' %}{% endblock %}
+{% block content %}
+<div class="font-c-sans text-gray-800 max-w-xs mx-auto">
+  <h1 class="text-xl text-black my-5">{% if message %}{{ message }}{% else %}{% trans 'A server error just occured... Please reload the page.' %}{% endif %}</h1>
+  <p>{% trans 'The team has been notified and is going to fix the issue as soon as humanly possible. Our apologies.' %}</p>
+</div>
+{% endblock %}
+{#<!--500 error | Leave your email if you want to be recontacted.-->#}

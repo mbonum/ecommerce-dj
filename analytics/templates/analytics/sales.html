@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}'{% trans 'Revenues' %}'{% endblock %}
+<!--{# Add currency converter, company-default-currency * exchange rate #}-->
+{% block content %}
+<div class="font-c-sans max-w-lg mx-auto">
+  <div class="flex justify-between">
+    <h1 class="text-2xl font-semibold">{% trans 'Revenue' %} 📈</h1>
+    <div class="relative items-center">
+      <select name="currency" id="currency"
+        class="text-sm block appearance-none bg-white border border-gray-400 hover:border-gray-500 pl-2 py-2 pr- rounded shadow leading-tight outline-none">
+        <option value="EUR">€</option>
+        <option value="USD">$ USD</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
+        <svg class="fill-current h-4 w-4">
+          <use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="space-y-4">
+    <div class="border-t border-gray-300 pt-3 mt-3">
+      <h3 class="text-lg">{% trans "Revenue at" %} {% now 'Y-m-d' %} :
+        {% include 'carts/snippets/currency.html' %}{% if today.recent_data.total__sum %}{{ today.recent_data.total__sum }}{% else %}0{% endif %}
+      </h3>
+      <div x-data="{ open: false }">
+        <div class="text-center my-4">
+          <button @click="open=!open" class="text-sm bg-white focus:outline-none items-center border-2 border-yellow-300 shadow p-2 leading-none rounded-lg" type="button">
+            <span x-show="!open">Show recent</span>
+            <span x-show="open">{% trans 'Hide' %}</span>
+          </button>
+        </div>
+        <table x-show="open" class="text-left table-auto mx-auto">
+          <tr>
+            <th scope="col" colspan="1">{% trans 'Order' %} ID</th>
+            <th scope="col" colspan="1" class="px-4">{% trans 'Revenue' %}</th>
+            <th scope="col" colspan="1">{% trans 'Date' %}</th>
+          </tr>
+          {% for order in today.recent|slice:':5' %}
+          <tr>
+            <td>{{ order.order_id }}</td>
+            <td class="px-4">{% include 'carts/snippets/currency.html' %}{{ order.total }}</td>
+            <td>{{ order.updated_at|time:"G:i" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <div class="border-t border-gray-300 pt-3 mt-3">
+    <h3 class="text-lg">{% trans "Current week revenue" %}:
+      <span class="bg-yellow-300 px-1">{% include 'carts/snippets/currency.html' %}
+        {% if this_week.recent_data.total__sum %}{{ this_week.recent_data.total__sum }}
+        {% else %}0{% endif %}</span>
+    </h3>
+    <div x-data="{ open: false }">
+      <div class="text-center my-4">
+        <button @click="open=!open" class="text-sm bg-white focus:outline-none items-center border-2 border-yellow-300 shadow p-2 leading-none rounded-lg" type="button">
+          <span x-show="!open">Show recent</span>
+          <span x-show="open">{% trans 'Hide' %}</span>
+        </button>
+      </div>
+      <table x-show="open" class="text-left table-auto mx-auto">
+      <tr>
+        <th scope="col" colspan="1">{% trans 'Order' %} ID</th>
+        <th scope="col" colspan="1" class="px-4">{% trans 'Revenue' %}</th>
+        <th scope="col" colspan="1">{% trans 'Date' %}</th>
+      </tr>
+      {% for order in this_week.recent|slice:':5' %}
+      <tr>
+        <td>{{ order.order_id }}</td>
+        <td class="px-4">{% include 'carts/snippets/currency.html' %}{{ order.total }}</td>
+        <td>{{ order.updated_at|date:"D j, G:i" }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <!--{% comment %}<ul>
+      {% for order in this_week.recent|slice:':5' %}
+      <li>
+        <p>{% trans 'Order' %} ID: {{ order.order_id }}
+        {% include 'carts/snippets/currency.html' %}{{ order.total }}
+        {{ order.updated_at|timesince }} {% trans 'ago' %}</p>
+      </li>
+      {% endfor %}
+    </ul>{% endcomment %}-->
+  {% if this_week.recent_data %}
+  <div class="bg-white p-1 rounded-lg border border-gray-400 shadow mt-4">
+    <canvas class="render-saleschart" id="thisWeekSales" data-type="week" width="400" height="400"></canvas>
+  </div>
+  </div></div>
+  {% endif %}
+  <div class="border-t border-gray-300 pt-3 mt-4">
+    <p class="text-lg pb-1">{% trans 'Previous 4 weeks' %}</p>
+    <p>{% trans 'Orders total' %}: {% include 'carts/snippets/currency.html' %}
+      {% if last_four_weeks.recent_data.total__sum %}{{ last_four_weeks.recent_data.total__sum }}{% else %}0{% endif %}
+    </p>
+    <p>{% trans 'Shipped total' %}: {% include 'carts/snippets/currency.html' %}
+      {% if last_four_weeks.shipped_data.total__sum %}{{ last_four_weeks.shipped_data.total__sum }}{% else %}0{% endif %}
+    </p>
+    <p>{% trans 'Paid totals' %}: {% include 'carts/snippets/currency.html' %}
+      {% if last_four_weeks.paid_data.total__sum %}{{ last_four_weeks.paid_data.total__sum }}{% else %}0{% endif %}</p>
+  </div>
+  <div class="bg-white p-1 rounded-lg border border-gray-400 shadow mt-3">
+    <canvas class="render-saleschart" id="4weekSales" data-type="4weeks" width="400" height="400"></canvas>
+  </div>
+</div>
+{% endblock%}
+<!-- {% comment %}&#x24; &#36; $ &#x20AC; &#8364; { % if user.currency == None or user.currency == '$' % }$ {{ last_four_weeks.paid_data.total__sum }}
+{ % elif user.currency == '£' % }{{ user.currency }} {{ last_four_weeks.paid_data.total__sum }}
+{ % elif user.currency == '€' % }{{ last_four_weeks.paid_data.total__sum }} {{ user.currency }}{ % endif % } {% endcomment %}-->

@@ -1,0 +1,45 @@
+{% load i18n meta static %}
+{% url 'home:home' as home_url %}
+{% url 'home:cookie' as cookie_url %}
+{% url 'home:privacy' as privacy_url %}
+{% url 'home:terms' as terms_url %}
+{% url 'register' as register_url %}
+{% url 'login' as login_url %}
+{% url 'password_change' as psw_change_url %}
+{% url 'password_reset' as psw_reset_url %}
+{% url '2fa_auth' as 2fa_url %}
+{% with com='Clavem' url='www.clavem.co' %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head {% meta_namespaces %}>
+  {% include 'base/snippets/meta.html' %}
+  <title>{{ com }} · {% block title %}{% endblock %}</title>
+{% comment %}<!--https://asciinema.org/login/new passwordless recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' oncontextmenu="return false" onkeydown="return true;" onmousedown="return true;"
+{ % with HCAPTCHA_SECRET_KEY='d7fbaf1d-fc21-41e9-9e9d-5555b16a7eba' % }<script src="https://hcaptcha.com/1/api.js" async defer></script><script src="{ % static 'js/hcaptcha.js' % }"></script>
+<script src="https://assets.hcaptcha.com/captcha/v1/88f8cd7/hcaptcha.js" integrity="sha384-VEF/+ve5fSbrXhXJ0k8p/QznSGTj0vaxJjC5eG6/YL4X4Tumcooelh0RAFuTIj18" crossorigin="anonymous"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LcQrKsZAAAAAO-qIYwbGmhmnL2O_MyHYc6x8nwE"></script>
+<script>grecaptcha.ready(function(){$('#rlform').submit(function(e){var form = this;e.preventDefault()grecaptcha.execute('6LcQrKsZAAAAAO-qIYwbGmhmnL2O_MyHYc6x8nwE', {action: 'rlform'}).then(function(token){$('#recaptcha').val(token)form.submit})})})</script>-->{% endcomment %}
+  {% include 'base/snippets/tooltip.html' %}
+</head>
+<body class="bg-footer">
+  <div class="justify-around items-center py-16 px-2" id="nojs">
+    {% include 'base/snippets/message.html' %}
+    <div class="font-c-sans border border-gray-300 shadow-md bg-primary text-black rounded-lg max-w-xs m-auto">
+      <div class="mx-auto">
+        <svg class="animate-pulse s fill-current w-24 mx-auto mt-4 mb-3">
+          <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+        </svg>
+      </div>
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+  {% include 'base/noscript.html' %}
+  {% include 'base/snippets/tippy.html' %}
+  {% block js %}{% endblock %}
+</body>
+</html>
+{% endwith %}
+<!-- {% comment %}<a href="{ { home_url } }"></a>
+<div class="p-2 pt-0 h-captcha" data-sitekey="d7fbaf1d-fc21-41e9-9e9d-5555b16a7eba"></div>{ % include 'base/js.html' % }<div class="py-3 sm:px-10 md:px-20 lg:px-40 xl:px-64"><div class="text-center border border-gray-300 shadow bg-gray-al rounded"><img src="{ % static '/img/logo/a.min.svg' % }" class="mx-auto w-24 my-5" alt="Armonia Logo"/></a>
+{% endcomment %}-->

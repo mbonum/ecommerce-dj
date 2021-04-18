@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'History' %}{% endblock %}
+{% block content %}
+{% if object_list %}
+<div class="font-c-sans max-w-xl mx-auto">
+  <div class="border-b border-gray-300 pb-3 lg:mr-2 mr-2">
+    <h1 class="text-lg font-semibold uppercase text-center">{% trans 'Products Viewed' %}</h1>
+  </div>
+  {% for obj in object_list %}
+  {% include 'products/snippets/product-card.html' with instance=obj %}
+  {% endfor %}
+</div>
+{% else %}
+<div class="max-w-sm mx-auto text-center">
+  <p class="text-xl inline-flex border-b border-gray-300 font-semibold uppercase pb-4" data-tippy-content="(or you deleted your cookies)">{% trans 'No product viewed ._.' %}</p>
+</div>
+{% endif %}
+{% endblock %}

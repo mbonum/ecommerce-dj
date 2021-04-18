@@ -1,0 +1,7 @@
+Hi,
+
+Please activate your {{ com }} account by clicking <a href="{{ path }}">here</a>.
+
+Thanks for your registration {{ first_name }},
+
+The {{ com }} team

@@ -1,0 +1,32 @@
+{% extends "newsletter/common.html" %}
+{% load i18n %}
+{% block title %}{% trans "Newsletter archive" %}{% endblock %}
+{% block body %}
+<table>
+  <tr>
+    <th class="uppercase font-semibold text-center mb-3">{{ newsletter.title }} {% trans "Archive" %}</th>
+  </tr>
+  {% for submission in latest %}
+  <tr>
+    <td><a class="text-center hover:underline" href="{{ submission.get_absolute_url }}">{{ submission }}</a></td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td><a class="mt-1 hover:text-gray-800 inline-flex items-center border border-gray-500 rounded px-2 py-1 hover:shadow-inner mt-2" href="../">
+      <svg class="h-4 w-4 fill-current mr-1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+          <path
+            d="M9.44 5.25L5.99 1.81A.75.75 0 017.06.74l4.72 4.73c.3.3.3.77 0 1.06l-4.72 4.73a.75.75 0 11-1.07-1.07l3.45-3.44H.75a.75.75 0 010-1.5h8.69z"
+            id="a" />
+        </defs>
+        <g>
+          <path
+            d="M2.56 5.25l3.45-3.44A.75.75 0 004.94.74L.22 5.47c-.3.3-.3.77 0 1.06l4.72 4.73a.75.75 0 101.07-1.07L2.56 6.75h8.69a.75.75 0 000-1.5H2.56z"
+            fill="#4a5568" />
+          <g transform="matrix(-1 0 0 1 12 0)"></g>
+        </g>
+      </svg>{% trans "Back" %}</a></td>
+  </tr>
+</table>
+{% endblock %}

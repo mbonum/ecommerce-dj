@@ -1,0 +1,8 @@
+{% if obj.audio or tts %}
+<div class="mt-1 mb-4">
+  <audio class="mx-auto w-full overflow-x-hidden rounded-full focus:outline-none hover:shadow-md" controls>
+    <source src="{% if obj.audio %}{{ obj.audio.url }}{% else %}/{{ tts }}{% endif %}" type="audio/mp3">
+  </audio>
+</div>
+{% endif %}
+{#<!-- or tts % if tts % }{ % else %} { % endif % -->#}

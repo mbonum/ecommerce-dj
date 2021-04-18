@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Read' %}{% endblock %}
+{% block content %}
+<div class="font-c-sans max-w-xs mx-auto">
+{% if essays %}
+  <div class="text-center mb-5">
+    <p class="text-lg font-semibold mb-2">{% if title %}{{ title }}{% else %}{% trans 'Writings' %}{% endif %}</p>
+    <p class="inline-flex text-sm items-center"><svg class="w-3 h-3 fill-current mx-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#star"></use></svg> {% trans 'indicates must-read writings.' %}</p>
+  </div>
+  {% for essay in essays %}
+  <a href="{% url 'read:detail' slug=essay.slug %}" id="{{ essay.slug }}" class="flex w-full bg-white hover:bg-gray-200 text-black items-center justify-between shadow overflow-hidden border border-gray-200 p-3 focus:outline-none {% if forloop.first %}rounded-t-lg{% elif forloop.last %}rounded-b-lg{% endif %}"{% if essay.tags %} data-tippy-content="Keywords: {% for t in essay.tags.all %}{{ t.name }}{% if forloop.counter is not 1 %}, {% endif %}{% endfor %}"{% endif %}>{{ essay.title }}
+    {% if essay.recommend %}<svg class="inline-flex text-gray-60 w-3 h-3 fill-current mr-3"><use xlink:href="{% static 'img/svg-defs.svg' %}#star"></use></svg>{% endif %}
+    {% if essay.audio %}
+    <svg class="inline-flex w-8 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
+    {% else %}
+    <svg class="inline-flex w-5 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+    {% endif %}
+  </a>
+  {% endfor %}
+{% else %}
+<div class="text-gray-900">
+  <h1 class="text-xl text-black my-5">{% trans 'Writing in progress' %}</h1>
+  <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
+</div>
+{% endif %}
+</div>
+{% endblock %}
+{% comment %}<!-- <div class="shadow overflow-hidden border border-gray-300 rounded-lg">
+  <table class="min-w-full bg-white divide-y divide-gray-200">
+  <tbody>
+    {% for essay in essays %}
+    <tr class="{% if forloop.counter is not 1 %}border-t border-gray-300 {% endif %}hover:bg-gray-200">
+      <td class="pl-4 p-3">
+        <a href="{% url 'read:detail' slug=essay.slug %}" id="{{ essay.slug }}" class="text-black focus:outline-none"{% if essay.tags %} data-tippy-content="Keywords: {% for t in essay.tags.all %}{{ t.name }}{% if forloop.counter is not 1 %}, {% endif %}{% endfor %}"{% endif %}>{{ essay.title }}</a>
+      </td>
+      <td class="text-center p-3">
+        <a href="{% url 'read:detail' slug=essay.slug %}" {% if essay.audio %}data-tippy-content="{% trans 'Reading by the author' %}" {% endif %}class="items-center text-gray-800 focus:outline-none hover:text-yellow-400">
+          {% if essay.recommended %}<svg class="inline-flex text-gray-60 w-3 h-3 fill-current mr-3"><use xlink:href="{% static 'img/svg-defs.svg' %}#star"></use></svg>{% endif %}
+          {% if essay.audio %}
+          <svg class="inline-flex w-8 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
+          {% else %}
+          <svg class="inline-flex w-5 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+          {% endif %}
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table> -->{% endcomment %}

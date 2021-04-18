@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Cart' %}{% endblock %}
+{#<!-- <a href="{ { register_url } }" class="text-yellow-500 hover:text-yellow-400 font-semibold focus:outline-none">Sign up</a> or <a href="{% url 'login' %}?next={ { request.get_full_path|urlencode } }" class="un font-semibold focus:outline-none">log in</a></p> user currency add qty once edited update aproject.js line 183 div px-2 md:px-20 lg:px-20 xl:px-64"> p-4 border border-gray-500 rounded bg-white shadow -->#}
+{% block content %}
+<div class="font-c-sans max-w-sm mx-auto">
+  {% if cart.products.exists %}
+  <div class="text-center mb-4">
+    <h1 class="text-lg font-semibold">{% trans 'Cart' %}</h1>
+  </div>
+  <table class="table-auto cart-table mx-auto">
+    <thead class="border-b border-gray-500">
+      <tr>
+        <th scope="col" colspan="1"></th>
+        <th scope="col" class="text-center py-1">{% trans 'Product' %}</th>
+        <th scope="col" class="text-center py-1">{% if object.quantity and not object.is_digital %}{% trans 'Quantity' %}{% endif %}</th>
+        <th scope="col" class="text-center py-1">{% trans 'Price' %}</th>
+        <th scope="col" colspan="1"></th>
+      </tr>
+    </thead>
+    <tbody class="cart-body items-center">{#<!--{ forloop.counter }} upgrade cdev.js 184-->#}
+      {% for object in cart.products.all %}
+      <tr class="cart-product border-b border-gray-300 text-center">
+        <td colspan="1">
+{#<!--<img class="w-20 h-20" src="{{ object.image.url }}">-->#}
+        </td>
+        <td class="px-4 py-2">
+          <a class="un focus:outline-none " href="{{ object.get_absolute_url }}" {% if object.img %}id="product-cart"{% endif %}>{{ object.name }}</a>
+          {% if object.img %}
+          <div id="product-cart-tip" class="hidden">
+            <span><img class="w-64 h-64" src="{{ object.img.url }}"></span>
+          </div>
+          {% endif %}
+        </td>
+        <td colspan="1">
+        {% if object.quantity and not object.is_digital %}
+        {% for q in object.quantity %}
+          <select class="appearance-none border border-gray-400 text-black p-1 rounded focus:outline-none focus:ring ring-yellow-100 ring-offset-transparent ring-offset-1 bg-white hover:border-gray-600 shadow" name="qty" id="id_qty">
+            <option value="{{ q }}">{{ q }}</option>
+          </select>{% endfor %}
+        {% endif %}
+{#<!--pointer-events-none absolute inset-y-0 right-0 flex items-center text-gray-600<svg class="r-180 fill-current h-4 w-4"><use xlink:href="/static/img/svg-defs.svg#arrow-d"></use></svg></div>-->#}
+        </td>
+        <td class="text-center">
+          <span>{% include 'carts/snippets/currency.html' %}{{ object.price }}</span>
+        </td>
+        <td class="cart-item-remove-form xl:border-b xl:border-gray-300 py-2 sm:pl-2">
+          {% include 'carts/snippets/remove-product.html' with id=object.id %}
+        </td>
+      </tr>
+      {% endfor %}
+{#<!--sm:border-t<tr><td colspan="2"></td><td class="flex justify-around"><b>Subtotal</b> $<span class="cart-subtotal">{ { cart.subtotal }}</span></td></tr>-->#}
+      <tr>
+        <td colspan="3"></td>
+        <th scope="col" class="font-semibold border-b border-gray-500 py-1">{% trans 'Total' %}</th>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+        <td class="text-center py-2">
+          <span class="cart-total">{% include 'carts/snippets/currency.html' %}{{ cart.total }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1"></td>
+        <td colspan="1" class="pt-8">
+          <div class="inline-flex overflow-hidden border border-gray-300 bg-white shadow rounded-lg">{% include 'base/snippets/backbtn.html' with url=shop_url %}</div>
+        </td>
+        <td colspan="2" class="pt-8">
+          <div class="inline-flex items-center">
+            <a class="text-yellow-500 hover:text-yellow-600 overflow-hidden mr-5" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %}"><svg class="w-7 h-7 fill-current items-center"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
+            </a>
+            {#<!-- <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->#}
+          {% include 'carts/snippets/checkbtn.html' %}</div>
+        </td>
+        <td colspan="1"></td>
+      </tr>
+    </tbody>
+  </table>
+  {% else %}
+  <div class="text-center">
+    <p class="text-xl inline-flex border-b border-gray-300 pb-4">{% trans 'Your cart is empty' %} ._.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% comment %}<!-- TODO js function that multiply qty*price and update total
+f user.currency == None or user.currency == '$' %}${ { instance.price }}{ % elif user.currency == '£' %}{ { user.currency }}{ { instance.price }}{ % elif user.currency == '€' %}{ { instance.price }} { { user.currency }}{ % endif -->{% endcomment %}

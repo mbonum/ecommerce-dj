@@ -1,0 +1,24 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% block extrahead %}
+<link rel="icon" href="{% static 'img/favicon/c-32.ico' %}">
+<link rel="icon" href="{% static 'img/favicon/c-favicon.min.svg' %}" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="{% static 'img/favicon/c-180.png' %}">
+<link rel="manifest" href="{% static './manifest.webmanifest' %}">
+{% endblock %}
+{% block extrastyle %}
+<style type="text/css">
+  body::before {
+    display: block;
+    line-height: 35px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: rgba(253, 218, 122, 0.8);
+    color: #4E65A2;
+    content: "{{ ENV_NAME }}";
+  }
+  body { background-color: #EEEEEE;}
+  h1, h2, h3, p, li { color: #000;}
+</style>
+{% endblock %}

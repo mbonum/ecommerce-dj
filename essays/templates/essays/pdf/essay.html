@@ -1,0 +1,107 @@
+{% load i18n static %}
+{% now 'Y' as current_year %}
+{% url 'home:home' as home_url %}
+{% with com='Clavem' %}
+<!--{% comment %} spaceless https://www.w3.org/Style/Examples/007/units.en.html#units {% endcomment %}-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  {% include 'base/snippets/meta.html' %}
+  <title>{{ com }} PDF: {% if title %}{{ title }}{% else %}{% trans 'Untitled' %}{% endif %}</title>
+  <style type="text/css" media="print">
+    @page {
+      margin: 1cm;
+      size: a4; /* landscape letter or width x height 150mm 50mm*/
+    }
+    .document {
+      padding: 1em 2em;
+      font-family: "Gotham", "Lora", "Times", serif;
+      font-size: 1.3em;
+      color: #000;
+      font-weight: normal;
+      font-style: normal;
+    }
+    .header {
+      border-top: 0.16em solid #E1CAAF;/*3px*/
+      text-align: center;
+      font-size: 1.8em;/*18pt*/
+      padding-top: 1em;/*20px*/
+      padding-bottom: -2em;
+    }
+    .info {
+      padding-bottom: 0.5em;
+      text-align: center;
+      border-bottom: 0.13em solid #ECDDCC;/*2px*/
+    }
+    .body {
+      padding-top: 1em !important;
+    }
+    .text {
+      padding: 0 !important;
+      text-align: left !important;
+      font-stretch: semi-condensed;
+      font-size: 1em;/*12pt*/
+      text-align: justify;
+      /* font-family: "Gotham", "Lora", sans-serif; */
+      hyphens: auto;
+      /* word-break: break-all; */
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hyphens: auto;
+      text-justify: distribute;
+      -ms-text-justify: distribute;
+      -moz-text-justify: distribute;
+      -webkit-text-justify: distribute;
+      text-indent: 2.2em;
+    }
+    a.cr {
+      text-decoration: none;
+    }
+    .cr {
+      color: #000;
+      position: absolute;
+      bottom: 0;
+      padding-top: 2em;
+      text-align: left;
+      font-family: "Gotham", "Lora", "Times", serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="document">
+    {% if image %}<img alt="image" width="200" height="150" src="{{ image }}" alt="{{ title }} image">{% endif %}
+    <table>
+      <tr>
+        <th>
+          <div class="header">
+            <h2>{{ title }}</h2>
+          </div>
+        </th>
+        <td>
+          <i>Marginalia for {{ n }}</i>
+        </td>
+      </tr>
+      <tr>
+        <td width="70%">
+          <p class="info">by {{ author }}{% if author2 %}, {{ author2 }}{% endif %} ·
+            20{{ date|date:'Y-m-d' }}
+          </p>
+        </td>
+        <td width="30%"></td>
+      </tr>
+      <tr class="body">
+        <td width="70%">
+          <div class="text">
+            {{ text|safe }}
+          </div>
+        </td>
+        <td width="30%"></td>
+      </tr>
+    </table>
+    <div class="cr">
+      <small>© {{ current_year }} <a class="cr" href="{{ home_url }}">{{ com }}</a>. All rights reserved.</small>
+    </div>
+  </div>
+</body>
+</html>
+{% endwith %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Library' %}{% endblock %}
+{% block content %}
+<div class="max-w-sm mx-auto">
+  {% if order.products.exists %}
+  <div class="text-center mb-4">
+    <p class="text-lg font-semibold">{% trans 'Digital library of' %} {{ request.user.first_name }}</p>
+  </div>
+  <table class="table-auto cart-table mx-auto">
+    <thead class="border-t border-b border-gray-300">
+      <tr>
+        <th scope="col" class="font-semibold text-center py-1">{% trans 'Product' %}</th>
+        <th scope="col" class="font-semibold text-center py-1">{% trans 'Download' %}</th>
+      </tr>
+    </thead>
+    <tbody class="cart-body">
+      {% for object in object_list %}
+      <tr class="cart-product border-b border-gray-300 align-middle text-center">
+        <td scope="row" class="px-4 py-2 justify-around">
+          <a class="hover:text-blue-a hover:underline focus:outline-none focus:shadow-outline" href="{{ object.get_absolute_url }}" target="_blank">{{ object.title }}</a>
+        </td>
+        <td class="px-4 py-2 justify-around">
+          {% for download in object.get_downloads %}
+          <a class="hover:text-blue-a hover:underline focus:outline-none focus:shadow-outline" href="{{ download.get_download_url }}">{{ download.name }}</a><br/>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="text-center">
+    <p class="text-xl inline-flex border-b border-gray-300 pb-4">{% trans "You haven't bought anything yet ._." %}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+<!--{# { % empty % }<tr><td colspan="3"><p>No orders yet.</p></td></tr> Your Library is empty ._. #}-->

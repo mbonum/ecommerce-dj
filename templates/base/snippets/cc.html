@@ -1,0 +1,15 @@
+{% load static %}
+<div id="byncnd4" class="text-center my-4 mt-6">
+  <a class="inline-block hover:text-black border border-gray-300 rounded-full bg-white shadow p-2 focus:outline-none" href="https://creativecommons.org/licenses/by-nc-nd/4.0" target="_blank" rel="license"><img class="h-4 mx-auto" src="{% static 'img/cc-non-$.png' %}"></a>
+  <div id="byncnd4-tip" class="hidden">
+    <div class="font-c-sans text-xs mx-auto p-2">
+    <p>You can share citing <b>{{ com }}</b> but if you are for-profit, you must contact us before sharing.
+    <span xmlns:dct="https://purl.org/dc/terms" property="dct:title">Content by {{ com }}</span> is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</p></div>
+  </div>
+</div>
+{% comment %}<!-- { { request.path }} Can I share this graphic?
+Yes. Visualizations are free to share and post in their original form across the web—even for publishers. Please link back to this page and attribute Visual Capitalist.
+When do I need a license?
+Licenses are required for some commercial uses, translations, or layout modifications. You can even whitelabel our visualizations. Explore your options.
+Interested in this piece?
+Click here to license this visualization.-->{% endcomment %}

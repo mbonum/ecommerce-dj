@@ -1,0 +1,59 @@
+{% load i18n static %}
+{% spaceless %}
+<div class="align-top inline-flex overflow-hidden items-center mt-5 sm:mr-4 lg:mr-5">
+  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="rounded-lg bg-white border border-gray-300 shadow hover:border-gray-500 hover:shadow-md focus:outline-none p-4">
+    <div class="relative {% if object.img %}pb-{% endif %}">
+      {% if object.img %}
+      <img src="{{ object.img.url }}" alt="{{ object.name_product }}" class="lg:w-64 lg:h-64 absolut rounded-sm m-auto object-center">
+      {% else %}
+      <svg class="lg:w-64 lg:h-64 text-gray-400 fill-current mx-auto">
+        <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+      </svg>
+      {% endif %}
+    </div>
+    <div class="flex justify-between pt-1">
+      <p class="inline-flex">{{ object.name_product }}</p>
+      {% if 'audio' in object.product_type %}
+      <input type="button" value="🎙️" data-tippy-content="{{ object.product_type }}" class="inline-flex bg-white">
+      {% elif 'ebook' in object.product_type %}
+      <input type="button" value="🕮" data-tippy-content="{{ object.product_type }}" class="inline-flex bg-white">
+      {% elif 'physical' in object.product_type %}
+      <input type="button" value="🚚" data-tippy-content="{% trans 'Delivery' %}" class="inline-flex bg-white">
+      {% endif %}
+    </div>
+    <div class="text-xs pt-1">
+    <p class="">{{ object.description|safe|truncatewords_html:6 }}</p>
+    </div>
+    {% comment %} <table class="text-gray-700 mx-aut mt-3">
+      <thead>
+        <tr class="">
+          <td scope="col" class="text-black pr-4">{{ object.name_product }}</td>
+          <td>{% include 'carts/snippets/currency.html' %}{{ object.price }}</td>
+        </tr>
+      </thead>
+      <tbody class="mt-1">
+        <tr>
+          <td>
+            <span class="text-xs">{{ object.description|safe|truncatewords_html:6 }}</span>
+          </td>
+          <td>
+          {% if object.category.name == 'audio' %}
+          <input type="button" value="🎙️" data-tippy-content="Audiobook" class="bg-white ml-4"/>
+          {% elif object.category.name == 'ebook' %}
+          <input type="button" value="🕮" data-tippy-content="Ebook" class="bg-white ml-4"/>
+          {% elif object.category.name == 'physical' %}
+          <input type="button" value="🚚" data-tippy-content="Delivery" class="bg-white ml-4"/>
+          {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table> {% endcomment %}
+  </a>
+</div>
+{% endspaceless %}
+<!--{% comment %}objectect-cover
+TODO machine learning recommendation model
+{ % if instance.recommended % }
+<span class="uppercase text-xs text-gray-700 hover:text-gray-900 inline-block ml-3">Recommended</span>{ % endif % }☯
+transform="rotate(180)" add gif instead of imgs or video % include 'products/snippets/update-cart.html' with product=instance cart=cart % }
+{% endcomment %}-->

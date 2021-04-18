@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load i18n static custom_tags %}
+{% block title %}{% trans 'Buy' %} {{ object.name_product }}{% endblock %}
+{% comment %}<!--https://turingpi.com/ add video/gif Your browser does not support the video tag.
+ 2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
+{ % block css %}<style>
+/* #pic{
+  /* max-width: 500px;
+  max-height: 600px; */
+  /* border: 2px solid black; */
+  /* cursor: pointer;} */
+#img-div{
+  z-index: 1;
+  /* max-width: 400px;
+  max-height: 300px; */
+  position: relative;
+}
+#zum{
+  z-index: 2;
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  border:1px solid black;
+  background-repeat: no-repeat;
+  cursor: none;
+}</style>{ % endblock %}-->{% endcomment %}
+{% block content %}
+<div class="font-c-sans max-w-4xl lg:max-w-5xl lg:flex px-2 sm:px-0 md:px-2 lg:space-x-8 mx-auto">
+  <div class="lg:w-1/3 mx-auto">
+  {% if object.video %}
+    <video class="rounded-lg border border-gray-300 shadow" controls><source src="{{ object.video.url }}" type="video/ogg"></video> 
+  {% elif object.img %}
+  <div id="img-div">
+    <img id="pic" src="{{ object.img.url }}" class="border border-gray-300 rounded-lg shadow-md mx-auto">
+    {% comment %}<!-- Add 360 gif or slideshow { % if not object.is_digital %}<div id="zum" class="hidden xl:block"></div>{ % endif %}-->{% endcomment %}
+  </div>
+  {% else %}
+  <svg class="lg:w-28 lg:h-28 text-gray-400 fill-current mx-auto">
+    <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+  </svg>
+  {% endif %}
+  </div>
+  <div class="lg:w-1/3 mt-6 lg:mt-0">
+    <h1 class="text-xl">{{ object.name_product }}</h1>
+    <div class="list-inside text-s mt-2">
+      {{ object.description|safe|linebreaks }}
+    </div>
+  </div>
+  <div class="lg:w-1/3 space-y-8 m-auto border border-gray-300 bg-white p-4 xl:p-6 rounded-lg shadow">
+    <div class="w-full inline-flex justify-between items-center">
+      {% if not object.is_digital %}
+      <div class="text-left inline-flex items-center">
+        <p class="mr-2">{% trans 'Quantity' %}</p>
+        <div class="relative space-x-2">
+        <select class="appearance-none border border-gray-400 text-black px-2 pr-4 py-1 rounded focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow" name="qty" id="id_qty">
+          {% comment %}<!--How many? get_obj object.slug % }
+          { { o } }
+          { % for q in rangeqty %}<option value="{ { q }}">{ { q }}</option>{ % endfor -->{% endcomment %}
+          <option value="1" class="">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1 text-gray-600">
+            <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="text-right">
+        <span>{% include 'carts/snippets/currency.html' %}{{ object.price }}</span>
+      </div>
+    </div>
+      {% comment %}<!--{ % endfor % }
+      <div class="text-xs relative items-center mx-auto">
+        {% trans "Quantity" %}
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
+          <svg class="r-180 fill-current h-4 w-4"><use xlink:href="/static/img/svg-defs.svg#arrow-d"></use></svg>
+        </div>
+      </div>
+      -->{% endcomment %}
+    <div class="w-full inline-flex items-center justify-between">
+      <div class="inline-flex overflow-hidden border border-gray-300 bg-white shadow rounded-lg">{% include 'base/snippets/backbtn.html' with url=products_url id=object.slug %}</div>
+      {% include 'products/snippets/update-cart.html' with product=object cart=cart %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% comment %}{ % block js %}{ % endblock %}
+<!-- { % include 'products/snippets/back-shop.html' % } <script type="text/javascript" src="{% static 'js/zum.js' %}"></script>url: "{% url 'cart:cart_add' %}", 
+<script>
+$(document).on('click', '#buy-btn', function(e) {
+  e.preventDefault();
+  $.ajax({
+    type: 'POST',
+    data: {
+      productid: $('#product_id').val(),
+      productqty: $('#id_qty option:selected').text(),
+      csrfmiddlewaretoken: '{% csrf_token %}',
+      action: 'post'
+    },
+    success: function(json) {
+      console.log(json)
+    },
+    error: function(xhr, errmsg, err) {}
+  })
+})
+</script> -->{% endcomment %}

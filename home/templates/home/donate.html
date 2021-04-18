@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Support Us' %} ❤️{% endblock %}
+{% block content %}
+<div class="max-w-sm font-c-sans mx-auto px-3 sm:px-0">
+  <div class="text-center border-b border-gray-300 pb-4 mb-5">
+    <p class="text-2xl">{% if text.title %}{{ text.title|safe }}{% else %}{% trans 'Support Us' %} 💗{% endif %}</p>
+  </div>
+  <div class="border-b border-gray-300 text-justify hyphens pb-4 mb-5">
+    {% if text.btc_desc %}{{ text.btc_desc|safe }}
+    {% else %}
+    <p class="text-center">Please scan the QR code to send BTC</p>
+    {% endif %}
+    <img class="w-40 h-40 m-auto my-4" src="{% static '/img/crypto/coinbase-commerce-qrcode-btc.png' %}" alt="Scan BTC QR code">
+    <div id="btc" class="text-center" data-tippy-content="₿TC address">
+      Bitcoin address {% if btc %}{{ btc }}{% else %}<p class="border border-gray-300 bg-white shadow rounded-lg p-2 mt-1">3AMb6NfYHxvzivhtKf3racXNdVegYLzSE9</p>{% endif %}</div>
+  </div>
+  <div class="text-justify hyphens border-b border-gray-300 mb-5 pb-4">
+    {% if text.eth_desc %}{{ text.eth_desc|safe }}
+    {% else %}
+    <p class="text-center">This to send ETH</p>
+    {% endif %}
+    <img class="w-40 h-40 m-auto my-4" src="{% static '/img/crypto/coinbase-commerce-qrcode-eth.png' %}" alt="Scan ETH QR code">
+    <div id="eth" class="text-center" data-tippy-content="ETH address">
+      Ethereum address: {% if eth %}{{ eth }}{% else %}<p class="border border-gray-300 bg-white shadow rounded-lg p-2 mt-1">0x611e6cf021c451eed48d5758290481c0a6cc69f2</p>{% endif %}</div>
+  </div>
+  <div class="border-b border-gray-300 pb-6">
+    <p class="text-center">This to send LTC</p>
+    <img class="w-40 h-40 m-auto my-4" src="{% static '/img/crypto/coinbase-commerce-qrcode-ltc.png' %}" alt="Scan LTC QR code">
+    <div id="ltc" class="text-center" data-tippy-content="LTC address">
+      Litecoin address: <p class="border border-gray-300 bg-white shadow rounded-lg p-2 mt-1">MDgyGjEFh4g22b8umJmnCJzJCMfvJxxKTU</p></div>
+  </div>
+</div>
+{% endblock %}
+<!--{% comment %}<a class="items-center bg-gradient-to-tr to-yellow-300 from-yellow-300 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 hover:text-white border-2 border-yellow-300 hover:border-yellow-300 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" href="https://commerce.coinbase.com/checkout/69943558-7b1b-4c5f-9f31-6c1cf19df2ae">Donate with Crypto</a> href="bitcoin:{% if btc %}{{ btc }}{% else %}3AMb6NfYHxvzivhtKf3racXNdVegYLzSE9{% endif %}"<div class="mx-auto">
+
+Ethereum ETH
+0x611e6cf021c451eed48d5758290481c0a6cc69f2
+
+USD Coin (USDC)
+0x611e6cf021c451eed48d5758290481c0a6cc69f2
+
+DAI
+0x611e6cf021c451eed48d5758290481c0a6cc69f2
+
+Litecoin (LTC)
+MDgyGjEFh4g22b8umJmnCJzJCMfvJxxKTU
+
+Bitcoin Cash (BCH)
+bitcoincash:qpcuafjpxmsyzrletlu5ehelr6snyyt5q5kwvfr85s
+
+Send payment
+To make a payment, send BTC to the address below.
+<script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script>
+</div> donate-with-crypto{ % else % }<p>We believe that national currencies are things of the past. One, common, digital, cryptographically secure currency based on an open-source, peer-to-peer encryption protocol that is managed by no central authority. The transactions are verified by a network of nodes through cryptography and recorded in a public distributed ledger. This is the <a class="hover:text-blue-600 rounded" href="https://en.wikipedia.org/wiki/Blockchain" target="_blank">blockchain</a>.</p>For now, we are using Bitcoin and Ethereum.
+{% if text.eth_desc %}{{ text.eth_desc|safe }}{% else %}
+<p class="py-6"><a class="text-gray-600 hover:text-gray-700 hover:underline rounded" href="https://ethereum.org/what-is-ethereum/">Ethereum</a> is an open-source, blockchain-based distributed computing platform and operating system featuring smart contract functionality. It supports a modified version of Bitcoin consensus via transaction-based state transitions.</p>
+{% endif %}
+
+doners will receive an unexpected surprise :) https://www.blockchain.com/bitcoin.pdf original paper The path to become 100% self-sufficent is long but with your help we are going to help you once the 80% self-sufficiency is achieved.
+<p class="py-4 text">Bitcoin (<a class="text-orange-500 hover:text-orange-600 hover:underline"
+href="https://bitcoin.org/en/resources">BTC</a>) is a digital cryptocurrency based on an open-source, peer-to-peer encryption protocol that is not managed by any government or central authority.
+Transactions are verified by network nodes through cryptography and recorded in a public distributed ledger. This technology is called <a class="text-blue-500 hover:text-blue-600 hover:underline" href="https://en.wikipedia.org/wiki/Blockchain">blockchain</a>{% endcomment %}-->

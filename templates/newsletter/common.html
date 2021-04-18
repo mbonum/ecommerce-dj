@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load static %}
+{% url 'home' as home_url %}
+{% with url='https://www.clavem.co/' com='Clavem' %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="{% static 'img/logo/favicon.ico' %}" rel="icon"/>
+  <title>{% block title %}{% trans 'Newsletter' %}{% endblock %} · {{ com }}</title>
+  {% include 'base/css.html' %}
+  {% block header %}{% endblock %}
+</head>
+<body>
+  <div class="w-full h-full absolute bg-gray-al flex flex-col h-screen">
+    <div class="justify-around items-center mx-auto my-40 text-black">
+      <a href="{{ url }}" title="{{ com }}" alt="{{ com }} Logo" target="_blank">
+        <svg class="inline fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#c"></use></svg>
+      </a>
+      {% block body %}{% endblock %}
+    </div>
+  </div>
+<!--{# include 'base/js.html' #}-->
+</body>
+</html>

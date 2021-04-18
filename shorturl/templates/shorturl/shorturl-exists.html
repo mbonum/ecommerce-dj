@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% if title %}{{ title }}{% else %}{% trans 'URL shortner' %}{% endif %}{% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="max-w-xs mx-auto">
+  <div class="font-c-sans mr-6">
+    <div class="border-b border-gray-300 pb-2 mb-4">
+      <h1 class="text-lg">{% if title %}{{ title }}{% else %}{% trans 'Short URL exists' %}{% endif %}</h1>
+    </div>
+    <p>Clicks: {{ object.clickevent.count }}</p>
+    <a class="un text-blue-600 my-4" href="{{ object.get_short_url }}">{{ object.get_short_url }}</a>
+    <a class="bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" href="{{ short_url }}">
+      <p class="text-center text-sm inline-flex items-center">{% trans 'New' %} URL
+      <svg class="text-gray-700 w-4 h-4 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg></p>
+    </a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

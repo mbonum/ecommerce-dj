@@ -1,0 +1,58 @@
+{% extends 'accounts/register_login_base.html' %}
+{% load i18n static widget_tweaks %}
+{% block title %}{% trans 'Sign Vp' %}{% endblock %}
+{% comment %}Signing up means you read and agreed to our By signing up, you agree to the {{ com }} Privacy Policy and Terms of Service. <svg class="fill-current h-4 w-4" viewbox="0 0 576 512">
+  <use x-show="show" xlink:href="{% static 'img/svg-defs.svg' %}#show-psw"></use>
+  <use x-show="!show" xlink:href="{% static 'img/svg-defs.svg' %}#!show-psw"></use>
+</svg>
+<a class="font-semibold un focus:outline-none focus:shadow-outline" href="{{ cookie_url }}" target="_blank" data-tippy-content="Your rights">Cookie</a>
+% if next_url %}<input type="hidden" name="next" value="{{ next_url }}"> { % csrf_token % }{ % endif % }
+take 5 minutes to
+{ % if not next_url % }<h1 class="sc text-center text-gray-800 font-semibold"></h1>{% endif % }
+{% endcomment %}
+{% block content %}
+<div x-data="{ click: false }" class="mx-10 mb-6">
+  <div class="text-sm m-1 mb-4">
+    <p>{% trans 'Have an account?' %} <a class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1" href="{{ login_url }}">{% trans 'Log in' %}</a></p>
+  </div>
+  <form method="POST"> {% csrf_token %}
+    <div class="mb-6">
+      {{ form.email }}
+    </div>
+    <div class="relative" x-data="{ show: true }">
+      <input :type="show ? 'password' : 'text'" {{ form.password }} <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
+      <span x-show="show">{% trans 'Show' %}</span>
+      <span x-show="!show">{% trans 'Hide' %}</span>
+      </button>
+    </div>
+    {% if form.password %}
+    <div class="border border-gray-300 bg-white shadow hover:shadow-md rounded-lg mt-5 mb-3">
+      <div class="text-sm text-gray-800 p-3">
+        <p class="inline-flex items-center text-black mb-2">
+          <svg class="w-4 h-4 text-gray-500 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#key"></use></svg>
+          {% trans 'Security Tips' %}
+        </p>
+        <ul class="list-disc list-outside pl-4">
+          <li>{% trans 'Generate and store passwords with' %} <a class="font-semibold un focus:outline-none" href="https://keepassxc.org/download/" target="_blank">KeePassXC</a>*</li>
+          <li>{% trans 'It should have at least 15 characters.' %}</li>
+          {% comment %} <li>Download <a class="font-semibold un focus:outline-none" href="https://freeotp.github.io/" target="_blank">FreeOTP</a>* and add <a class="font-semibold un focus:outline-none" href="{{ 2fa_url }}" target="_blank">2-factor authentication</a></li> {% endcomment %}
+        </ul>
+        <p class="text-gray-600 text-gray-70 ml-2 mt-1">(*) or whatever tools you <span class="italic">trust</span>.</p>
+      </div>
+    </div>
+    {% endif %}
+    {{ form.captcha }}
+    <button @click="click=!click" class="my-3 w-full text-sm bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-900 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" type="submit">
+      <span x-show="!click">{% trans 'Create account' %}</span>
+      <span x-show="click">{% trans 'Welcome to' %} {{ com }}</span>
+    </button>
+  </form>
+  <p class="text-sm m-1">{% trans 'Please read the' %}
+    <a class="font-semibold un focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1" href="{{ privacy_url }}" target="_blank" data-tippy-content="Your rights">Privacy</a> {% trans 'and' %}
+    <a class="font-semibold un focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1" href="{{ terms_url }}" target="_blank" data-tippy-content="{{ com }}'s rights">Terms</a> {% trans 'policies before signing up.' %}
+  </p>
+</div>
+{% endblock%}
+{% comment %} id="log"{ % include 'accounts/snippets/anti-bot.html' % }2-step auth Add 2fa page <li>Ab(3</li><li>Your password must be different from your personal information.</li> data-sitekey="{{ recaptchav3 }}" 
+data-theme="dark" data-size="compact" class="g-recaptcha border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 text-xs uppercase" data-sitekey="6Lc6dr0UAAAAAMXGDZCOYPE-ncRlu9uQXgA-06t5" data-callback="onSubmit" data-action="submit"
+<div class="m-2 mb-5 h-captcha" data-sitekey="d7fbaf1d-fc21-41e9-9e9d-5555b16a7eba" data-error-callback="onError"></div>href="https://bitwarden.com/#download">Bitwarden href="https://authy.com/features/">Authy</a> include 'accounts/snippets/captcha.html' <input class="mr-2 leading-tight" type="checkbox"><span class="text-sm">Send me your newsletter.</span></label>{% endcomment %}

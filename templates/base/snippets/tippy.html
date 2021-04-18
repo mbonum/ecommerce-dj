@@ -1,0 +1,51 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'tippy/clvm.css' %}" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="{% static 'tippy/scale.css' %}" media="screen,projection">
+{#<!--<link rel="stylesheet" type="text/css" href="{% static 'tippy/svg-arrow.css' %}" media="screen,projection"><link rel="stylesheet" type="text/css" href="{% static 'tippy/border.css' %}" media="screen,projection">-->#}
+<script rel="preload" type="text/javascript" src="{% static 'tippy/tippy-6.3.1.min.js' %}"></script>
+<script>
+  tippy('[data-tippy-content]', {
+    theme: 'clvm',
+    animation: 'scale',
+  });
+  var p = document.getElementById('p-tip');
+  if (p != null) {
+    tippy('#rem', {
+      theme: 'clvm',
+      content: p.innerHTML,
+      allowHTML: true,
+    });
+  }
+  var cart = document.getElementById('cart-tip');
+  if (cart != null) {
+    tippy('#cart', {
+      theme: 'clvm',
+      content: cart.innerHTML,
+      allowHTML: true,
+    });
+  }
+  var checkbtn = document.getElementById('checkbtn-tip');
+  if (checkbtn != null) {
+    tippy('#checkbtn', {
+      theme: 'clvm',
+      content: checkbtn.innerHTML,
+      allowHTML: true,
+    });
+  }
+  var cc = document.getElementById('byncnd4-tip');
+  if (cc != null) {
+    tippy('#byncnd4', {
+      theme: 'clvm',
+      content: cc.innerHTML,
+      allowHTML: true,
+    });
+  }
+  var productcart = document.getElementById('product-cart-tip');
+  if (productcart != null) {
+    tippy('#product-cart', {
+      theme: 'clvm',
+      content: productcart.innerHTML,
+      allowHTML: true,
+    });
+  }
+</script>

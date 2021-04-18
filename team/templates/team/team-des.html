@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ member.name }}{% endblock %}
+{% block content %}
+<div class="max-w-lg md:max-w-sm lg:max-w-4xl xl:max-w-5xl mx-auto md:flex font-c-serif">
+  <div class="md:w-1/2 m-auto">
+    <h1 class="sc text-center text-3xl my-5">{{ member.name }}</h1>
+    <div class="bg-white rounded-lg border border-gray-300 p-5 text-justify hyphens">
+      {{ member.bio|safe }}
+    </div>
+  </div>
+  <div class="lg:w-1/2 lg:pl-8 m-auto">
+  <div>
+    <img src="{{ member.img.url }}" class="mt-8 lg:mt-0 w-auto h-auto bg-gradient-to-tl to-yellow-200 from-red-700 rounded-lg shadow ml-auto"/>
+  </div>
+  </div>
+</div>
+{% endblock %}
+<!--{% comment %}via-red-700 from-blue-400
+Mirko Bonomi is the founder of Armonia.</br>
+Before founding Armonia in June 2020, Mirko </br>
+Mirko earned a Master's Degree in Entrepreneurship and Innovation from the University of Gothenburg, Sweden, and a Bachelor Degree in Information and Business Organization from the University of Trento, Italy.
+{% endcomment %}-->

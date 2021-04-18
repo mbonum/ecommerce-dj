@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Update Password' %}{% endblock %}
+{% block content %}
+<div class="px-12 max-w-xs mx-auto text-center">
+  <div class="mb-4">
+    {% if key %}
+    <p class="text-sm">{% trans "We're sorry, an error occured. Please reload the page." %}</p>
+    <p>{% trans "The team has been notified and will update you once the issue will be fixed." %}</p>
+    <p>{% trans "If the error persists please <a class="text-gray-600 hover:text-gray-800 hover:underline" href="{{ contact_url }}">contact us</a> and select feedback." %}</p>
+    {% else %}
+    <p class="text-lg font-semibold uppercase">{% trans 'Reactivate your Account' %}</p>
+    {% endif %}
+  </div>
+  <div>
+    <form method="POST" action=""> {% csrf_token %}
+      {{ form }}
+      <input class="mt-3 border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 text-xs uppercase rounded-sm focus:outline-none" type="submit" value="{% trans "Resend Email" %}"/>
+    </form>
+  </div>
+</div>
+{% endblock %}

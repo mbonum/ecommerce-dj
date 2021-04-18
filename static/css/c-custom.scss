@@ -1,0 +1,191 @@
+/* Group each elements' classes .fmkjfksj { @apply bg-dark text-white; } purgecss before deploy */
+
+// .grecaptcha-badge { visibility: hidden; }//recaptchav3
+
+// $blue: #4dabdf;
+// $orange: #FF9058;
+
+// //neutrals
+
+// $white : #fff;
+// $gray : #808080;
+// $dark-gray: #222;
+// $medium-gray: #999;
+
+// $primary-color: $blue;
+// $primary-color-dark: darken ($primary-color, 7%);
+// $primary-color-light: lighten($primary-color, 11%);
+// $primary-color-neutral: desaturate($primary-color, 11%);
+// $primary-color-bright: saturate($primary-color, 17%);
+// $primary-color-hue: adjusthue($primary-color, 20%);
+
+// $accent-color: $orange;
+// $accent-color-light: lighten($accent-color, 11%);
+// $accent-color-dark: darken($accent-color, 14%);
+// $accent-color-neutral: desaturate($accent-color, 14%);
+// $accent-color-bright: saturate($accent-color, 17%);
+
+// $primary-font-color: darken($primary-color, 33%);
+// $secondary-font-color: darken($primary-color, 33%);
+// $accent-font-color: $accent-color-dark;
+
+$shadow-outline-color: rgba(66, 153, 225, 0.5);/* rgba(217, 239, 255, 0.5) #D9EFFF FFD617 */
+$selection-color: rgba(255, 255, 130, .8);
+$blue: #81A6EC;//rgba(0, 113, 227, .8)rgba(70, 77, 119, .8);
+$nav: rgba(0, 0, 0, .9);// 242729 rgba(49,49,49,0.9) #171717 313131 313A45 242729
+$footer: #ecddcc; // E1CAAF FBFBFB F5F3EF
+$footer-d: #E7D5BF;// B8B1B2 969292 C9C5C5 E6DDDE C5C5C6
+$gray-hover: #E8E8E8;// e6ecf0 F1F8FF E8E8E8;
+$primary: #f0f1f3;// rgb(250, 251, 252) DDEDF7 1B2029 222833 F8F8F8 F2F1EB f2f2f2 F0F0F0 E9EBEE EDF0F5 EEEEEE F0F1F1 E5E5E5 F5F5F5/7
+$opposite: #141B1A;
+$gray-aaa: #EBE4E5;// DCDCD4 EEF0F1
+$marzipan: #ecc781;//FBDD85 81A6EC A6EC81 C79206 FBDD85
+$maroon: #AC3833;// complementary 3833AC
+
+// Find the hue 180 degrees away on the color wheel
+// $first-color: $primary;
+// $second-color: complement($primary);
+
+.bg-gray-a { background-color: $nav; }
+.bg-cart { background-color: #F0D29A;}
+.hover\:bg-cart:hover { background-color: $marzipan;}
+
+.bg-footer { background-color: $footer; }
+.hover\:bg-footer:hover { background-color: $footer-d;}
+
+.bg-gray-aaa { background-color: $gray-aaa; }
+.text-gray-aaa { color: $gray-aaa; }
+
+.bg-contact { background-color: $opposite; }//rgba(245, 237, 229, 0.8);
+
+// .bg-primary { background-color: $primary; }
+// .hover\:bg-primary:hover { background-color:$primary; }
+
+.bg-gray-hover { background-color: $gray-hover; }
+.hover\:bg-gray-hover:hover { background-color: $gray-hover; }
+
+// .text-g { color: #ccdbec; }// .text-g-d { color:#A3AFBD; }
+
+.bg-primary { background-color: $primary;}
+
+@font-face {
+  font-family: "PT";
+  src: url("../fonts/pt/PT-Root-UI_Regular.woff2") format("woff2"),
+       url("../fonts/pt/PT-Root-UI_Regular.woff") format("woff"),
+       url("../fonts/pt/PT-Root-UI_Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Open";
+  src: url("../fonts/open-sans/OpenSans-Regular.woff2") format("woff2"),
+       url("../fonts/open-sans/OpenSans-Regular.woff") format("woff"),
+       url("../fonts/open-sans/OpenSans-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Source";
+  src: url("../fonts/source-serif-pro/SourceSerifPro-Regular.woff2") format("woff2"),
+       url("../fonts/source-serif-pro/SourceSerifPro-Regular.woff") format("woff"),
+       url("../fonts/source-serif-pro/SourceSerifPro-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tiempo";
+  src: url("../fonts/tiempos-serif/TiemposHeadline-Regular.woff2") format("woff2"),
+       url("../fonts/tiempos-serif/TiemposHeadline-Regular.woff") format("woff"),
+       url("../fonts/tiempos-serif/TiemposHeadline-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Latin";
+  src: url("../fonts/trajan-latin/TrajanPro-Regular.woff2") format("woff2"),
+       url("../fonts/trajan-latin/TrajanPro-Regular.woff") format("woff"),
+       url("../fonts/trajan-latin/TrajanPro-Regular.ttf") format("truetype");
+}
+
+.font-c-sans { font-family: "PT", "Open", sans;}
+.font-c-serif { font-family: "Source", "Lora", "Tiempo", "Book Antiqua", "Palatino", serif; }/*"CMU Serif",  Fanwood Text, Georgia, Times New Roman, Times, serif "Libre Baskerville", "Palatino Linotype",  "Libre Franklin", "Gotham", sans-serif; */
+.font-c { font-family: "Latin", "Trajan", "Cinzel"; font-variant: small-caps;}
+
+.sc { font-variant: small-caps;}
+
+#nojs, #nojsrl { display: none; }// noscript
+
+@keyframes bounce { to { transform: translateY(5%); } }
+
+.ae { animation: bounce 1s infinite alternate ease-in-out; }
+
+.s { -webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8)); }
+
+.text-blue-a { color: $blue;}
+.hover\:text-blue-a:hover { color: $blue;}
+
+.hyphens { hyphens: auto; }
+
+//.sh { user-select: none; pointer-events: none;}code #464d77 0071E3 <span>$</span>
+
+.sep { content: "·";}
+
+.arrowl:hover { padding-right: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
+.arrowr::hover { padding-left: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
+
+.expand:hover { transform: scale(0.9, 0.9); /* width: 18px; height: 18px; */ margin-left: .2em; /* margin-right: 0; */ margin-bottom: .26em; display: inline-block; transition: all .3s ease-in-out; -webkit-transition: all .3s ease-in-out; -moz-transition: all .3s ease-in-out; -o-transition: all .3s ease-in-out; }
+
+.t-img {
+  -webkit-transition: -webkit-filter .2s ease-in-out;
+  transition: filter .2s ease-in-out;
+  -webkit-filter: grayscale(70%);
+  filter: grayscale(70%);
+}
+.t-img:hover { filter: grayscale(5%); -webkit-filter: grayscale(5%); transition: filter .2s ease-in-out; }
+
+.kid form {
+  margin-left: -30px;
+}
+.kid .kid form {
+  margin-left: -90px;
+}
+
+// .set { transition: all .7s; -webkit-transition: all .6s; }
+// .set a { transform: rotate(0deg); -ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); }
+// .set:hover { transform: rotate(80deg); -ms-transform: rotate(80deg); -webkit-transform: rotate(80deg); }
+
+// .r-180 { transition: all .7s; transform: rotate(0deg); -ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); }
+// .r-180:hover { transform: rotate(180deg); -ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); }
+// .r-180:focus { transform: rotate(180deg); -ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); }
+
+.un { display: inline-block;}
+.un::after {
+  content: "";
+  width: 0px;
+  height: 1.5px;
+  display: block;
+  // background: rgba(55, 55, 55, .9);
+  background: $nav;//$marzipan;//#30e8bf
+    background: -webkit-linear-gradient(to right, $nav, $gray-hover);//$selection-color
+    background: linear-gradient(to right, $nav, $gray-hover);//#ff8235
+  transition: 300ms;
+}
+.un:hover::after {
+  width: 100%;
+}
+
+// .link-hover .link__content[data-v-6ac2237a]:after {
+//   position: relative;
+//   top: .1rem;
+//   display: block;
+//   height: 2px;
+//   margin: 0 auto;
+//   background-image: linear-gradient(90deg,#db469f 70%,#9fb2e6 90%,#f0f6fc);
+//   box-shadow: 0 0 0.75rem 0.1rem rgb(255 0 200 / 60%);
+//   transform: scaleX(0);
+//   transform-origin: left;
+//   transition: transform .15s linear;
+//   content: "";
+// }
+
+.fl::first-letter { initial-letter: 4 5; -webkit-initial-letter: 4 5; -ms-text-initial-letter: 4 5; -moz-text-initial-letter: 4 5; line-height: 70px; overflow:hidden; font-size: 510% !important; -ms-font-size: 510% !important; -moz-font-size: 510% !important; -webkit-font-size: 510% !important; float: left; -webkit-float: left; margin: 11px 6px 0px 0px; text-transform: uppercase; font-family: "font-c", "CMU Serif", "Lusitana";  color: #ECC781;}
+//'Georgia' "Goudy Initialen", "Baroque Explosion", "TrajanusBricks", "Edwardian Script ITC"
+// audio { transition: all 0.5s linear;}
+
+::-moz-selection { background: $selection-color; }/*FFFFE0 FFFF9B FFFF63 EBEF9B rgb(255, 255, 99);*/
+::selection { background: $selection-color; }
+
+@media (max-width: 979px) { body { margin: 0; /* padding-top: 0px; */ } }
+@media print { .no-print, .no-print * { display: none !important; } }

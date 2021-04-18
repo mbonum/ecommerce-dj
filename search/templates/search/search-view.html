@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load class_name i18n %}
+<!--{# {% if object_list|length > 1 %}{ % trans 'No results ._.' %} not query == '+' or not query == '' or { % elif object_list == ']>' or query is None % }Nothing to search for  for {{ query }}#}-->
+{% block title %}{% trans 'Search results' %}{% endblock %}
+{% block content %}
+<div class="max-w-xs font-c-sans mx-auto">
+  <div class="mr-6">
+  <div class="border-b border-gray-300 pb-2">
+    <h1 class="text-lg">
+    {% if object_list and query %}{% trans 'Results for' %} {{ query }}
+    {% else %}{% trans 'Search' %}{% endif %}
+    </h1>
+  </div>
+  <div class="my-4">
+    {% include 'search/snippets/search-form.html' %}
+  </div>
+  <div>
+  {% for obj in object_list %}
+    {% with obj|class_name as klass %}
+      {% if klass == 'Book' and obj.active %}
+      <div class="pb-3">
+      {% include 'education/bcard.html' with book=obj %}
+      </div>
+      {% elif klass == 'Essay' and obj.publish %}
+      <div class="pb-3">
+      {% include 'essays/wcard.html' with essay=obj %}
+      </div>
+      {% elif klass == 'Product' and obj.available %}
+      {% include 'products/snippets/product-card.html' with object=obj %}
+      {% endif %}
+    {% endwith %}
+  {% endfor %}
+  </div>
+  </div>
+</div>
+{% endblock %}

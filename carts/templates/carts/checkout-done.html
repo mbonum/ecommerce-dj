@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Thank you' %}{% endblock %}
+{% block content %}
+<div class="text-center mx-auto my-6">
+  <div class="my-10">
+    <svg class="ae s fill-current w-40 h-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+  </div>
+  <p>{% trans "You're going to receive an email at" %} <code class="text-gray-900 px-1">{{ user.email }}</code> shortly.</p> 
+  <a href="{{ home_url }}" class="text-gray-800 hover:text-black inline-flex items-center border-2 border-orange-400 hover:border-orange-500 bg-white text-xl uppercase rounded focus:outline-none py-1 px-2 mt-2">Thank you</a>
+</div>
+{% endblock %}
+<!--{# link to a grateful gift load static add image link to user mail <a href="{{ request.user.email }}">{{ request.user.email }}</a> #}--> 

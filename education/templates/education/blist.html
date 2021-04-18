@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Learn' %}{% endblock %}
+{% block content %}
+<div class="font-c-sans max-w-xs mx-auto">
+{% if object_list %}
+  <div class="font-c-serif bg-white border border-gray-300 shadow rounded-lg p-6">
+    <blockquote class="relative px-4 text-xl">
+      <div class="italic">
+        <div style="font-size: 5rem;" class="-ml-10 text-yellow-200 opacity-75 absolute -top-3 leading-none" aria-hidden="true">
+          &ldquo;
+        </div>
+        <p>{% trans 'Call to mind from whence we sprang:' %}
+        {% trans 'You were not formed to live the life of brutes' %}
+        {% trans 'But virtue to pursue and knowledge high.' %}</p>
+        {% comment %} <div style="font-size: 5rem;" class="-mt-8 text-yellow-200 opacity-75 absolute right-2 leading-none" aria-hidden="true">
+          &rdquo;
+        </div> {% endcomment %}
+      </div>
+      <p class="text-sm text-gray-800 pt-1">— Dante Alighieri, <cite><a class="un" href="https://www.gutenberg.org/ebooks/8800" target="_blank">Inferno 26.119-20</a>, The Divine Comedy</cite></p>
+    </blockquote>
+    <div class="py-2">
+      <p>{% trans 'During one of our conversations, a friend asked:' %}</p>
+      <blockquote class="py-2 px-6">
+        <q>{% trans 'What are the key writings that a would-be well-rounded enlighten human being has to be aware of?' %}</q>
+      </blockquote>
+      <p>{% trans 'This is our selection as of 2002021-03' %}.</p>
+      <p class="pt-2">{% trans 'Enjoy learning' %}</p>
+    </div>
+  </div>
+  {% for o in object_list %}
+  <div class="mt-6">
+    {% include 'education/bcard.html' with book=o %}
+  </div>
+  {% endfor %}
+{% else %}
+<div class="text-gray-900">
+  <h1 class="text-xl text-black my-5">{% trans 'Studying in progress' %}</h1>
+  <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
+</div>
+{% endif %}
+</div>
+{% endblock %}
+<!--{% comment %}{ % trans 'Well, we needed more than one evening to answer that. The following is our thoughtful selection. We recommend you to bring with you at least one motivated companion to make your learning journey more consistent, and to review' %} <a href="https://openlibrary.org/books/OL8673330M/How_to_Read_a_Book" class="tooltip" title="Something to be aware of" target="_blank">this only prerequisite</a>.</p>
+<p>{ % trans 'P.S. Get used to one-hour daily writing habit, if you want to further elaborate on the important ideas you are going to encounter along your journer. Sooner you get used to write the better is for yourself, for your community you live in, and potentially, for the whole society' % }.</p>{% endcomment %}--><!--{# Why this section? In this time of <a class="hover:underline" href="https://en.wikipedia.org/wiki/Information_overload" target="_blank">information overload</a> having a clear content selection is essential. The 21st-century human is who knows of knowing nothing but at least they know key concepts. This is both for personal clarity and public benefit. You were not made to live as brutes, but to follow virtue and knowledge.#}-->

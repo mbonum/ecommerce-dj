@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% if text.title %}{{ text.title }}
+{% elif request.path == privacy_url %}
+{% trans 'Privacy' %}
+{% elif request.path == terms_url %}
+{% trans 'Terms' %}
+{% else %}
+{% trans 'Cookie policy' %}
+{% endif %}
+{% endblock %}
+{% block content %}
+{% if text %}
+<div class="font-c-sans max-w-sm mx-auto px-2">
+  <div class="text-center mb-4">
+    <span class="inline-flex text-black text-center rounded-full items-center bg-footer p-2 m-auto" data-tippy-content="{% trans 'Fairness & Transparency' %}">
+    {% if request.path == privacy_url %}
+    <svg class="w-5 h-5 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#privacy"></use></svg>
+    {% elif request.path == terms_url %}
+    <svg class="w-5 h-5 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#terms"></use></svg>
+    {% else %}
+    <svg class="w-5 h-5 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#cookie"></use></svg>
+    {% endif %}
+    </span>
+    <p class="text-2xl font-semibold uppercase pt-2">{% if text.title %}{{ text.title|safe }}
+      {% elif request.path == privacy_url %}
+      {% trans 'Privacy by design' %}
+      {% elif request.path == terms_url %}
+      {% trans 'Legal' %}
+      {% else %}
+      {% trans 'Cookie policy' %}
+      {% endif %}</p>
+    <p class="pt-2">Effective date: {{ text.updated_at|date:'Y-m-d' }}</p>
+  {% if text.pdf %}
+  <a href="/media/{{ text.pdf }}" class="hover:text-yellow-400 inline-flex items-center focus:outline-none focus:shadow-outline my-3" data-tippy-content="{% trans 'Print' %}" target="_blank">
+    PDF <svg class="w-5 h-6 fill-current ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+  </a>
+  {% endif %}
+    {% include 'base/snippets/theme.html' %}
+  </div>
+  <div class="border border-gray-300 shadow rounded-lg p-5 font-c-serif text-lg text-justify hyphens list-inside">
+    {% if text.text %}
+    {% if text.title %}<h3 class="text-2xl sc pb-2">{{ text.title|safe }}</h3>{% endif %}
+    {{ text.text|safe }}
+  {% endif %}
+  </div>
+  {% include 'home/snippets/cmds.html' %}
+</div>
+{% else %}
+<div class="font-c-sans text-gray-900 max-w-xs mx-auto">
+  <h1 class="text-xl text-black my-5">{% trans 'Legal work in progress' %}</h1>
+  <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
+</div>
+{% endif %}
+{% endblock %}
+{% comment %}<!--CC-BY-NC-4.0 https://spdx.org/licenses/ add rel="noopener noreferrer" to a href
+add manually pdf file or generate it from html
+style="width:50px;height:50px;"{ { rslt }} show graph of the person's data if text.title2 or text.sec2 %}
+<h3 class="text-lg pt-4 pb-2 sc">{ { text.title2|safe }}</h3>
+{ { text.sec2|safe }}
+{ % endif %}
+{ % if text.title3 or text.sec3 %}
+<h3 class="text-lg pt-4 pb-2 sc">{ { text.title3|safe }}</h3>
+{ { text.sec3|safe }}
+{ % endif %}
+{ % else https://about.gitlab.com/terms/
+https://docs.github.com/en/github/site-policy/github-deceased-user-policy-->{% endcomment %}

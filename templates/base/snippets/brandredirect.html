@@ -1,0 +1,22 @@
+<input type="hidden" id="c" value="{{ url }}">
+<input type="hidden" id="b" value="{{ mark_url }}">
+<script>
+  function mark() {
+    var c = document.getElementById("c").value;
+    var b = document.getElementById("b").value;
+    if (document.layers) {
+      document.captureEvents(Event.MOUSEDOWN);
+      document.onmousedown = clickNS4;
+    }
+    else if (document.all && !document.getElementById) {
+      document.onmousedown = clickIE4;
+    }
+    else {
+      document.onmousedown = function (e) {
+        if (e.button == 2) {
+          location.href = c + b;
+        }
+      }
+    }
+  }
+</script>
