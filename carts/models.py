@@ -39,7 +39,7 @@ class Cart(models.Model):
     order_qty = models.PositiveIntegerField(
         default=1, validators=[MinValueValidator(1)]
     )
-    # for discounts and shipping
+    # for discount and shipping
     subtotal = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
@@ -64,8 +64,11 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
     if action in ("post_add", "post_remove", "post_clear"):
         products = instance.products.all()
         total = 0
-        for _ in products:
-            total += _.price
+        for p in products:
+            # if p.quantity:
+            total += p.price# * p.quantity
+            # else:
+            # total += p.price
         instance.subtotal = total
         instance.save()
 

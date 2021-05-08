@@ -52,7 +52,7 @@ bitcoincash:qpcuafjpxmsyzrletlu5ehelr6snyyt5q5kwvfr85s
 Send payment
 To make a payment, send BTC to the address below.
 <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script>
-</div> donate-with-crypto{ % else % }<p>We believe that national currencies are things of the past. One, common, digital, cryptographically secure currency based on an open-source, peer-to-peer encryption protocol that is managed by no central authority. The transactions are verified by a network of nodes through cryptography and recorded in a public distributed ledger. This is the <a class="hover:text-blue-600 rounded" href="https://en.wikipedia.org/wiki/Blockchain" target="_blank">blockchain</a>.</p>For now, we are using Bitcoin and Ethereum.
+</div> donate-with-crypto{ % else % }<p>We believe that national currencies are things of the past. One, common, digital, cryptographically secure currency based on an open-source, peer-to-peer encryption protocol that is managed by no central authority. The transactions are verified by a network of nodes through cryptography and recorded in a public distributed ledger. This is the <a class="hover:text-blue-600 rounded" href="https://en.wikipedia.org/wiki/Blockchain" target="_blank" rel="noopener">blockchain</a>.</p>For now, we are using Bitcoin and Ethereum.
 {% if text.eth_desc %}{{ text.eth_desc|safe }}{% else %}
 <p class="py-6"><a class="text-gray-600 hover:text-gray-700 hover:underline rounded" href="https://ethereum.org/what-is-ethereum/">Ethereum</a> is an open-source, blockchain-based distributed computing platform and operating system featuring smart contract functionality. It supports a modified version of Bitcoin consensus via transaction-based state transitions.</p>
 {% endif %}

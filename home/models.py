@@ -28,7 +28,9 @@ class MessageType(models.TextChoices):
 
 class Contact(models.Model):
     # id = models.AutoField(primary_key=True)
-    message_type = models.CharField(max_length=255, choices=MessageType.choices, default=MessageType.COLLABORATION)
+    message_type = models.CharField(
+        max_length=255, choices=MessageType.choices, default=MessageType.COLLABORATION
+    )
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(max_length=255, unique=True)
@@ -49,8 +51,17 @@ class Contact(models.Model):
         verbose_name_plural = _("Contacts")
 
 
+class Message(models.Model):
+    username = models.CharField(max_length=255)
+    room = models.CharField(max_length=255)
+    content = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("date_added",)
+
+
 class Donate(models.Model):
-    # id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=250)
     btc_desc = HTMLField(_("BTC Description"), blank=True, null=True)
     btc = models.CharField(max_length=250, blank=True, null=True)
@@ -65,10 +76,11 @@ class Donate(models.Model):
 
 
 class Cookie(models.Model):
-    # id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=99)
-    text = HTMLField(_("Clear, concise"), blank=False, null=True)
-    pdf = models.FileField("PDF", upload_to="cookie/", max_length=100, blank=True, null=True)
+    text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
+    pdf = models.FileField(
+        "PDF", upload_to="cookie/", max_length=100, blank=True, null=True
+    )
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
@@ -79,10 +91,11 @@ class Cookie(models.Model):
 
 
 class Privacy(models.Model):
-    # id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=99)
-    text = HTMLField(_("Clear, concise"), blank=False, null=True)
-    pdf = models.FileField("PDF", upload_to="privacy/", max_length=255, blank=True, null=True)
+    text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
+    pdf = models.FileField(
+        "PDF", upload_to="privacy/", max_length=255, blank=True, null=True
+    )
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
@@ -93,10 +106,13 @@ class Privacy(models.Model):
 
 
 class Terms(models.Model):
-    # id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=250)
-    text = HTMLField(_("Terms"), blank=True, null=True)
-    pdf = models.FileField("PDF", upload_to="terms/", max_length=255, blank=True, null=True)
+    text = HTMLField(
+        _("Terms"), blank=False, null=True, help_text=_("Clear, concise, no legalese")
+    )
+    pdf = models.FileField(
+        "PDF", upload_to="terms/", max_length=255, blank=True, null=True
+    )
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
@@ -108,10 +124,11 @@ class Terms(models.Model):
 
 # transparency Imprint
 class Trademark(models.Model):
-    # id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=99)
-    text = HTMLField(_("Clear, concise, compelling"), blank=False, null=True)
-    pdf = models.FileField("PDF", upload_to="Trademark/", max_length=255, blank=True, null=True)
+    text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
+    pdf = models.FileField(
+        "PDF", upload_to="Trademark/", max_length=255, blank=True, null=True
+    )
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
@@ -125,7 +142,7 @@ class Trademark(models.Model):
 
 
 # class Email(models.Model):
-## Add if Email Policy is required
+## Add Email Policy if required
 #     title = models.CharField(max_length=250)
 #     sec1 = HTMLField('Body 1', blank=True, null=True)# models.TextField(blank=True, null=True)
 #     section2 = models.CharField(max_length=250, blank=True, null=True)

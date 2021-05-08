@@ -6,7 +6,7 @@ from core.utils import unique_slug_generator
 
 
 class Tag(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=90)
     slug = models.SlugField()
     timestamp = models.DateTimeField(auto_now_add=True)

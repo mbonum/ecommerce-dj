@@ -42,14 +42,14 @@ class TokenGenerator(PasswordResetTokenGenerator):
 account_activation_token = TokenGenerator()
 
 
-def decodeDesignImage(data):
-    try:
-        data = b64decode(data.encode('UTF-8'))
-        buf = BytesIO(data)
-        img = Image.open(buf)
-        return img
-    except:
-        return None
+# def decode_base64_image(data):
+#     try:
+#         data = b64decode(data.encode('UTF-8'))
+#         buf = BytesIO(data)
+#         img = Image.open(buf)
+#         return img
+#     except:
+#         return None
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):

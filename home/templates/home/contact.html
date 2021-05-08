@@ -4,19 +4,21 @@
 {% block content %}
 <div class="max-w-sm mx-auto">
   <div class="bg-footer rounded-lg border border-gray-400 overflow-hidden py-6 px-5 md:px-7">
-    <form method="POST" action="{{ contact_url }}" class="font-c-sans w-full"> {% csrf_token %}
+    <form action="{{ contact_url }}" method="POST" class="font-c-sans w-full"> {% csrf_token %}
       <div class="flex flex-wrap space-y-6 mb-2 text-sm">
         {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
         <div class="w-full sm:text-center">
-          <label class="block text-black tracking-wide mb-3" for="message-type-id">
+          <label class="block text-black tracking-wide" for="message-type-id">
             {% trans 'Why are you writing us?' %}
           </label>
-          <div class="relative w-full mx-auto sm:w-1/2">
+          {% if form.message_type %}
+          <div class="relative w-full mx-auto sm:w-1/2 mt-3">
             {{ form.message_type }}
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
               <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
             </div>
           </div>
+          {% endif %}
         </div>
         <div class="w-full md:inline-flex space-y-6 md:space-y-0 md:space-x-6">
           <div>{{ form.first_name }}</div>
@@ -30,15 +32,24 @@
         <div class="w-full">{{ form.textarea }}</div>
       </div>
       <div class="mt-6">
-        <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit">
-          <p class="text-center inline-flex items-center">{% trans 'Send' %} <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
+        <!-- <a href="{ % url 'home:room' with room= %}" id="sendbtn" class="w-full inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-lg text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
+          { % trans 'Send' %} <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
+        </a> -->
+        <button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit">
+          <p class="text-center inline-flex items-center">{% trans 'Send' %} <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg></p>
         </button>
       </div>
     </form>
   </div>
 </div>
+<script>
+  document.querySelector("#sendbtn").onclick = function(e) {
+    var roomName = document.querySelector("#contact-firstname").innerHTML + "-" + document.querySelector("#contact-lastname").innerHTML + "-" + Math.floor(Math.random()*1000000);
+    window.location.replace("/contact/" + roomName);
+  };
+</script>
 {% endblock %}
-{% comment %}<!-- { % block js %}{ % endblock %}
+{% comment %}<!--// var userName = document.querySelector("#contact-email").value;// + "/?username=" + userName { % block js %}{ % endblock %}
 <script>$('form').preventDoubleSubmission();</script>
 <script>
 jQuery.fn.preventDoubleSubmission = function() {
@@ -53,19 +64,18 @@ jQuery.fn.preventDoubleSubmission = function() {
   return this;
 };
 </script>
-
 <div x-data="{open: false}" class="sm:w-1/ mx-auto relative inline-block mb-4">
   <button @click="open=!open" type="button" class="flex mx-auto text-sm justify-center w-ful rounded-lg border border-gray-300 p-2 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-200" id="options-menu" aria-expanded="true" aria-haspopup="true">
     <svg class="r-180 fill-current text-gray-600 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
   </button>
   <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="bottom- bg-white origin-top-right absolute right-0 mt- -mr- rounded-lg shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
     <div class="py-1" role="none">
-      {% for x, c in form.fields.message_type.choices %}
+      { % for x, c in form.fields.message_type.choices %}
       <p id="{{ x }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ c }}</p>
       {% endfor %}
     </div>
   </div>
-</div></div>
+</div>
 jQuery plugin to prevent double submission of forms// Previously submitted - don't submit again
 // Mark it so that the next submit can be ignored  // Keep chainability
 <div x-data="{open: false}" class="relative inline-block mb-4">

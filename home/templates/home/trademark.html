@@ -9,14 +9,14 @@
   <div class="space-y-12 text-center mb-4">
     <div>
       <p class="text-xl mb-6">{% trans 'Mark' %}</p>
-      <svg class="fill-current w-32 h-32 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+      <svg class="fill-current w-40 h-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     </div>
     <div>
       <p class="text-xl">{% trans 'Logotype' %}</p>
       <svg class="fill-current w-full h-auto mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
     </div>
   </div>
-  <div class="text-justify hyphens">
+  <div class="text-lg text-justify hyphens">
     {% if page_obj.text %}
     {{ page_obj.title|safe }}
     {{ page_obj.subtitle|safe }}
@@ -24,12 +24,12 @@
     {% else %}
     <p>{% trans 'Please do not use the Clavem name or logos in any way that could mistakenly imply any official connection with or endorsement of Clavem Inc. Any use of the Clavem name or logos in a manner that could cause customer confusion is not permitted.' %}</p>
     <p>{% trans 'This includes naming a product or service in a way that is similar to the Clavem trademark.' %}</p>
-<!--{# like "Clavem Themes" or "Clavem Studio", as well as in domain names like "Clavemkits.com".#}-->
     <p>{% trans 'Instead, please use your own trademark name in a way that clearly distinguishes it from Clavem.' %}</p>
-<!--{# Examples that are permitted include "ComponentStudio for Clavem" or "UtilityThemes: Templates for Clavem".#}-->
     <p>{% trans 'Please do not use our trademark names or logos for t-shirts, stickers, or other merchandise without explicit written consent.' %}</p>
     {% endif %}
   </div>
 </div>
 {% endblock %}
-<!--{# https://www.kali.org/docs/policy/trademark/ https://writings.stephenwolfram.com/2018/12/the-story-of-spikey/ #}-->
+{% comment %}<!-- like "Clavem Themes" or "Clavem Studio", as well as in domain names like "Clavemkits.com".
+Examples that are permitted include "ComponentStudio for Clavem" or "UtilityThemes: Templates for Clavem".
+https://www.kali.org/docs/policy/trademark/ https://writings.stephenwolfram.com/2018/12/the-story-of-spikey/ -->{% endcomment %}

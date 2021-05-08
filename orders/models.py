@@ -22,7 +22,6 @@ from products.models import Product
 #     ('refunded', 'Refunded')
 # ]
 class OrderStatus(models.TextChoices):
-
     CREATED = "C", _("Created")
     PAID = "P", _("Paid")
     SHIPPED = "S", _("Shipped")
@@ -295,6 +294,7 @@ class ProductPurchaseManager(models.Manager):
 
 class ProductPurchase(models.Model):
     """billing_profile.productpurchase_set.all()"""
+
     # id = models.AutoField(primary_key=True)
     order_id = models.CharField(max_length=120)
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)

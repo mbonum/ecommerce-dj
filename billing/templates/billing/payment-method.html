@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-<!--{# stripe-payment-form /cdev.main.js #}-->
+{#<!-- stripe-payment-form /cdev.main.js -->#}
 {% block title %}{% if request.build_absolute_uri %}{% trans 'Checkout' %}{% else %}{% trans 'Update card' %}{% endif %}{% endblock %}
 {% block content %}
 <div class="max-w-xs mx-auto">
@@ -37,4 +37,4 @@ btn.addEventListener("click", function () {
 });
 </script>
 {% endblock %}
-<!--{#// Create an instance of the Stripe object with your publishable API key pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr // If redirectToCheckout fails due to a browser or network error, you should display the localized error message to your customer using error.message. data-btn-title="{ % trans 'Checkout' % }" #}-->
+{#<!--// Create an instance of the Stripe object with your publishable API key pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr // If redirectToCheckout fails due to a browser or network error, you should display the localized error message to your customer using error.message. data-btn-title="{ % trans 'Checkout' %}" -->#}

@@ -1,22 +1,40 @@
 version: "3.8"
 services:
+  django:
+    build: .
+    image: app:clvm
+    container_name: clvm_container
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/clvm
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=www.clavem.co localhost 127.0.0.1
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+      depends_on:
+      - db
+      - redis
+  redis:
+    build: .
+    command: celery worker --app=core --loglevel=info
+    volumes:
+      - .:/clvm
+    depends on:
+      - django
+      - redis
   db:
     image: postgres
-    volumes:
-      - ./db:/var/lib/postgresql/
+    container_name: postgres_db
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    container_name: postgres_db
-  app:
-    build: .
     volumes:
-      - .:/clvm
-    ports:
-      - 8000:8000
-    image: app:clvm
-    container_name: clvm_container
-    command: python manage.py runserver 0.0.0.0:8000
-    depends_on:
-      - db
+      - ./db:/var/lib/postgresql/
+  redis:
+    image: "redis:alpine"
+volumes:
+  pgdata:

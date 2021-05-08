@@ -2,6 +2,7 @@
 # import requests
 # from django.http import Http404, HttpResponse
 from core.mixins import NextUrlMixin, RequestFormAttachMixin
+from disposable_email_checker.validators import validate_disposable_email
 
 # from core.utils import account_activation_token
 from django.contrib import messages
@@ -11,6 +12,7 @@ from django.contrib import messages
 # from django.contrib.auth.models import User
 # from django.utils.http import is_safe_url, urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
 
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.core.mail import EmailMessage, send_mail
@@ -33,7 +35,7 @@ from .models import EmailActivation
 # RECAPTCHAV3_SECRET = getattr('RECAPTCHAV3_SECRET')
 # CAPTCHA_SECRET = getattr('CAPTCHA_SECRET')VERIFY_URL = settings('VERIFY_URL', 'https://hcaptcha.com/siteverify')
 
-C = "Clavem"
+# CLVM = "Clavem"
 
 # passwordless
 # import base64
@@ -129,9 +131,7 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 
 
 class AccountEmailActivateView(FormMixin, View):
-    """
-    Send email when user creates an account
-    """
+    # Send email when user creates an account
 
     success_url = "/login/"
     form_class = ReactivationEmailForm
@@ -162,9 +162,7 @@ class AccountEmailActivateView(FormMixin, View):
         return render(request, "registration/activation-error.html", context)
 
     def post(self):
-        """
-        Create form to receive an email
-        """
+        # Create form to receive an email
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
@@ -175,6 +173,10 @@ class AccountEmailActivateView(FormMixin, View):
         request = self.request
         messages.success(request, msg)
         email = form.cleaned_data.get("email")
+        try:
+            validate_disposable_email(email)
+        except ValidationError:
+            pass
         obj = EmailActivation.objects.email_exists(email).first()
         user = obj.user
         new_activation = EmailActivation.objects.create(user=user, email=email)

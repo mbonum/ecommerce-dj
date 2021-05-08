@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load i18n static widget_tweaks %}
+{% block title %}{% trans 'Contact' %}{% endblock %}
+{% comment %}<!-- <input type="text" name="message" id="message-id" placeholder="{% trans 'Message' %}" class="rounded-lg focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none w-full text-black border border-gray-300 py-2 px-3 focus:outline-none focus:bg-white placeholder-black shadow mt-4" required="">
+<button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit">
+<p class="text-center inline-flex items-center">{% trans 'Send' %}
+  <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
+</p>
+</button>-->{% endcomment %}
+{% block content %}
+<div class="font-c-sans max-w-sm mx-auto">
+  {% if messages %}
+  <div id="chat-text" class="w-full border border-gray-300 shadow bg-white py-2 px-3 rounded-lg"
+    style="max-height: 300px; overflow-y: scroll;">
+    {% for m in messages %}{{ m.username }}: {{ m.content }}{% endfor %}
+  </div>
+  {% endif %}
+  <form class="w-full">
+    <textarea name="message" id="message-id" placeholder="{% trans 'Message' %}"
+      class="w-full rounded-lg appearance-none text-black border border-gray-300 py-2 px-3 focus:outline-none focus:bg-white placeholder-black shadow focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 mt-4" required=""></textarea>
+    <div class="mt-6">
+    <input id="sendbtn" value="{% trans 'Send' %}"
+      class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2"
+      spellcheck="true" type="submit">
+    </div>
+  </form>
+</div>
+{{ request.user.email|json_script:"username" }}
+{{ room|json_script:"roomname" }}
+{% endblock %}
+{% block js %}
+<script>
+  function scrollToBottom() {
+    let objDiv = document.getElementById("chat-text");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+  scrollToBottom();
+  const username = JSON.parse(document.getElementById("username").textContent);
+  const roomName = JSON.parse(document.getElementById("roomname").textContent);
+  document.querySelector("#sendbtn").onclick = function (e) {
+    const messageInputDom = document.querySelector("#message-id");
+    const message = messageInputDom.value;
+    chatSocket.send(JSON.stringify({
+      "message": message,
+      "username": username,
+      "room": roomName
+    }));
+    messageInputDom.value = "";
+  };
+  const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/contact/" + roomName + "/");
+  chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    if (data.message) {
+      document.getElementById("chat-text").innerHTML = ('<p><span class="font-semibold">' + data.clvm + '</span>: ' + data.opener + '</p>')
+      document.getElementById("chat-text").value += ('<p><span class="font-semibold">' + data.username + '</span>: ' + data.message + '</p>')
+    }
+    scrollToBottom();
+  };
+</script>
+{% endblock %}
+<!-- // else {
+//   alert("The message is empty")
+// }
+// chatSocket.onclose = function (e) {
+//   console.log("The socket close unexpected")
+// }; -->

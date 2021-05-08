@@ -134,7 +134,7 @@ class CUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     # def get_username(self):
-    #     """Consider using email as username"""
+    #     # Consider using email as username
     #     if self.full_name:email
     #        return self.full_name
     #     if self.username:
@@ -169,17 +169,17 @@ class CUser(AbstractBaseUser, PermissionsMixin):
 
 
 class EmailActivationQuerySet(models.query.QuerySet):
-    """EmailActivation.objects.all().confirmable()"""
+    # EmailActivation.objects.all().confirmable()
 
     def confirmable(self):
-        """Does the object have a timestamp"""
+        # Does the object have a timestamp
         now = timezone.now()
         start_range = now - timedelta(days=DEFAULT_ACTIVATION_DAYS)
         end_range = now
         # activated = False
         # forced_expired = False
         return self.filter(activated=False, forced_expired=False).filter(
-            timestamp__gt=start_range,  # greater
+            timestamp__gt=start_range, # greater
             timestamp__lte=end_range,  # less or equal
         )
 
@@ -189,11 +189,11 @@ class EmailActivationManager(models.Manager):
         return EmailActivationQuerySet(self.model, using=self._db)
 
     def confirmable(self):
-        """EmailActivation.objects.confirmable()"""
+        # EmailActivation.objects.confirmable()
         return self.get_queryset().confirmable()
 
     def email_exists(self, email):
-        """Check if email is present in the database"""
+        # Check if email is present in the database
         return (
             self.get_queryset()
             .filter(Q(email=email) | Q(user__email=email))
@@ -202,8 +202,7 @@ class EmailActivationManager(models.Manager):
 
 
 class EmailActivation(models.Model):
-    """Expire after 7 days"""
-    # id = models.AutoField(primary_key=True)
+    # Expire after 7 days
     user = models.ForeignKey(CUser, on_delete=models.CASCADE)
     email = models.EmailField()
     key = models.CharField(max_length=120, null=True, blank=True)
@@ -283,7 +282,7 @@ def post_save_user_create_receiver(sender, instance, created, *args, **kwargs):
 
     if created:
         obj = EmailActivation.objects.create(user=instance, email=instance.email)
-        obj.send_activation()  ###[Errno 101] Network is unreachable
+        obj.send_activation()  #[Errno 101] Network is unreachable
 
 
 post_save.connect(post_save_user_create_receiver, sender=CUser)

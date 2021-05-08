@@ -48,7 +48,7 @@ class Author(models.Model):
     bio = HTMLField("Bio", blank=False, null=True)
     img = models.FileField("Pic", upload_to=author_image_path, blank=True, null=True)
     author_url = models.URLField(
-        "Author's website", max_length=200, blank=True, null=True
+        max_length=200, blank=True, null=True, help_text=_("Website of the author")
     )
 
     class Meta:
@@ -127,12 +127,14 @@ class Essay(ModelMeta, models.Model):
         Author, on_delete=models.CASCADE, blank=True, null=True
     )  # 'Independent author',
     audio = models.FileField(
-        _("Record reading"), upload_to=essay_media_path, blank=True, null=True
+        upload_to=essay_media_path, blank=True, null=True, help_text=_("Record reading")
     )
     text = HTMLField(
-        'Exordium (Pathos)-> Narratio -> Confirmatio (Logos) -> Refutatio (Ethos) -> Peroration (Pathos)[View->srcode->class="fl"]',
         blank=False,
         null=True,
+        help_text=_(
+            'Exordium (Pathos)-> Narratio -> Confirmatio (Logos) -> Refutatio (Ethos) -> Peroration (Pathos)[View->srcode->class="fl"]'
+        ),
     )
     abstract = HTMLField(_("Abstract"), blank=True, null=True)
     img = models.FileField(
@@ -140,7 +142,9 @@ class Essay(ModelMeta, models.Model):
     )
     created = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated = models.DateTimeField(_("Updated at"), auto_now=True)
-    publish = models.BooleanField(default=False)  # edit before publish
+    publish = models.BooleanField(
+        default=False, help_text=_("Ensure to edit before publishing")
+    )
     recommend = models.BooleanField(default=False)
     # language = models.CharField(max_length=2, default='en', choices=LANG_STATUS_CHOICES)
     # essay_rating = RatingField(range=5)# 5 possible rating values, 1-5

@@ -1,17 +1,16 @@
 # from django.utils.http import is_safe_url from django_registration.forms import RegistrationForm
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3#, ReCaptchaV2Checkbox
+from captcha.fields import CaptchaField, CaptchaTextInput
+from disposable_email_checker.validators import validate_disposable_email
 from django import forms
 from django.conf import settings
-from django.contrib.auth import (
-    authenticate,
-    get_user_model,
-    login,
-)  # , password_validation
+from django.contrib.auth import (authenticate,  # , password_validation
+                                 get_user_model, login)
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from captcha.fields import CaptchaField, CaptchaTextInput
 from django.utils.translation import gettext_lazy as _
 
 from .models import EmailActivation  # , CustomUser
@@ -41,6 +40,10 @@ class ReactivationEmailForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
+        try:
+            validate_disposable_email(email)
+        except ValidationError:
+            pass
         qs = EmailActivation.objects.email_exists(email)
         if not qs.exists():
             register_link = reverse("register")
@@ -108,8 +111,6 @@ class UserDetailChangeForm(forms.ModelForm):
             }
         ),
     )
-    # full_name = forms.CharField(label='Name', required=False,
-    # widget=forms.TextInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = USER
@@ -127,7 +128,6 @@ class UserAdminChangeForm(forms.ModelForm):
             "password",
             "first_name",
             "is_active",
-            "is_active",# remove
             "is_staff",
         )
 
@@ -180,10 +180,7 @@ class RegisterForm(forms.ModelForm):
     # password2 = PasswordConfirmationField(confirm_with='password1')
     class Meta:
         model = USER
-        fields = (
-            "email",
-            "password",
-        )  # 'full_name', 'password2'(RegistrationForm.Meta)
+        fields = ("email", "password")  # 'password2'(RegistrationForm.Meta)
 
     def save(self, commit=True):
         # Save the password in hashed format
@@ -243,6 +240,10 @@ class LoginForm(forms.Form):
         request = self.request
         data = self.cleaned_data
         email = data.get("email")
+        try:
+            validate_disposable_email(email)
+        except ValidationError:
+            pass
         password = data.get("password")
         qs = USER.objects.filter(email=email)
         if qs.exists():
@@ -264,7 +265,7 @@ class LoginForm(forms.Form):
                     email
                 ).exists()
                 if email_confirm_exists:
-                    msg2 = "Email not confirmed. " + reconfirm_ms
+                    msg2 = _("Email not confirmed. ") + reconfirm_ms
                     raise forms.ValidationError(mark_safe(msg2))
                 if not is_confirmable and not email_confirm_exists:
                     raise forms.ValidationError(_("This email is inactive"))

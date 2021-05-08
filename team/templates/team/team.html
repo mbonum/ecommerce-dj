@@ -16,7 +16,7 @@
   <div class="align-top lg:inline-block mx-auto text-center pt-6 lg:pr-6">
     <a class="t-img block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-gray-400 hover:shadow-lg focus:outline-none lg:w-aut lg:w- lg:h-auto"
       {% if m.bio and m.img %}href="{% url 'team:detail' slug=m.slug %}"{% endif %}>
-      {% if m.img %}<img src="{{ m.img.url }}" alt="{{ m.name }}" class="t-img rounded lg:w-40 lg:h-40 object-cover object-center mx-auto">
+      {% if m.img %}<img loading="lazy" src="{{ m.img.url }}" alt="{{ m.name }}" class="t-img rounded lg:w-40 lg:h-40 object-cover object-center mx-auto">
       {% else %}
       <svg class="lg:w-40 lg:h-40 text-gray-400 transition duration-500 ease-in-out hover:text-gray-600 fill-current mx-auto">
         <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>

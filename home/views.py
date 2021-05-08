@@ -1,22 +1,21 @@
 # import os
 # from mimetypes import guess_type
 # from wsgiref.util import FileWrapper
-
+from core.utils import unique_slug_generator
 from django.conf import settings
 
 # from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.messages.views import SuccessMessageMixin
-
-# from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.http import HttpResponse  # , JsonResponse#Http404
+from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-
-# from django.shortcuts import render# redirect
 from django.views.generic import CreateView  # FormView
 from django.views.generic.edit import FormView  # get_language, activate
 
 from .forms import ContactForm
-from .models import Contact, Cookie, Donate, Page, Privacy, Terms, Trademark
+from .models import Contact, Cookie, Donate, Message, Page, Privacy, Terms, Trademark
 
 # from core.utils import render_to_pdf
 
@@ -38,63 +37,99 @@ class HomeView(SuccessMessageMixin, CreateView):
         context["page_obj"] = HomeView.get_queryset(self)
         return context
 
-    # def home(request):
-    #     # Test internationalization
-    #     trans = translate(lang='de')
-    #     return(request, 'home.html', {'trans': trans})
 
-    # def translate(lang):
-    #     cur_lang = get_language()
-    #     try:
-    #         activate(lang)
-    #     finally:
-    #         activate(cur_lang)
+# def home(request):
+#     # Test internationalization
+#     trans = translate(lang='de')
+#     return(request, 'home.html', {'trans': trans})
+
+# def translate(lang):
+#     cur_lang = get_language()
+#     try:
+#         activate(lang)
+#     finally:
+#         activate(cur_lang)
 
 
 class ContactView(FormView):
     template_name = "home/contact.html"
     form_class = ContactForm
 
-    def form_valid(self, form: ContactForm) -> HttpResponse:
-        form.send_email()
-        # self.cleaned_data["message_type"],
-        # self.cleaned_data["first_name"],
-        # self.cleaned_data["last_name"],
-        # self.cleaned_data["email"],
-        # self.cleaned_data["subject"],
-        # self.cleaned_data["textarea"],
-        # self.cleaned_data["postal_code"]
-
-        msg = _(
-            "Thank you for contacting us. We will answer you as soon as humanly possible."
+    def form_valid(self, form):
+        # form.send_email() # celery, rabbitmq docs
+        fn = self.cleaned_data["first_name"]
+        e = self.cleaned_data["email"]
+        context = {
+            # "message_type": kwargs.get("message_type"),
+            "first_name": fn,
+            # "last_name": kwargs.get("last_name" or None),
+            "email": e,
+            # "subject": self.cleaned_data["subject"],
+            # "textarea": self.cleaned_data["textarea"],
+            # "postal_code": kwargs.get("postal_code"),
+        }
+        subject = "Thank you for contacting " + getattr(settings, "ENV_NAME", "Clavem")
+        body = render_to_string("email_msg.txt", context)
+        email = EmailMessage(
+            subject,
+            body,
+            getattr(settings, EMAIL_HOST_USER, "support@clavem.co"),
+            [e],
+            # reply_to=[kwargs.get("email")],
+            headers={"Message-ID": make_msgid()},
         )
-        return HttpResponse(msg)
+        email.send(fail_silently=False)
+        # msg = "Thank you for contacting us. We will answer you as soon as humanly possible."
+        return render(
+            request,
+            "home/room.html",
+            {
+                "room": unique_slug_generator(fn),
+                "username": unique_slug_generator(fn),
+                "messages": self.cleaned_data["textarea"],
+            },
+        )
+        # render(request, "carts/checkout-done.html", {})
+
+
+def room(request, room):
+    # name =   #"You" request.GET.get("username", "You")
+    messages = Message.objects.filter(room=room)[0:25]
+    return render(
+        request,
+        "home/room.html",
+        {"room": room, "messages": messages},  # "username": name,
+    )
 
 
 # def contact_page(request):
-#     """docs.djangoproject.com/en/3.1/topics/email/"""
+#     """docs.djangoproject.com/en/3.2/topics/email/"""
 #     form_class = ContactForm(request.POST or None)
 
 #     if form_class.is_valid():
 #         if request.is_ajax():
-#             return JsonResponse({'message': _('We will answer you as soon as humanly possible.')})
-#         subject = _('Contact Form') + \
-#             form_class['first_name'] + form_class['last_name']
-#         message = form_class['message']
-#         from_email = form_class['email']# check email validity
-#         to_list = settings.EMAIL_HOST_USER
-#         send_mail(subject, message, from_email, to_list,
-#                   fail_silently=True)# setup automatic email
+#             return JsonResponse(
+#                 {"message": _("We will answer you as soon as humanly possible.")}
+#             )
+#         subject = _("Contact Form") + form_class["first_name"] + form_class["last_name"]
+#         message = form_class["message"]
+#         from_email = form_class["email"]  # check email validity
+#         to_list = getatts(settings, "EMAIL_HOST_USER", "")
+#         send_mail(
+#             subject, message, from_email, to_list, fail_silently=False
+#         )  # setup automatic email
+#     else:
+#         return HttpResponse("Not valid", status=400, content_type="application/json")
 
 #     if form_class.errors:
 #         errors = form_class.errors.as_json()
 #         if request.is_ajax():
-#             return HttpResponse(errors, status=400, content_type='application/json')
+#             return HttpResponse(errors, status=400, content_type="application/json")
 
 #     content = {
-#         'form': form_class,
+#         "form": form_class,
 #     }
-#     return render(request, 'home/contact.html', content)
+#     return render(request, "home/contact.html", content)
 
 
 class DonateView(CreateView):
@@ -110,17 +145,6 @@ class DonateView(CreateView):
         context = super(DonateView, self).get_context_data(*args, **kwargs)
         context["text"] = DonateView.get_queryset(self)
         return context
-
-
-# def donate_page(request):
-#     """Bitcoin donation (add other crypto currencies)"""
-#     content = {
-#         'title': 'Support Armonia',
-#         'body': 'Our hope is to have one global stable cryptocurrency that ensures transparency.',
-#         'address_btc': 'public key btc',
-#         'address_eth': 'public key eth'  # create Armonia's cryptocurrency wallet code
-#     }
-#     return render(request, 'home/donate.html', content)
 
 
 class CookieView(CreateView):
@@ -182,15 +206,6 @@ class PrivacyView(CreateView):
         return context
 
 
-# def privacy_page(request):
-#     """GDPR legal compliant"""
-#     content = {
-#         'header': 'Privacy is a Human Right',
-#         'body': 'We do not track you.''human-readable transparency text'
-#     }
-#     return render(request, 'home/privacy.html', content)
-
-
 class TermsView(CreateView):
     template_name = "home/policy.html"
     success_url = "/terms/"
@@ -219,3 +234,14 @@ class TrademarkView(CreateView):
         context = super(TrademarkView, self).get_context_data(*args, **kwargs)
         context["text"] = TrademarkView.get_queryset(self)
         return context
+
+
+# def donate_page(request):
+#     """Bitcoin donation (add other crypto currencies)"""
+#     content = {
+#         'title': 'Support Clavem',
+#         'body': 'Our hope is to have one global stable cryptocurrency that ensures transparency.',
+#         'address_btc': 'public key btc',
+#         'address_eth': 'public key eth'  # create Clavem's cryptocurrency wallet code
+#     }
+#     return render(request, 'home/donate.html', content)

@@ -44,10 +44,10 @@ class AddressForm(forms.ModelForm):
         ),
     )
     postal_code = forms.CharField(
-        label=_("Postal/Zip code"),
+        label=_("Postal code"),
         widget=forms.TextInput(
             attrs={
-                "placeholder": _("Postal/Zip code"),
+                "placeholder": _("Postal code"),
                 "class": "m-auto flex border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 rounded shadow placeholder-gray-900",
             }
         ),

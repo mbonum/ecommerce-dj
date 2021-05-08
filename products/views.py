@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse
-from django.shortcuts import redirect, get_object_or_404 # render
+from django.shortcuts import redirect, get_object_or_404  # render
 from django.views.generic import DetailView, ListView, View
 from django.utils.translation import gettext_lazy as _
 
@@ -39,9 +39,8 @@ class ProductListView(ListView):
         return Product.objects.all().order_by("index")
 
 
-class DigitalProductListView(
-    ListView
-):  # ProductFeaturedListView hide out of stock products
+# ProductFeaturedListView hide out of stock products
+class DigitalProductListView(ListView):
     """Show only digital products featured"""
 
     template_name = "products/plist.html"
@@ -52,7 +51,6 @@ class DigitalProductListView(
 
 
 class ProductDetailSlugView(ObjectViewedMixin, DetailView):
-
     queryset = Product.objects.all()
     template_name = "products/pdetail.html"
 
@@ -66,6 +64,7 @@ class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     def get_object(self, *args, **kwargs):
         slug = self.kwargs.get("slug")
         instance = get_object_or_404(Product, slug=slug, in_stock=True)
+        instance.rangeqty
         # try:
         #     instance = Product.objects.get(slug=slug, active=True)
         # except Product.DoesNotExist:
@@ -93,7 +92,7 @@ class UserProductHistoryView(LoginRequiredMixin, ListView):
         request = self.request
         views = request.user.objectviewed_set.by_model(
             Product, model_queryset=True
-        )  # [:3] show 3
+        )  # [:3] show specific number
         return views
 
 

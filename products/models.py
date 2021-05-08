@@ -137,29 +137,39 @@ class Product(models.Model):
         Category,
         related_name="product",
         on_delete=models.CASCADE,
-        blank=True, null=True
+        blank=True,
+        null=True,
     )
-    created_by = models.ForeignKey(
-        CUser, related_name="product_creator", on_delete=models.CASCADE, blank=True, null=True
-    )
+    # created_by = models.ForeignKey(
+    #     CUser,
+    #     related_name="product_creator",
+    #     on_delete=models.CASCADE,
+    #     blank=True,
+    #     null=True,
+    # )
     description = HTMLField(_("Benefits"), blank=True, null=True)
     price = models.DecimalField(
-        _("Price (EUR)"),
+        _("Price"),
         decimal_places=2,
         max_digits=9,
         default=99.99,
         validators=[MinValueValidator(0)],
+        help_text="EUR",
     )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')
     # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.CASCADE)
     img = models.ImageField(
         _("Image"), upload_to=product_img_path, blank=True, null=True
     )
     is_digital = models.BooleanField(
-        _("Digital (in stock, no shipment)"), default=False
-    )  # add filter in productlist
-    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+        default=False, help_text=_("Digital (in stock, no shipment)")
+    )
+    quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
+    # meta_keywords = models.CharField(max_length=255, help_text='Comma-delimited set of SEO keywords for meta tag')
+    # meta_description = models.CharField(max_length=255, help_text='Content for description meta tag')
     in_stock = models.BooleanField(_("In Stock"), default=False)
-    active = models.BooleanField(_("Show"), default=True)  # hide if unavailable
+    active = models.BooleanField(
+        _("Show"), default=True, help_text=_("Hide if unavailable")
+    )
     recommend = models.BooleanField(default=False)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
@@ -189,13 +199,19 @@ class Product(models.Model):
         # namespace[in mgb/urls]:name[in app-name/urls]
         return reverse("products:detail", kwargs={"slug": self.slug})
 
-    @property
-    def name(self):
-        return self.name_product
-
     def get_downloads(self):
         qs = self.productfile_set.all()
         return qs
+
+    def rangeqty(self):
+        q = []
+        if not self.is_digital and self.quantity > 1:
+            q = list(range(1, self.quantity + 1))
+        return q
+
+    @property
+    def name(self):
+        return self.name_product
 
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):

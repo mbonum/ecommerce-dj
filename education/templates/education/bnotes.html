@@ -29,10 +29,9 @@
     </div>
   </div>
   {% if object.img %}
-  <div><img class="w-full bg-gradient-to-tr from-red-700 to-yellow-300 rounded-lg mx-auto shadow-md" src="{{ object.img.url }}"></div>
+  <div><img loading="lazy" class="w-full bg-gradient-to-tr from-red-700 to-yellow-300 rounded-lg mx-auto shadow-md" src="{{ object.img.url }}"></div>
   {% endif %}
 </div>
 </div>
 </div>
 {% endblock %}
-{% comment %} lg:w-3/4 {% endcomment %}

@@ -39,7 +39,7 @@ class Note(MPTTModel):
     )
     body = HTMLField(_("Note"), blank=False, null=True)
     private = models.BooleanField(
-        _("Show name/email"), blank=True, null=True, default=False
+        blank=True, null=True, default=False, help_text=_("Show name/email")
     )
     # reply = models.BooleanField('Activate reply + email notification', blank=True, null=True, default=True)
     created_at = models.DateTimeField(

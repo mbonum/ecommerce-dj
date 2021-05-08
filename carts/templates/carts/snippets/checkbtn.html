@@ -1,6 +1,6 @@
 {% load i18n static %}
-<a href="{% url 'cart:checkout' %}" id="checkbtn" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
-  {% trans 'Checkout' %} <svg class="w-4 h-4 fill-current ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
+<a href="{% url 'cart:checkout' %}" id="checkbtn" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-lg text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
+  {% trans 'Checkout' %} <svg class="w-5 h-5 fill-current ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
 </a>
 <div id="checkbtn-tip" class="hidden">
   <img src="{% static 'img/cc-badges.png' %}" alt="{% trans 'Payment methods' %}" class="h-6 w-40 md:w-44 mx-auto" data-tippy-content="{% trans 'Payment methods' %}">

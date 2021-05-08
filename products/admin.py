@@ -22,6 +22,7 @@ class ProductAdmin(admin.ModelAdmin):
         "price",
         "quantity",
         "active",
+        "is_digital",
         "recommend",
         "img_tag",
     )
@@ -29,9 +30,10 @@ class ProductAdmin(admin.ModelAdmin):
         "price",
         "quantity",
         "active",
+        "is_digital",
         "recommend",
     )
-    list_filter = ("active", "recommend", "created_at")
+    list_filter = ("active", "is_digital", "recommend", "created_at")
     search_fields = (
         "name_product",
         "slug",

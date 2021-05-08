@@ -1,17 +1,16 @@
-{% if messages %}
-<div class="flex bg- p-4 text-center">
+{% if warnings %}
+<div class="flex p-4 text-center">
   <div class="flex justify-between w-full">
-    {% for message in messages %}
-    <span {% if message.tags %} class="{{ message.tags }} pb-2" {% endif %}>
-      {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-      {{ message }}
+    {% for m in warnings %}
+    <span {% if message.tags %} class="{{ m.tags }} pb-2" {% endif %}>
+      {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+      {{ m }}
     </span>
     {% endfor %}
   </div>
 </div>
 {% endif %}
-{% comment %}<!--
-if (tweeted || facebooked) {
+{% comment %}<!--messages if (tweeted || facebooked) {
   gratitude += 1;
 }
 if (githubStarred) {

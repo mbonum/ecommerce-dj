@@ -139,7 +139,9 @@ CSP_STYLE_SRC = (
     "'unsafe-eval'",
 )  # , "https://hcaptcha.com", "https://*.hcaptcha.com", "https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css", "https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css",
 CSP_FONT_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'",)  # "'strict-dynamic'", "'https://www.paypal.com/en_IT/i/scr/pixel.gif'",
+CSP_IMG_SRC = (
+    "'self'",
+)  # "'strict-dynamic'", "'https://www.paypal.com/en_IT/i/scr/pixel.gif'",
 CSP_MEDIA_SRC = (
     "'self'",
     "https://polyfill.io/v3/polyfill.min.js",
@@ -165,22 +167,25 @@ SECURE_HSTS_PRELOAD = False
 # Port for TLS/STARTTLS: 587
 
 # /home/mgb/.local/share/virtualenvs/a1-dVYVCYMC/lib/python3.9/site-packages/newsletter/ model
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = BASE_DIR / "emails"
-else:
-    EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+# if DEBUG:
+#     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+#     EMAIL_FILE_PATH = BASE_DIR / "emails"
+# else:
+#     EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
 
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")  # protonmail
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="support@clavem.co")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)#1025
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)  # 1025
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 # EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=True, cast=bool)
-DEFAULT_FROM_EMAIL = "mr.m.bonomi@gmail.com"#(,) #support@clavem.co ENV_NAME + ' <support@' + BASE_URL + '>'# Customer Care
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # (,) #support@clavem.co ENV_NAME + ' <support@' + BASE_URL + '>'# Customer Care
 
 
-# CELERY_BROKER_URL = ''# URI from Heroku redis app
+# CELERY_BROKER_URL = "amqp://localhost"  # URI from Heroku redis app
+# # CELERY_TIMEZONE = "Australia/Tasmania"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
 # CELERY_ACCEPT_CONTENT = ['json']
 # CELERY_TASK_SERIALIZER = 'json'
 

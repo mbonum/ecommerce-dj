@@ -69,7 +69,10 @@ INSTALLED_APPS = [
     # "robots",  # https://pypi.org/project/django-robots
     # "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
-    # "django_celery_results",
+    "django_celery_beat",
+    "django_celery_results",
+    # "embed_video",
+    "channels",
     # "blacklist",
     #'pwa',# https://github.com/silviolleite/django-pwa
     # 'xicon',# https://pypi.org/project/django-xicon
@@ -104,16 +107,43 @@ INSTALLED_APPS = [
     # 'crispy_forms',# https://pypi.org/project/django-crispy-forms/
     # 'webpack_loader',
 ]
-GRAPH_MODELS = {
-    "all_applications": True,
-    "group_models": True,
-}
+# GRAPH_MODELS = {
+#     "all_applications": True,
+#     "group_models": True,
+# }
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# celery -A core beat -l INFO
+CELERY_BEAT_SCHEDULE = {
+    "scheduled_task": {
+        "task": "home.tasks.add",
+        "schedule": 5.0,
+        "args": (1, 5),
+    },
+    "database": {
+        "task": "home.tasks.bkup",
+        "schedule": 5.0,
+    },
+}
+
+# or set up admin/ Periodic task
+# celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
 CELERY_RESULT_BACKEND = "django-db"
-CELERY_RESULT_BACKEND = "django-cache"
+CELERY_CACHE_BACKEND = "default"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cachedb",
+    }
+}
+# CELERY_RESULT_BACKEND = "django-cache"
 # CELERY_TIMEZONE = "Australia/Tasmania"
 # CELERY_TASK_TRACK_STARTED = True
 # CELERY_TASK_TIME_LIMIT = 30 * 60
+
 # HITCOUNT_KEEP_HIT_ACTIVE = {'days': 7}
 # HITCOUNT_HITS_PER_IP_LIMIT = 1# 0 unlimited
 # HITCOUNT_EXCLUDE_USER_GROUP = ('ADMINS',)# not used
@@ -153,6 +183,9 @@ MIDDLEWARE = [
     # "defender.middleware.FailedLoginMiddleware",
     # "django_hosts.middleware.HostsResponseMiddleware",
 ]
+
+# https://django-embed-video.readthedocs.io/en/latest/installation.html
+TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
 
 # if DEBUG:
 #     INSTALLED_APPS.append(
@@ -203,7 +236,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
+ASGI_APPLICATION = "core.asgi.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("127.0.0.1", 6379)]},
+    }
+}
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
     "default": dj_database_url.config(

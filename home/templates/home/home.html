@@ -3,13 +3,13 @@
 {% block title %}Home{% endblock %}
 {% block video %}
 <div class="bg-black block h-screen space-y-8 shadow-xl">
-  <video class="md:w-1/2 mx-auto" src="{% if page_obj.background %}{{ page_obj.background.url }}{% else %}{% static 'media_root/earth.mp4' %}{% endif %}" type="video/mp4" autoplay loop muted onerror="failed(e)"></video>
-  <svg class="text-gray-200 animate-pulse s fill-current mx-auto">
+  <video loading="lazy" class="md:w-1/2 mx-auto" src="{% if page_obj.background %}{{ page_obj.background.url }}{% else %}{% static 'media_root/earth.mp4' %}{% endif %}" type="video/mp4" autoplay loop muted onerror="failed(e)"></video>
+  <svg loading="lazy" class="text-gray-200 animate-pulse s fill-current mx-auto">
     <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
   </svg>
   <svg id="haid" class="transition duration-500 ease-in-out animate-bounce w-7 h-7 text-gray-400 mx-auto text-center bottom-" ><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg></div>
 {% endblock %}
-{% comment %}<!--style="transform: scale(-1,1)"<p style="-webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8));" class="opacity-1 text-center animate-pulse uppercase text-gray-30 text-7xl font-c font-semibold text-transparent bg-gradient-to-tr bg-clip-text from-gray-200 to-yellow-300 pt-1">{ { com } }</p> border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300
+{% comment %}<!-- style="transform: scale(-1,1)"<p style="-webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8));" class="opacity-1 text-center animate-pulse uppercase text-gray-30 text-7xl font-c font-semibold text-transparent bg-gradient-to-tr bg-clip-text from-gray-200 to-yellow-300 pt-1">{ { com } }</p> border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300
 background: hsl(340deg 100% 32%);
 border-radius: 12px;
 

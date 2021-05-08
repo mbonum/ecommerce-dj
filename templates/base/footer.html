@@ -13,7 +13,6 @@
         </div>
       </div>
     </div>
-
     <div class="md:w-1/3 md:border-l md:border-r border-yellow-100 text-center md:mt-1">
       <div class="block md:space-x-8 md:inline-flex text-gray-800 items-center">
         <div class="md:inline-flex border-b border-yellow-100 md:border-none py-3 md:py-0">
@@ -27,7 +26,10 @@
       <div>
       {% if shop_url in request.path or request.path == cart_url %}
       <div class="border-b border-yellow-100 md:border-none overflow-hidden py-4 md:py-0 md:mt-4 md:mb-2">
-        <img src="{% static 'img/cc-badges.png' %}" alt="{% trans 'Payment methods' %}" class="h-6 w-40 md:w-44 mx-auto" data-tippy-content="{% trans 'Payment methods' %}">
+        <picture data-tippy-content="{% trans 'Payment methods' %}">
+          <source srcset="{% static 'img/cc.webp' %}" type="image/webp">
+          <img src="{% static 'img/cc-badges.png' %}" alt="{% trans 'Payment methods' %}" class="h-6 w-40 md:w-44 mx-auto">
+        </picture>
       </div>
       {% else %}
       <div class="border-b border-yellow-100 md:border-none">
@@ -43,7 +45,7 @@
       {% if not request.user.email %}
       <div class="mt-5 mb-4 md:mt-0">
         <form class="text-right text-sm sm:text-center md:text-right mx-10 sm:mx-0" enctype="multipart/form-data" method="POST" action="{{ newsletter_url }}"> {% csrf_token %}
-          {#<!--/newsletter/clavem-letter/subscribe/  Stay in the Know clavem newsletter url 🚫 Spam Subscribe to Clavem's newsletter Get Updates ❤️-->#}
+{#<!--/newsletter/clavem-letter/subscribe/ Stay in the Know clavem newsletter url 🚫 Spam Subscribe to Clavem's newsletter Get Updates ❤️-->#}
           <input class="w-full sm:w-auto border xl:rounded-l-lg border-gray-300 placeholder-gray-900 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Your email' %}" type="email" name="email_field" required="false" id="id_email_field">
           <button id="id_submit" name="submit" type="submit" value="Subscribe" class="inline-flex text-right items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 xl:rounded-r-lg border border-yellow-400 hover:border-yellow-500 focus:outline-none py-1 px-3" data-tippy-content="{% trans 'Frugal in words, rich in meaning' %}">{% trans 'Get Vpdates' %}
             <svg class="fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#dm"></use></svg>
@@ -56,7 +58,7 @@
       </div>
       {% endif %}
       <div class="inline-flex mx-auto space-x-10 pt-5 md:py-0 md:mt-3">
-        <a class="mx-auto text-gray-700 hover:text-black rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ gitlab_url }}" target="_blank" data-tippy-content="{{ com }} dev community">
+        <a class="mx-auto text-gray-700 hover:text-black rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ gitlab_url }}" target="_blank" rel="noopener" data-tippy-content="The {{ com }} dev community">
         <svg class="w-5 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#gl"></use></svg></a>{#<!--you need to pass a test to access. This proves to you are knowledgeable and motivated.-->#}
       </div>
     </div>
@@ -75,35 +77,33 @@
         {% trans 'All rights reserved.' %}
       </p>
       <div class="inline-flex space-x-1 md:space-x-4 md:ml-4">
-        <a class="text-gray-900 un rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" href="{{ privacy_url }}" data-tippy-content="Your rights">Privacy</a>
-        <a class="text-gray-900 un rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" href="{{ terms_url }}" data-tippy-content="{{ com }}'s rights">Terms</a>
+        <a class="hover:text-black un rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" href="{{ privacy_url }}" data-tippy-content="{% trans 'Your rights' %}">Privacy</a>
+        <a class="hover:text-black un rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" href="{{ terms_url }}" data-tippy-content="{{ com }}'s rights">Terms</a>
       </div>
       </div>
     </div>
   </div>
 </div>
-{% comment %}<!--
-<a class="font-semibold text-gray-700 hover:text-gray-900 un rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-1 ml-4" href="{ { cookie_url } }" data-tippy-content="Cookie Policy">Cookie</a>
+{% comment %}<!--<a class="font-semibold hover:text-black un rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-1 ml-4" href="{ { cookie_url } }" data-tippy-content="Cookie Policy">Cookie</a>
   in account <div x-data="{open: false}" class="relative inline-block mb-4">
   <button @click="open=!open" type="button" class="flex mx-auto text-sm justify-center w-ful rounded-lg border border-gray-300 shadow-sm px-2 py-1 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent focus:ring-yellow-100" id="options-menu" aria-expanded="true" aria-haspopup="true">
-    {% trans 'Language' %}
+    { % trans 'Language' %}
     <svg class="r-180 fill-current text-gray-600 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
   </button>
   <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="bottom-0 bg-white origin-top-right absolute right-0 rounded-lg shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
     <div class="py-1" role="none">
-      {% get_current_language as LANGUAGE_CODE %}
-      {% get_available_languages as LANGUAGE %}
-      {% get_language_info_list for LANGUAGE as langs %}
-      {% for l in langs %}
-      {% if not l.code == 'en' %}
-      <a href="/{{ l.code }}/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ l.name_local }}</a>
-      {% endif %}
-      {% endfor %}
+      { % get_current_language as LANGUAGE_CODE %}
+      { % get_available_languages as LANGUAGE %}
+      { % get_language_info_list for LANGUAGE as langs %}
+      { % for l in langs %}
+      { % if not l.code == 'en' %}
+      <a href="/{ { l.code }}/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ l.name_local }}</a>
+      { % endif %}
+      { % endfor %}
     </div>
   </div>
 </div>
-<svg class="w-4 h-3 fill-current mr-1"><use xlink:href="{ % static 'img/svg-defs.svg' % }#i"></use></svg>
-<a target="_blank" href="https://docs.github.com/en/github/site-policy/github-terms-of-service" class="cursor-pointer pointer-events-auto link ml-6 first:ml-0 link--animated-hover" data-v-6ac2237a=""><span class="inline-block text-sm link__content text-light md:text-base landscape:text-sm" data-v-6ac2237a="">Terms</span></a>
-<a class="text-gray-700 hover:text-black rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ donate_url }}#eth"><svg class="w-4 h-6 fill-current items-center"><use xlink:href="{% static 'img/svg-defs.svg' %}#eth"></use></svg></a>
-</div>
-<div class="mt-4">Support us-->{% endcomment %}
+<svg class="w-4 h-3 fill-current mr-1"><use xlink:href="{ % static 'img/svg-defs.svg' %}#i"></use></svg>
+<a target="_blank" rel="noopener" href="https://docs.github.com/en/github/site-policy/github-terms-of-service" class="cursor-pointer pointer-events-auto link ml-6 first:ml-0 link--animated-hover" data-v-6ac2237a=""><span class="inline-block text-sm link__content text-light md:text-base landscape:text-sm" data-v-6ac2237a="">Terms</span></a>
+<a class="text-gray-700 hover:text-black rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ donate_url }}#eth"><svg class="w-4 h-6 fill-current items-center"><use xlink:href="{ % static 'img/svg-defs.svg' %}#eth"></use></svg></a>
+</div><div class="mt-4">Support us-->{% endcomment %}

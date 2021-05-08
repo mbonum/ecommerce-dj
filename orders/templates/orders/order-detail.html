@@ -7,7 +7,7 @@
 <div class="max-w-sm mx-auto">
   <div class="text-center mb-6">
     <h1 class="text-lg inline-flex border-b border-gray-300 font-semibold pb-4">{% trans 'Order' %} ID {{ object.order_id }}</h1>
-    <a href="{% url 'order-pdf' order.order_id %}" target="_blank" class="hover:text-yellow-400 inline-flex items-center focus:outline-none focus:shadow-outline my-3" data-tippy-content="Print" target="_blank">
+    <a href="{% url 'order-pdf' order.order_id %}" class="hover:text-yellow-400 inline-flex items-center focus:outline-none focus:shadow-outline my-3" data-tippy-content="Print" target="_blank" rel="noopener">
       PDF <svg class="w-5 h-6 fill-current ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
     </a>
   </div>

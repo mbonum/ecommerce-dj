@@ -14,7 +14,7 @@ def member_image_path(self, filename):
 
 
 class Member(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(primary_key=True)
     index = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         blank=False,
@@ -26,7 +26,13 @@ class Member(models.Model):
     slug = models.SlugField(blank=False, unique=True)
     job_title = models.CharField(max_length=90, blank=False)
     bio = HTMLField(_("Bio"), blank=False, null=True)
-    img = models.FileField(_("Pic"), upload_to=member_image_path, blank=True, null=True)
+    img = models.FileField(
+        _("Picture"),
+        upload_to=member_image_path,
+        blank=True,
+        null=True,
+        help_text=_("Consistent style"),
+    )  # only faces, mask effect, transparent bg
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True)
     show = models.BooleanField(default=False)
 

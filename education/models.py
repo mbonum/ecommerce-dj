@@ -72,12 +72,12 @@ class Book(models.Model):
     title = models.CharField(max_length=90, db_index=True)
     slug = models.SlugField(blank=False, unique=True)
     tags = models.ManyToManyField(Tag, blank=False)
-    text = HTMLField(_("Key points"), blank=False, null=True)
-    audio = models.FileField(_("Record reading"), upload_to=book_media_path, blank=True, null=True)
+    text = HTMLField(blank=False, null=True, help_text=_("Key points"))
+    audio = models.FileField(upload_to=book_media_path, blank=True, null=True, help_text=_("Record reading"))
     img = models.ImageField(_("Cover"), upload_to=book_media_path, blank=False, null=True)
     created = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(_("Publish"), default=True)
+    active = models.BooleanField(default=False, help_text=_("Ensure to edit before publishing"))
 
     objects = BookManager()
 

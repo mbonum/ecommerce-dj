@@ -9,8 +9,8 @@
       <div class="font-c-sans m-2">
         <p class="mb-1">{% trans 'Hi' %} {% if request.user.first_name %}{{ request.user.first_name }}{% else %}noscripter{% endif %},</p>
         <p>To improve {{ com }}'s features, we use JavaScript.</p>
-        <p class="text-justify hyphens">We too share your precautions on privacy and security as you can read our <a class="font-semibold un focus:outline-none focus:shadow-outline" title="Your rights" href="{{ privacy_url }}" target="_blank">Privacy policy</a> and <a class="font-semibold un focus:outline-none focus:shadow-outline" title="Cookie Policy" href="{{ cookie_url }}" target="_blank">Cookie use</a>, every data you generate, you can see on your account page.</p>
-        <p>Please whitelist {{ request.get_host }}</p>
+        <p class="text-justify hyphens">{% trans 'We too share your precautions on privacy and security as you can read our' %} <a class="font-semibold un focus:outline-none focus:shadow-outline" title="Your rights" href="{{ privacy_url }}" target="_blank" rel="noopener">Privacy policy</a> and <a class="font-semibold un focus:outline-none focus:shadow-outline" title="Cookie Policy" href="{{ cookie_url }}" target="_blank" rel="noopener">Cookie use</a>, every data you generate, you can see on your account page.</p>
+        <p>{% trans 'Please whitelist' %} {{ request.get_host }}</p>
         <p class="text-center text-base leading-loose mt-2">{% trans 'Thank you' %}</p>
       </div>
     </div>

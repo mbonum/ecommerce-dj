@@ -9,6 +9,7 @@ from addresses.models import Address
 from billing.models import BillingProfile
 from orders.models import Order
 from products.models import Product
+from django.utils.translation import gettext_lazy as _
 
 from .models import Cart
 
@@ -40,15 +41,9 @@ def cart_detail_api_view(request):
     return JsonResponse(cart_data)
 
 
-# Remove (x) button -> jQuery refresh cart table aproject.js
-
-
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
     return render(request, "carts/cart-home.html", {"cart": cart_obj})
-
-
-# Show products list in cart
 
 
 def cart_update(request):
@@ -57,7 +52,7 @@ def cart_update(request):
         try:
             product_obj = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
-            msg = (
+            msg = _(
                 "Sorry, the product is not available at the moment."
                 "Contact us to know when the product will be available."
             )
