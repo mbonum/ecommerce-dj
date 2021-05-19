@@ -30,11 +30,11 @@ class SalesAjaxView(View):
                 data["data"] = sales_items
             if request.GET.get("type") == "4weeks":
                 data["labels"] = [
-                    _("Four weeks ago"),
-                    _("Three weeks ago"),
-                    _("Two weeks ago"),
-                    _("Last week"),
-                    _("This week"),
+                    "Four weeks ago",
+                    "Three weeks ago",
+                    "Two weeks ago",
+                    "Last week",
+                    "This week",
                 ]
                 current = 5
                 data["data"] = []

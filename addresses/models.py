@@ -12,7 +12,7 @@ class Address(models.Model):
     # User addresses to use for shipping physical products
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
     address_type = models.CharField(max_length=9, choices=AddressType.choices, default=AddressType.BILLING)
-    street = models.CharField(max_length=240, default="33 Main St")  # , null=True, blank=True
+    street = models.CharField(max_length=240)  # , null=True, blank=True
     # address_line_2 = models.CharField(max_length=90, null=True, blank=True)#apartment, suite or space number
     city = models.CharField(max_length=240)
     state = models.CharField(max_length=240, null=True, blank=True)
