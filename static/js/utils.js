@@ -36,8 +36,10 @@ $(document).ready(function () {
     days = Math.floor(timeDifference / (secondsInADay) * 1);
     hours = Math.floor((timeDifference % (secondsInADay)) / (secondsInAHour) * 1);
     var idEl = document.getElementById(id);
-    idEl.getElementsByClassName("days")[0].innerHTML = days;
-    idEl.getElementsByClassName("hours")[0].innerHTML = hours;
+    if (typeof idEl !== 'undefined' && idEl !== null) {
+      idEl.getElementsByClassName("days")[0].innerHTML = days;
+      idEl.getElementsByClassName("hours")[0].innerHTML = hours;
+    }
     //romanize(hours);
     // idEl.getElementsByClassName("days")[0].title = days;​
     // idEl.getElementsByClassName("hours")[0].setAttribute("title", hours);​

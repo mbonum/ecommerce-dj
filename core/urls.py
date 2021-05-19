@@ -16,11 +16,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 # from .schema import schema
 from accounts.views import LoginView, RegisterView
-from addresses.views import (
-    checkout_address_create_view,
-    checkout_address_reuse_view,
-)
-from analytics.views import SalesAjaxView, SalesView
 from billing.views import payment_method_createview, payment_method_view
 from carts.views import cart_detail_api_view
 
@@ -31,10 +26,10 @@ from essays.views import GenerateEssayPDF, author_view
 # from marketing import urls as mktg_urls
 # from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
-
+from shorturl.views import ShortURLView, URLRedirectView
 # # from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 # # from two_factor.urls import urlpatterns as tf_urls
-from shorturl.views import ShortURLView, URLRedirectView
+
 
 # vue
 # router = routers.DefaultRouter()
@@ -52,11 +47,15 @@ urlpatterns = [
     #     name="robots-txt",
     # ),
     path("captcha/", include("captcha.urls")),
+    path(
+        "", include("drfpasswordless.urls")
+    ),  # https://pypi.org/project/drfpasswordless/
     path("", include("home.urls", namespace="home")),
-# # create a separate CMS that only authors can access, schema=schema
-# # path(_('essays/'), essays_admin.urls),
+    path(_("chat/"), include("chat.urls")),
+    # # create a separate CMS that only authors can access, schema=schema
+    # # path(_('essays/'), essays_admin.urls),
     path(_("read/"), include("essays.urls", namespace="read")),
-# #     path('hitcount/', include('hitcount.urls', namespace='hitcount')),
+    # #     path('hitcount/', include('hitcount.urls', namespace='hitcount')),
     path(_("author/<slug:slug>/"), author_view, name="author"),
     path("pdf/<slug:slug>/", GenerateEssayPDF.as_view(), name="pdf"),
     path(_("learn/"), include("education.urls", namespace="learn")),
@@ -66,42 +65,21 @@ urlpatterns = [
     path(_("search/"), include("search.urls", namespace="search")),
     path(_("cart/"), include("carts.urls", namespace="cart")),
     path("api/cart/", cart_detail_api_view, name="api-cart"),  # YXBpL2NhcnQv/
-    path(
-        "checkout/address/create/",
-        checkout_address_create_view,
-        name="checkout_address_create",
-    ),
-    path(
-        "checkout/address/reuse/",
-        checkout_address_reuse_view,
-        name="checkout_address_reuse",
-    ),
-    #     # https://pypi.org/project/drfpasswordless/
-    # #     path('', include('drfpasswordless.urls')),
     path(_("signup/"), RegisterView.as_view(), name="register"),
     path(_("login/"), LoginView.as_view(), name="login"),
     path(_("logout/"), LogoutView.as_view(), name="logout"),
-    # path('address/', RedirectView.as_view(url='/addresses')),
-    # path('addresses/create/', AddressCreateView.as_view(), name='address-create'),
-    # path('addresses/<int:pk>/', AddressUpdateView.as_view(), name='address-update'),
-    # path('addresses/', AddressListView.as_view(), name='addresses'),
-    path("billing/payment-method/", payment_method_view, name="billing-payment-method"),
-    path(
-        "billing/payment-method/create/",
-        payment_method_createview,
-        name="billing-payment-method-end",
-    ),
+    path(_("address/"), RedirectView.as_view(url="/addresses")),
+    path(_("addresses/"), include("addresses.urls", namespace="address")),
+    path(_("billing/payment-method/"), payment_method_view, name="billing-payment-method"),
+    path(_("billing/payment-method/create/"), payment_method_createview, name="billing-payment-method-end"),
     path(_("orders/"), include("orders.urls", namespace="orders")),
-    path("invoice/<slug:_id>/", GenerateOrderPDF.as_view(), name="order-pdf"),
+    path(_("invoice/<slug:_id>/"), GenerateOrderPDF.as_view(), name="order-pdf"),
     path(_("library/"), LibraryView.as_view(), name="library"),
     path(_("settings/"), RedirectView.as_view(url="/account")),
     path(_("accounts/"), RedirectView.as_view(url="/account")),
     path(_("account/"), include("accounts.urls", namespace="account")),
-    path(
-        _("accounts/"), include("accounts.passwords.urls")
-    ),  # templates/registration
-    # path("analytics/sales/", SalesView.as_view(), name="sales-analytics"),
-    # path("analytics/sales/data/", SalesAjaxView.as_view(), name="sales-analytics-data"),
+    path(_("accounts/"), include("accounts.passwords.urls")),  # templates/registration
+    path(_("analytics/"), include("analytics.urls", namespace="analytics")),
     # #     path(_('newsletter/'), include('newsletter.urls')), #, namespace='newsletter'
     # #     # path('', Subscribe.as_view(), name='subscribe'),
     # #     # path('subscribe-api/', include(mktg_urls)),
@@ -123,13 +101,13 @@ urlpatterns = [
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
     # # short urls
     # re_path(r"^c/(?P<shortcode>[\w-]+)/$", URLRedirectView.as_view(), name="clvmcode"),
-    # path("c/", ShortURLView.as_view(), name="clvmurl")
+    # path("c/", ShortURLView.as_view(), name="clvmurl") # only for admin
 ]
 
 # urlpatterns += i18n_patterns()
 
 if "rosetta" in settings.INSTALLED_APPS:
-    urlpatterns.append(path("rosetta/", include("rosetta.urls")))# += []
+    urlpatterns.append(path("rosetta/", include("rosetta.urls")))  # += []
 
 try:
     urlpatterns.append(path("bmltZGEtbWdiLTI1Cg/", include(admin.site.urls)))

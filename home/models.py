@@ -35,12 +35,12 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(max_length=255, unique=True)
     subject = models.CharField(max_length=255)
-    textarea = HTMLField(blank=True, null=True)
+    text = HTMLField(blank=True, null=True)
     postal_code = models.CharField(max_length=19, blank=True, null=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     # confirm = models.BooleanField(default=False)
 
-    REQUIRED_FIELDS = ["first_name", "email", "subject", "textarea", "postal_code"]
+    REQUIRED_FIELDS = ["first_name", "email", "subject", "text", "postal_code"]
 
     # objects = UserManager()
 
@@ -49,16 +49,6 @@ class Contact(models.Model):
 
     class Meta:
         verbose_name_plural = _("Contacts")
-
-
-class Message(models.Model):
-    username = models.CharField(max_length=255)
-    room = models.CharField(max_length=255)
-    content = models.TextField()
-    date_added = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ("date_added",)
 
 
 class Donate(models.Model):

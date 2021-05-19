@@ -42,7 +42,6 @@ def author_image_path(self, filename):
 
 
 class Author(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=90, blank=False, null=True)
     slug = models.SlugField(blank=False, null=True, unique=True)
     bio = HTMLField("Bio", blank=False, null=True)
@@ -66,6 +65,10 @@ class Author(models.Model):
             return _("Please add an image")
 
     img_tag.short_description = _("Image")
+
+
+class Section(models.Model):
+    title = models.CharField(max_length=90, blank=False, null=True)
 
 
 class EssayQuerySet(models.QuerySet):

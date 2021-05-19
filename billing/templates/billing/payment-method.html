@@ -1,40 +1,13 @@
-{% extends 'base.html' %}
 {% load i18n %}
-{#<!-- stripe-payment-form /cdev.main.js -->#}
-{% block title %}{% if request.build_absolute_uri %}{% trans 'Checkout' %}{% else %}{% trans 'Update card' %}{% endif %}{% endblock %}
-{% block content %}
 <div class="max-w-xs mx-auto">
   <h1 class="text-lg text-center font-semibold uppercase">{% trans 'Payment Card' %}</h1>
-  <div id="checkout-btn" class="stripe-payment-form my-4" data-token="{{ publish_key }}" data-next-url="{{ request.build_absolute_uri }}"></div>
+  <div id="card" class="stripe-payment-for my-4" data-token="{{ publish_key }}" data-next-url="{{ next_url }}"></div>
+  <div id="checkout-btn" class="stripe-payment-form my-4" data-token="{{ publish_key }}" data-next-url="{{ next_url }}"></div>
 </div>
-{% include 'billing/stripe-template-form.html' %}
-{% endblock %}
-{% block js %}
-<script type="text/javascript">
-var btn  = document.getElementById("checkout-btn");
-if (btn != null) {
-var pk = btn.data-token
-var stripe = Stripe(pk);
-}
-btn.addEventListener("click", function () {
-  fetch("/create-checkout-session", {
-    method: "POST",
-  })
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (session) {
-    return stripe.redirectToCheckout({ sessionId: session.id });
-  })
-  .then(function (result) {
-    if (result.error) {
-      alert(result.error.message);
-    }
-  })
-  .catch(function (error) {
-    console.error("Error:", error);
-  });
-});
+<script>
+  var stripe = Stripe("{{ publish_key }}");
+  let el = stripe.elements();
+  card = el.create("card");
+  card.mount("#card");
 </script>
-{% endblock %}
-{#<!--// Create an instance of the Stripe object with your publishable API key pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr // If redirectToCheckout fails due to a browser or network error, you should display the localized error message to your customer using error.message. data-btn-title="{ % trans 'Checkout' %}" -->#}
+{% comment %}<!-- cdev.stripe.js -->{% endcomment %}

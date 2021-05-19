@@ -1,5 +1,0 @@
-Hi{% if first_name %} {{ first_name|safe }}{% endif %},
-We have received your email. We are going to contact you as soon as possible.
-
-Thank you
-The Clavem team

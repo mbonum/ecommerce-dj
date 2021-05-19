@@ -16,7 +16,7 @@ from .models import Cart
 
 STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", None)
 STRIPE_PUB_KEY = getattr(
-    settings, "settings.STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
+    settings, "STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
 )
 stripe.api_key = STRIPE_SECRET_KEY
 
@@ -80,15 +80,14 @@ def cart_update(request):
 
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
-    # order_obj = None
+    order_obj = None
     if cart_created or cart_obj.products.count() == 0:
         return redirect("cart:home")
-    user = request.user
     login_form = LoginForm(request=request)
     register_form = RegisterForm()
     address_form = AddressForm()
     billing_address_id = request.session.get("billing_address_id", None)
-    shipping_address_id_required = not cart_obj.is_digital
+    shipping_address_required = not cart_obj.is_digital
     shipping_address_id = request.session.get("shipping_address_id", None)
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(
         request
@@ -97,7 +96,7 @@ def checkout_home(request):
     address_qs = None
     has_card = False
     if billing_profile is not None:
-        if user.is_authenticated:
+        if request.user.is_authenticated:
             address_qs = Address.objects.filter(billing_profile=billing_profile)
         order_obj, order_obj_created = Order.objects.new_or_get(
             billing_profile, cart_obj
@@ -111,41 +110,39 @@ def checkout_home(request):
         if billing_address_id or shipping_address_id:
             order_obj.save()
         has_card = billing_profile.has_card
-    if request.method == "POST":  # 'check that order is done'
-        # if order_obj is not None:
-        is_prepared = order_obj.check_done()
-        if is_prepared:
-            did_charge, crg_msg = billing_profile.charge(order_obj)
-            if did_charge:
-                order_obj.mark_paid()  # like a signal
-                request.session["cart_items"] = 0
-                del request.session["cart_id"]
-                if not billing_profile.user:
-                    billing_profile.set_cards_inactive()
-                return redirect("cart:success")
-            else:
-                return redirect("cart:checkout")
+    if request.method == "POST":  # check that order is done
+        if order_obj is not None:
+            is_prepared = order_obj.check_done()
+            if is_prepared:
+                did_charge, crg_msg = billing_profile.charge(order_obj)
+                if did_charge:
+                    order_obj.mark_paid()
+                    request.session["cart_items"] = 0
+                    del request.session["cart_id"]
+                    if not billing_profile.user:
+                        billing_profile.set_cards_inactive()
+                    return redirect("cart:success")
+                else:
+                    return redirect("cart:checkout")
     context = {
         "object": order_obj,
         "billing_profile": billing_profile,
         "login_form": login_form,
         "register_form": register_form,
         "address_form": address_form,
-        # 'billing_address_form': billing_address_form,# if you change address_form
         "address_qs": address_qs,
         "has_card": has_card,
-        "publish_key": STRIPE_PUB_KEY,
-        "shipping_address_id_required": shipping_address_id_required,
+        "publish_key": settings.STRIPE_PUB_KEY,
+        "shipping_address_required": shipping_address_required,
     }
     return render(request, "carts/checkout.html", context)
 
 
 def checkout_done_view(request):
-    """Show Thank you page and send email"""
     return render(request, "carts/checkout-done.html", {})
 
 
-# import os
+#  import os
 # from flask import Flask, jsonify, request
 # import stripe
 

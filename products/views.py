@@ -12,23 +12,17 @@ from django.shortcuts import redirect, get_object_or_404  # render
 from django.views.generic import DetailView, ListView, View
 from django.utils.translation import gettext_lazy as _
 
-# from analytics.signals import object_viewed_signal
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from orders.models import ProductPurchase
 from .models import Product, ProductFile
 
 
-# class AsyncViewMixin:
-#     async def __call__(self):
-#         return super().__call__(self)
-
-
 class ProductListView(ListView):
     template_name = "products/plist.html"
 
     def get_context_data(self, *args, **kwargs):
-        """Every class-based view has this method"""
+        # Every class-based view has this method
         context = super(ProductListView, self).get_context_data(*args, **kwargs)
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context["cart"] = cart_obj
@@ -41,8 +35,7 @@ class ProductListView(ListView):
 
 # ProductFeaturedListView hide out of stock products
 class DigitalProductListView(ListView):
-    """Show only digital products featured"""
-
+    # Show only digital products featured
     template_name = "products/plist.html"
 
     def get_queryset(self, *args, **kwargs):
@@ -73,13 +66,12 @@ class ProductDetailSlugView(ObjectViewedMixin, DetailView):
         #     qs = Product.objects.filter(slug=slug, active=True)
         #     instance = qs.first()
         # except:
-        #     raise Http404(_("There's a technical problem. We are fixing it."))
+        #     raise Http404(_("There's a problem. We are fixing it."))
         return instance
 
 
 class UserProductHistoryView(LoginRequiredMixin, ListView):
-    """Account -> Digital Library"""
-
+    # Account -> Digital Library
     template_name = "products/user-history.html"
 
     def get_context_data(self, *args, **kwargs):
@@ -90,15 +82,14 @@ class UserProductHistoryView(LoginRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        views = request.user.objectviewed_set.by_model(
-            Product, model_queryset=True
-        )  # [:3] show specific number
+        views = request.user.objectviewed_set.by_model(Product, model_queryset=True)
+        # [:3] show specific number
         return views
 
 
 class ProductDownloadView(View):
     def get(self, request, *args, **kwargs):
-        """Permission checks"""
+        # Permission checks
         slug = kwargs.get("slug")
         _pk = kwargs.get("pk")
         # qs = Product.objects.filter(slug=slug)
@@ -108,7 +99,7 @@ class ProductDownloadView(View):
         # product_obj.get_downloads().filter(pk=_pk)
         downloads_qs = ProductFile.objects.filter(pk=_pk, product__slug=slug)
         if downloads_qs.count() != 1:
-            raise Http404("Product not found, sorry")
+            raise Http404(_("Product not found, sorry"))
         download_obj = downloads_qs.first()
         can_download = False
         user_ready = True
@@ -124,7 +115,7 @@ class ProductDownloadView(View):
             if download_obj.product in purchased_products:
                 can_download = True
         if not can_download or not user_ready:
-            messages.error(request, "You do not have access to download this item")
+            messages.error(request, _("You do not have access to download this item"))
             return redirect(download_obj.get_default_url())
         fileroot = getattr(settings, "PROTECTED_ROOT")
         filepath = download_obj.file.path  # .url /media/

@@ -35,88 +35,6 @@ from .models import EmailActivation
 # RECAPTCHAV3_SECRET = getattr('RECAPTCHAV3_SECRET')
 # CAPTCHA_SECRET = getattr('CAPTCHA_SECRET')VERIFY_URL = settings('VERIFY_URL', 'https://hcaptcha.com/siteverify')
 
-# CLVM = "Clavem"
-
-# passwordless
-# import base64
-# import logging
-# import random
-# import string
-# import time
-
-# import jwt# pip install jwt
-
-
-# class Pypale:
-#     JWT_ALGORITHM = 'HS256'
-#     ENCODING = 'utf8'
-
-#     def __init__(self, token_ttl_minutes: int, base_url: str, secret_key: str,
-#                  token_issue_ttl_seconds: int):
-#         self.token_ttl_minutes = token_ttl_minutes
-#         self.base_url = base_url
-#         self.secret_key = secret_key
-#         self.token_issue_ttl_seconds = token_issue_ttl_seconds
-
-#     def generate_token(self, email: str):#) -> str
-#         return base64.b64encode(
-#             jwt.encode(self.generate_token_metadata(email), self.secret_key,
-#                        algorithm=self.JWT_ALGORITHM)).decode(self.ENCODING)
-
-#     def generate_token_metadata(self, email: str) -> dict:
-#         return {
-#             'sub': email,
-#             'jti': self.one_time_nonce(),
-#             'iat': int(time.time()),
-#             'exp': int(time.time()) + (self.token_ttl_minutes * 60),
-#             'iss': self.base_url
-#         }
-
-#     def one_time_nonce(
-#         self,
-#         size=16,
-#         chars=string.ascii_letters + string.digits + '-') -> str:
-#         return ''.join(random.choice(chars) for _ in range(size))
-
-#     def valid_token(self, return_token: str, return_email: str = '') -> bool:
-#         try:
-#             decoded_return_token = base64.b64decode(return_token).decode(
-#                 self.ENCODING)
-#             token_metadata = jwt.decode(decoded_return_token,
-#                                         self.secret_key,
-#                                         algorithms=[self.JWT_ALGORITHM])
-#             if (token_metadata['iat'] + self.token_issue_ttl_seconds) < int(
-#                     time.time()):
-#                 logging.warning('Token was issued too long ago.')
-#                 return False
-#             elif return_email != '':
-#                 if token_metadata['sub'] != return_email:
-#                     logging.warning('Token is not issued to the right user.')
-#                     return False
-#                 return True
-#             else:
-#                 return True
-#         except Exception as e:
-#             logging.exception(
-#                 f'Raised exception while validating login link: {e}')
-#             return False
-
-# from pypale import Pypale
-# class Pswless(View):
-#     token_ttl_minutes = 14 * 24 * 60 # 2 weeks
-#     token_issue_ttl_seconds = 2 * 60 * 60 # 2 hours
-#     base_url = 'clavem.co'
-#     secret_key = settings('SECRET_KEY')
-
-#     pypale = Pypale(
-#         base_url=base_url,
-#         secret_key=secret_key,
-#         token_ttl_minutes=token_ttl_minutes,
-#         token_issue_ttl_seconds=token_issue_ttl_seconds)
-
-#     email = 'mr.m.bonomi@gmail.com'
-#     token = pypale.generate_token(email)
-#     assert pypale.valid_token(token, email)
 class AccountHomeView(LoginRequiredMixin, DetailView):
     template_name = "accounts/user-home.html"
     key = None
@@ -132,7 +50,6 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 
 class AccountEmailActivateView(FormMixin, View):
     # Send email when user creates an account
-
     success_url = "/login/"
     form_class = ReactivationEmailForm
     key = None
@@ -146,7 +63,7 @@ class AccountEmailActivateView(FormMixin, View):
                 obj = confirm_qs.first()
                 obj.activate()
                 messages.success(
-                    request, "Your email has been confirmed. Please login."
+                    request, _("Your email has been confirmed. Please login.")
                 )
                 return redirect("/login/")
             activated_qs = qs.filter(activated=True)
@@ -205,15 +122,13 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
-
     form_class = LoginForm
     template_name = "accounts/login.html"
-    # success_url = '/'
+    # success_url = "/"
 
     def form_valid(self, form):
         human = True
-        next_path = self.get_next_url()
-        return redirect(next_path)
+        return redirect(self.get_next_url())
 
 
 class RegisterView(CreateView):
@@ -222,16 +137,20 @@ class RegisterView(CreateView):
     # send email link to confirm automatic block if it's not confirmed within 48 hours
     success_url = "/login/"
 
-    def get_success_url(self):
-        return self.get_next_url()
-        # request = self.request
-        # msg = "Thank you to sign up."
-        # messages.success(request, msg)
-        # subject = 'Activate your' + C + ' account'
-        # msg = 'Please confirm your account clicking on the link below. Thanks'
-        # from_email = settings.EMAIL_HOST_USER
-        # to_list = form_class.cleaned_data.get('email')
-        # send_mail(subject, msg, from_email, to_list, fail_silently=True)
+    def form_valid(self, form):
+        human = True
+        return redirect("login")
+
+    # def get_success_url(self):
+    #     return self.get_next_url()
+    # request = self.request
+    # msg = "Thank you to sign up."
+    # messages.success(request, msg)
+    # subject = 'Activate your' + C + ' account'
+    # msg = 'Please confirm your account clicking on the link below. Thanks'
+    # from_email = settings.EMAIL_HOST_USER
+    # to_list = form_class.cleaned_data.get('email')
+    # send_mail(subject, msg, from_email, to_list, fail_silently=True)
 
     # if form.is_valid():
     ##hCaptcha validation
@@ -407,3 +326,84 @@ class RegisterView(CreateView):
 
 #     def form_invalid(self, form):
 #         return redirect(self.default_next)
+
+# passwordless
+# import base64
+# import logging
+# import random
+# import string
+# import time
+
+# import jwt# pip install jwt
+
+
+# class Pypale:
+#     JWT_ALGORITHM = 'HS256'
+#     ENCODING = 'utf8'
+
+#     def __init__(self, token_ttl_minutes: int, base_url: str, secret_key: str,
+#                  token_issue_ttl_seconds: int):
+#         self.token_ttl_minutes = token_ttl_minutes
+#         self.base_url = base_url
+#         self.secret_key = secret_key
+#         self.token_issue_ttl_seconds = token_issue_ttl_seconds
+
+#     def generate_token(self, email: str):#) -> str
+#         return base64.b64encode(
+#             jwt.encode(self.generate_token_metadata(email), self.secret_key,
+#                        algorithm=self.JWT_ALGORITHM)).decode(self.ENCODING)
+
+#     def generate_token_metadata(self, email: str) -> dict:
+#         return {
+#             'sub': email,
+#             'jti': self.one_time_nonce(),
+#             'iat': int(time.time()),
+#             'exp': int(time.time()) + (self.token_ttl_minutes * 60),
+#             'iss': self.base_url
+#         }
+
+#     def one_time_nonce(
+#         self,
+#         size=16,
+#         chars=string.ascii_letters + string.digits + '-') -> str:
+#         return ''.join(random.choice(chars) for _ in range(size))
+
+#     def valid_token(self, return_token: str, return_email: str = '') -> bool:
+#         try:
+#             decoded_return_token = base64.b64decode(return_token).decode(
+#                 self.ENCODING)
+#             token_metadata = jwt.decode(decoded_return_token,
+#                                         self.secret_key,
+#                                         algorithms=[self.JWT_ALGORITHM])
+#             if (token_metadata['iat'] + self.token_issue_ttl_seconds) < int(
+#                     time.time()):
+#                 logging.warning('Token was issued too long ago.')
+#                 return False
+#             elif return_email != '':
+#                 if token_metadata['sub'] != return_email:
+#                     logging.warning('Token is not issued to the right user.')
+#                     return False
+#                 return True
+#             else:
+#                 return True
+#         except Exception as e:
+#             logging.exception(
+#                 f'Raised exception while validating login link: {e}')
+#             return False
+
+# from pypale import Pypale
+# class Pswless(View):
+#     token_ttl_minutes = 14 * 24 * 60 # 2 weeks
+#     token_issue_ttl_seconds = 2 * 60 * 60 # 2 hours
+#     base_url = 'clavem.co'
+#     secret_key = settings('SECRET_KEY')
+
+#     pypale = Pypale(
+#         base_url=base_url,
+#         secret_key=secret_key,
+#         token_ttl_minutes=token_ttl_minutes,
+#         token_issue_ttl_seconds=token_issue_ttl_seconds)
+
+#     email = 'mr.m.bonomi@gmail.com'
+#     token = pypale.generate_token(email)
+#     assert pypale.valid_token(token, email)

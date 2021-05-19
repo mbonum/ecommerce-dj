@@ -60,6 +60,17 @@
       </div>
     </div>
 
+    <div class="wrapper">
+    <details class="toc" open="">
+      <summary class="toc-title">Contents</summary>
+      <ul>
+        {% for s in essay.sections.all %}
+        <li class="toc2"><a href="{{ request.path }}#what-happened-">{{ s }}</a></li>
+        {% endfor %}
+      </ul>
+    </details>
+    </div>
+
     {% if essay.abstract %}
     <div class="py-4 px-8 border-t-2 border-b border-gray-500 mt-3 mb-8 mx-auto">
       <p class="text-lg text-justify hyphens list-inside">{{ essay.abstract|safe }}</p>
@@ -161,26 +172,26 @@
     </div>
   </div>
   {% endif %}
-    <!--{% comment %} if there are too many comments add slider if notes.has_other_pages %}
-    { % if notes.has_previous %}
-    { % endif %}
+{% comment %}<!-- if there are too many comments add slider if notes.has_other_pages %}
+{ % if notes.has_previous %}
+{ % endif %}
 
-    { % endif % }
-    { % for num in notes.paginator.page_range % }
-    { % endfor % }
+{ % endif % }
+{ % for num in notes.paginator.page_range % }
+{ % endfor % }
 
-    { % if notes.number == 1 % }
-    { % endif {% endcomment %}-->
-    <div class="font-c-sans pt-1 mt-2">
-      <form id="id_note_form" method="POST"> {% csrf_token %}
-        {{ form.parent }}
-        {{ form.body }}
-        <div class="text-right items-center space-x-1 my-3"><span class="text-xs" data-tippy-content="Anonym">{% trans 'Check to show your name' %}</span> {{ form.private }}</div>
-        <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit" data-tippy-content="{% trans 'Are you adding value to the Conversation?' %}">
-          <p class="text-center text-sm inline-flex items-center">{% trans 'Share' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg></p>
-        </button>
-      </form>
-    </div>
+{ % if notes.number == 1 % }
+{ % endif -->{% endcomment %}
+  <div class="font-c-sans pt-1 mt-2">
+    <form id="id_note_form" method="POST"> {% csrf_token %}
+      {{ form.parent }}
+      {{ form.body }}
+      <div class="text-right items-center space-x-1 my-3"><span class="text-xs" data-tippy-content="Anonym">{% trans 'Check to show your name' %}</span> {{ form.private }}</div>
+      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit" data-tippy-content="{% trans 'Are you adding value to the Conversation?' %}">
+        <p class="text-center text-sm inline-flex items-center">{% trans 'Share' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg></p>
+      </button>
+    </form>
+  </div>
   {% else %}
   <div class="font-c-sans text-center">
     <p>{% trans 'Eager to share your thoughts?' %}</p>

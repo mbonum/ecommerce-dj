@@ -7,11 +7,13 @@ from django.utils.translation import gettext_lazy as _
 
 USER = settings.AUTH_USER_MODEL
 
-STRIPE_SECRET_KEY = settings.STRIPE_SECRET_KEY
-STRIPE_PUB_KEY = getattr(
-    settings, "STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
-)
-stripe.api_key = STRIPE_SECRET_KEY
+# STRIPE_SECRET_KEY = getattr(
+#     settings, "STRIPE_SECRET_KEY", None
+# )
+# # STRIPE_PUB_KEY = getattr(
+# #     settings, "STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
+# # )
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class BillingProfileManager(models.Manager):
@@ -30,13 +32,8 @@ class BillingProfileManager(models.Manager):
 
 
 class BillingProfile(models.Model):
-    """
-    email@domain.com -> can have 1000 billing profiles
-    user email@domain.com -> can only have 1 billing profile
-    """
-    # id = models.AutoField(primary_key=True)
     user = models.OneToOneField(USER, null=True, blank=True, on_delete=models.CASCADE)
-    email = models.EmailField()  # redundant - it's already in user
+    email = models.EmailField()  # it's already in user
     active = models.BooleanField(default=True)
     update = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
@@ -58,8 +55,7 @@ class BillingProfile(models.Model):
 
     @property
     def has_card(self):
-        instance = self
-        card_qs = instance.get_cards()
+        card_qs = self.get_cards()
         return card_qs.exists()
 
     @property
@@ -115,7 +111,6 @@ class CardManager(models.Manager):
 
 
 class Card(models.Model):
-    # id = models.AutoField(primary_key=True)
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=120)
     brand = models.CharField(max_length=120, null=True, blank=True)
@@ -178,7 +173,6 @@ class ChargeManager(models.Manager):
 
 
 class Charge(models.Model):
-    # id = models.AutoField(primary_key=True)
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=120)
     paid = models.BooleanField(default=False)

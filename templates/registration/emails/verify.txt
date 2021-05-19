@@ -1,7 +1,10 @@
-Hi,
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}Hi{% if first_name %} {{ first_name }}{% endif %},{% endblocktrans %}
 
-Please activate your {{ com }} account by clicking <a href="{{ path }}">here</a>.
+{% trans "Please activate your {{ com }} account by clicking here:" %} {{ path }}.
 
-Thanks for your registration {{ first_name }},
+{% trans "Thanks for joining us," %}
 
-The {{ com }} team
+{% blocktrans %}The {{ com }} team{% endblocktrans %}
+
+{% endautoescape %}

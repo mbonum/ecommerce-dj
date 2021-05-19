@@ -1,18 +1,16 @@
-"""
-/cart/checkout/
-"""
+"""/cart/checkout/"""
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import Address
 
-
+# border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mb-3 rounded-lg shadow placeholder-gray-900
 class AddressForm(forms.ModelForm):
     street = forms.CharField(
         label=_("Street"),
         widget=forms.TextInput(
             attrs={
                 "placeholder": "3 Main St.",
-                "class": "m-auto flex border border-gray-300 focus:outline-none focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mb-3 rounded shadow placeholder-gray-900",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -21,7 +19,7 @@ class AddressForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "placeholder": _("City"),
-                "class": "m-auto flex border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mb-3 rounded shadow placeholder-gray-900",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -30,7 +28,7 @@ class AddressForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "placeholder": _("State"),
-                "class": "m-auto flex border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mb-3 rounded shadow placeholder-gray-900",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -39,7 +37,7 @@ class AddressForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "placeholder": _("Country"),
-                "class": "m-auto flex border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mb-3 rounded shadow placeholder-gray-900",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -48,7 +46,7 @@ class AddressForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "placeholder": _("Postal code"),
-                "class": "m-auto flex border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 rounded shadow placeholder-gray-900",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -61,4 +59,4 @@ class AddressForm(forms.ModelForm):
             "state",
             "country",
             "postal_code",
-        )  # 'billing_profile', 'address_type', 'address_line_1', 'line_2',
+        )  # "billing_profile", 'address_type', 'address_line_1', 'line_2',

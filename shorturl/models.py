@@ -41,8 +41,8 @@ class ClUrl(models.Model):
     objects = ClUrlManager()
 
     class Meta:
-        verbose_name = _("Clavem short URL")
-        verbose_name_plural = _("Clavem short URLs")
+        verbose_name = _("Clvm short URL")
+        verbose_name_plural = _("Clvm short URLs")
         ordering = ["-updated"]
 
     def __str__(self):

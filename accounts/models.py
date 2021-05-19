@@ -28,8 +28,8 @@ from core.utils import unique_key_generator
 
 # send_mail(subject, message, from_email, recipient_list, html_message) random_string_generator,
 
-DEFAULT_ACTIVATION_DAYS = getattr(settings, "DEFAULT_ACTIVATION_DAYS", 7)
-C = getattr(settings, "ENV_NAME", "Clavem")
+# DEFAULT_ACTIVATION_DAYS = getattr(settings, "DEFAULT_ACTIVATION_DAYS", 7)
+# CLVM = getattr(settings, "ENV_NAME", "Clavem")
 
 # CURRENCIES = [
 #     ('€', 'EUR'),
@@ -44,9 +44,7 @@ class CurrencyType(models.TextChoices):
 
 
 class UserManager(BaseUserManager):
-    """
-    Creates and saves a User with the given email and password.
-    """
+    # Create and save a User with email and password
 
     def create_user(
         self, email, password=None, fn=None, **kwargs
@@ -90,7 +88,7 @@ class UserManager(BaseUserManager):
             raise ValueError("Forgot to set is_active=True")
         if kwargs.get("is_staff") is False:
             raise ValueError("Forgot to set is_active=True")
-        if kwargs.get("is_superuser") is False:# remove
+        if kwargs.get("is_superuser") is False:  # remove
             raise ValueError("Forgot to set is_superuser=True")
         return self.create_user(email, password, first_name, **kwargs)
 
@@ -174,12 +172,14 @@ class EmailActivationQuerySet(models.query.QuerySet):
     def confirmable(self):
         # Does the object have a timestamp
         now = timezone.now()
-        start_range = now - timedelta(days=DEFAULT_ACTIVATION_DAYS)
+        start_range = now - timedelta(
+            days=getattr(settings, "DEFAULT_ACTIVATION_DAYS", 7)
+        )
         end_range = now
         # activated = False
         # forced_expired = False
         return self.filter(activated=False, forced_expired=False).filter(
-            timestamp__gt=start_range, # greater
+            timestamp__gt=start_range,  # greater
             timestamp__lte=end_range,  # less or equal
         )
 
@@ -250,19 +250,21 @@ class EmailActivation(models.Model):
                 path = f"{base_url}/{key_path}"  #'{base}{path}'.format(base=base_url, path=key_path)
                 context = {"path": path, "email": self.email}
                 subject = (
-                    "Activate your " + C + " account"
+                    "Activate your "
+                    + getattr(settings, "ENV_NAME", "Clavem")
+                    + " account"
                 )  # (expire in 1 week) Verify Email
-                txt_ = get_template("registration/emails/verify.txt").render(context)
+                msg = get_template("registration/emails/verify.txt").render(context)
                 from_email = settings.DEFAULT_FROM_EMAIL
                 recipient_list = [self.email]
-                html_ = get_template("registration/emails/verify.html").render(context)
-                sent_mail = send_mail(  ### [Errno 101] Network is unreachable
+                html = get_template("registration/emails/verify.html").render(context)
+                sent_mail = send_mail(
                     subject,
-                    txt_,  # message
+                    msg,
                     from_email,
                     recipient_list,
-                    html_message=html_,
-                    fail_silently=False,  # change to True in production
+                    html_message=html,
+                    fail_silently=True,
                 )
                 return sent_mail
             return False
@@ -282,7 +284,7 @@ def post_save_user_create_receiver(sender, instance, created, *args, **kwargs):
 
     if created:
         obj = EmailActivation.objects.create(user=instance, email=instance.email)
-        obj.send_activation()  #[Errno 101] Network is unreachable
+        obj.send_activation()  # [Errno 101] Network is unreachable
 
 
 post_save.connect(post_save_user_create_receiver, sender=CUser)

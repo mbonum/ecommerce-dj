@@ -43,20 +43,19 @@ from django.utils.translation import gettext_lazy as _
 #     #     pass
 
 
-def send_contact_email(first_name, email, subject, textarea):
-    # print("**** ", kwargs.get("first_name"))
+def send_contact_email(**kwargs):
+    # print("**** ", kwargs.get("first_name"))first_name, email, subject, text
+    email = kwargs.get("email")
     context = {
         # "message_type": kwargs.get("message_type"),
-        "first_name": first_name,
+        "first_name": kwargs.get("first_name"),
         # "last_name": kwargs.get("last_name" or None),
         "email": email,
-        "subject": subject,  # kwargs.get("subject"),
-        "textarea": textarea,  # kwargs.get("textarea"),
+        "subject": kwargs.get("subject"),
+        "textarea": kwargs.get("text"),
         # "postal_code": kwargs.get("postal_code"),
     }
-    subject = (
-        "Thank you for contacting Clvm"  # + getattr(settings, "ENV_NAME", "Clavem")
-    )
+    subject = _("Thank you for contacting " + getattr(settings, "ENV_NAME", "Clavem"))
     body = render_to_string("email_msg.txt", context)
     email = EmailMessage(
         subject,
@@ -65,7 +64,7 @@ def send_contact_email(first_name, email, subject, textarea):
         [
             email,
         ],
-        # reply_to=[kwargs.get("email")],
+        # reply_to=[email],
         # headers={"Message-ID": make_msgid()},
     )
     return email.send(fail_silently=False)

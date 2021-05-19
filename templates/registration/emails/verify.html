@@ -1,9 +1,24 @@
-<p>Hi{% if first_name %} {{ first_name }}{% endif %},</p>
-
-<p>Please activate your {% if first_name %} {{ com }} {% endif %}account by clicking <a href="{{ path }}">here</a></p>
-
-<!--{#for {{ email }} <p>Once you activate, you can login.</p> Team#}-->
-
-<p>Thank you,</p>
-
-<p>The {{ com }} team</p>
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/c-custom.min.css' %}" media="screen,projection">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="screen,projection">
+  <title>Document</title>
+</head>
+<body>
+  <div class="font-c-sans text-lg">
+    <div class="my-6">
+      <svg class="mx-auto animate-pulse s fill-current w-24 h-24"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    </div>
+    <p>{% trans 'Hi' %}{% if first_name %} {{ first_name }}{% endif %},</p>
+    <p>{% blocktrans %}Please activate your Clavem account by clicking' %} <a class="border border-gray-300 rounded-lg p-2" href="{{ path }}">here</a>.{% endblocktrans %}</p>
+    {#<!--Once you activate, you can login.</p> Team-->#}
+    <p>{% trans 'Thank you' %},</p>
+    <p>The Clavem team</p>
+  </div>
+</body>
+</html>

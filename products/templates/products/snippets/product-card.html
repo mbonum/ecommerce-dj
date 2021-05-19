@@ -18,17 +18,17 @@
       {% elif 'ebook' in object.product_type %}
       <input type="button" value="🕮" data-tippy-content="{{ object.product_type }}" class="inline-flex bg-white">
       {% elif 'physical' in object.product_type %}
-      <input type="button" value="🚚" data-tippy-content="{% trans 'Delivery' %}" class="inline-flex bg-white">
+      <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="inline-flex bg-white">
       {% endif %}
     </div>
     <div class="text-xs pt-1">
     <p class="">{{ object.description|safe|truncatewords_html:6 }}</p>
     </div>
-    {% comment %} <table class="text-gray-700 mx-aut mt-3">
+    {% comment %}<!--<table class="text-gray-700 mx-aut mt-3">
       <thead>
         <tr class="">
-          <td scope="col" class="text-black pr-4">{{ object.name_product }}</td>
-          <td>{% include 'carts/snippets/currency.html' %}{{ object.price }}</td>
+          <td scope="col" class="text-black pr-4">{ { object.name_product }}</td>
+          <td>{ % include 'carts/snippets/currency.html' %}{{ object.price }}</td>
         </tr>
       </thead>
       <tbody class="mt-1">
@@ -47,7 +47,7 @@
           </td>
         </tr>
       </tbody>
-    </table> {% endcomment %}
+    </table>-->{% endcomment %}
   </a>
 </div>
 {% endspaceless %}

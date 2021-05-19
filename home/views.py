@@ -1,8 +1,8 @@
 # import os
 # from mimetypes import guess_type
 # from wsgiref.util import FileWrapper
-from core.utils import unique_slug_generator
-from django.conf import settings
+# from core.utils import unique_slug_generator
+# from django.conf import settings
 
 # from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.messages.views import SuccessMessageMixin
@@ -15,7 +15,7 @@ from django.views.generic import CreateView  # FormView
 from django.views.generic.edit import FormView  # get_language, activate
 
 from .forms import ContactForm
-from .models import Contact, Cookie, Donate, Message, Page, Privacy, Terms, Trademark
+from .models import Cookie, Donate, Page, Privacy, Terms, Trademark
 
 # from core.utils import render_to_pdf
 
@@ -55,51 +55,51 @@ class ContactView(FormView):
     template_name = "home/contact.html"
     form_class = ContactForm
 
-    def form_valid(self, form):
-        # form.send_email() # celery, rabbitmq docs
-        fn = self.cleaned_data["first_name"]
-        e = self.cleaned_data["email"]
-        context = {
-            # "message_type": kwargs.get("message_type"),
-            "first_name": fn,
-            # "last_name": kwargs.get("last_name" or None),
-            "email": e,
-            # "subject": self.cleaned_data["subject"],
-            # "textarea": self.cleaned_data["textarea"],
-            # "postal_code": kwargs.get("postal_code"),
-        }
-        subject = "Thank you for contacting " + getattr(settings, "ENV_NAME", "Clavem")
-        body = render_to_string("email_msg.txt", context)
-        email = EmailMessage(
-            subject,
-            body,
-            getattr(settings, EMAIL_HOST_USER, "support@clavem.co"),
-            [e],
-            # reply_to=[kwargs.get("email")],
-            headers={"Message-ID": make_msgid()},
-        )
-        email.send(fail_silently=False)
-        # msg = "Thank you for contacting us. We will answer you as soon as humanly possible."
-        return render(
-            request,
-            "home/room.html",
-            {
-                "room": unique_slug_generator(fn),
-                "username": unique_slug_generator(fn),
-                "messages": self.cleaned_data["textarea"],
-            },
-        )
+    # def form_valid(self, form):
+    #     # form.send_email() # celery, rabbitmq docs
+    #     fn = self.cleaned_data["first_name"]
+    #     e = self.cleaned_data["email"]
+    #     context = {
+    #         # "message_type": kwargs.get("message_type"),
+    #         "first_name": fn,
+    #         # "last_name": kwargs.get("last_name" or None),
+    #         "email": e,
+    #         # "subject": self.cleaned_data["subject"],
+    #         # "textarea": self.cleaned_data["textarea"],
+    #         # "postal_code": kwargs.get("postal_code"),
+    #     }
+    #     subject = "Thank you for contacting " + getattr(settings, "ENV_NAME", "Clavem")
+    #     body = render_to_string("email_msg.txt", context)
+    #     email = EmailMessage(
+    #         subject,
+    #         body,
+    #         getattr(settings, EMAIL_HOST_USER, "support@clavem.co"),
+    #         [e],
+    #         # reply_to=[kwargs.get("email")],
+    #         headers={"Message-ID": make_msgid()},
+    #     )
+    #     email.send(fail_silently=False)
+    #     # msg = "Thank you for contacting us. We will answer you as soon as humanly possible."
+    #     return render(
+    #         request,
+    #         "home/room.html",
+    #         {
+    #             "room": unique_slug_generator(fn),
+    #             "username": unique_slug_generator(fn),
+    #             "messages": self.cleaned_data["textarea"],
+    #         },
+    #     )
         # render(request, "carts/checkout-done.html", {})
+def contact(request):
+    form_class = ContactForm#(request.POST or None)
 
-
-def room(request, room):
-    # name =   #"You" request.GET.get("username", "You")
-    messages = Message.objects.filter(room=room)[0:25]
-    return render(
-        request,
-        "home/room.html",
-        {"room": room, "messages": messages},  # "username": name,
-    )
+    # if form_class.is_valid():
+    #     fn = form_class["first_name"]
+    #     ln = form_class["last_name"]
+    #     print("*** ", fn)
+    # else:
+    #     return HttpResponse("Not valid")
+    return render(request, 'home/contact.html', {"form": form_class})
 
 
 # def contact_page(request):

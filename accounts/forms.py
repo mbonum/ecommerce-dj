@@ -29,11 +29,11 @@ class CustomCaptchaTextInput(CaptchaTextInput):
 class ReactivationEmailForm(forms.Form):
 
     email = forms.EmailField(
-        label="",
+        label="Email",
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
-                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 my-3 rounded shadow placeholder-gray-600",
+                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 my-3 rounded-lg shadow placeholder-gray-600",
             }
         ),
     )
@@ -53,13 +53,12 @@ class ReactivationEmailForm(forms.Form):
 
 
 class UserAdminCreationForm(forms.ModelForm):
-
     password = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "",
-                "class": "border border-gray-500 py-1 px-1 rounded shadow placeholder-gray-800",
+                "class": "border border-gray-500 py-1 px-1 rounded-lg shadow placeholder-gray-800",
                 "autocomplete": "current-password",
                 "autofocus": True,
             }
@@ -90,24 +89,23 @@ class UserAdminCreationForm(forms.ModelForm):
 
 
 class UserDetailChangeForm(forms.ModelForm):
-
     first_name = forms.CharField(
-        label="",
+        label="First name",
         required=False,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "First name",
-                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 rounded shadow placeholder-gray-600",
+                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 rounded-lg shadow placeholder-gray-600",
             }
         ),
     )
     last_name = forms.CharField(
-        label="",
+        label="Last name",
         required=False,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Last name",
-                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 mt-3 rounded shadow placeholder-gray-600",
+                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 mt-3 rounded-lg shadow placeholder-gray-600",
             }
         ),
     )
@@ -118,7 +116,6 @@ class UserDetailChangeForm(forms.ModelForm):
 
 
 class UserAdminChangeForm(forms.ModelForm):
-
     password = ReadOnlyPasswordHashField()
 
     class Meta:
@@ -139,24 +136,23 @@ class UserAdminChangeForm(forms.ModelForm):
 
 
 class RegisterForm(forms.ModelForm):
-
     email = forms.EmailField(
-        label="",
+        label="Email",
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
-                "class": "w-full flex border border-gray-300 py-1 px-2 rounded shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
     password = forms.CharField(
-        label="",
+        label="Password",
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Password",
                 "autocomplete": "current-password",
                 "autofocus": True,
-                "class": "w-full flex border border-gray-300 py-1 px-2 my-3 rounded shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )  # 'data-toggle': 'password,' strip=False
@@ -208,29 +204,28 @@ class RegisterForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-
     email = forms.EmailField(
-        label=" ",
+        label="Email",
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
-                "class": "w-full flex border border-gray-300 py-1 px-2 rounded shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
     password = forms.CharField(
-        label="",
+        label="Password",
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Password",
-                "class": "w-full flex border border-gray-300 py-1 px-2 rounded shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
                 "autocomplete": "current-password",
                 "autofocus": True,
             }
         ),
     )  # 'autocomplete': 'off', 'data-toggle': 'password'
     captcha = CaptchaField(widget=CustomCaptchaTextInput)
-    # captcha = ReCaptchaField(label='', widget=ReCaptchaV3)
+    # ReCaptchaField(label='', widget=ReCaptchaV3)
 
     def __init__(self, request, *args, **kwargs):
         self.request = request

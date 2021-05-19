@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}Address{% if object_list.count > 1%}es{% endif %}{% endblock %}
+{% block content %}
+<div class="font-c-sans max-w-xs mx-auto">
+  <div class="text-center border- border-gray-30">
+    <h1 class="text-xl font-semibold pb- mb-4">Address{% if object_list.count > 1%}es{% endif %}</h1>
+  </div>
+  <div class="mb-7">
+    {% for obj in object_list %}
+    <div class="bg-white border border-gray-300 rounded-lg p-2 mt-3">
+      <div class="pl-1">
+        <p>Address used for: <b>{{ obj.get_address_type_display }}</b></p>
+        {{ obj.get_address|linebreaks }}
+      </div>
+      <a href="{% url 'address:address-update' pk=obj.id %}" class="text-yellow-500 hover:text-yellow-600 font-semibold hover:border-yellow-500 focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 border border-transparent hover:border-yellow-400 focus:ring-offset-transparent focus:ring-offset-2 mt-2 p-1">{% trans 'Edit' %}</a>
+    </div>
+    {% endfor %}
+  </div>
+  <a href="{{ address_create }}" class="bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'Add new' %}</a>
+</div>
+{% endblock %}

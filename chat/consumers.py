@@ -14,23 +14,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         # self.channel_name=pointer to the channel layer instance and the channel name that will reach the consumer
         await self.accept()
+
         # Send message when a user connects
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "opener",
-                "opener": "Hi, please save in bookmarks this page if you want to contact us directly.",
-                "clvm": "CLVM",
-            },
-        )
+    #     await self.channel_layer.group_send(
+    #         self.room_group_name,
+    #         {
+    #             "type": "opener",
+    #             "opener": "Hi, please save in bookmarks this page if you want to contact us directly.",
+    #             "clvm": "CLVM",
+    #         },
+    #     )
 
-    async def opener(self, event):
-        message = event["opener"]
-        username = event["clvm"]
+    # async def opener(self, event):
+    #     message = event["opener"]
+    #     username = event["clvm"]
 
-        await self.send(
-            text_data=json.dumps({"opener": message, "clvm": username})
-        )
+    #     await self.send(
+    #         text_data=json.dumps({"opener": message, "clvm": username})
+    #     )
 
     async def disconnect(self, close_code):
         # Leave room
@@ -48,17 +49,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send message to room, "username": username
         await self.channel_layer.group_send(
             self.room_group_name,
-            {"type": "chat_message", "message": message},
+            {"type": "chat_message", "message": message, "username": username},
         )
 
     # Receive message from room
     async def chat_message(self, event):
         message = event["message"]
-        # username = event["username"], "username": username
+        username = event["username"]
 
         await self.send(
             text_data=json.dumps(
-                {"type": "chat_message", "message": message}
+                {"message": message, "username": username}  # "type": "chat_message",
             )
         )
 

@@ -4,8 +4,7 @@ from .models import BillingProfile, Card, Charge
 
 
 class BillingProfileAdmin(admin.ModelAdmin):
-
-    readonly_fields = ("user", "customer_id", "active")
+    readonly_fields = ("user", "email", "customer_id", "active")
     list_filter = ("active",)  # list_display
 
 

@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 {% block title %}{% trans 'Account' %}{% endblock %}
-<!--{# <a class="list-group-item" href="{{  }}">Address</a> #}-->
 {% block content %}
 <div class="font-c-sans px-4 md:px-8 max-w-lg mx-auto">
-  <div class="block md:text-cente border-b border-gray-300 pb-3">
+  <div class="block border-b border-gray-300 pb-3">
     <h1 class="text-xl font-semibold">
       {% if request.user.first_name %}{% trans 'Settings of ' %}{{ request.user.first_name }}{% else %}{% trans 'Settings' %} 
       {% endif %}</h1>
@@ -15,6 +14,7 @@
       <p class="font-semibold mb-1">{% trans 'Billing' %}</p>
       <p><a class="un text-gray-800 hover:text-black focus:outline-none" href="{{ order_url }}">{% trans 'Orders' %}</a></p>
       <p><a class="un text-gray-800 hover:text-black focus:outline-none" href="{{ billing_url }}">{% trans 'Payment method' %}</a></p>
+      <p><a class="un text-gray-800 hover:text-black focus:outline-non" href="{{ addresses }}">Address</a></p>
     </div>
     <div class="md:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 sm:mr-4 lg:mr-5">
       <p class="font-semibold mb-1">{% trans 'Support' %}</p>
@@ -22,8 +22,8 @@
     </div>
     <div class="md:inline-block border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 sm:mr-4 lg:mr-5">
       <p class="font-semibold mb-1">{% trans 'Account details' %}</p>
-      <a class="un text-gray-800 hover:text-black focus:outline-none" href="{{ usr_update_url }}">{% trans 'Update profile' %}</a></p>
-      <a class="un text-gray-800 hover:text-black focus:outline-none" href="{{ psw_change_url }}">{% trans 'Change password' %}</a></p>
+      <p><a class="un text-gray-800 hover:text-black focus:outline-none" href="{{ usr_update_url }}">{% trans 'Update profile' %}</a></p>
+      <p><a class="un text-gray-800 hover:text-black focus:outline-none" href="{{ psw_change_url }}">{% trans 'Change password' %}</a></p>
     </div>
     <div class="align-top md:inline-block border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-4 sm:mr-4 lg:mr-5">
       <p class="font-semibold mb-1">{% trans 'Preferences' %}</p>

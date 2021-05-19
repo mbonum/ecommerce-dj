@@ -1,6 +1,6 @@
 """
-https://docs.djangoproject.com/en/3.1/ref/settings/
-https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+https://docs.djangoproject.com/en/3.2/ref/settings/
+https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 """
 
 import os
@@ -20,8 +20,8 @@ DEFAULT_CHARSET = "utf-8"
 VERSION = 1
 
 ENV_NAME = "Clavem"
-BASE_URL = "www.clavem.co:8000"
-# http://www. 127.0.0.1 mgbonum.com
+BASE_URL = "http://www.clavem.co:8000"
+# http://www. mgbonum.com
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 PROJECT_DIR = Path(__file__).resolve(strict=True)
@@ -71,8 +71,9 @@ INSTALLED_APPS = [
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
     "django_celery_beat",
     "django_celery_results",
-    # "embed_video",
     "channels",
+    "sslserver",
+    # "embed_video",
     # "blacklist",
     #'pwa',# https://github.com/silviolleite/django-pwa
     # 'xicon',# https://pypi.org/project/django-xicon
@@ -80,8 +81,6 @@ INSTALLED_APPS = [
     # 'allauth.account',
     # 'allauth.socialaccount',
     # 'allauth.socialaccount.providers.github',
-    # 'rest_framework',
-    # 'rest_framework.authtoken',
     # 'rest_auth',# pip install django-rest-auth
     # 'rest_auth.registration',# pip install django-registration
     # 'django_otp',
@@ -90,9 +89,9 @@ INSTALLED_APPS = [
     # 'allauth_2fa',
     # 'pagedown.apps.PagedownConfig',
     # 'django.contrib.flatpages',
-    # 'rest_framework',
-    # 'rest_framework.authtoken',
-    # 'drfpasswordless',
+    "rest_framework",
+    "rest_framework.authtoken",
+    "drfpasswordless",
     # 'letsencrypt',#django-
     # https://django-simple-history.readthedocs.io/en/latest/quick_start.html
     # https://django-authority.readthedocs.io/en/latest/installation/
@@ -107,10 +106,22 @@ INSTALLED_APPS = [
     # 'crispy_forms',# https://pypi.org/project/django-crispy-forms/
     # 'webpack_loader',
 ]
+
 # GRAPH_MODELS = {
 #     "all_applications": True,
 #     "group_models": True,
 # }
+# https://pypi.org/project/drfpasswordless/
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    )
+}
+PASSWORDLESS_AUTH = {
+    "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # , "MOBILE"
+    "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@clavem.co",
+    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "mytemplate.html",
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -149,17 +160,6 @@ CACHES = {
 # HITCOUNT_EXCLUDE_USER_GROUP = ('ADMINS',)# not used
 # HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES':
-#     ('rest_framework.authentication.TokenAuthentication',)
-# }
-
-# PASSWORDLESS_AUTH = {
-#     'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],#https://pypi.org/project/drfpasswordless/ , 'MOBILE'
-#     'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@clavem.co',
-#     'PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME': '/path/template-token-login.html'
-# }
-
 MIDDLEWARE = [
     # "django_hosts.middleware.HostsRequestMiddleware",  # https://pypi.org/project/django-hosts/
     "django.middleware.security.SecurityMiddleware",
@@ -196,7 +196,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
 #     )  # https://pypi.org/project/django-debug-toolbar/
 # 'silk.middleware.SilkyMiddleware'
 # MIDDLEWARE += 'django.middleware.common.BrokenLinkEmailsMiddleware'
-# # https://docs.djangoproject.com/en/3.1/howto/error-reporting/
+# # https://docs.djangoproject.com/en/3.2/howto/error-reporting/
 
 ROOT_URLCONF = "core.urls"
 ROOT_HOSTCONF = "core.hosts"
@@ -237,6 +237,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
+MAX_ACTIVE_TASKS = 2
 
 CHANNEL_LAYERS = {
     "default": {
@@ -294,7 +295,7 @@ DATABASES = {
 # DATABASES["default"].update(DB_FROM_ENV)
 # DATABASES["default"]["CONN_MAX_AGE"] = 500
 
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -351,13 +352,13 @@ TIME_ZONE = "UTC"
 USE_TZ = True  # set dynamic time according to geolocalization
 DATE_INPUT_FORMATS = [
     "%Y-%m-%d %H:%M"
-]  # https://docs.djangoproject.com/en/3.1/ref/settings/#date-input-formats
+]  # https://docs.djangoproject.com/en/3.2/ref/settings/#date-input-formats
 USE_I18N = True
 USE_L10N = False
 
 LOCALE_PATHS = (BASE_DIR / "locale",)
 
-# Static files (CSS, JavaScript, Images) https://docs.djangoproject.com/en/3.1/howto/static-files/
+# Static files (CSS, JavaScript, Images) https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_URL = "/static/"
 
 STATIC_ROOT = (
@@ -428,7 +429,6 @@ CAPTCHA_NOISE_FUNCTIONS = ("captcha.helpers.noise_dots",)
 # django.registration accounts/models EmailActivationQuerySet
 ACCOUNT_ACTIVATION_DAYS = 7  # the user has 1 week to activate the account
 
-# Django-REST-Framework
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': [
 #         # 'rest_framework.authentication.BasicAuthentication',
@@ -442,7 +442,6 @@ ACCOUNT_ACTIVATION_DAYS = 7  # the user has 1 week to activate the account
 #     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 #     # 'PAGE_SIZE': 2
 # }
-
 
 # NEWSLETTER_CONFIRM_EMAIL = True# https://django-newsletter.readthedocs.io/en/latest/settings.html
 
@@ -558,7 +557,7 @@ META_SITE_NAME = ENV_NAME
 
 # django_heroku.settings(locals(), staticfiles=False)
 
-# https://docs.djangoproject.com/en/3.1/topics/i18n/# Add Chinese, Espanol
+# https://docs.djangoproject.com/en/3.2/topics/i18n/# Add Chinese, Espanol
 LANGUAGE_CODE = "en"  # -us
 LANGUAGES = (
     ("en", _("English")),

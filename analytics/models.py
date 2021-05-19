@@ -32,7 +32,6 @@ class ClickEventManager(models.Manager):
 
 
 class ClickEvent(models.Model):
-    # id = models.AutoField(primary_key=True)
     cl_url = models.OneToOneField(ClUrl, on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=0)
     updated = models.DateTimeField(auto_now=True)
@@ -69,15 +68,10 @@ class ObjectViewedManager(models.Manager):
 
 
 class ObjectViewed(models.Model):
-    """
-    User instance.id Product, Order, Cart, Address
-    """
-
-    # id = models.AutoField(primary_key=True)
     user = models.ForeignKey(USER, blank=True, null=True, on_delete=models.CASCADE)
     ip_address = models.CharField(max_length=45, blank=True, null=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True)
-    object_id = models.PositiveIntegerField()  # User id, Product id, etc.
+    object_id = models.PositiveIntegerField()  # User id, Product id, Order, Cart, Address etc.
     content_object = GenericForeignKey("content_type", "object_id")  # Product instance
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
 
@@ -97,22 +91,22 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     user = None
     if request.user.is_authenticated:
         user = request.user
-    new_view_obj = ObjectViewed.objects.create(
-        user=user,
-        content_type=c_type,
-        object_id=instance.id,
-        ip_address=get_client_ip(request),
-    )
+    if not ObjectViewed.objects.filter(user=user, content_type=c_type, object_id=instance.id).exists():
+        new_view_obj = ObjectViewed.objects.create(
+            user=user,
+            content_type=c_type,
+            object_id=instance.id,
+            ip_address=get_client_ip(request),
+        )
 
 
 OBJECT_VIEWED_SIGNAL.connect(object_viewed_receiver)
 
 
 class UserSession(models.Model):
-    # id = models.AutoField(primary_key=True)
     user = models.ForeignKey(USER, blank=True, null=True, on_delete=models.CASCADE)
     ip_address = models.CharField(max_length=45, blank=True, null=True)
-    session_key = models.CharField(max_length=50, blank=True, null=True)  # min 50
+    session_key = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     active = models.BooleanField(default=True)
     ended = models.BooleanField(default=False)

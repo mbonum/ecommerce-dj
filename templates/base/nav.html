@@ -1,14 +1,4 @@
 {% load i18n static %}
-{% comment %}<!--<script>
-  var pathname = window.location.pathname;
-  if (pathname.indexOf('/read/') > -1) {
-    document.getElementById('#edu').classList.remove('hidden')
-  }//edu.style.display = "block" else { edu.style.display = "none"}
-</script>
-title="Latin for key" <svg class="sm:mr-3 w-8 h-8 fill-current"><use xlink:href="{ % static 'img/svg-defs.svg' %}#clogo"></use><span x-show="!open" class="hidden sm:block">{ { com }}</span>
-<svg x-show="open" class="fill-current w-8 h-8"><use xlink:href="{ % static 'img/svg-defs.svg' %}#menu"></use></svg> class="fill-current w-4 h-4" <span style="font-size: .7rem;">Menu</span>{ % if request.path == edu_url %}nav-el nav-link dot{ % endif %} {% include 'base/snippets/brandredirect.html' with c=url brandurl=brand_url %}
-bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-500 from-brilliant-rose-500 to-danube-500 text-gradient bg-gradient-to-r 
-var c = document.getElementById("c").value;-->{% endcomment %}
 <header :class="{ 'max-h-full': open === 'false' }" class="md:sticky top-0 z-40 bg-gray-a font-c-sans shadow-md">
   <div x-data="{ open: false }" class="max-w-xs md:max-w-2xl lg:max-w-3xl xl:max-w-5xl mx-auto md:flex items-center justify-between text-gray-300 px-5 md:px-0 pt-2 lg:pt-1 pb-1">
 
@@ -16,9 +6,7 @@ var c = document.getElementById("c").value;-->{% endcomment %}
       <a oncontextmenu="mark();" class="hover:text-white uppercas inline-flex items-center focus:outline-none overflow-hidden mx-auto" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
         <svg class="uppercase w-40 h-10 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
       </a>
-
       {% include 'base/snippets/brandredirect.html' with url=request.url brand_url=brand_url %}
-
       <button @click="open=!open" class="hover:text-white text-center focus:outline-none overflow-hidden items-center md:hidden" type="button">
         <svg class="fill-current mx-auto w-4 h-4">
           <use x-show="open" xlink:href="{% static 'img/svg-defs.svg' %}#o"></use>
@@ -77,3 +65,13 @@ var c = document.getElementById("c").value;-->{% endcomment %}
     </nav>
   </div>
 </header>
+{% comment %}<!--<script>
+  var pathname = window.location.pathname;
+  if (pathname.indexOf('/read/') > -1) {
+    document.getElementById('#edu').classList.remove('hidden')
+  }//edu.style.display = "block" else { edu.style.display = "none"}
+</script>
+title="Latin for key" <svg class="sm:mr-3 w-8 h-8 fill-current"><use xlink:href="{ % static 'img/svg-defs.svg' %}#clogo"></use><span x-show="!open" class="hidden sm:block">{ { com }}</span>
+<svg x-show="open" class="fill-current w-8 h-8"><use xlink:href="{ % static 'img/svg-defs.svg' %}#menu"></use></svg> class="fill-current w-4 h-4" <span style="font-size: .7rem;">Menu</span>{ % if request.path == edu_url %}nav-el nav-link dot{ % endif %} {% include 'base/snippets/brandredirect.html' with c=url brandurl=brand_url %}
+bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-500 from-brilliant-rose-500 to-danube-500 text-gradient bg-gradient-to-r 
+var c = document.getElementById("c").value;-->{% endcomment %}

@@ -6,9 +6,9 @@
       <a id="rem" class="un text-gray-800 text-s hover:text-black rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" href="{{ essays_url }}why-clavem-exists/" >{% trans 'Purpose' %}</a>
           <div id="p-tip" class="hidden">
             <div class="text-center font-c-sans text-sm mx-auto p-2">
-            <h4 class="font-semibold">{{ com }} {% trans 'oath' %}</h4>
-            <p>{% trans 'Know your reason of existence. Know your limit.' %}</p>
-            <p class="text-left pt-1">{% trans "The project will become 100% open source & non-profit once" %} {{ com }}'s {% trans "long-term stakeholders will become self-sustainable." %}</p>
+            <h4 class="font-semibold">{% blocktrans %}{{ com }} oath</h4>
+            <p>Know your reason of existence. Know your limit.</p>
+            <p class="text-left pt-1">The project will become 100% open source & non-profit once {{ com }} long-term stakeholders will become self-sustainable.{% endblocktrans %}</p>
           </div>
         </div>
       </div>
@@ -68,11 +68,11 @@
       <div class="text-gray-700 text-sm inline-flex space-x- items-center pt-3">
       {% if request.path != home_url %}
       <a class="hidden md:block hover:text-black rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ essays_url }}why-clavem-exists/">
-        <svg class="w-6 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+        <svg class="w-6 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
       </a>
       {% endif %}
       <input type="hidden" name="y" id="y" value="{{ current_year }}">
-      <p>
+      <p class="ml-1">
         {{ com }} <span class="mr-1">©</span><span data-tippy-content="© 2021" class="font-c" id="year"></span>.
         {% trans 'All rights reserved.' %}
       </p>

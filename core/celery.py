@@ -1,5 +1,5 @@
 # https://docs.celeryproject.org/en/latest/django/first-steps-with-django.html#using-celery-with-django
-# open new terminal and run: celery -A core worker -l info
+# on a new bash: celery -A core worker -l info
 from __future__ import absolute_import, unicode_literals
 
 import os

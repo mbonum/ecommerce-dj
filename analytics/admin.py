@@ -8,12 +8,12 @@ class ClickEventAdmin(admin.ModelAdmin):
 
 
 class ObjectViewedAdmin(admin.ModelAdmin):
-    list_display = ("user", "content_object", "ip_address", "created_at")
+    readonly_fields = ("user", "ip_address", "content_type", "object_id", "content_object", "created_at")
     list_filter = ("created_at",)
 
 
 class UserSessionAdmin(admin.ModelAdmin):
-    list_display = ("user", "ip_address", "created_at")
+    readonly_fields = ("user", "session_key", "ip_address", "created_at")
     list_filter = ("active",)
 
 

@@ -1,4 +1,4 @@
-<!--{# load crispy_forms_tags #}-->
+{#<!-- cart -> checkout a class="text-black" href="{{ cookie_url }}" target="_blank" title="Your rights">Cookie</a>,-->#}
 <div class="mt-2">
   <form method="POST" action="{% if 'action_url' %}{{ action_url }}{% else %}{{ login_url }}{% endif %}"> {% csrf_token %}
     {% if next_url %}
@@ -6,9 +6,7 @@
     {% endif %}
     <div class="my-6">{{ form.email }}</div>
     <div class="relative" x-data="{ show: true }">
-      <input :type="show ? 'password' : 'text'" {{ form.password }} <button @click="show = !show"
-        class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none"
-        type="button">
+      <input :type="show ? 'password' : 'text'" {{ form.password }} <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
       <span x-show="show">Show</span>
       <span x-show="!show">Hide</span>
       </button>
@@ -19,12 +17,10 @@
     <button type="submit" class="w-full text-sm border-4 bg-yellow-500 border-yellow-500 hover:bg-yellow-600 hover:border-yellow-600 text-white py-1 px-2 rounded font-semibol">Enter</button>
     {% else %}
     <p class="text-xs text-gray-800 m-4 article mx-auto">Registering you accept our
-      <!--{#g-recaptcha uppercase <a class="text-black" href="{{ cookie_url }}" target="_blank" title="Your rights">Cookie</a>,#}-->
       <a class="text-black focus:outline-none" href="{{ privacy_url }}" target="_blank" data-tippy-content="Your rights">Privacy</a>, and
-      <a class="text-black focus:outline-none focus:shadow-outline" href="{{ terms_url }}" target="_blank" data-tippy-content="{{ com }}'s rights">Terms</a> policies.
+      <a class="text-black focus:outline-none" href="{{ terms_url }}" target="_blank" data-tippy-content="{{ com }}'s rights">Terms</a> policies.
     </p>
-<!--{#<p w-3/4 class="text-xs m-4">Registering you accept our <a class="text-blue-600 un" href="{{ privacy_url }}" target="_blank">Privacy Policy</a> and<a class="text-blue-600 un" href="{{ terms_url }}" target="_blank">Terms & Conditions</a></p>|crispy include 'accounts/snippets/captcha.html' #}-->
-    
+{#<!-- include 'accounts/snippets/captcha.html' #}-->
     {% endif %}
     </div>
   </form>

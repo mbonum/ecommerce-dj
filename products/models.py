@@ -105,7 +105,6 @@ class ProductType(models.TextChoices):
 
 
 class Category(models.Model):
-    # id = models.AutoField(primary_key=True)
     name = models.CharField(_("Name"), max_length=255, db_index=True)
     slug = models.SlugField(blank=True, null=True, unique=True)
 
@@ -117,7 +116,6 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    # id = models.AutoField(primary_key=True)
     index = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         blank=False,
@@ -155,7 +153,7 @@ class Product(models.Model):
         default=99.99,
         validators=[MinValueValidator(0)],
         help_text="EUR",
-    )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')
+    )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')# IntegerField(default=9999)#cents
     # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.CASCADE)
     img = models.ImageField(
         _("Image"), upload_to=product_img_path, blank=True, null=True
@@ -199,15 +197,18 @@ class Product(models.Model):
         # namespace[in mgb/urls]:name[in app-name/urls]
         return reverse("products:detail", kwargs={"slug": self.slug})
 
-    def get_downloads(self):
-        qs = self.productfile_set.all()
-        return qs
+    # def display_price(self):
+    #     return "{0:.2f}".format(self.price / 100)
 
     def rangeqty(self):
         q = []
         if not self.is_digital and self.quantity > 1:
             q = list(range(1, self.quantity + 1))
         return q
+
+    def get_downloads(self):
+        qs = self.productfile_set.all()
+        return qs
 
     @property
     def name(self):

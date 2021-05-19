@@ -12,8 +12,8 @@ $(document).ready(function () {
   var stripeTemplateHtml = stripeTemplate.render(stripeTemplateDataContext)
   stripeFormModule.html(stripeTemplateHtml)
 
-  // https secure site when live
-  var paymentForm = $(".payment-form")
+  // https in production
+  var paymentForm = $("#payment-form")
   if (paymentForm.length > 1) {
     alert("Only One payment form is allowed per page")
     paymentForm.css("display", "none")
@@ -33,7 +33,7 @@ $(document).ready(function () {
     var style = {
       base: {
         color: "#32325d",
-        lineHeight: "18px",//
+        // lineHeight: "18px",//
         fontFamily: "'Helvetica Neue,' Helvetica, sans-serif",
         fontSmoothing: "antialiased",
         fontSize: "16px",
@@ -47,8 +47,8 @@ $(document).ready(function () {
       }
     };
 
-    // Create an instance of the card Element.
-    var card = elements.create("card", { style: style });
+    // Create an instance of the card Element., { style: style }
+    var card = elements.create("card");
 
     // Add an instance of the card Element into the `card-element` <div>.
     card.mount("#card-element");
@@ -86,7 +86,6 @@ $(document).ready(function () {
     // });
     // });
 
-    // jQuery
     var form = $("#payment-form");
     var btnLoad = form.find(".btn-load")
     var btnLoadDefaultHtml = btnLoad.html()
@@ -167,7 +166,7 @@ $(document).ready(function () {
         url: paymentTokenMethodEndpoint,
         method: "POST",
         success: function (data) {
-          var successMsg = data.message || "Great! Your card has been added. Thank you!"
+          var successMsg = data.message || "Great! Your card has been added. Thank you"
           card.clear()
           if (nextUrl) {
             successMsg = successMsg + "<span class='text-gray-600'><svg class='w-4 h-4 fill-current mr-1' viewBox='0 0 1792 1792' xmlns='https://www.w3.org/2000/svg' aria-hidden='true'><path d='M526 1394q0 53-37.5 90.5T398 1522q-52 0-90-38t-38-90q0-53 37.5-90.5T398 1266t90.5 37.5T526 1394zm498 206q0 53-37.5 90.5T896 1728t-90.5-37.5T768 1600t37.5-90.5T896 1472t90.5 37.5 37.5 90.5zM320 896q0 53-37.5 90.5T192 1024t-90.5-37.5T64 896t37.5-90.5T192 768t90.5 37.5T320 896zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5T1266 1394t37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zM558 398q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5T1600 1024t-90.5-37.5T1472 896t37.5-90.5T1600 768t90.5 37.5T1728 896zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136T896 0t136 56 56 136zm530 206q0 93-66 158.5T1394 622q-93 0-158.5-65.5T1170 398q0-92 65.5-158t158.5-66q92 0 158 66t66 158z'/></svg>  Redirecting...</span>"
@@ -179,7 +178,7 @@ $(document).ready(function () {
           }
           btnLoad.html(btnLoadDefaultHtml)
           btnLoad.attr("class", btnLoadDefaultClasses)
-          redirectToNext(nextUrl, 1500)
+          redirectToNext(nextUrl, 999)
         },
         error: function (error) {
           $.alert({ title: "We're sorry, an error occured", content: "Please reload the page and try again. If the error persists please contact us." })
@@ -190,3 +189,195 @@ $(document).ready(function () {
     }
   }
 })
+// $(document).ready(function(){
+//   var stripeFormModule = $(".stripe-payment-form")
+//   var stripeModuleToken = stripeFormModule.attr("data-token")
+//   var stripeModuleNextUrl = stripeFormModule.attr("data-next-url")
+//   var stripeModuleBtnTitle = stripeFormModule.attr("data-btn-title") || "Add card"
+
+//   var stripeTemplate = $.templates("#stripeTemplate")
+//   var stripeTemplateDataContext = {
+//       publishKey: stripeModuleToken,
+//       nextUrl: stripeModuleNextUrl,
+//       btnTitle: stripeModuleBtnTitle
+//   }
+//   var stripeTemplateHtml = stripeTemplate.render(stripeTemplateDataContext)
+//   stripeFormModule.html(stripeTemplateHtml)
+
+//   // https secure site when live
+//   var paymentForm = $(".payment-form")
+//   if(paymentForm.length > 1){
+//       alert('Only One payment form is allowed per page')
+//       paymentForm.css('display', 'none')
+//   }
+//   else if(paymentForm.length == 1){
+//       var pubKey = paymentForm.attr('data-token')
+//       var nextUrl = paymentForm.attr('data-next-url')
+
+//       // Create a Stripe client. {{ publish_key }}
+//       var stripe = Stripe(pubKey); 
+
+//       // Create an instance of Elements.
+//       var elements = stripe.elements();
+
+//       // Custom styling can be passed to options when creating an Element.
+//       // (Note that this demo uses a wider set of styles than the guide below.)
+//       var style = {
+//       base: {
+//           color: '#32325d',
+//           lineHeight: '18px',
+//           fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+//           fontSmoothing: 'antialiased',
+//           fontSize: '16px',
+//           '::placeholder': {
+//           color: '#aab7c4'
+//           }
+//       },
+//       invalid: {
+//           color: '#fa755a',
+//           iconColor: '#fa755a'
+//       }
+//       };
+
+//       // Create an instance of the card Element.
+//       var card = elements.create('card', {style: style});
+
+//       // Add an instance of the card Element into the `card-element` <div>.
+//       card.mount('#card-element');
+
+//       // Handle real-time validation errors from the card Element.
+//       card.addEventListener('change', function(event) {
+//       var displayError = document.getElementById('card-errors');
+//       if (event.error) {
+//           displayError.textContent = event.error.message;
+//       } else {
+//           displayError.textContent = '';
+//       }
+//       });
+
+//       // Handle form submission.
+//       // var form = document.getElementById('payment-form');
+//       // form.addEventListener('submit', function(event) {
+//       // event.preventDefault();
+
+//       // var loadTime = 1500
+//       // var errorHtml = "<i class='fas fa-exclamation-triangle'></i> An error occured"
+//       // var errorClasses = "btn btn-danger disabled my-3"
+//       // var loadingHtml = "<i class='fas fa-spinner'></i> Loading..."
+//       // var loadingClasses = "btn btn-success disabled my-3"
+
+//       // stripe.createToken(card).then(function(result) {
+//       //     if (result.error) {
+//       //     // Inform the user if there was an error.
+//       //     var errorElement = document.getElementById('card-errors');
+//       //     errorElement.textContent = result.error.message;
+//       //     } else {
+//       //     // Send the token to your server.
+//       //     stripeTokenHandler(result.token);
+//       //     }
+//       // });
+//       // });
+      
+//       var form = $('#payment-form');
+//       var btnLoad = form.find('.btn-load')
+//       var btnLoadDefaultHtml = btnLoad.html()
+//       var btnLoadDefaultClasses = btnLoad.attr("class")
+
+//       form.on('submit', function(event) {
+//           event.preventDefault();
+//           var $this = $(this)
+//           // btnLoad = $this.find('.btn-load')
+//           btnLoad.blur()
+//           var loadTime = 1000
+//           var currentTimeout; 
+//           var errorHtml = "<i class='fas fa-exclamation-triangle'></i> An error occured"
+//           var errorClasses = "btn btn-danger disabled my-3"
+//           var loadingHtml = "<i class='fas fa-spinner'></i> Loading..."
+//           var loadingClasses = "btn btn-success disabled my-3"
+
+//           stripe.createToken(card).then(function(result) {
+//               if (result.error) {
+//               // Inform the user if there was an error.
+//               var errorElement = $('#card-errors');
+//               errorElement.textContent = result.error.message;
+//               currentTimeout = displayBtnStatus(
+//                               btnLoad,
+//                               errorHtml,
+//                               errorClasses,
+//                               1000,
+//                               currentTimeout
+//                               )
+//               } else {
+//               // Send the token to your server.
+//               currentTimeout = displayBtnStatus(
+//                   btnLoad,
+//                   loadingHtml,
+//                   loadingClasses,
+//                   1000,
+//                   currentTimeout
+//                   )
+//               stripeTokenHandler(result.token);
+//               }
+//           });
+//       });
+
+//       function displayBtnStatus(element, newHtml, newClasses, loadTime, timeout){
+//           // if (timeout){
+//           //     clearTimeout(timeout)
+//           // }
+//           if (!loadTime){
+//               loadTime = 1500
+//           }
+//           // var defaultHtml = element.html
+//           // var defaultClasses = element.attr("class")
+//           element.html(newHtml)
+//           element.removeClass(btnLoadDefaultClasses)
+//           element.addClass(newClasses)
+//           return setTimeout(function(){
+//               element.html(btnLoadDefaultHtml)
+//               element.removeClass(newClasses)
+//               element.addClass(btnLoadDefaultClasses)
+//           }, loadTime)
+//       }
+
+//       function redirectToNext(next_path, timeoffset){
+//           if (next_path){
+//               setTimeout(function(){
+//                   window.location.href = nextUrl
+//               }, timeoffset) 
+//           }
+//       }
+//       // Submit the form with the token ID.
+//       function stripeTokenHandler(token) {
+//       var paymentTokenMethodEndpoint = '/billing/payment-method/create/'
+//       var data = {
+//               'token': token.id
+//       }
+//       $.ajax({
+//           data: data,
+//           url: paymentTokenMethodEndpoint,
+//           method: "POST",
+//           success: function(data){
+//               var successMsg = data.message || "Success! Your card was added."
+//               card.clear()
+//               if(nextUrl){
+//                   successMsg = successMsg + "<br/><br/><i class='fas fa-spinner'></i> Redirecting..."
+//               }
+//               if ($.alert){
+//                   $.alert(successMsg)
+//               } else {
+//                   alert(successMsg)
+//               }
+//               btnLoad.html(btnLoadDefaultHtml)
+//               btnLoad.attr('class', btnLoadDefaultClasses)
+//               redirectToNext(nextUrl, 1500)
+//           },
+//           error: function(error){
+//               $.alert({title: 'An error occured', content:'Please add your card again.'})  
+//               btnLoad.html(btnLoadDefaultHtml)
+//               btnLoad.attr('class', btnLoadDefaultClasses)
+//           }
+//       })
+//       }
+//   }
+// })

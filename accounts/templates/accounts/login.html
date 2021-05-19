@@ -2,14 +2,13 @@
 {% load i18n static %}
 {% block title %}{% trans 'Log in' %}{% endblock %}
 {% block content %}
-<div x-data="{ click: false }" class="mx-10 mb-6">
-  <div class="text-sm m-1 mb-4">
-    <p>{% trans "Don't have a" %} {{ com }} {% trans "account?" %}</p> <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1">{% trans 'Sign Vp' %}</a>
-  </div>
+<div x-data="{ click: false }" class="mx-10 my-6">
   <form method="POST"> {% csrf_token %}
     <div class="mb-6">
+      <div class="text-gray-700 m-1">{{ form.email.label }}</div>
       {{ form.email }}
     </div>
+    <div class="text-gray-700 m-1">{{ form.password.label }}</div>
     <div class="relative" x-data="{ show: true }">
       <input :type="show ? 'password' : 'text'" {{ form.password }}
       <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
@@ -17,17 +16,20 @@
       <span x-show="!show">{% trans 'Hide' %}</span>
       </button>
     </div>
-    <div class="mr-1 my-2">
-      <a class="text-xs un text-gray-800 hover:text-black focus:outline-none leading-none" href="{{ psw_reset_url }}">{% trans 'Forgot password?' %}</a>
+    <div class="m-1 my-2">
+      <a class="text-sm un text-gray-800 hover:text-black focus:outline-none leading-none" href="{{ psw_reset_url }}">{% trans 'Forgot password?' %}</a>
     </div>
     {{ form.captcha }}
-
-    <button class="mt-4 w-full text-sm bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" type="submit" id="log">{% trans 'Continue' %}</button>
+    <button class="mt-4 w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" type="submit" id="log">{% trans 'Continue' %}</button>
   </form>
-  
+  <div class="m-1 mt-6">
+    <p>{% trans "New to" %} {{ com }}?
+      <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1">{% trans 'Sign Vp' %}</a>
+    </p>
+  </div>
 </div>
 {% endblock%}
-{% comment %} <form class="max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10">
+{% comment %}<!-- <form class="max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10">
 <h2 class="text-2xl font-bold text-center">Login</h2>
 <div class="outline relative border-2 focus-within:border-blue-500">
   <input type="text" name="username" placeholder=" " class="block p-4 w-full text-lg appearance-none focus:outline-none bg-transparent" />
@@ -58,4 +60,4 @@ stay sign in for a week passwordless login
 </script><svg class="fill-current h-4 w-4" data-tippy-content="Show" viewbox="0 0 576 512">
   <use x-show="show" xlink:href="{% static 'img/svg-defs.svg' %}#show-psw"></use>
   <use x-show="!show" xlink:href="{% static 'img/svg-defs.svg' %}#!show-psw"></use>
-</svg>{% endcomment %}
+</svg> -->{% endcomment %}

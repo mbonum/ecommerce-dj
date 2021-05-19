@@ -65,7 +65,7 @@ class OrderManagerQueryset(models.query.QuerySet):
         return self.filter(updated_at__gte=start_date).filter(updated_at__lte=end_date)
 
     def by_date(self):
-        """Sales in the last 15 days"""
+        # Sales in the last 15 days
         now = timezone.now() - datetime.timedelta(days=15)
         return self.filter(update_at__day__gte=now.day)  # month__gte=now.month
 
@@ -119,7 +119,6 @@ class OrderManager(models.Manager):
 
 
 class Order(models.Model):
-    # id = models.AutoField(primary_key=True)
     order_id = models.CharField(
         max_length=90, blank=False, null=False
     )  # unique random id: AB383C
@@ -169,7 +168,7 @@ class Order(models.Model):
         return reverse("orders:detail", kwargs={"order_id": self.order_id})
 
     def get_status(self):
-        """Only for non-digital products"""
+        # Only for non-digital products
         if self.status == OrderStatus.REFUNDED:
             return _("Refunded order")
         elif self.status == OrderStatus.SHIPPED:
@@ -177,7 +176,7 @@ class Order(models.Model):
         return _("Shipping Soon")
 
     def update_total(self):
-        """Add quantity"""
+        # Add quantity
         cart_total = self.cart.total
         shipping_total = self.shipping_total
         new_total = fsum([cart_total, shipping_total])
@@ -187,9 +186,8 @@ class Order(models.Model):
         return new_total
 
     def check_done(self):
-        shipping_address_required = (
-            not self.cart.is_digital
-        )  # if digital product no shipment
+        shipping_address_required = not self.cart.is_digital
+        # if digital no shipment
         shipping_done = False
         if shipping_address_required and self.shipping_address:
             shipping_done = True
@@ -234,12 +232,10 @@ pre_save.connect(pre_save_create_order_id, sender=Order)
 
 
 def post_save_cart_total(sender, instance, created, *args, **kwargs):
-    """The signal post is activated once the user clicks on save"""
+    # The post signal is activated once the user clicks on save
     if not created:
-        cart_obj = instance
-        # cart_total = cart_obj.total
-        cart_id = cart_obj.id
-        qs = Order.objects.filter(cart__id=cart_id)
+        # cart_total = instance.total
+        qs = Order.objects.filter(cart__id=instance.id)
         if qs.count() == 1:
             order_obj = qs.first()
             order_obj.update_total()
@@ -293,9 +289,7 @@ class ProductPurchaseManager(models.Manager):
 
 
 class ProductPurchase(models.Model):
-    """billing_profile.productpurchase_set.all()"""
-
-    # id = models.AutoField(primary_key=True)
+    # billing_profile.productpurchase_set.all()
     order_id = models.CharField(max_length=120)
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

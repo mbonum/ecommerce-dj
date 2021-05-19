@@ -1,0 +1,7 @@
+Hi{% if first_name %} {{ first_name }}{% endif %},
+
+Please activate your Clavem account by clicking <a href="{{ path }}">here</a>.
+
+Thanks for joining us,
+
+The Clavem team

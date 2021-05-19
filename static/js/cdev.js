@@ -139,10 +139,11 @@ $(document).ready(function () {
         } else {
           submitSpan.html(`<button type="submit" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><svg class="fill-current w-4 h-4 mr-2" aria-labelledby="title" preserveAspectRatio="xMidYMid meet" title="cart" id="cart" viewBox="0 0 21 21"><path d="M16.2 14.919H7.837l-.827-2.884 10.158-.746 1.9-7.063H4.783l-.051-.192C4.035 1.557 3.741.418 1.163.162A.815.815 0 1 0 1 1.784c1.73.172 1.793 1.38 2.162 2.694l3.3 11.506a1.694 1.694 0 1 0 .285.939 1.63 1.63 0 0 0-.042-.374h8.106a1.722 1.722 0 0 0-.044.386 1.688 1.688 0 0 0 1.689 1.691 1.776 1.776 0 0 0 1.692-1.788 1.905 1.905 0 0 0-1.948-1.919z"></path></svg>Buy</button>`)
         }
+        document.getElementById("qty-id").innerHTML = $('#qty-id option:selected').text();
         var navbarCount = $(".navbar-cart-count")
         navbarCount.text(data.cartItemCount)
         var currentPath = window.location.href
-        if (currentPath.indexOf("cart") = -1) {
+        if (currentPath.indexOf("cart") = 0) {
           refreshCart()
         }
       },
@@ -171,8 +172,8 @@ $(document).ready(function () {
         if (data.products.length > 0) {
           productRows.html(" ")
           i = data.products.length
-          var qty = $('#qty_id option:selected').text()
-          var currency = data.currency
+          var qty = $('#qty-id option:selected').text();
+          var currency = data.currency;
           if (currency == "USD") { currency = "$" } else { currency = "€" }
           $.each(data.products, function (_index, value) {
             var newCartItemRemove = hiddenCartItemRemoveForm.clone()

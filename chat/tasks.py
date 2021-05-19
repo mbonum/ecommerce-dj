@@ -14,15 +14,15 @@ logger = get_task_logger(__name__)
 
 
 @shared_task(name="send_contact_email_task")
-def send_email_task(first_name, email, subject, text_area):
+def send_email_task(first_name, email, subject, text):
     logger.info("Sent contact form email")
-    return send_contact_email(first_name, email, subject, text_area)
+    return send_contact_email(first_name, email, subject, text)
     # kwargs.get("message_type"),**kwargs
     # kwargs.get("first_name"),
     # kwargs.get("last_name"),
     # kwargs.get("email"),
     # kwargs.get("subject"),
-    # kwargs.get("text_area"),
+    # kwargs.get("text"),
     # kwargs.get("postal_code"),
 
 
