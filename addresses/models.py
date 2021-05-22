@@ -1,5 +1,6 @@
 from billing.models import BillingProfile
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
@@ -7,11 +8,14 @@ class AddressType(models.TextChoices):
     BILLING = "B", _("Billing")
     SHIPPING = "S", _("Shipping")
 
+
 # Check whether the address exists before adding it
 class Address(models.Model):
     # User addresses to use for shipping physical products
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
-    address_type = models.CharField(max_length=9, choices=AddressType.choices, default=AddressType.BILLING)
+    address_type = models.CharField(
+        max_length=9, choices=AddressType.choices, default=AddressType.BILLING
+    )
     street = models.CharField(max_length=240)  # , null=True, blank=True
     # address_line_2 = models.CharField(max_length=90, null=True, blank=True)#apartment, suite or space number
     city = models.CharField(max_length=240)
@@ -32,4 +36,7 @@ class Address(models.Model):
         if self.state:
             address += self.state + "\n"
         address += self.postal_code + " " + self.country
-        return address  #f"{self.street}\n {self.city}\n {self.state}\n {self.postal_code}\n {self.country}"
+        return address  # f"{self.street}\n {self.city}\n {self.state}\n {self.postal_code}\n {self.country}"
+
+    def get_absolute_url(self):
+        return reverse("address:address-update", kwargs={"pk": self.id})

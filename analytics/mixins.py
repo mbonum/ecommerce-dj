@@ -1,6 +1,3 @@
-"""
-Mixins are methods to use in other classes
-"""
 from .signals import OBJECT_VIEWED_SIGNAL
 
 

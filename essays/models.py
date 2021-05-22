@@ -127,8 +127,12 @@ class Essay(ModelMeta, models.Model):
         Member, on_delete=models.CASCADE, blank=True, null=True, related_name="C_team"
     )
     author = models.ForeignKey(
-        Author, on_delete=models.CASCADE, blank=True, null=True
-    )  # 'Independent author',
+        Author,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        help_text=_("Independent author"),
+    )
     audio = models.FileField(
         upload_to=essay_media_path, blank=True, null=True, help_text=_("Record reading")
     )
@@ -167,7 +171,7 @@ class Essay(ModelMeta, models.Model):
     def image_tag(self):
         if self.img:
             return mark_safe(
-                f'<img src="{self.img.url}" style="width:60px; height:60px;" />'
+                f'<img src="{self.img.url}" style="width:60px; height:60px;">'
             )
         else:
             return _("Please add an image")
@@ -175,8 +179,8 @@ class Essay(ModelMeta, models.Model):
     image_tag.short_description = _("Image")
 
     def get_absolute_url(self):
-        """Get the essay through its slug"""
-        return reverse("essay:detail", kwargs={"slug": self.slug})
+        # Get the essay through its slug
+        return reverse("read:detail", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         # self.slug = slugify(self.name) author is a member of the team or independent

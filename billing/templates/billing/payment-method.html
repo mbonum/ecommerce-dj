@@ -1,13 +1,6 @@
 {% load i18n %}
 <div class="max-w-xs mx-auto">
-  <h1 class="text-lg text-center font-semibold uppercase">{% trans 'Payment Card' %}</h1>
-  <div id="card" class="stripe-payment-for my-4" data-token="{{ publish_key }}" data-next-url="{{ next_url }}"></div>
-  <div id="checkout-btn" class="stripe-payment-form my-4" data-token="{{ publish_key }}" data-next-url="{{ next_url }}"></div>
+  <h1 class="text-xl text-center font-semibold pb-2">{% trans 'Payment Card' %}</h1>
+  <div class="stripe-payment-form mt-6" data-token="{{ publish_key }}" data-next-url="{% if next_url %}{{ next_url }}{% endif %}" data-btn-title="Add card 💳"></div>
 </div>
-<script>
-  var stripe = Stripe("{{ publish_key }}");
-  let el = stripe.elements();
-  card = el.create("card");
-  card.mount("#card");
-</script>
-{% comment %}<!-- cdev.stripe.js -->{% endcomment %}
+{#<!-- id="checkout-btn" cdev.stripe.js -->#}

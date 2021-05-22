@@ -4,7 +4,6 @@
 <script rel="preload" type="text/javascript" src="{% static 'js/jsrender-1.0.11.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'js/marked.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'jq-confirm/jquery-confirm.min.js' %}"></script>
-
 <script rel="preload" type="text/javascript" src="{% static 'js/alpine.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'js/popper-2.9.1.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'cookieconsent/cookieconsent.min.js' %}"></script>
@@ -14,7 +13,8 @@
 {% if cart_url in request.path %}
 <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 <script src="https://js.stripe.com/v3/"></script>
-<!-- <script rel="preload" type="text/javascript" src="{ % static 'js/cdev.stripe.js' %}"></script> -->
+<script rel="preload" type="text/javascript" src="{% static 'js/cdev.stripe.js' %}"></script>
+{% include 'billing/stripe-template.html' %}
 {% endif %}
 {% compress js %}
 <script rel="preload" type="text/javascript" src="{% static 'js/csrf.ajax.js' %}"></script>

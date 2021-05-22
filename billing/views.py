@@ -6,6 +6,7 @@ from django.utils.http import is_safe_url
 from django.utils.translation import gettext_lazy as _
 
 from .models import BillingProfile, Card  # , CardManager
+
 # getattr(settings, "STRIPE_SECRET_KEY", "sk_test_SY6ETmVlRlazamotRhz8pS7p00PDpyHd5l")
 # STRIPE_PUB_KEY = getattr(
 #     settings, "STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
@@ -17,7 +18,7 @@ def payment_method_view(request):
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(
         request
     )
-    print("*** ", settings.STRIPE_PUB_KEY, billing_profile)
+    # print("*** ", settings.STRIPE_PUB_KEY, billing_profile)
     # if request.user.is_authenticated:
     #     billing_profile = request.user.billingprofile
     #     customer_id = billing_profile.customer_id
@@ -41,11 +42,15 @@ def payment_method_createview(request):
             request
         )
         if not billing_profile:
-            return HttpResponse({"message": msg}, status_code=401)#"message": "Cannot find this user"}, status_code=401)
+            return HttpResponse(
+                msg, status=401
+            )  # {"message": msg}"message": "Cannot find this user"}
 
         # cdev.stripe.js function stripeTokenHandler
         token = request.POST.get("token")
         if token is not None:
             new_card_obj = Card.objects.add_new(billing_profile, token)
-        return JsonResponse({"message": _("Great! Your card has been added. Thank you!")})
-    return HttpResponse({"message": msg}, status_code=401)#("error", status_code=401)
+        return JsonResponse(
+            {"message": _("Great! Your card has been added. Thank you!")}
+        )
+    return HttpResponse(msg, status=401)  # "error" {"message": msg}

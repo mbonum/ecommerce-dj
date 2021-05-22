@@ -14,7 +14,6 @@ def member_image_path(self, filename):
 
 
 class Member(models.Model):
-    # id = models.AutoField(primary_key=True)
     index = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         blank=False,
@@ -46,7 +45,7 @@ class Member(models.Model):
     def img_tag(self):
         if self.img:
             return mark_safe(
-                f'<img src="{self.img.url}" style="width:60px; height:60px;"/>'
+                f'<img src="{self.img.url}" style="width:60px; height:60px;">'
             )
         else:
             return _("Please add image")
@@ -54,6 +53,5 @@ class Member(models.Model):
     img_tag.short_description = _("Pic")
 
     def get_absolute_url(self):
-        return reverse(
-            "team:detail", kwargs={"slug": self.slug}
-        )  # kwargs={'id': self.id})# Get member using its id
+        return reverse("team:detail", kwargs={"slug": self.slug})
+        # kwargs={'id': self.id})# Get member using its id

@@ -160,7 +160,7 @@ class GenerateEssayPDF(View):
 
 
 def author_view(request, slug: str):
-    """Open independent author's bio page"""
+    # Open independent author's bio page
     author = Author.objects.get(slug=slug)
     context = {
         "member": author,

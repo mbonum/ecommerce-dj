@@ -1,16 +1,16 @@
-{% if warnings %}
+{% if messages %}
 <div class="flex p-4 text-center">
   <div class="flex justify-between w-full">
-    {% for m in warnings %}
-    <span {% if message.tags %} class="{{ m.tags }} pb-2" {% endif %}>
+    {% for m in messages %}
+    <span{% if m.tags %} class="{{ m.tags }} pb-2"{% endif %}>
       {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-      {{ m }}
+      {{ m }}<br/>
     </span>
     {% endfor %}
   </div>
 </div>
 {% endif %}
-{% comment %}<!--messages if (tweeted || facebooked) {
+{% comment %}<!-- warnings %} if (tweeted || facebooked) {
   gratitude += 1;
 }
 if (githubStarred) {
@@ -18,4 +18,4 @@ if (githubStarred) {
 } else {
   $('we').say('ok');
 } <div class="text-sm text-grey"><span class="rounded-full">x</span></div>
-alert alert-success messages<div class="h-6 w-6 text-white bg-green-dark rounded-full flex justify-center items-center"><i class="material-icons">done</i></div>-->{% endcomment %}
+<div class="h-6 w-6 text-white bg-green-dark rounded-full flex justify-center items-center">-->{% endcomment %}

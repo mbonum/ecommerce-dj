@@ -2,7 +2,6 @@
 
 
 # def get_client_location(request):
-
 #     g = GeoIP()
 #     ip = get_client_ip(request)
 #     if ip:
