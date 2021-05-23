@@ -1,0 +1,13 @@
+# https://securitytxt.org/
+
+# Our security address
+Contact: mailto:security@clavem.co
+
+# Our OpenPGP key
+Encryption: https://clavem.co/pgp-key.txt
+
+# Our security policy
+Policy: https://www.clavem.co/security-policy.html
+
+# Our security acknowledgements page
+Acknowledgments: https://www.clavem.co/hall-of-fame.html

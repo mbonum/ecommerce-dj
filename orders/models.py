@@ -35,7 +35,7 @@ class OrderManagerQueryset(models.query.QuerySet):
     def get_sales_breakdown(self):
         recent = self.recent().not_refunded()
         recent_data = recent.totals_data()
-        # recent_cart_data = recent.cart_data()
+        recent_cart_data = recent.cart_data()
         shipped = recent.not_refunded().by_status(status=OrderStatus.SHIPPED)
         shipped_data = shipped.totals_data()
         paid = recent.by_status(status=OrderStatus.PAID)
@@ -43,6 +43,7 @@ class OrderManagerQueryset(models.query.QuerySet):
         data = {
             "recent": recent,
             "recent_data": recent_data,
+            "recent_cart_data": recent_cart_data,
             "shipped": shipped,
             "shipped_data": shipped_data,
             "paid": paid,

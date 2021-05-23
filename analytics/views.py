@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse  # , HttpResponse
 from django.shortcuts import render
@@ -11,19 +12,21 @@ from orders.models import Order
 class SalesAjaxView(View):
     def get(self, request, *args, **kwargs):
         data = {}
-        if request.user.is_staff:
+        if request.user.staff:  # is_admin
             qs = Order.objects.all().by_weeks_range(weeks_ago=5, number_of_weeks=5)
             if request.GET.get("type") == "week":
                 days = 7  # today included
-                start_date = timezone.now().today() - timezone.timedelta(days=days - 1)
+                start_date = timezone.now().today() - datetime.timedelta(days=days - 1)
                 datetime_list = []
                 labels = []
                 sales_items = []
-                for current in range(0, days):
-                    new_time = start_date + timezone.timedelta(days=current)
+                for d in range(0, days):
+                    new_time = start_date + datetime.timedelta(days=d)
                     datetime_list.append(new_time)
                     labels.append(new_time.strftime("%a"))  # format weekdays e.g. Mon
-                    new_qs = qs.filter(updated__day=new_time.day, updated__month=new_time.month)
+                    new_qs = qs.filter(
+                        updated__day=new_time.day, updated__month=new_time.month
+                    )
                     day_total = new_qs.totals_data()["total__sum"] or 0
                     sales_items.append(day_total)
                 data["labels"] = labels
@@ -60,8 +63,14 @@ class SalesView(LoginRequiredMixin, TemplateView):
         qs = Order.objects.all().by_weeks_range(weeks_ago=10, number_of_weeks=10)
         start_date = timezone.now().date() - timezone.timedelta(hours=24)
         end_date = timezone.now().date() - timezone.timedelta(hours=12)
-        today_day = qs.by_range(start_date=start_date, end_date=end_date).get_sales_breakdown()
+        today_day = qs.by_range(
+            start_date=start_date, end_date=end_date
+        ).get_sales_breakdown()
         context["today"] = today_day
-        context["this_week"] = qs.by_weeks_range(weeks_ago=1, number_of_weeks=1).get_sales_breakdown()
-        context["last_four_weeks"] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown()
+        context["this_week"] = qs.by_weeks_range(
+            weeks_ago=1, number_of_weeks=1
+        ).get_sales_breakdown()
+        context["last_four_weeks"] = qs.by_weeks_range(
+            weeks_ago=5, number_of_weeks=4
+        ).get_sales_breakdown()
         return context

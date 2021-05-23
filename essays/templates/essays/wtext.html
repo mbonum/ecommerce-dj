@@ -19,7 +19,7 @@
 </script>-->{% endcomment %}
 {% block content %}
 <div ondblclick="exitFullscreen();">
-<div class="font-c-serif max-w-md md:max-w-lg m-auto px-2">
+<div class="font-c-serif max-w-md md:max-w-lg mx-auto px-2">
   <div ondblclick="focusMode(document.documentElement);">
     {% if essay.image %}
     <div class="header mx-auto text-center mb-4"><img loading="lazy" src="{{ essay.image.url }}" alt="{{ essay.slug }}" class="m-auto rounded-lg"></div>
@@ -119,12 +119,12 @@
   {% if notes.all %}
   <div x-data="{ open: false }">
     <div class="text-center my-4">
-      <button @click="open=!open" class="text-sm focus:outline-none items-center border-2 border-yellow-300 shadow p-2 leading-none rounded-lg sc" type="button">
+      <button @click="open=!open" class="text-sm focus:outline-none items-center border-2 border-yellow-300 shadow p-2 leading-non rounded-xl" type="button">
         <p x-show="!open" class="text-center text-sm inline-flex items-center">{% trans 'Show' %} {{ com }} {% trans 'Community Contributions' %}
-          <svg class="text-yellow-300 w-4 h-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+          <svg class="text-yellow-400 w-4 h-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
         </p>
         <p x-show="open" class="text-center text-sm inline-flex items-center">{% trans 'Hide' %}
-          <svg class="w-4 h-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+          <svg class="text-yellow-400 w-4 h-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
         </p>
       </button>
     </div>
@@ -185,8 +185,8 @@
     <form id="id_note_form" method="POST"> {% csrf_token %}
       {{ form.parent }}
       {{ form.body }}
-      <div class="text-right items-center space-x-1 my-3"><span class="text-sm" data-tippy-content="Anonym">{% trans 'Check to show your name' %}</span> {{ form.private }}</div>
-      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit" data-tippy-content="{% trans 'Are you adding value to the Conversation?' %}">
+      <div class="text-right items-center space-x-1 mt-3"><span class="text-sm" data-tippy-content="Anonym">{% trans 'Check to show your name' %}</span> {{ form.private }}</div>
+      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit" data-tippy-content="{% trans 'Are you adding value to the Conversation?' %}">
         <p class="text-center text-sm inline-flex items-center">{% trans 'Share' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg></p>
       </button>
     </form>
@@ -221,9 +221,9 @@ function replyBtn(id) {
   var e = document.getElementById(i);
   e.insertAdjacentHTML('afterend', 
    `<div class="font-c-sans mx-6"><form id="id_note_reply" method="POST">{% csrf_token %}
-    <div class="text-right"><button type="button" class="text-gray-500 hover:text-gray-700 focus:outline-none rounded-full focus:ring-1 ring-yellow-100 ring-offset-transparent ring-offset-1" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button></div>
+    <div class="text-right"><button type="button" class="text-gray-500 hover:text-gray-700 focus:outline-none rounded-full focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button></div>
     <select name="parent" id="id_parentt" class="hidden"><option value="' + i + '" selected="' + i + '"></option></select><textarea name="body" cols="30" rows="3" id="comment" placeholder="{% trans 'Are you adding value to the Conversation?' %}" class="hover:border-gray-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md" type="text" required></textarea>
-    <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit"><p class="text-center text-sm inline-flex items-center">{% trans 'Reply' %} <svg class="w-4 h-4 fill-current ml-1 mb-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg></p></button></form></div>`);
+    <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit"><p class="text-center text-sm inline-flex items-center">{% trans 'Reply' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg></p></button></form></div>`);
 };
 </script>{% endblock %}<!--{% comment %}<div class="text-right items-center space-x-1 my-3"><span class="text-xs">{% trans 'Check to show your name' %}</span><input type="checkbox" name="private" class="transform hover:scale-110" id="id_private"></div>
 FIX if reply->x->all forms are removed and it has to reload page var generalForm = document.getElementById('id_noteForm')// $('#id_note_form').trigger('reset');action="."<div class="text-right items-center space-x-1 my-3"><span class="text-xs">Check to disable replies</span><input type="checkbox" name="reply" class="transform hover:scale-110" id="id_reply"></div>

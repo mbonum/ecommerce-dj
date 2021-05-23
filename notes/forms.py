@@ -19,7 +19,7 @@ class NoteForm(forms.ModelForm):
                 "id": "comment",
                 "rows": 4,
                 "placeholder": "Clear, concise, ideally, compelling",
-                "class": "hover:border-gray-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md mt-2",
+                "class": "hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md mt-2",
                 "type": "text",
             }
         ),
@@ -51,6 +51,4 @@ class NoteForm(forms.ModelForm):
         )
 
 #     js = ('/static/js/tinymce.js',)Everyone knows something someone else doesn't.
-
-
 # <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

@@ -106,9 +106,9 @@ class CUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=150, blank=True, null=True)
     bio = HTMLField(_("Bio"), blank=False, null=True)
     # img = models.FileField('Profile', upload_to=user_image_path, null=True, blank=True)
-    is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)  # click on the link
-    # is_superuser = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(
         _("Date joined"), auto_now_add=True
     )  # default=timezone.now
@@ -153,13 +153,13 @@ class CUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def staff(self):
-        if self.is_superuser:
+        if self.is_admin:
             return True
         return self.is_staff
 
     @property
-    def superuser(self):
-        return self.is_superuser
+    def admin(self):
+        return self.is_admin
 
     @property
     def active(self):

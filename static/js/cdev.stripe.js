@@ -17,7 +17,7 @@ $(document).ready(function () {
 
   var paymentForm = $(".payment-form")
   if (paymentForm.length > 1) {
-    alert("Only one payment form is allowed per page")
+    $.alert("Only one payment form is allowed per page")//$.
     paymentForm.css('display', 'none')
   }
   else if (paymentForm.length == 1) {

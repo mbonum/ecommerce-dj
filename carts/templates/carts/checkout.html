@@ -95,14 +95,11 @@
 </div>
 {% endblock %}
 {% comment %}
-<!-- include 'accounts/register.html' %}
+<!--{ { billing_url }} include 'accounts/register.html' %}
 <p>Continue as Guest</p>{ % url "guest_register" as guest_register_url form=guest_form action_url=guest_register_url %}
 <a class="inline-block rounded bg-yellow-300 hover:bg-yellow-400 border-b-4 border-yellow-400 hover:border-yellow-300 p-2 pb-1" href="{{ register_url }}">Sign Up</a>
 <a class="inline-block text-center mx-auto rounded bg-yellow-400 hover:bg-yellow-300 border-b-4 border-yellow-300 hover:border-yellow-400 p-2 pb-1" href="{{ login_url }}">Enter</a>
 { % include 'accounts/snippets/form.html' with form=register_form next_url=request.build_absolute_uri action_url=register_url %}
-{  include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri % }
-{ % url 'learn:booknotes' slug=instance.slug
-{# email activation bug { % include 'accounts/snippets/form.html' with form=register_form next_url=request.build_absolute_uri action_url=register_url %}
 { % include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
 ?next={ { cart_url }} check_done bug { % include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri % uppercase border-2 bg-yellow-400 border-yellow-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-white rounded text-sm py-1 px-2 -->
 {% endcomment %}

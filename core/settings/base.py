@@ -73,6 +73,9 @@ INSTALLED_APPS = [
     "django_celery_results",
     "channels",
     "sslserver",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "drfpasswordless",
     # "embed_video",
     # "blacklist",
     #'pwa',# https://github.com/silviolleite/django-pwa
@@ -89,9 +92,6 @@ INSTALLED_APPS = [
     # 'allauth_2fa',
     # 'pagedown.apps.PagedownConfig',
     # 'django.contrib.flatpages',
-    "rest_framework",
-    "rest_framework.authtoken",
-    "drfpasswordless",
     # 'letsencrypt',#django-
     # https://django-simple-history.readthedocs.io/en/latest/quick_start.html
     # https://django-authority.readthedocs.io/en/latest/installation/
