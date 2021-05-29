@@ -30,7 +30,7 @@ def payment_method_view(request):
         next_url = next_
     return render(
         request,
-        "billing/payment-method.html",
+        "billing/update-payment-method.html",
         {"publish_key": settings.STRIPE_PUB_KEY, "next_url": next_url},
     )
 

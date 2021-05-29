@@ -171,9 +171,8 @@ class Product(models.Model):
     recommend = models.BooleanField(default=False)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-    pdf = models.FileField(
-        upload_to="products/", blank=True, null=True
-    )  # manual if diy
+    pdf = models.FileField(upload_to="products/", blank=True, null=True)
+    # manual if diy
 
     objects = ProductManager()
 

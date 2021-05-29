@@ -41,7 +41,7 @@
         {% else %}
         <p class="mr-2">{% trans 'Quantity' %}:</p>
         <div class="relative space-x-2">
-          <select class="appearance-none border border-gray-400 text-black px-2 pr-4 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-yellow-500 shadow" name="qty" id="qty-id">
+          <select id="qty" class="appearance-none border border-gray-400 text-black px-2 pr-4 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-yellow-500 shadow" name="qty">
             {% for q in object.rangeqty %}
             <option value="{{ q }}">{{ q }}</option>
             {% endfor %}
@@ -68,7 +68,11 @@
 </div>
 {% endblock %}
 {% comment %}
-<!--custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag.
+<!--{ % block js %}
+  productqty: $('#qty option:selected').text(),
+{ % endblock %}
+
+custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag.
  2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
 { % block css %}<style>
 /* #pic{

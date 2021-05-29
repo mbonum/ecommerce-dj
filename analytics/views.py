@@ -25,7 +25,7 @@ class SalesAjaxView(View):
                     datetime_list.append(new_time)
                     labels.append(new_time.strftime("%a"))  # format weekdays e.g. Mon
                     new_qs = qs.filter(
-                        updated__day=new_time.day, updated__month=new_time.month
+                        updated_at__day=new_time.day, updated_at__month=new_time.month
                     )
                     day_total = new_qs.totals_data()["total__sum"] or 0
                     sales_items.append(day_total)

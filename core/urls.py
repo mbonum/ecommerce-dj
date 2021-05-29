@@ -16,7 +16,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 # from .schema import schema
 from accounts.views import LoginView, RegisterView
-from billing.views import payment_method_createview, payment_method_view
 from carts.views import cart_detail_api_view
 
 # # from essays.sitemaps import EssaySitemap
@@ -70,8 +69,9 @@ urlpatterns = [
     path(_("logout/"), LogoutView.as_view(), name="logout"),
     path(_("address/"), RedirectView.as_view(url="/addresses")),
     path(_("addresses/"), include("addresses.urls", namespace="address")),
-    path(_("billing/payment-method/"), payment_method_view, name="billing-payment-method"),
-    path(_("billing/payment-method/create/"), payment_method_createview, name="billing-payment-method-end"),
+    path(_("billing/"), include("billing.urls", namespace="billing")),
+    # path(_("billing/payment-method/"), payment_method_view, name="billing-payment-method"),
+    # path(_("billing/payment-method/create/"), payment_method_createview, name="billing-payment-method-end"),
     path(_("orders/"), include("orders.urls", namespace="orders")),
     path(_("invoice/<slug:_id>/"), GenerateOrderPDF.as_view(), name="order-pdf"),
     path(_("library/"), LibraryView.as_view(), name="library"),

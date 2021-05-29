@@ -1,0 +1,11 @@
+
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Update Payment Card' %}{% endblock %}
+{% block content %}
+<div class="font-c-sans max-w-xs mx-auto">
+  <h1 class="text-xl text-center font-semibold pb-2">{% trans 'Update Payment Card' %}</h1>
+  <div class="stripe-payment-form mt-6" data-token="{{ publish_key }}" data-next-url="{% if next_url %}{{ next_url }}{% endif %}" data-btn-title="Update card 💳"></div>
+</div>
+{% endblock %}
+{% comment %}<!--id="checkout-btn" cdev.stripe.js -->{% endcomment %}

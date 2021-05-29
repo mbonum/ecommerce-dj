@@ -8,7 +8,7 @@
   <input type="hidden" name="address_type" value="{{ address_type }}">
   {% endif %}
   {% for address in address_qs %}
-  <div class="border border-gray-300 bg-white rounded-lg p-2 mt-2">
+  <div class="border border-gray-300 bg-white rounded-lg shadow p-2 mt-3">
     <input id="address-{{ address.id }}" type="radio" name="shipping_address" value="{{ address.id }}">
     <label for="address-{{ address.id }}" class="items-center">
       {{ address.street }}

@@ -6,7 +6,7 @@
     <a data-tippy-content="{% trans 'Play CAPTCHA as audio file' %}" href="{{audio}}">
     {% else %}
     <img src="{{image}}" alt="captcha" class="captcha rounded-lg">
-    <p>{% trans 'A little test to make sure you are a human' %}</p>
+    <p>{% trans 'A little test to make sure you are human' %}.</p>
     {% endif %}
   </div>
   <div class="bg-white border border-gray-300 hover:border-yellow-500 py-1 px-2 rounded-lg shadow">{% include "django/forms/widgets/multiwidget.html" %}</div>

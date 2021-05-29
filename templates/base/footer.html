@@ -45,8 +45,8 @@
       {% if not request.user.email %}
       <div class="mt-5 mb-4 md:mt-0">
         <form class="text-right text-sm sm:text-center md:text-right mx-10 sm:mx-0" enctype="multipart/form-data" method="POST" action="{{ newsletter_url }}"> {% csrf_token %}
-{#<!--/newsletter/clavem-letter/subscribe/ Stay in the Know clavem newsletter url 🚫 Spam Subscribe to Clavem's newsletter Get Updates ❤️-->#}
-          <input class="w-full sm:w-auto border xl:rounded-l-lg border-gray-300 placeholder-gray-900 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Your email' %}" type="email" name="email_field" required="false" id="id_email_field">
+{#<!--/newsletter/clavem-letter/subscribe/ Stay in the Know clavem newsletter url Spam Subscribe to Clavem's newsletter Get Updates ❤️-->#}
+          <input class="w-full sm:w-auto border xl:rounded-l-lg border-gray-300 focus:border-yellow-500 placeholder-gray-900 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Your email' %}" type="email" name="email_field" required="false" id="id_email_field">
           <button id="id_submit" name="submit" type="submit" value="Subscribe" class="inline-flex text-right items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 xl:rounded-r-lg border border-yellow-400 hover:border-yellow-500 focus:outline-none py-1 px-3" data-tippy-content="{% trans 'Frugal in words, rich in meaning' %}">{% trans 'Get Vpdates' %}
             <svg class="fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#dm"></use></svg>
           </button>

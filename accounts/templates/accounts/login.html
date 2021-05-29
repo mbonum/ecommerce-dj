@@ -9,13 +9,14 @@
       {{ form.email }}
     </div>
     <div class="text-gray-700 m-1">{{ form.password.label }}</div>
-    <div class="relative" x-data="{ show: true }">
-      <input :type="show ? 'password' : 'text'" {{ form.password }}
-      <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
+    {% comment %}<!-- <div class="relative" x-data="{ show: true }">
+      <input :type="show ? 'password' : 'text'"  -->{% endcomment %}
+      {{ form.password }}
+    {% comment %}<!-- <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
       <span x-show="show">{% trans 'Show' %}</span>
       <span x-show="!show">{% trans 'Hide' %}</span>
       </button>
-    </div>
+    </div> -->{% endcomment %}
     <div class="m-1 my-2">
       <a class="text-sm un text-gray-800 hover:text-black focus:outline-none leading-none" href="{{ psw_reset_url }}">{% trans 'Forgot password?' %}</a>
     </div>

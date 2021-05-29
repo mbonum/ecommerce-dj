@@ -2,14 +2,14 @@
 {% load static %}
 {% block title %}{{ member.name }}{% endblock %}
 {% block content %}
-<div class="max-w-lg md:max-w-sm lg:max-w-4xl xl:max-w-5xl mx-auto md:flex font-c-sans lg:space-x-8">
+<div class="max-w-lg md:max-w-sm lg:max-w-4xl xl:max-w-5xl mx-auto md:flex font-c-sans md:space-x-8">
   <div class="md:w-1/2 m-auto">
-    <h1 class="sc text-center text-3xl my-5">{{ member.name }}</h1>
+    <h1 class="text-center text-3xl my-5">{{ member.name }}</h1>
     <div class="bg-white rounded-lg border border-gray-300 p-5 text-justify hyphens">
       {{ member.bio|safe }}
     </div>
   </div>
-  <div class="lg:w-1/2 m-auto">
+  <div class="md:w-1/2 m-auto">
     {% if member.img %}<img loading="lazy" src="{{ member.img.url }}" alt="{{ member.name }}" class="rounded-lg lg:w- lg:h- mx-auto">
       {% else %}
       <svg class="lg:w- lg:h- transition duration-500 ease-in-out text-gray-600 fill-current mx-auto">

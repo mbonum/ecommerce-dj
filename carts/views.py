@@ -47,7 +47,7 @@ def cart_home(request):
 
 
 def cart_update(request):
-    product_id = request.POST.get("product_id")
+    product_id = request.POST.get("product_id")  # update-cart.html
     if product_id is not None:
         try:
             product_obj = Product.objects.get(id=product_id)
@@ -58,6 +58,10 @@ def cart_update(request):
             )
             messages.success(request, msg)
             return redirect("cart:home")
+        # product_qty = int(request.POST.get("productqty")) or None input hidden
+        # if product_qty is None:
+        #     product_qty = 1
+        # print("### ", product_qty)
         cart_obj, new_obj = Cart.objects.new_or_get(request)
         if product_obj in cart_obj.products.all():
             cart_obj.products.remove(product_obj)
@@ -76,6 +80,38 @@ def cart_update(request):
             return JsonResponse(json_data, status=200)
     # return JsonResponse({"message": "Error 400"}, status=400) # Django Rest Framework
     return redirect("cart:home")
+
+
+# def basket_add(request):
+#     basket = Basket(request)
+#     if request.POST.get('action') == 'post':
+#         product_id = int(request.POST.get('productid'))
+#         product_qty = int(request.POST.get('productqty'))
+#         product = get_object_or_404(Product, id=product_id)
+#         basket.add(product=product, qty=product_qty)
+
+#         basketqty = basket.__len__()
+#         response = JsonResponse({'qty': basketqty})
+#         return response
+# <script>
+#     $(document).on('click', '#add-button', function (e) {
+#       e.preventDefault();
+#       $.ajax({
+#         type: 'POST',
+#         url: '{% url "basket:basket_add" %}',
+#         data: {
+#           productid: $('#add-button').val(),
+#           productqty: $('#qty option:selected').text(),
+#           csrfmiddlewaretoken: "{{csrf_token}}",
+#           action: 'post'
+#         },
+#         success: function (json) {
+#           document.getElementById("basket-qty").innerHTML = json.qty
+#         },
+#         error: function (xhr, errmsg, err) {}
+#       });
+#     })
+#   </script>
 
 
 def checkout_home(request):

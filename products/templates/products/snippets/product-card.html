@@ -13,18 +13,18 @@
     </div>
     <div class="flex justify-between pt-1">
       <p class="inline-flex">{{ object.name_product }}</p>
-      {% if 'audio' in object.product_type %}
-      <input type="button" value="🎙️" data-tippy-content="{{ object.product_type }}" class="inline-flex bg-white">
-      {% elif 'ebook' in object.product_type %}
-      <input type="button" value="🕮" data-tippy-content="{{ object.product_type }}" class="inline-flex bg-white">
-      {% elif 'physical' in object.product_type %}
+      {% if 'A' in object.product_type %}
+      <input type="button" value="🎙️" data-tippy-content="Audio" class="inline-flex bg-white">
+      {% elif 'E' in object.product_type %}
+      <input type="button" value="🕮" data-tippy-content="Ebook" class="inline-flex bg-white">
+      {% else %}
       <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="inline-flex bg-white">
       {% endif %}
     </div>
     <div class="text-xs pt-1">
     <p class="">{{ object.description|safe|truncatewords_html:6 }}</p>
     </div>
-    {% comment %}<!--<table class="text-gray-700 mx-aut mt-3">
+    {% comment %}<!--{ { object.product_type }} elif 'physical' in object.product_type<table class="text-gray-700 mx-aut mt-3">
       <thead>
         <tr class="">
           <td scope="col" class="text-black pr-4">{ { object.name_product }}</td>

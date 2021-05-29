@@ -139,11 +139,11 @@ $(document).ready(function () {
         } else {
           submitSpan.html(`<button type="submit" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><svg class="fill-current w-4 h-4 mr-2" aria-labelledby="title" preserveAspectRatio="xMidYMid meet" title="cart" id="cart" viewBox="0 0 21 21"><path d="M16.2 14.919H7.837l-.827-2.884 10.158-.746 1.9-7.063H4.783l-.051-.192C4.035 1.557 3.741.418 1.163.162A.815.815 0 1 0 1 1.784c1.73.172 1.793 1.38 2.162 2.694l3.3 11.506a1.694 1.694 0 1 0 .285.939 1.63 1.63 0 0 0-.042-.374h8.106a1.722 1.722 0 0 0-.044.386 1.688 1.688 0 0 0 1.689 1.691 1.776 1.776 0 0 0 1.692-1.788 1.905 1.905 0 0 0-1.948-1.919z"></path></svg>Buy</button>`)
         }
-        document.getElementById("qty-id").innerHTML = $('#qty-id option:selected').text();
+        // document.getElementById("qty").innerHTML = $('#qty option:selected').text();//
         var navbarCount = $(".navbar-cart-count")
         navbarCount.text(data.cartItemCount)
         var currentPath = window.location.href
-        if (currentPath.indexOf("cart") = 0) {
+        if (currentPath.indexOf("cart") = -1) {
           refreshCart()
         }
       },
@@ -160,6 +160,7 @@ $(document).ready(function () {
     var cartTable = $(".cart-table")
     var cartBody = cartTable.find(".cart-body")
     var productRows = cartBody.find(".cart-product")
+    var currentUrl = window.location.href
     var refreshCartUrl = "/api/cart/";
     var refreshCartMethod = "GET";
     var data = {};
@@ -172,7 +173,7 @@ $(document).ready(function () {
         if (data.products.length > 0) {
           productRows.html(" ")
           i = data.products.length
-          var qty = $('#qty-id option:selected').text();
+          // var qty = $('#qty option:selected').text();
           var currency = data.currency;
           if (currency == "USD") { currency = "$" } else { currency = "€" }
           $.each(data.products, function (_index, value) {
@@ -185,8 +186,8 @@ $(document).ready(function () {
             <td colspan="1"></td><td class="justify-around px-4 py-2"><a class="hover:text-blue-a focus:outline-none" href="' + value.url + '" target="_blank">`
               + value.name + `</a></td><td colspan="1"></td>` + // + value.qty + 
               //'<select class="appearance-none border border-gray-400 text-black p-1 rounded-lg focus:outline-none focus:ring ring-yellow-100 ring-offset-transparent ring-offset-1 bg-white hover:border-gray-600 shadow" name="qty" id="id_qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600"><svg class="r-180 fill-current h-4 w-4" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg><td class="px-4 py-2">'
-              `<td class="text-center">` + currency + " " + qty * value.price + `</td><td class="sm:pl-2 py-2 xl:border-b xl:border-gray-300">` + newCartItemRemove.html() + `</td></tr>`)
-            // if (currency === "$" || currency === "£") {
+              `<td class="text-center">` + currency + " " + value.price + `</td><td class="sm:pl-2 py-2 xl:border-b xl:border-gray-300">` + newCartItemRemove.html() + `</td></tr>`)
+            // if (currency === "$" || currency === "£") { qty *
             //   cartBody.prepend("<tr class='cart-product border-b border-gray-300 align-middle text-center'><th scope=\"row\">" + i + "</th><td class='px-4 py-2'><a class='hover:text-blue-700 focus:outline-none' href='" + value.url + "' target='_blank'>"
             //     + value.name + "</a></td><td class='px-4 py-2'> " + currency + " "
             //     + value.price + "</td><td class='sm:pl-2 py-2 xl:border-b xl:border-gray-300'>" + newCartItemRemove.html() + "</td></tr>")
@@ -196,15 +197,16 @@ $(document).ready(function () {
             //   + value.price + " " + currency + "</td><td class='sm:pl-2 py-2 xl:border-b xl:border-gray-300'>" + newCartItemRemove.html() + "</td></tr>")
             // }
             i--
-          })// cartBody.find(".cart-subtotal").text(data.subtotal) // ship cost
-          cartBody.find(".cart-total").text(currency + " " + qty * data.total)
+          })// cartBody.find(".cart-subtotal").text(data.subtotal) qty * // ship cost
+          cartBody.find(".cart-total").text(currency + " " + data.total)
           // if (currency === "$" || currency === "£") {
           //   cartBody.find(".cart-total").text(currency + " " + data.total)
           // } else {
           //   cartBody.prepend(cartBody.find(".cart-total").text(data.total) + " " + currency)
           // }
         } else {
-          currentUrl = window.location.href
+          window.location.href = currentUrl
+          window.location.reload();
         }
       },
       error: function (_error) {

@@ -51,7 +51,7 @@ class BillingProfile(models.Model):
         return self.card_set.all()
 
     def get_payment_method_url(self):
-        return reverse("billing-payment-method")
+        return reverse("billing:billing-payment-method")
 
     @property
     def has_card(self):
