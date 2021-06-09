@@ -71,9 +71,10 @@ class ProductManager(models.Manager):
 
     def digital(self):
         # Skip shipping address form in checkout
-        self.quantity = 1
-        self.in_stock = True
-        return self.get_queryset().is_digital()
+        if self.product_type != "P":
+            self.quantity = 1
+            self.in_stock = True
+            return self.get_queryset().is_digital()
 
     # def featured(self):
     #     # Product.objects.featured()
@@ -104,6 +105,7 @@ class ProductType(models.TextChoices):
     PHYSICAL = "P", _("Physical")  # is_digital=False -> delivery
 
 
+# To add when the variety of products increases
 class Category(models.Model):
     name = models.CharField(_("Name"), max_length=255, db_index=True)
     slug = models.SlugField(blank=True, null=True, unique=True)
@@ -187,7 +189,7 @@ class Product(models.Model):
     def img_tag(self):
         if self.img:
             return mark_safe(
-                f'<img src="{self.img.url}" style="width:60px; height:60px;"/>'
+                f'<img src="{self.img.url}" style="width:60px; height:60px;">'
             )
         else:
             return _("Please add an image")
@@ -198,6 +200,7 @@ class Product(models.Model):
         # namespace[in mgb/urls]:name[in app-name/urls]
         return reverse("products:detail", kwargs={"slug": self.slug})
 
+    # IF price is in cents
     # def display_price(self):
     #     return "{0:.2f}".format(self.price / 100)
 
@@ -217,7 +220,7 @@ class Product(models.Model):
 
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
-    """Use signals to set slugs"""
+    # Use signals to set slugs
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
@@ -234,7 +237,6 @@ def upload_product_file_loc(instance, filename):
 
 
 class ProductFile(models.Model):
-    # id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     file = models.FileField(
         upload_to=upload_product_file_loc,
@@ -246,8 +248,8 @@ class ProductFile(models.Model):
     def __str__(self):
         return str(self.file.name)
 
-    # def get_default_url(self):
-    #         return self.product.get_absolute_url()
+    def get_default_url(self):
+        return self.product.get_absolute_url()
 
     def get_download_url(self):
         return reverse(

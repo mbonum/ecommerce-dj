@@ -72,12 +72,18 @@ class Book(models.Model):
     title = models.CharField(max_length=90, db_index=True)
     slug = models.SlugField(blank=False, unique=True)
     tags = models.ManyToManyField(Tag, blank=False)
-    text = HTMLField(blank=False, null=True, help_text=_("Key points"))
-    audio = models.FileField(upload_to=book_media_path, blank=True, null=True, help_text=_("Record reading"))
-    img = models.ImageField(_("Cover"), upload_to=book_media_path, blank=False, null=True)
+    text = HTMLField(blank=False, null=True, help_text=_('View->srcode->class="fl"'))
+    audio = models.FileField(
+        upload_to=book_media_path, blank=True, null=True, help_text=_("Record reading")
+    )
+    img = models.ImageField(
+        _("Cover"), upload_to=book_media_path, blank=False, null=True
+    )
     created = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=False, help_text=_("Ensure to edit before publishing"))
+    active = models.BooleanField(
+        default=False, help_text=_("Ensure to edit before publishing")
+    )
 
     objects = BookManager()
 
@@ -99,7 +105,7 @@ class Book(models.Model):
     img_tag.short_description = _("Cover")
 
     def get_absolute_url(self):
-        return reverse('learn:booknotes', kwargs={'slug': self.slug})
+        return reverse("learn:booknotes", kwargs={"slug": self.slug})
 
     @property
     def name(self):

@@ -45,25 +45,46 @@ def index(request):
     return render(request, "essays/wlist.html", context)
 
 
+# def stripTags(html, invalid_tags):
+#     soup = BeautifulSoup(html, "lxml")
+
+#     for tag in soup.findAll(True):
+#         if tag.name in invalid_tags:
+#             s = "::"
+#             for c in tag.contents:
+#                 if not isinstance(c, NavigableString):
+#                     c = stripTags(str(c), invalid_tags)
+#                 s += str(c)
+#             tag.replaceWith(s)
+#     return soup
+
+
 def details(request, slug: str):
     """
-    Show the selected essay
+    Show essay
     generate audio
     """
     essay = get_object_or_404(Essay, slug=slug, publish=True)
-    p = getattr(settings, "MEDIA_ROOT") + "/essays/" + f"{slug}/"
-    os.makedirs(p, exist_ok=True)
-    f = f"{p}{slug}.mp3"  # static/media_root ogg not supported in mac
-    # if not essay.audio:
-    txt = BeautifulSoup(essay.text, features="lxml")  # convert html to text
-    tts = gTTS(txt.get_text(), lang="en")
-    # 'static' + settings.MEDIA_URL + 'essays/' + f'{slug}/'#/media_root/
-    if Path(f).is_file():  # if there's a file see if they are the same
-        # https://docs.python.org/3/library/filecmp.html
-        if not filecmp.cmp(Path(f), f, shallow=False):
+    if not essay.audio:
+        path = getattr(settings, "MEDIA_ROOT") + "/essays/" + f"{slug}/"
+        os.makedirs(path, exist_ok=True)
+        f = f"{path}{slug}.mp3"  # static/media_root ogg not supported in mac
+        e = ""
+        for s in essay.section_set.all():
+            if s.title:
+                e += s.title
+            e += s.text
+        # invalid_tags = ["br", "b", "font"]
+        # txt = stripTags(e, invalid_tags)
+        txt = BeautifulSoup(e, "lxml")  # features= convert html to text
+        tts = gTTS(txt.get_text(), lang="en")
+        # 'static' + settings.MEDIA_URL + 'essays/' + f'{slug}/'#/media_root/
+        if Path(f).is_file():  # if there's a file see if they are the same
+            # https://docs.python.org/3/library/filecmp.html
+            if not filecmp.cmp(Path(f), f, shallow=False):
+                tts.save(f)
+        else:
             tts.save(f)
-    else:
-        tts.save(f)
 
     _id = essay.index + 1
     try:

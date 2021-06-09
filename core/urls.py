@@ -20,12 +20,14 @@ from carts.views import cart_detail_api_view
 
 # # from essays.sitemaps import EssaySitemap
 from essays.views import GenerateEssayPDF, author_view
+
 # # from essays.admin import essays_admin
 
 # from marketing import urls as mktg_urls
 # from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
 from shorturl.views import ShortURLView, URLRedirectView
+
 # # from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 # # from two_factor.urls import urlpatterns as tf_urls
 
@@ -46,13 +48,13 @@ urlpatterns = [
     #     name="robots-txt",
     # ),
     path("captcha/", include("captcha.urls")),
-    path(
-        "", include("drfpasswordless.urls")
-    ),  # https://pypi.org/project/drfpasswordless/
+    # https://pypi.org/project/drfpasswordless/
+    path("", include("drfpasswordless.urls")),
     path("", include("home.urls", namespace="home")),
+    # channels
     path(_("chat/"), include("chat.urls")),
     # # create a separate CMS that only authors can access, schema=schema
-    # # path(_('essays/'), essays_admin.urls),
+    # # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
     path(_("read/"), include("essays.urls", namespace="read")),
     # #     path('hitcount/', include('hitcount.urls', namespace='hitcount')),
     path(_("author/<slug:slug>/"), author_view, name="author"),
@@ -73,14 +75,14 @@ urlpatterns = [
     # path(_("billing/payment-method/"), payment_method_view, name="billing-payment-method"),
     # path(_("billing/payment-method/create/"), payment_method_createview, name="billing-payment-method-end"),
     path(_("orders/"), include("orders.urls", namespace="orders")),
-    path(_("invoice/<slug:_id>/"), GenerateOrderPDF.as_view(), name="order-pdf"),
+    path(_("invoice/<slug:_id>/"), GenerateOrderPDF.as_view(), name="invoice"),
     path(_("library/"), LibraryView.as_view(), name="library"),
     path(_("settings/"), RedirectView.as_view(url="/account")),
     path(_("accounts/"), RedirectView.as_view(url="/account")),
     path(_("account/"), include("accounts.urls", namespace="account")),
     path(_("accounts/"), include("accounts.passwords.urls")),  # templates/registration
     path(_("analytics/"), include("analytics.urls", namespace="analytics")),
-    # #     path(_('newsletter/'), include('newsletter.urls')), #, namespace='newsletter'
+    path(_("newsletter/"), include("newsletter.urls")),  # , namespace='newsletter'
     # #     # path('', Subscribe.as_view(), name='subscribe'),
     # #     # path('subscribe-api/', include(mktg_urls)),
     # #     path(_('settings/email/'), MarketingPreferenceUpdateView.as_view(),

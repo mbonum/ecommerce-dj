@@ -24,7 +24,7 @@
     {% if essay.image %}
     <div class="header mx-auto text-center mb-4"><img loading="lazy" src="{{ essay.image.url }}" alt="{{ essay.slug }}" class="m-auto rounded-lg"></div>
     {% endif %}
-    <div class="border-t-2 border-b border-gray-400 py-3 rounded-lg text-center mb-4">
+    <div class="border-t-2 border-b border-gray-400 pt-3 pb-2 rounded-lg text-center mb-4">
       <h1 class="text-4xl">{{ essay.title }}</h1>
       <div class="inline-flex items-center space-x-2 text-md my-3">
       {% if not essay.author_team and essay.author %}
@@ -51,43 +51,58 @@
       <span class="sep">·</span>
       <span data-tippy-content="Publication date (years since the current form of humans evolved)">20{{ essay.updated|date:'Y-m-d' }}</span>
       </div>
-      <div>{% if essay.audio %}
-      {% include 'base/snippets/audio.html' with obj=essay %}
-      {% endif %}</div>
+
+      <div class="mt-1 mb-4">
+        <audio class="mx-auto w-full overflow-x-hidden rounded-full focus:outline-none hover:shadow-md" controls>
+          <source src="{% if obj.audio %}{{ obj.audio.url }}{% else %}/{{ tts }}{% endif %}" type="audio/mp3">
+        </audio>
+      </div>
+
+      
+
       <div class="inline-flex space-x-5">
         <span class="text-sm text-gray-600">{% trans 'Doubleclick to focus' %}</span>
         {% include 'base/snippets/theme.html' %}
       </div>
-    </div>
-    {% if essay.sections %}
-    <div class="wrapper">
-    <details class="toc" open="">
-      <summary class="toc-title">{% trans 'Contents' %}</summary>
-      <ul>
-        {% for s in essay.sections.all %}
-        <li class="toc2"><a href="{{ request.path }}#{{s}}">{{s}}</a></li>
-        {% endfor %}
-      </ul>
-    </details>
-    </div>
-    {% endif %}
-    {% if essay.abstract %}
-    <div class="py-4 px-8 border-t-2 border-b border-gray-500 mt-3 mb-8 mx-auto">
-      <p class="text-lg text-justify hyphens list-inside">{{ essay.abstract|safe }}</p>
-    </div>
-    {% endif %}
-
-    <div class="border border-gray-300 shadow rounded-lg p-5 text-lg text-justify hyphens list-inside">
-      {{ essay.text|safe }}
-      {% if essay.img %}
-      <div class="mt-2 mb-6"><img loading="lazy" src="{{ essay.img.url }}" class="mx-auto rounded-lg"></div>
+      {% if essay.abstract %}
+      <div class="text-lg text-justify hyphens list-inside my-2 mx-5">
+        <details class="space-y-1" open>
+          <summary class="text-xl font-semibold">{% trans 'Summary' %}</summary>
+          <p>{{ essay.abstract|safe }}</p>
+        </details>
+      </div>
       {% endif %}
-      <div class="text-right pr-5">
-      <svg class="border border-gray-300 bg-gray-900 text-gray-100 w-4 h-4 fill-current inline-block absolute -mt-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    </div>
+
+    <div class="text-lg text-justify hyphens list-inside">
+      {% if essay.section_set.all %}
+      <div class="text-lg font-c-sans mt-0 mx-5 mb-4">
+      <details class="space-y-1">
+        <summary class="text-xl font-semibold">{% trans 'Contents' %}</summary>
+        <ul>
+        {% for s in essay.section_set.all %}
+          {% if not forloop.first %}
+          <li class=""><a href="#{{ s.slug }}">{{ s.title|safe }}</a></li>
+          {% endif %}
+        {% endfor %}
+        </ul>
+      </details>
+      </div>
+      {% endif %}
+      <div class="border border-gray-300 shadow rounded-lg p-5 text-lg">
+        {% for s in essay.section_set.all %}
+        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-xl font-c-sans font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
+        {{ s.text|safe }}
+        {% if s.img %}
+        <div class="my-2"><img loading="lazy" src="{{ s.img.url }}" class="rounded-lg mx-auto"></div>
+        {% endif %}
+        {% endfor %}
+        {% comment %}<!-- <div class="text-right pr-5">
+        <svg class="border border-gray-300 bg-gray-900 text-gray-100 w-4 h-4 fill-current inline-block absolute -mt-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+        </div> -->{% endcomment %}
       </div>
     </div>
   </div>
-
   <div class="text-center text-gray-700 font-c-sans my-4">
     <div class="inline-flex overflow-hidden border border-gray-300 bg-white shadow rounded-lg">
       {% include 'base/snippets/backbtn.html' with url=essays_url id=essay.slug %}

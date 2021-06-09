@@ -2,23 +2,23 @@
 {% load i18n %}
 {% block title %}{% trans 'Orders' %}{% endblock %}
 {% block content %}
-<div class="max-w-sm mx-auto">
+<div class="font-c-sans max-w-sm mx-auto">
   {% if object_list.exists %}
   <div class="text-center mb-4">
     <p class="text-lg font-semibold">{% trans 'Orders of' %} {{ request.user.first_name }}</p>
   </div>
-  <table class="text-sm table-auto cart-table mx-auto">
+  <table class="table-auto cart-table mx-auto">
     <thead class="border-t border-b border-gray-300">
       <tr>
-        <th scope="col" class="font-semibold text-center py-1">ID</th>
-        <th scope="col" class="font-semibold text-center py-1">{% trans 'Status' %}</th>
-        <th scope="col" class="font-semibold text-center py-1">{% trans 'Total' %}</th>
+        <th scope="col" class="text-center py-1">ID</th>
+        <th scope="col" class="text-center py-1">{% trans 'Status' %}</th>
+        <th scope="col" class="text-center py-1">{% trans 'Total' %}</th>
       </tr>
     </thead>
     <tbody class="cart-body">
       {% for object in object_list %}
       <tr class="cart-product border-b border-gray-300 align-middle text-center">
-        <td class="font-semibold py-2"><a class="hover:text-blue-a focus:outline-none focus:shadow-outline" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
+        <td class="py-2"><a class="hover:text-yellow-600 focus:outline-none focus:shadow-outline" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
         <td class="text-xs px-4 py-2">{{ object.get_status }}</td>
         <td class="flex justify-around py-2">{{ user.currency }} {{ object.total }}</td>
       </tr>

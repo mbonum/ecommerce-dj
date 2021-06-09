@@ -67,10 +67,6 @@ class Author(models.Model):
     img_tag.short_description = _("Image")
 
 
-class Section(models.Model):
-    title = models.CharField(max_length=90, blank=False, null=True)
-
-
 class EssayQuerySet(models.QuerySet):
     def search(self, query=None):
         qs = self
@@ -109,7 +105,6 @@ class Essay(ModelMeta, models.Model):
         },
         # 'extra_custom_props': 'get_custom_props'
     }
-    # id = models.AutoField(primary_key=True)# django3.2
     index = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         blank=False,
@@ -117,8 +112,8 @@ class Essay(ModelMeta, models.Model):
         unique=True,
         default=1,
     )
-    image = models.FileField(
-        _("Header image"), upload_to=essay_media_path, blank=True, null=True
+    img = models.FileField(
+        _("Cover image"), upload_to=essay_media_path, blank=True, null=True
     )
     title = models.CharField(max_length=99, blank=False, null=True, db_index=True)
     slug = models.SlugField(blank=False, null=True, unique=True)
@@ -131,28 +126,16 @@ class Essay(ModelMeta, models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        help_text=_("Independent author"),
+        help_text=_("Add if independent author"),
     )
     audio = models.FileField(
         upload_to=essay_media_path, blank=True, null=True, help_text=_("Record reading")
     )
-    text = HTMLField(
-        blank=False,
-        null=True,
-        help_text=_(
-            'Exordium (Pathos)-> Narratio -> Confirmatio (Logos) -> Refutatio (Ethos) -> Peroration (Pathos)[View->srcode->class="fl"]'
-        ),
-    )
     abstract = HTMLField(_("Abstract"), blank=True, null=True)
-    img = models.FileField(
-        _("Image"), upload_to=essay_media_path, blank=True, null=True
-    )
     created = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated = models.DateTimeField(_("Updated at"), auto_now=True)
-    publish = models.BooleanField(
-        default=False, help_text=_("Ensure to edit before publishing")
-    )
-    recommend = models.BooleanField(default=False)
+    publish = models.BooleanField(default=False, help_text=_("Edit before publishing"))
+    recommend = models.BooleanField(default=False, help_text=_("Must-read"))
     # language = models.CharField(max_length=2, default='en', choices=LANG_STATUS_CHOICES)
     # essay_rating = RatingField(range=5)# 5 possible rating values, 1-5
     # hit_count_generic = models.IntegerField(HitCountMixin, object_id_field='object_pk',
@@ -202,3 +185,26 @@ class Essay(ModelMeta, models.Model):
     # def get_content_type(self):
     #     qs = ContentType.objects.get_for_model(self.__class__)
     #     return qs
+
+
+class Section(models.Model):
+    essay = models.ForeignKey(
+        Essay,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    title = models.CharField(
+        help_text=_("Skip if section 1"), max_length=90, blank=True, null=True
+    )
+    slug = models.SlugField(blank=True, null=True, unique=True)
+    text = HTMLField(
+        blank=False,
+        null=True,
+        help_text=_(
+            'Exordium (Pathos)-> Narratio -> Confirmatio (Logos) -> Refutatio (Ethos) -> Peroration (Pathos)[View->srcode->class="fl"]'
+        ),
+    )
+    img = models.FileField(
+        _("Image"), upload_to=essay_media_path, blank=True, null=True
+    )

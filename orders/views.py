@@ -3,6 +3,7 @@ from core.utils import render_to_pdf
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse, JsonResponse
+
 # from django.template.loader import get_template
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, View
@@ -64,7 +65,9 @@ class GenerateOrderPDF(View):
         order = Order.objects.get(order_id=order_id)
         customer_first = order.cart.user.first_name
         customer_last = order.cart.user.last_name
-        customer = customer_first + " " + customer_last
+        customer = customer_first
+        if customer_last:
+            customer += " " + customer_last
         customer_email = order.cart.user.email
         # customer_id = order.billing_profile.customer_id
         billing_address = (
@@ -78,22 +81,41 @@ class GenerateOrderPDF(View):
             + ", "
             + order.billing_address.country
         )
-        # shipping_address = order.shipping_address.street
+        if order.shipping_address:
+            shipping_address = (
+                order.shipping_address.street
+                + ", "
+                + order.shipping_address.city
+                + ", "
+                + order.shipping_address.state
+                + ", "
+                + order.shipping_address.postal_code
+                + ", "
+                + order.shipping_address.country
+            )
+            shipping_total = order.shipping_total
         cart = [
-            {"id": x.id, "url": x.get_absolute_url(), "name": x.name, "price": x.price}
-            for x in order.cart.products.all()
+            {
+                "id": p.id,
+                "url": p.get_absolute_url(),
+                "name": p.name,
+                "type": p.get_product_type_display,
+                "price": p.price,
+            }
+            for p in order.cart.products.all()
         ]
         # qty = order.cart.user_qty#products.quantity
         currency = order.cart.user.currency
         total = order.total
-        date = order.updated
+        date = order.updated_at
         context = {
             "order_id": order_id,
             "customer": customer,
             "customer_email": customer_email,
+            "cart": cart,
             "billing_address": billing_address,
-            # 'shipping_address': shipping_address,
-            "cart": cart[0],
+            "shipping_address": shipping_address,
+            "shipping_total": shipping_total,
             "currency": currency,
             "total": total,
             "date": date,
@@ -122,7 +144,7 @@ class GenerateOrderPDF(View):
 #         context = {
 #             'title': order.title,
 #             'author': order.author,
-#             'date': order.updated,
+#             'date': order.updated_at,
 #             'body': order.body,
 #             'image': order.image
 #         }

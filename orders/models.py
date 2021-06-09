@@ -168,6 +168,9 @@ class Order(models.Model):
     def get_absolute_url(self):
         return reverse("orders:detail", kwargs={"order_id": self.order_id})
 
+    def get_invoice_url(self):
+        return reverse("invoice", kwargs={"_id": self.order_id})
+
     def get_status(self):
         # Only for non-digital products
         if self.status == OrderStatus.REFUNDED:

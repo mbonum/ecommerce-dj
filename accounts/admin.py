@@ -21,16 +21,12 @@ USER = get_user_model()
 
 
 class UserAdmin(BaseUserAdmin):
-    """
-    Customize admin
-    """
-
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
     list_display = ("email", "is_superuser", "is_active", "is_staff", "date_joined")
     list_filter = ("is_active", "is_superuser", "is_staff")
     fieldsets = (
-        (None, {"fields": ("email", "password", "currency")}),
+        (None, {"fields": ("email", "first_name", "password", "currency")}),
         ("Permissions", {"fields": ("is_active", "is_staff")}),  # 'is_superuser',
         ("Personal", {"fields": ("bio",)}),
     )
@@ -45,7 +41,6 @@ class UserAdmin(BaseUserAdmin):
 
 
 class EmailActivationAdmin(admin.ModelAdmin):
-
     search_fields = ("email",)
 
     class Meta:

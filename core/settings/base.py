@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     "mptt",  # https://django-mptt.readthedocs.io/en/latest/install.html
     # "rosetta",  # https://pypi.org/project/django-rosetta
     # # 'hitcount'# https://pypi.org/project/django-hitcount# 'django_cleanup.apps.CleanupConfig',
-    "tinymce",  # https://github.com/jazzband/django-tinymce
     # "robots",  # https://pypi.org/project/django-robots
     # "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
@@ -76,6 +75,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drfpasswordless",
+    "sorl.thumbnail",
+    "tinymce",  # https://github.com/jazzband/django-tinymce
+    "newsletter",  # https://django-newsletter.readthedocs.io/en/latest/installation.html
     # "embed_video",
     # "blacklist",
     #'pwa',# https://github.com/silviolleite/django-pwa
@@ -100,8 +102,6 @@ INSTALLED_APPS = [
     # 'tracking', # django-tracking2
     # 'django_user_agents',# https://pypi.org/project/django-user-sessions/
     # 'tracking_analyzer',
-    # 'sorl.thumbnail',
-    # 'newsletter',# https://django-newsletter.readthedocs.io/en/latest/installation.html
     # 'shortener',# https://pypi.org/project/django-link-shortener/
     # 'crispy_forms',# https://pypi.org/project/django-crispy-forms/
     # 'webpack_loader',
@@ -442,11 +442,12 @@ ACCOUNT_ACTIVATION_DAYS = 7  # the user has 1 week to activate the account
 #     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 #     # 'PAGE_SIZE': 2
 # }
-
+NEWSLETTER_THUMBNAIL = "sorl-thumbnail"
 # NEWSLETTER_CONFIRM_EMAIL = True# https://django-newsletter.readthedocs.io/en/latest/settings.html
 
-# # django-tinymce # django-imperavi
-# NEWSLETTER_RICHTEXT_WIDGET = 'tinymce.widgets.TinyMCE'#"imperavi.widget.ImperaviWidget"
+# django-imperavi "imperavi.widget.ImperaviWidget"
+NEWSLETTER_RICHTEXT_WIDGET = "tinymce.widgets.TinyMCE"
+
 
 # # Amount of seconds to wait between each email. Here 50ms is used.
 # NEWSLETTER_EMAIL_DELAY = 0.05

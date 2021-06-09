@@ -27,7 +27,6 @@ class MessageType(models.TextChoices):
 
 
 class Contact(models.Model):
-    # id = models.AutoField(primary_key=True)
     message_type = models.CharField(
         max_length=255, choices=MessageType.choices, default=MessageType.COLLABORATION
     )
@@ -93,6 +92,9 @@ class Privacy(models.Model):
 
     class Meta:
         verbose_name_plural = _("Privacy policy")
+
+    # def get_absolute_url(self):
+    #     return reverse("home:detail", kwargs={"order_id": self.order_id})
 
 
 class Terms(models.Model):

@@ -50,5 +50,6 @@ class NoteForm(forms.ModelForm):
             "private",
         )
 
-#     js = ('/static/js/tinymce.js',)Everyone knows something someone else doesn't.
+
+# js = ('/static/js/tinymce.js',)Everyone knows something someone else doesn't.
 # <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

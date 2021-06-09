@@ -32,7 +32,7 @@
       {% endif %}</p>
     <p class="pt-2">Effective date: {{ text.updated_at|date:'Y-m-d' }}</p>
   {% if text.pdf %}
-  <a href="/media/{{ text.pdf }}" class="hover:text-yellow-400 inline-flex items-center focus:outline-none focus:shadow-outline my-3" data-tippy-content="{% trans 'Print' %}" target="_blank" rel="noopener">
+  <a href="/media/{{ text.pdf }}" class="hover:text-yellow-400 inline-flex items-center focus:outline-none rounded-lg rounded-lg focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 my-3" data-tippy-content="{% trans 'Print' %}" target="_blank" rel="noopener">
     PDF <svg class="w-5 h-6 fill-current ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
   </a>
   {% endif %}
