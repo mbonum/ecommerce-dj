@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.forms import ModelForm
+
 # from django_toggle_switch_widget.widgets import DjangoToggleSwitchWidget
-from .models import Book
+from .models import Book, Section
 
 
 # class BookModelForm(ModelForm):
@@ -15,9 +16,16 @@ from .models import Book
 #         }
 
 
+class SectionInline(admin.StackedInline):
+    model = Section
+    extra = 2
+    prepopulated_fields = {"slug": ("title",)}
+
+
 class BookAdmin(admin.ModelAdmin):
     # form = BookModelForm
     list_display = ("title", "index", "created", "img_tag")
+    inlines = [SectionInline]
     list_editable = ("index",)
     list_filter = ("created",)
     prepopulated_fields = {"slug": ("title",)}

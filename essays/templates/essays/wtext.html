@@ -21,30 +21,30 @@
 <div ondblclick="exitFullscreen();">
 <div class="font-c-serif max-w-md md:max-w-lg mx-auto px-2">
   <div ondblclick="focusMode(document.documentElement);">
-    {% if essay.image %}
-    <div class="header mx-auto text-center mb-4"><img loading="lazy" src="{{ essay.image.url }}" alt="{{ essay.slug }}" class="m-auto rounded-lg"></div>
+    {% if essay.img %}
+    <div class="mx-auto text-center mb-4"><img loading="lazy" src="{{ essay.img.url }}" alt="{{ essay.slug }}" class="m-auto rounded-lg"></div>
     {% endif %}
     <div class="border-t-2 border-b border-gray-400 pt-3 pb-2 rounded-lg text-center mb-4">
       <h1 class="text-4xl">{{ essay.title }}</h1>
       <div class="inline-flex items-center space-x-2 text-md my-3">
       {% if not essay.author_team and essay.author %}
         {% if essay.author == 'Team' or essay.author == 'team' %}
-          <a href="{{ team_url }}" class="flex rounded-full ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" data-tippy-content="{{ com }}" alt="{{ com }}'s logo" target="_blank" rel="noopener">
+          <a href="{{ team_url }}" class="flex rounded-full ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" data-tippy-content="{{ com }}" alt="{{ com }}'s logo" target="_blank" rel="noopener">
           <svg class="fill-current mx-auto w-10 h-10 xl:w-12 xl:h-12"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg></a>
-          <a class="un rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" href="{{ team_url }}" data-tippy-content="C-Team" target="_blank" rel="noopener">{{ com }} team</a>
+          <a class="un rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" href="{{ team_url }}" data-tippy-content="C-Team" target="_blank" rel="noopener">{{ com }} team</a>
         {% else %}
           {% if essay.author.img %}
-          <a href="{% if essay.author_url %}{{ essay.author_url }}{% else %}{% url 'author' slug=essay.author.slug %}{% endif %}" class="flex rounded-full ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" target="_blank" rel="noopener"><img class="t-img rounded-full w-10 h-10 bg-gradient-to-tl to-yellow-200 from-red-700 shadow" src="{{ essay.author.img.url }}" alt="{{ essay.author.slug }}"/></a>
+          <a href="{% if essay.author_url %}{{ essay.author_url }}{% else %}{% url 'author' slug=essay.author.slug %}{% endif %}" class="flex rounded-full ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener"><img class="t-img rounded-full w-10 h-10 bg-gradient-to-tl to-yellow-200 from-red-700 shadow" src="{{ essay.author.img.url }}" alt="{{ essay.author.slug }}"></a>
           {% endif %}
-        <a class="un rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" href="{% if essay.author_url %}{{ essay.author_url }}{% else %}{% url 'author' slug=essay.author.slug %}{% endif %}" target="_blank" rel="noopener">{{ essay.author.name }}</a>
+        <a href="{% if essay.author_url %}{{ essay.author_url }}{% else %}{% url 'author' slug=essay.author.slug %}{% endif %}" class="un rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener">{{ essay.author.name }}</a>
         {% endif %}
       {% endif %}
       {% if essay.author_team %}
       {% if essay.author_team.img %}
-        <a href="{% url 'team:detail' slug=essay.author_team.slug %}" class="flex rounded-full ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" target="_blank" rel="noopener">
+        <a href="{% url 'team:detail' slug=essay.author_team.slug %}" class="flex rounded-full ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener">
         <img loading="lazy" class="t-img rounded-full w-10 h-10 shadow" src="{{ essay.author_team.img.url }}"></a>
       {% endif %}
-      <a href="{% url 'team:detail' slug=essay.author_team.slug %}" class="un rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" target="_blank" rel="noopener">{{ essay.author_team.name }}</a>
+      <a href="{% url 'team:detail' slug=essay.author_team.slug %}" class="un rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener">{{ essay.author_team.name }}</a>
       {% else %}
       <span>Øutis</span>
       {% endif %}
@@ -75,7 +75,7 @@
     </div>
 
     <div class="text-lg text-justify hyphens list-inside">
-      {% if essay.section_set.all %}
+      {% if essay.section_set.all > 1 %}
       <div class="text-lg font-c-sans mt-0 mx-5 mb-4">
       <details class="space-y-1">
         <summary class="text-xl font-semibold">{% trans 'Contents' %}</summary>
@@ -124,13 +124,12 @@
   {% include 'base/snippets/cc.html' %}
 
   {% if request.user.email %}
-  <!--{% comment %} if tot_readers % }
+  {% comment %}<!-- if tot_readers % }
   <div class="text-center text-sm text-gray-500">
   <a class="inline-flex items-center" data-tippy-content="Readers"><svg class="w-4 h-4 text-gray-500 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#reader"></use></svg>
   { { tot_readers } }</a>
   </div>
-  { % endif {% endcomment %}-->
-
+  { % endif -->{% endcomment %}
   {% if notes.all %}
   <div x-data="{ open: false }">
     <div class="text-center my-4">

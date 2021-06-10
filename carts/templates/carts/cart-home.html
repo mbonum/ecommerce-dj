@@ -25,7 +25,7 @@
 {#<!--<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow-->#}
         </td>
         <td class="px-4 py-2">
-          <a class="un focus:outline-none " href="{{ object.get_absolute_url }}"{% if object.img %} id="product-cart"{% endif %}>{{ object.name }}</a>
+          <a class="un focus:outline-none" href="{{ object.get_absolute_url }}"{% if object.img %} id="product-cart"{% endif %}>{{ object.name }}</a>
           {% if object.img %}
           <div id="product-cart-tip" class="hidden">
             <img class="w-64 h-64" src="{{ object.img.url }}">
@@ -39,7 +39,7 @@
           <div class="relative">
             <select class="rounded-lg shadow appearance-none border border-gray-400 focus:border-yellow-500 px-2 pr-5 py-1 bg-white focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2" name="qty" id="qty-id">
               {% for q in object.rangeqty %}
-              <option value="{{ q }}">{{ q }}</option>
+              <option class="qty-item" value="{{ q }}">{{ q }}</option>
               {% endfor %}
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-gray-600">
@@ -51,7 +51,7 @@
           {% endif %}
         </td>
         <td class="text-center">
-          <p>{% include 'carts/snippets/currency.html' %}{{ object.price }}</p>
+          <p class="price-item">{% include 'carts/snippets/currency.html' %}{{ object.price }}</p>
         </td>
         <td class="cart-item-remove-form xl:border-b xl:border-gray-300 py-2 sm:pl-2">
           {% include 'carts/snippets/remove-product.html' with id=object.id %}

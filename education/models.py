@@ -61,7 +61,6 @@ class BookManager(models.Manager):
 
 
 class Book(models.Model):
-    # id = models.AutoField(primary_key=True)
     index = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         blank=False,
@@ -72,7 +71,7 @@ class Book(models.Model):
     title = models.CharField(max_length=90, db_index=True)
     slug = models.SlugField(blank=False, unique=True)
     tags = models.ManyToManyField(Tag, blank=False)
-    text = HTMLField(blank=False, null=True, help_text=_('View->srcode->class="fl"'))
+    # text = HTMLField(blank=False, null=True, help_text=_('View->srcode->class="fl"'))
     audio = models.FileField(
         upload_to=book_media_path, blank=True, null=True, help_text=_("Record reading")
     )
@@ -110,3 +109,22 @@ class Book(models.Model):
     @property
     def name(self):
         return self.title
+
+
+class Section(models.Model):
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    title = models.CharField(
+        help_text=_("Skip if section 1"), max_length=90, blank=True, null=True
+    )
+    slug = models.SlugField(blank=True, null=True, unique=True)
+    text = HTMLField(
+        blank=False,
+        null=True,
+        help_text=_('View->srcode->class="fl"'),
+    )
+    img = models.FileField(_("Image"), upload_to=book_media_path, blank=True, null=True)

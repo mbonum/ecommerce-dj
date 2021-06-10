@@ -1,7 +1,7 @@
-{% load static %}
+{% load i18n static %}
 <form class="form-product-ajax" method="POST" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" class="form"> {% csrf_token %}
   <input class="cart-item-product-id hidden" type="hidden" name="product_id" value="{{ id }}">
-  <button type="submit" class="rem flex text-gray-500 hover:text-red-600 focus:outline-none" data-tippy-content="Remove">
+  <button type="submit" class="rem flex text-gray-500 hover:text-red-600 focus:outline-none" data-tippy-content="{% trans 'Remove' %}">
     <svg class="w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
   </button>
 </form>

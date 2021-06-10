@@ -65,10 +65,11 @@ def details(request, slug: str):
     generate audio
     """
     essay = get_object_or_404(Essay, slug=slug, publish=True)
-    if not essay.audio:
-        path = getattr(settings, "MEDIA_ROOT") + "/essays/" + f"{slug}/"
-        os.makedirs(path, exist_ok=True)
-        f = f"{path}{slug}.mp3"  # static/media_root ogg not supported in mac
+    path = getattr(settings, "MEDIA_ROOT") + "/essays/" + f"{slug}/"
+    os.makedirs(path, exist_ok=True)
+    f = f"{path}{slug}.mp3"  # static/media_root ogg not supported in mac
+    if not essay.audio and not Path(f).is_file():
+        # if not filecmp.cmp(Path(f), f, shallow=False):
         e = ""
         for s in essay.section_set.all():
             if s.title:
@@ -79,12 +80,9 @@ def details(request, slug: str):
         txt = BeautifulSoup(e, "lxml")  # features= convert html to text
         tts = gTTS(txt.get_text(), lang="en")
         # 'static' + settings.MEDIA_URL + 'essays/' + f'{slug}/'#/media_root/
-        if Path(f).is_file():  # if there's a file see if they are the same
-            # https://docs.python.org/3/library/filecmp.html
-            if not filecmp.cmp(Path(f), f, shallow=False):
-                tts.save(f)
-        else:
-            tts.save(f)
+        # if there's a file see if they are the same
+        # https://docs.python.org/3/library/filecmp.html
+        tts.save(f)
 
     _id = essay.index + 1
     try:
@@ -177,7 +175,7 @@ class GenerateEssayPDF(View):
                 content = f"attachment; filename={filename}"
             response["Content-Disposition"] = content
             return response
-        return HttpResponse("Document not found.")
+        return HttpResponse(_("Document not found."))
 
 
 def author_view(request, slug: str):

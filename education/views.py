@@ -26,13 +26,16 @@ def details(request, slug):
     p = "static/media_root/edu/" + f"{slug}/"
     os.makedirs(p, exist_ok=True)
     f = f"{p}{slug}.mp3"
-    # if not book.audio:
-    txt = BeautifulSoup(book.text, features="lxml")
-    tts = gTTS(txt.get_text(), lang="en")
-    if Path(f).is_file():
-        if not filecmp.cmp(Path(f), f"{p}{slug}.mp3", shallow=True):
-            tts.save(f)
-    else:
+    if not book.audio and not Path(f).is_file():
+        e = ""
+        for s in book.section_set.all():
+            if s.title:
+                b += s.title
+            b += s.text
+        txt = BeautifulSoup(b, features="lxml")
+        tts = gTTS(txt.get_text(), lang="en")
+        # if Path(f).is_file() and not filecmp.cmp(Path(f), f"{p}{slug}.mp3", shallow=True):
+        #         tts.save(f)
         tts.save(f)
 
     _id = book.index + 1

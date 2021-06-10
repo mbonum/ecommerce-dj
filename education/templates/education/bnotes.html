@@ -6,17 +6,41 @@
 <div ondblclick="exitFullscreen();">
 <div class="font-c-serif max-w-md md:max-w-lg m-auto px-2">
   <div ondblclick="focusMode(document.documentElement);">
-  <div class="border-t-2 border-b border-gray-400 py-3 rounded-lg text-center mb-4">
-    <p class="text-4xl mb-4">{{ object.title }}</p>
-    {% include 'base/snippets/audio.html' with obj=object %}
-    <div class="inline-flex space-x-5">
-      <span class="text-sm text-gray-600">{% trans 'Doubleclick to focus' %}</span>
-      {% include 'base/snippets/theme.html' %}
+{#<!-- {% if object.img %}<div><img loading="lazy" class="m-auto rounded-lg" src="{{ object.img.url }}" alt="{{ essay.slug }}"></div>{% endif %} -->#}
+    <div class="border-t-2 border-b border-gray-400 py-3 rounded-lg text-center mb-4">
+      <p class="text-4xl mb-4">{{ object.title }}</p>
+      {% include 'base/snippets/audio.html' with obj=object %}
+      <div class="inline-flex space-x-5">
+        <span class="text-sm text-gray-600">{% trans 'Doubleclick to focus' %}</span>
+        {% include 'base/snippets/theme.html' %}
+      </div>
     </div>
-  </div>
-  <div class="text-lg text-justify hyphens list-inside border border-gray-300 rounded-lg p-6 mt-4">
-    {{ object.text|safe }}
-  </div>
+    <div class="text-lg mt-4">
+
+      {% if object.section_set.all > 1 %}
+      <div class="font-c-sans mx-5 mb-4">
+      <details class="space-y-1">
+        <summary class="text-xl font-semibold">{% trans 'Contents' %}</summary>
+        <ul>
+        {% for s in object.section_set.all %}
+          {% if not forloop.first %}
+          <li class=""><a href="#{{ s.slug }}">{{ s.title|safe }}</a></li>
+          {% endif %}
+        {% endfor %}
+        </ul>
+      </details>
+      </div>
+      {% endif %}
+      <div class="text-justify hyphens list-inside  border border-gray-300 shadow rounded-lg p-5 text-lg">
+        {% for s in object.section_set.all %}
+        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-xl font-c-sans font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
+        {{ s.text|safe }}
+        {% if s.img %}
+        <div class="my-2"><img src="{{ s.img.url }}" class="rounded-lg mx-auto" alt="" loading="lazy"></div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
   <div class="text-center text-gray-700 font-sans my-4">
     <div class="inline-flex overflow-hidden border border-gray-300 bg-white shadow rounded-lg">
       {% include 'base/snippets/backbtn.html' with url=edu_url id=object.slug %}

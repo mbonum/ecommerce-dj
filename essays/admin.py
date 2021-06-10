@@ -31,7 +31,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 class SectionInline(admin.StackedInline):
     model = Section
-    extra = 3
+    extra = 2
     prepopulated_fields = {"slug": ("title",)}
 
 
@@ -65,6 +65,7 @@ class EssayAdmin(admin.ModelAdmin):
         #     return f'{obj.author_team.name}'
 
 
+# Add portal for authors
 class EssaysAdminArea(admin.AdminSite):
     site_header = _("Essay Admin")
 
