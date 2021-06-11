@@ -1,11 +1,16 @@
-{% if book.img %}
-<div id="{{ book.slug }}" class="text-gray-800 hover:text-black rounded-lg border border-gray-300 bg-white shadow hover:shadow-lg hover:border-yellow-500 mx-auto">
-  <a href="{{ book.get_absolute_url }}" class="flex rounded-lg ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none">
-    <img src="{{ book.img.url }}" loading="lazy" alt="{{ book.title }}" class="rounded-l-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500">
-    <div class="w-1/3 space-y-2 p-4">
-      {% for t in book.tags.all %}<p class="bg-footer inline-flex rounded-full font-semibold mx-auto text-center px-2 py-1">#{{ t.name }}</p>{% endfor %}
-      <p class="hyphens">{{ book.title }}</p>
+{% if obj.img %}
+<div id="{{ obj.slug }}" class="text-gray-800 hover:text-black rounded-lg border border-gray-300 bg-white shadow hover:shadow-lg hover:border-yellow-500 mx-auto">
+  <a href="{{ obj.get_absolute_url }}" class="focus:outline-none">
+    <img src="{{ obj.img.url }}" loading="lazy" alt="{{ obj.title }}" class="rounded-t-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500">
+    <div class="space-y-2 p-4">
+      {% for t in obj.tags.all %}<p class="bg-footer inline-flex rounded-full font-semibold mx-auto text-center px-2 py-1">#{{ t.name }}</p>{% endfor %}
+      <div class="hyphens">
+        <p class="text-lg">{{ obj.title }}</p>
+        {% if obj.summary %}
+        <p>{{ obj.summary|truncatewords:9 }}</p>
+        {% endif %}
+      </div>
     </div>
   </a>
 </div>
-{% endif %}{% comment %}<!--{ { book.text|truncatewords:8 }} -->{% endcomment %}
+{% endif %}

@@ -71,12 +71,12 @@ class Book(models.Model):
     title = models.CharField(max_length=90, db_index=True)
     slug = models.SlugField(blank=False, unique=True)
     tags = models.ManyToManyField(Tag, blank=False)
-    # text = HTMLField(blank=False, null=True, help_text=_('View->srcode->class="fl"'))
+    summary = HTMLField(blank=True, null=True)
     audio = models.FileField(
         upload_to=book_media_path, blank=True, null=True, help_text=_("Record reading")
     )
     img = models.ImageField(
-        _("Cover"), upload_to=book_media_path, blank=False, null=True
+        _("Cover image"), upload_to=book_media_path, blank=False, null=True
     )
     created = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True)

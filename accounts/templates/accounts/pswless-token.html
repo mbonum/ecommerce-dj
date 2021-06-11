@@ -1,15 +1,18 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="screen,projection">
-  <title>Login Clavem Token</title>
+  <title>{% trans 'Clavem Login Code' %}</title>
 </head>
 <body>
-  <div class="font-c-sans">
-  <p class="text-lg">Hi,</p>
-  <p class="text-lg">Use this code to log in:</p>
-  <p class="text-lg border border-gray-300 rounded-lg p-2">{{ callback_token }}</p>
+  <div class="font-c-sans text-lg">
+    {% blocktranslate %}
+    <p>Hi,</p>
+    <p>Use this code to log in:</p>
+    {% endblocktranslate %}
+    <p class="border border-gray-300 rounded-lg p-2">{{ callback_token }}</p>
   </div>
 </body>
 </html>

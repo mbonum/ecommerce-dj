@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
 {% block title %}{% if title %}{{ title }}{% else %}Email{% endif %}{% endblock %}
 {% block content %}
 <div class="px-12 max-w-xs mx-auto">
@@ -23,4 +22,4 @@
   </form>
 </div>
 {% endblock %}
-<!--{# psw_change_url -> templates/registration/password_change_form.html <label for="email">Email:</label><input type="text" id="email" class="form-control" value="{{ request.user.email }}" disabled="disabled"/><span class="text-gray-700 text-sm">Cannot change email</span> |crispy .as_p #}-->
+{#<!-- psw_change_url -> templates/registration/password_change_form.html <label for="email">Email:</label><input type="text" id="email" class="form-control" value="{{ request.user.email }}" disabled="disabled"/><span class="text-gray-700 text-sm">Cannot change email</span> |crispy .as_p -->#}

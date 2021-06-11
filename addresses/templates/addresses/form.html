@@ -1,5 +1,5 @@
 {% load i18n static %}
-<form method="POST" {% if 'action_url' %}action="{{ action_url }}" {% endif %}> {% csrf_token %}
+<form method="post" {% if 'action_url' %}action="{{ action_url }}" {% endif %}> {% csrf_token %}
   {% if next %}
   <input type="hidden" name="next" value="{{ next_url }}">
   {% endif %}

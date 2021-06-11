@@ -97,6 +97,21 @@ class Privacy(models.Model):
     #     return reverse("home:detail", kwargs={"order_id": self.order_id})
 
 
+# class Return(models.Model):
+#     title = models.CharField(max_length=99)
+#     text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
+#     pdf = models.FileField(
+#         "PDF", upload_to="return/", max_length=255, blank=True, null=True
+#     )
+#     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+
+#     def __str__(self):
+#         return self.title
+
+#     class Meta:
+#         verbose_name_plural = _("Return policy")
+
+
 class Terms(models.Model):
     title = models.CharField(max_length=250)
     text = HTMLField(

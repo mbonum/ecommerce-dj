@@ -236,7 +236,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-ASGI_APPLICATION = "core.asgi.application"
+ASGI_APPLICATION = "core.asgi.application"  # slow
 MAX_ACTIVE_TASKS = 2
 
 CHANNEL_LAYERS = {
@@ -447,7 +447,6 @@ NEWSLETTER_THUMBNAIL = "sorl-thumbnail"
 
 # django-imperavi "imperavi.widget.ImperaviWidget"
 NEWSLETTER_RICHTEXT_WIDGET = "tinymce.widgets.TinyMCE"
-
 
 # # Amount of seconds to wait between each email. Here 50ms is used.
 # NEWSLETTER_EMAIL_DELAY = 0.05

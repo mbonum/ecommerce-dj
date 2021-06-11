@@ -9,7 +9,6 @@ from .models import Note
 
 
 class NoteForm(forms.ModelForm):
-
     parent = TreeNodeChoiceField(queryset=Note.objects.all())
     body = forms.CharField(
         label="",
@@ -19,7 +18,7 @@ class NoteForm(forms.ModelForm):
                 "id": "comment",
                 "rows": 4,
                 "placeholder": "Clear, concise, ideally, compelling",
-                "class": "hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md mt-2",
+                "class": "hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-2",
                 "type": "text",
             }
         ),

@@ -6,10 +6,14 @@
 </style>
 {% endblock %}
 {% block content %}
-<div x-data="{ l: true }">
-  <button class="rounded-full focus:outline-none" data-tippy-content="{% trans 'Lights' %}" @click="l = !l" onclick="theme()">
-    <svg class="text-gray-600 focus:animate-spin hover:text-yellow-300 fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#bulb"></use></svg>
-  </button>
+<div class="inline-flex items-center text-gray-700 space-x-9">
+  <span>{% trans 'Doubleclick to focus' %}</span>
+  <div x-data="{ l: true }">
+    <button class="inline-flex items-center rounded-full focus:outline-none space-x-2 hover:text-yellow-400 ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent py-1 px-2" data-tippy-content="{% trans 'Lights' %}" @click="l = !l" onclick="theme()">
+      <svg class="focus:animate-spin fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#bulb"></use></svg>
+      <span>{% trans 'Light/Dark' %}</span>
+    </button>
+  </div>
 </div>
 {% endblock %}
 {% block js %}
@@ -22,4 +26,4 @@ function theme() {
 {% endblock %}
 {% comment %}<!--yy<svg x-show="l" class="text-gray-900 hover:text-gray-700 fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#moon"></use></svg>
 <svg x-show="!l" class="text-gray-100 hover:text-yellow-300 fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#sun"></use></svg>
-3e3e40 ring-yellow-100 focus:ring-2 ring-offset-2 ring-offset-transparent ab79d6 rgba(160, 130, 255, 0.8);☯️ Light/Dark rgba(70, 80, 120, 0.8) rgba(255, 255, 130, .8)FFFFE0 FFFF9B FFFF63 EBEF9B rgb(255, 255, 99) rgb(238, 238, 238);-->{% endcomment %}
+3e3e40 ab79d6 rgba(160, 130, 255, 0.8);☯️ Light/Dark rgba(70, 80, 120, 0.8) rgba(255, 255, 130, .8)FFFFE0 FFFF9B FFFF63 EBEF9B rgb(255, 255, 99) rgb(238, 238, 238);-->{% endcomment %}

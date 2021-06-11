@@ -81,7 +81,7 @@
     <p class="mt-1">{% trans 'Cart Total' %}: {% include 'carts/snippets/currency.html' %}{{ object.cart.total }}</p>
     
     <p class="mt-1">{% trans 'Order Total' %}: {% include 'carts/snippets/currency.html' %}{{ object.total }}</p>
-    <form class="for mt-6 text-center" method="POST" action=""> {% csrf_token %}
+    <form class="mt-6 text-center" method="post" action=""> {% csrf_token %}
       <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><div class="inline-flex items-center">{% trans 'Complete' %}
         <svg class="w-4 h-4 fill-current ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg></div>
       </button>

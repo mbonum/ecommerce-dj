@@ -121,7 +121,9 @@ $maroon: #AC3833;// complementary 3833AC
 //.sh { user-select: none; pointer-events: none;}code #464d77 0071E3 <span>$</span>
 
 // .sep { content: "·";}
-
+// details[open] > summary:after {
+//   content: "·";
+// }
 .arrowl:hover { padding-right: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
 .arrowr::hover { padding-left: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
 

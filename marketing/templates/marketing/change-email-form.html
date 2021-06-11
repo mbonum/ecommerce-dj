@@ -7,7 +7,7 @@
     <p class="text-lg text-center font-semibold uppercase">{% if title %}{{ title }}{% else %}
       {% trans 'Update your email preferences' %}{% endif %}</p>
   </div>
-  <form class="text-sm mt-6" method="POST" action="{% if 'action_url' %}{{ action_url }}{% endif %}"> {% csrf_token %}
+  <form class="text-sm mt-6" method="post" action="{% if 'action_url' %}{{ action_url }}{% endif %}"> {% csrf_token %}
     {% if next %}
     <input type='hidden' name='next' value='{{ next_url }}'>
     {% endif %}

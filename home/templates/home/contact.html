@@ -4,7 +4,7 @@
 {% block content %}
 <div class="max-w-sm mx-auto">
   <div class="bg-footer rounded-lg border border-gray-400 overflow-hidden py-6 px-5 md:px-7">
-    <form method="POST" class="font-c-sans w-full"> {% csrf_token %}
+    <form method="post" class="font-c-sans w-full"> {% csrf_token %}
       <div class="flex flex-wrap space-y-6 mb-2 text-sm">
         {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
         <div class="w-full sm:text-center">
@@ -134,7 +134,7 @@ class="hover:border-gray-600 block w-full h-40 tracking-wide border border-gray-
 placeholder="Everyone knows something someone else doesn't."></textarea>
 <input
 class="hover:border-gray-600 appearance-none block w-full bg-white text-black border border-gray-500 rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white placeholder-gray-900 hover:shadow"
-id="contact-subject" type="text" placeholder="Zip/Postal Code" />
+id="contact-subject" type="text" placeholder="Zip/Postal Code">
 { % for field in form.visible_fields %}
 <div class="w-full md:w-1/2 px-3 lg:px-6 mb-4 md:mb-6">
 <!-form-group <label for="{{ field.id_for_label }}">{{ field.label }}</label> ->

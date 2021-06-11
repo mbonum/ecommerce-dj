@@ -27,7 +27,7 @@ def details(request, slug):
     os.makedirs(p, exist_ok=True)
     f = f"{p}{slug}.mp3"
     if not book.audio and not Path(f).is_file():
-        e = ""
+        b = ""
         for s in book.section_set.all():
             if s.title:
                 b += s.title

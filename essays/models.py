@@ -131,7 +131,7 @@ class Essay(ModelMeta, models.Model):
     audio = models.FileField(
         upload_to=essay_media_path, blank=True, null=True, help_text=_("Record reading")
     )
-    abstract = HTMLField(_("Abstract"), blank=True, null=True)
+    summary = HTMLField(_("Summary"), blank=True, null=True)
     created = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated = models.DateTimeField(_("Updated at"), auto_now=True)
     publish = models.BooleanField(default=False, help_text=_("Edit before publishing"))

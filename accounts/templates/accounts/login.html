@@ -3,7 +3,7 @@
 {% block title %}{% trans 'Log in' %}{% endblock %}
 {% block content %}
 <div x-data="{ click: false }" class="mx-10 my-6">
-  <form method="POST"> {% csrf_token %}
+  <form method="post"> {% csrf_token %}
     <div class="mb-6">
       <div class="text-gray-700 m-1">{{ form.email.label }}</div>
       {{ form.email }}
@@ -39,7 +39,7 @@
 </form>{ % include 'accounts/snippets/anti-bot.html' % } if not next_url %}<h1 class="sc text-center font-tex font-bol">Welcome back to {{ com }}</h1>{% endif %}
 action="{% if next_url %}{{ next_url }}{% else %}{{ login_url }}{% endif %}"{% if next_url %}
 <input type='hidden' name='next' value='{{ next_url }}'> {% csrf_token %}
-{% endif % { % blocktrans % }<p class="text-sm pt-4 ml-1">{% trans 'New?' %} <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-400 font-semibold focus:outline-none">Sign up</a></p>{ % block js %}{ % endblock %}
+{% endif % { % blocktranslate % }<p class="text-sm pt-4 ml-1">{% trans 'New?' %} <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-400 font-semibold focus:outline-none">Sign up</a></p>{ % block js %}{ % endblock %}
 stay sign in for a week passwordless login
 <script>
   var reca = document.getElementById('recap').value;

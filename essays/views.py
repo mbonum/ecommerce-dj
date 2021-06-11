@@ -45,27 +45,14 @@ def index(request):
     return render(request, "essays/wlist.html", context)
 
 
-# def stripTags(html, invalid_tags):
-#     soup = BeautifulSoup(html, "lxml")
-
-#     for tag in soup.findAll(True):
-#         if tag.name in invalid_tags:
-#             s = "::"
-#             for c in tag.contents:
-#                 if not isinstance(c, NavigableString):
-#                     c = stripTags(str(c), invalid_tags)
-#                 s += str(c)
-#             tag.replaceWith(s)
-#     return soup
-
-
 def details(request, slug: str):
     """
     Show essay
     generate audio
     """
     essay = get_object_or_404(Essay, slug=slug, publish=True)
-    path = getattr(settings, "MEDIA_ROOT") + "/essays/" + f"{slug}/"
+    path = "static/media_root/essays/" + f"{slug}/"
+    # # access on cdn getattr(settings, "MEDIA_ROOT") + "/essays/"
     os.makedirs(path, exist_ok=True)
     f = f"{path}{slug}.mp3"  # static/media_root ogg not supported in mac
     if not essay.audio and not Path(f).is_file():
@@ -75,9 +62,7 @@ def details(request, slug: str):
             if s.title:
                 e += s.title
             e += s.text
-        # invalid_tags = ["br", "b", "font"]
-        # txt = stripTags(e, invalid_tags)
-        txt = BeautifulSoup(e, "lxml")  # features= convert html to text
+        txt = BeautifulSoup(e, "lxml")  # convert html to text
         tts = gTTS(txt.get_text(), lang="en")
         # 'static' + settings.MEDIA_URL + 'essays/' + f'{slug}/'#/media_root/
         # if there's a file see if they are the same
@@ -90,7 +75,18 @@ def details(request, slug: str):
     except:
         _next = None
 
-    cmts = Note.objects.filter(active=True)
+    cmts = essay.notes.filter(active=True)
+
+    user_comment = None
+    if request.method == "POST":
+        comment_form = NoteForm(request.POST)
+        if comment_form.is_valid():
+            user_comment = comment_form.save(commit=False)
+            user_comment.essay = essay
+            user_comment.save()
+            return HttpRespons("/" + essay.slug)
+    else:
+        comment_form = NoteForm()
     # page = request.GET.get('page', 1)
     # paginator = Paginator(all_cmts, 3)
     # try:
@@ -100,22 +96,27 @@ def details(request, slug: str):
     # except EmptyPage:
     #     cmts = paginator.page(paginator.num_pages)
 
-    form = NoteForm(request.POST or None)
-    if form.is_valid():  # request.method == 'POST'
-        parent = form.cleaned_data.get("parent")
-        b = form.cleaned_data.get("body")  # or request.POST.get('body')
-        p = form.cleaned_data.get("private")  # or request.POST.get('private')
-        p = False if p is None or p == "on" else True  # privacy by default
-        new_note, created = Note.objects.get_or_create(
-            user=request.user,
-            essay=essay,
-            parent=parent,
-            body=b,
-            private=p,
-        )
-        return HttpResponseRedirect("")
-    # print('**', f)
-    context = {"essay": essay, "tts": f, "form": form, "notes": cmts, "next": _next}
+    # form = NoteForm(request.POST or None)
+    # if form.is_valid():  # request.method == 'POST'
+    #     parent = form.cleaned_data.get("parent")
+    #     b = form.cleaned_data.get("body")  # or request.POST.get('body')
+    #     p = form.cleaned_data.get("private")  # or request.POST.get('private')
+    #     p = False if p is None or p == "on" else True  # privacy by default
+    #     new_note, created = Note.objects.get_or_create(
+    #         user=request.user,
+    #         essay=essay,
+    #         parent=parent,
+    #         body=b,
+    #         private=p,
+    #     )
+    #     return HttpResponseRedirect("")
+    context = {
+        "object": essay,
+        "tts": f,
+        "form": comment_form,
+        "notes": cmts,
+        "next": _next,
+    }
     return render(request, "essays/wtext.html", context)
     # if form.errors:
     #     errors = form.errors.as_json()

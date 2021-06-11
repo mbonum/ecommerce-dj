@@ -31,21 +31,24 @@ class NoteManager(models.Manager):
 
 
 class Note(MPTTModel):
-    # id = models.AutoField(primary_key=True)
     user = models.ForeignKey(USER, blank=False, null=True, on_delete=models.CASCADE)
-    essay = models.ForeignKey(Essay, blank=False, null=True, on_delete=models.CASCADE)
+    essay = models.ForeignKey(
+        Essay, blank=False, null=True, on_delete=models.CASCADE, related_name="notes"
+    )
     parent = TreeForeignKey(
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
     body = HTMLField(_("Note"), blank=False, null=True)
     private = models.BooleanField(
-        blank=True, null=True, default=False, help_text=_("Show name/email")
+        blank=True, null=True, default=True, help_text=_("Show name/email")
     )
     # reply = models.BooleanField('Activate reply + email notification', blank=True, null=True, default=True)
     created_at = models.DateTimeField(
         _("Created at"), auto_now_add=True, editable=False
     )
-    active = models.BooleanField(_("Show"), default=True)  # remove insulting ones
+    active = models.BooleanField(
+        _("Show"), default=True, help_text=_("Hide insulting ones")
+    )
     like = models.ManyToManyField(USER, blank=True, related_name="likes")
 
     objects = NoteManager()
@@ -62,7 +65,7 @@ class Note(MPTTModel):
             n = self.user.first_name
         else:
             n = self.user.email
-        return f"Note about {self.essay} by {n}"
+        return f"Note #{self.id} about {self.essay} by {n}"
 
     def tot_likes(self):
         return self.like.count()
