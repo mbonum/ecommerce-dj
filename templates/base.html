@@ -37,7 +37,7 @@
 {% url 'clvmurl' as short_url %}
 {% url 'newsletter:newsletter_subscribe_request' as newsletter_url %}
 
-{% with url='https://www.clavem.co' com='Clavem' launched='Dec 20, 2020 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
+{% with url='https://www.clavem.co' com='Clavem' launched='May 30, 2020 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
 {#<!-- recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' request.url :class="{ { error ? 'text-red-600' : 'text-green-600' }}" address_btc='btc_wallet' address_eth='eth_wallet' yt_url='https://www.youtube.com/channel/' fb_url='https://facebook.com/clavem' ig_url='https://instagram.com/clavem' -->#}
 {% spaceless %}
 {% autoescape off %}
@@ -47,13 +47,11 @@
 <head {% meta_namespaces %}>
 {#<!-- % analytical_head_top % { % include 'base/snippets/fullscreen.html' % -->#}
   {% include 'base/snippets/meta.html' %}
-
   {% if not request.user.email %}{% include 'base/snippets/cookieconsent.html' %}{% endif %}{#<!-- user.cookie -->#}
   {% block css %}{% endblock %}
   <title>{% block title %}{% endblock %} · {{ com }}</title>
-{#<!--<base target="_blank" rel="noopener"> % if cart_url in request.path %}oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"{ % endif %}% analytical_head_bottom % ondblclick="focusMode(document.documentElement);" ondblclick="exitFullscreen();" -->#}
 </head>
-<body class="bg-primary antialiased overflow-x-hidden overscroll-contain">
+<body class="bg-primary antialiased overflow-x-hidden">
 {#<!-- % analytical_body_top % -->#}
   <div class="flex-col w-screen h-screen" id="nojs">
     {% include 'base/nav.html' %}
@@ -65,6 +63,8 @@
         {% block content %}{% endblock %}
       </div>
     </div>
+    <input type="hidden" name="y" id="y" value="{{ current_year }}">
+    <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
     <div class="bg-footer">{% include 'base/footer.html' %}</div>
   </div>
   {% include 'base/noscript.html' %}
@@ -76,6 +76,8 @@
 {% endautoescape %}
 {% endspaceless %}
 {% endwith %}
-{% comment %}<!--{ % cache 600 footer %}{ % endcache %}{ % analytical_body_bottom %}Hey, we're still opening up but anyone can join with an invite from an existing user! setTimeout(function() { location.href="https://www.duckduckgo.com/"; }, 500); GDPR-banner <div x-data="{ show: !localStorage.getItem('hide-banner') }"><div x-show="show"><button @click="localStorage.setItem('hide-banner', true); show = false">close</button></div></div>
+{% comment %}<!--<img srcset="elva-fairy-480w.jpg 480w, elva-fairy-800w.jpg 800w" sizes="(max-width: 600px) 480px, 800px"src="elva-fairy-800w.jpg" elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x" alt="Elva dressed as a fairy"> https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
+ % if cart_url in request.path %}oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"{ % endif %}% analytical_head_bottom % ondblclick="focusMode(document.documentElement);" ondblclick="exitFullscreen();"
+{ % cache 600 footer %}{ % endcache %}{ % analytical_body_bottom %}Hey, we're still opening up but anyone can join with an invite from an existing user! setTimeout(function() { location.href="https://www.duckduckgo.com/"; }, 500); GDPR-banner <div x-data="{ show: !localStorage.getItem('hide-banner') }"><div x-show="show"><button @click="localStorage.setItem('hide-banner', true); show = false">close</button></div></div>
 <script>export default { data() { return { theme: 'light', } }</script>
 { % render_bundle 'app' %}Vue production src/frontend/dist/bundle.js <script type="text/javascript" src="{ % static 'bundle.js' %}"></script>-->{% endcomment %}

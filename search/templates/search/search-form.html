@@ -3,6 +3,6 @@
   <div class="text-gray-800 inline-flex items-center">
     <button class="inline-flex focus:outline-none" type="submit"><svg class="hover:text-black fill-current w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#search"></use></svg></button>
     <input class="border-transparent placeholder-gray-800 focus:outline-none text-sm pl-2 py-1" type="search" placeholder="{% trans 'Search shop' %}" name="q" aria-label="{% trans 'Search' %}" value="{{ request.GET.q }}">
-    <button hidden type="submit"></button><!--{# focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 (Press Enter ↲)#}-->
+    <button hidden type="submit"></button>{#<!-- focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 (Press Enter ↲)-->#}
   </div>
 </form>

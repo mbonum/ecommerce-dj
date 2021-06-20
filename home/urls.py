@@ -14,4 +14,5 @@ urlpatterns = [
     path("cookie/", views.CookieView.as_view(), name="cookie"),
     path("privacy/", views.PrivacyView.as_view(), name="privacy"),
     path("terms/", views.TermsView.as_view(), name="terms"),
+    path("policy-pdf", views.policy_pdf, name="policy-pdf"),
 ]

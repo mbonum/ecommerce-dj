@@ -2,43 +2,54 @@
 {% load i18n static widget_tweaks %}
 {% block title %}{% trans 'Contact Vs' %}{% endblock %}
 {% block content %}
-<div class="max-w-sm mx-auto">
+<div class="max-w-sm mx-auto px-1">
   <div class="bg-footer rounded-lg border border-gray-400 overflow-hidden py-6 px-5 md:px-7">
-    <form method="post" class="font-c-sans w-full"> {% csrf_token %}
-      <div class="flex flex-wrap space-y-6 mb-2 text-sm">
-        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-        <div class="w-full sm:text-center">
-          <label class="block text-black tracking-wide" for="messagetype">
-            {% trans 'Why are you writing us?' %}
-          </label>
-          {% if form.message_type %}
-          <div class="relative w-full mx-auto sm:w-1/2 mt-3">
-            {{ form.message_type }}
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
-              <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-            </div>
+    <form method="post" class="font-c-sans"> {% csrf_token %}
+      {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+      <div class="w-full md:w-3/2 mx-auto text-center">
+        <label for="messagetype">
+          {{ form.message_type.label }}
+        </label>
+        {% if form.message_type %}
+        <div class="relative md:w-1/2 mx-auto mt-3">
+          {{ form.message_type }}
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
+            <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
           </div>
-          {% endif %}
         </div>
-        <div class="w-full md:inline-flex space-y-6 md:space-y-0 md:space-x-6">
-          <div>{{ form.first_name }}</div>
-          <div>{{ form.last_name }}</div>
-        </div>
-        <div class="w-full md:inline-flex space-y-6 md:space-y-0 md:space-x-6">
-          <div>{{ form.email }}</div>
-          <div class="md:w-2/6">{{ form.postal_code }}</div>
-        </div>
-        <div class="w-full">{{ form.subject }}</div>
-        <div class="w-full">{{ form.text }}</div>
+        {% endif %}
       </div>
-      <div class="mt-6">
-        <a id="sendbtn">
-          <div class="cursor-pointer text-center w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
-            <p class="inline-flex items-center">{% trans 'Send' %}
-              <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
-            </p>
-          </div>
-        </a>
+      <div class="w-full space-y-4">
+        <div>
+          <label class="text-gray-700 m-2" for="contact_firstname">{{ form.first_name.label }}</label>
+          {{ form.first_name }}
+        </div>
+        <div>
+          <label class="text-gray-700 m-2" for="contact_lastname">{{ form.last_name.label }}</label>
+          {{ form.last_name }}
+        </div>
+        <div>
+          <label class="text-gray-700 m-2" for="contact_email">{{ form.email.label }}</label>
+          {{ form.email }}
+        </div>
+        <div>
+          <label class="text-gray-700 m-2" for="contact_pc">{{ form.postal_code.label }}</label>
+          {{ form.postal_code }}
+        </div>
+        <div>
+          <label class="text-gray-700 m-2" for="contact_subject">{{ form.subject.label }}</label>
+          {{ form.subject }}
+        </div>
+        <div class="mt-6">{{ form.text }}</div>
+        <div class="mt-6">
+          <a id="sendbtn">
+            <div class="cursor-pointer text-center w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
+              <p class="inline-flex items-center">{% trans 'Send' %}
+                <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
+              </p>
+            </div>
+          </a>
+        </div>
       </div>
     </form>
   </div>

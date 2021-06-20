@@ -13,58 +13,59 @@ USER = get_user_model()
 
 class ContactForm(forms.Form):
     message_type = forms.ChoiceField(
+        label=_("Why are you writing us?"),
         required=True,
         choices=MessageType.choices,
         widget=forms.Select(
             attrs={
                 "id": "messagetype",
-                "class": "font-c-sans rounded appearance-none w-full border border-gray-400 text-black py-2 px-2 pr-8 leading-tight outline-none bg-white focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "flex appearance-none w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
     first_name = forms.CharField(
-        label="",
+        label=_("First name"),
         required=True,
         widget=forms.TextInput(
             attrs={
-                "id": "contact-firstname",
+                "id": "contact_firstname",
                 "placeholder": _("First name"),
-                "class": "font-c-sans rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none w-full text-black border border-gray-400 py-2 px-3 focus:outline-none focus:bg-white placeholder-black",
+                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
             }
         ),
     )
     last_name = forms.CharField(
-        label="",
+        label=_("Last name"),
         required=True,
         widget=forms.TextInput(
             attrs={
-                "id": "contact-lastname",
+                "id": "contact_lastname",
                 "placeholder": _("Last name"),
-                "class": "font-c-sans rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none w-full text-black border border-gray-400 py-2 px-3 focus:outline-none focus:bg-white placeholder-opacity-100 placeholder-black",
+                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "type": "text",
             }
         ),
     )
     email = forms.EmailField(
-        label="",
+        label=_("Email"),
         required=True,
         widget=forms.EmailInput(
             attrs={
-                "id": "contact-email",
+                "id": "contact_email",
                 "placeholder": _("Email"),
-                "class": "font-c-sans rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none w-full bg-white text-black border border-gray-400 py-2 px-3 focus:outline-none focus:bg-white placeholder-black",
+                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "type": "text",
             }
         ),
     )
     subject = forms.CharField(
-        label="",
+        label=_("Topic"),
         required=True,
         widget=forms.TextInput(
             attrs={
-                "id": "contact-subject",
+                "id": "contact_subject",
                 "placeholder": _("Topic"),
-                "class": "font-c-sans rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none w-full bg-white text-black border border-gray-400 py-2 px-3 focus:outline-none focus:bg-white placeholder-black",
+                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),
@@ -74,23 +75,25 @@ class ContactForm(forms.Form):
         required=True,
         widget=forms.Textarea(  # widget=TinyMCE(attrs={'cols': 80, 'rows': 30, 'textarea':  "Everyone knows something someone else doesn't."})
             attrs={
-                "id": "contact-text",
+                "id": "contact_text",
                 "placeholder": _("Clear and concise."),
-                "class": "font-c-sans rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 w-full h-40 tracking-wide border border-gray-400 text-black py-2 px-3 placeholder-gray-800 hover:shadow",
+                "class": "flex hover:border-yellow-600 w-full tracking-wid border border-gray-500 rounded-lg text-black placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),  #'cols': 80, 'rows': 40,
     )
     postal_code = forms.CharField(
-        label="",
+        label=_("Postal code"),
         required=True,
         widget=forms.TextInput(
             attrs={
+                "id": "contact_pc",
                 "placeholder": _("Postal code"),
-                "class": "rounded focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none block w-full bg-white text-black border border-gray-400 py-2 px-3 leading-tight focus:outline-none focus:bg-white placeholder-gray-900 hover:shadow",
+                "class": "border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
+
     class Meta:
         model = Contact
         fields = (

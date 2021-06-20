@@ -11,5 +11,5 @@ urlpatterns = [
     path("<slug:slug>/<int:pk>/like/", views.like_view, name="like"),
     # path('<slug:slug>/post/', CommentView.as_view(), name='post')
     # path('author/<slug:slug>/', author_view, name='bio')
-    # path('essay-pdf/<slug:slug>/', GenerateEssayPDF.as_view(), name='pdf'),
+    path("pdf/<int:pk>/", views.GenerateEssayPDF.as_view(), name="pdf"),
 ]

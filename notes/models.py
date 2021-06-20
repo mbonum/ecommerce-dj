@@ -18,16 +18,16 @@ from essays.models import Essay
 USER = settings.AUTH_USER_MODEL
 
 
-class NoteManager(models.Manager):
-    def all(self):
-        qs = super(NoteManager, self).filter(parent=None)
-        return qs
+# class NoteManager(models.Manager):
+#     def all(self):
+#         qs = super(NoteManager, self).filter(parent=None)
+#         return qs
 
-    # def filter_by_instance(self, instance):
-    #     c_type = ContentType.objects.get_for_model(instance.__class__)
-    #     _id = instance.id
-    #     qs = super(NoteManager, self).filter(content_type=c_type, obj_id=_id).filter(parent=None)#.order_by('-created_at')
-    #     return qs
+# def filter_by_instance(self, instance):
+#     c_type = ContentType.objects.get_for_model(instance.__class__)
+#     _id = instance.id
+#     qs = super(NoteManager, self).filter(content_type=c_type, obj_id=_id).filter(parent=None)#.order_by('-created_at')
+#     return qs
 
 
 class Note(MPTTModel):
@@ -40,7 +40,7 @@ class Note(MPTTModel):
     )
     body = HTMLField(_("Note"), blank=False, null=True)
     private = models.BooleanField(
-        blank=True, null=True, default=True, help_text=_("Show name/email")
+        blank=True, null=True, default=False, help_text=_("Hide name/email")
     )
     # reply = models.BooleanField('Activate reply + email notification', blank=True, null=True, default=True)
     created_at = models.DateTimeField(
@@ -51,10 +51,10 @@ class Note(MPTTModel):
     )
     like = models.ManyToManyField(USER, blank=True, related_name="likes")
 
-    objects = NoteManager()
+    # objects = NoteManager()
 
     # class Meta:
-    #     ordering = ['-created']# higher likes # put the most interesting at the top
+    #     ordering = ["-created_at"]  # higher likes # put the most interesting at the top
 
     class MPTTMeta:
         verbose_name_plural = _("Notes")
@@ -69,12 +69,3 @@ class Note(MPTTModel):
 
     def tot_likes(self):
         return self.like.count()
-
-    # def child(self):#reply
-    #     return Note.objects.filter(parent=self)
-
-    # @property
-    # def is_parent(self):
-    #     if self.parent is not None:
-    #         return False
-    #     return True

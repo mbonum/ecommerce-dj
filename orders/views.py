@@ -32,7 +32,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
             return qs.first()
         return Http404(
             _(
-                "Order not found, please try again. If the problem persists please contact us."
+                "Apologies, order not found, please retry. If the problem persists please contact us."
             )
         )
 
@@ -55,7 +55,11 @@ class VerifyOwnership(View):
                 if product_id in ownership_ids:
                     return JsonResponse({"owner": True})
                 return JsonResponse({"owner": False})
-        raise Http404("Not found, sorry")
+        raise Http404(
+            _(
+                "Apologies, nothing found, please retry. If the problem persists please contact us."
+            )
+        )
 
 
 class GenerateOrderPDF(View):
@@ -132,34 +136,8 @@ class GenerateOrderPDF(View):
                 content = f"attachment; filename={filename}"
             response["Content-Disposition"] = content
             return response
-        return HttpResponse("Document not found.")
-
-
-# class GenerateOrderPDF(View):
-#     def get(self, *args, **kwargs):
-#         template = get_template('pdf/invoice.html')
-#         order_id = kwargs.get("pk")
-#         order = Order.objects.get(id=order_id)
-#         # print(essay.image)
-#         context = {
-#             'title': order.title,
-#             'author': order.author,
-#             'date': order.updated_at,
-#             'body': order.body,
-#             'image': order.image
-#         }
-#         html = template.render(context)
-#         # pypandoc.convert_file(html)
-#         pdf = render_to_pdf('pdf/invoice.html', context)
-#         return pdf
-# function-based view
-# def generate_view(request, *args, **kwargs):
-#     template = get_template('pdf/invoice.html')
-#     context = {
-#         'invoice_id': 123,
-#         'customer_name': 'MkB',
-#         'amount': 123.50,
-#         'today': '12/12/18'
-#     }
-#     html = template.render(context)
-#     return HttpResponse(html)
+        return HttpResponse(
+            _(
+                "Apologies, document not found, please retry. If the problem persists please contact us."
+            )
+        )

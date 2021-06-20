@@ -3,7 +3,7 @@
 
 {% block title %}{% trans 'Library' %}{% endblock %}
 {% block content %}
-<div class="max-w-sm mx-auto">
+<div class="font-c-sans max-w-sm mx-auto">
   {% if order.products.exists %}
   <div class="text-center mb-4">
     <p class="text-lg font-semibold">{% trans 'Digital library of' %} {{ request.user.first_name }}</p>

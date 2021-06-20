@@ -4,7 +4,7 @@ from django.forms import ModelForm
 # from django_toggle_switch_widget.widgets import DjangoToggleSwitchWidget
 from .models import Book, Section
 
-
+# TEST = ""
 # class BookModelForm(ModelForm):
 #     class Meta:
 #         model = Book
@@ -14,6 +14,16 @@ from .models import Book, Section
 #                 round=True, klass="django-toggle-switch-success"
 #             ),
 #         }
+#  fieldsets = (
+# ("Section 1", {
+#    "fields": ("", ""),
+#    "description": "%s" % TEXT,
+#  }),
+# ("Section 2", {
+#    "fields": ("",),
+#    "classes": ("collapse",),
+#  }),
+# )
 
 
 class SectionInline(admin.StackedInline):

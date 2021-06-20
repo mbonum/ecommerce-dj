@@ -5,8 +5,11 @@ from captcha.fields import CaptchaField, CaptchaTextInput
 from disposable_email_checker.validators import validate_disposable_email
 from django import forms
 from django.conf import settings
-from django.contrib.auth import (authenticate,  # , password_validation
-                                 get_user_model, login)
+from django.contrib.auth import (
+    authenticate,  # , password_validation
+    get_user_model,
+    login,
+)
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.urls import reverse
@@ -27,13 +30,12 @@ class CustomCaptchaTextInput(CaptchaTextInput):
 
 
 class ReactivationEmailForm(forms.Form):
-
     email = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
-                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 my-3 rounded-lg shadow placeholder-gray-600",
+                "class": "mx-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 my-3 rounded-lg shadow placeholder-gray-600 focus:outline-none",
             }
         ),
     )
@@ -90,22 +92,22 @@ class UserAdminCreationForm(forms.ModelForm):
 
 class UserDetailChangeForm(forms.ModelForm):
     first_name = forms.CharField(
-        label="First name",
+        label=_("First name"),
         required=False,
         widget=forms.TextInput(
             attrs={
-                "placeholder": "First name",
-                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 rounded-lg shadow placeholder-gray-600",
+                "placeholder": _("First name"),
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
     last_name = forms.CharField(
-        label="Last name",
+        label=_("Last name"),
         required=False,
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Last name",
-                "class": "m-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 mt-3 rounded-lg shadow placeholder-gray-600",
+                "placeholder": _("Last name"),
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -141,7 +143,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -152,7 +154,7 @@ class RegisterForm(forms.ModelForm):
                 "placeholder": "Password",
                 "autocomplete": "current-password",
                 "autofocus": True,
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )  # 'data-toggle': 'password,' strip=False
@@ -209,7 +211,7 @@ class LoginForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -218,7 +220,7 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Password",
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
                 "autocomplete": "current-password",
                 "autofocus": True,
             }

@@ -35,6 +35,7 @@ from .models import EmailActivation
 # RECAPTCHAV3_SECRET = getattr('RECAPTCHAV3_SECRET')
 # CAPTCHA_SECRET = getattr('CAPTCHA_SECRET')VERIFY_URL = settings('VERIFY_URL', 'https://hcaptcha.com/siteverify')
 
+
 class AccountHomeView(LoginRequiredMixin, DetailView):
     template_name = "accounts/user-home.html"
     key = None
@@ -106,7 +107,7 @@ class AccountEmailActivateView(FormMixin, View):
 
 
 class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = "accounts/change-psw.html"
+    template_name = "accounts/edit-profile.html"
     form_class = UserDetailChangeForm
 
     def get_object(self):

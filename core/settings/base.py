@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     "captcha",  # https://pypi.org/project/django-simple-captcha
     "mptt",  # https://django-mptt.readthedocs.io/en/latest/install.html
     # "rosetta",  # https://pypi.org/project/django-rosetta
-    # # 'hitcount'# https://pypi.org/project/django-hitcount# 'django_cleanup.apps.CleanupConfig',
+    # "hitcount",  # https://dj-hitcount.readthedocs.io/en/latest/installation.html# 'django_cleanup.apps.CleanupConfig',
     # "robots",  # https://pypi.org/project/django-robots
     # "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks

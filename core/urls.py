@@ -18,8 +18,8 @@ from django.views.decorators.csrf import csrf_exempt
 from accounts.views import LoginView, RegisterView
 from carts.views import cart_detail_api_view
 
-# # from essays.sitemaps import EssaySitemap
-from essays.views import GenerateEssayPDF, author_view
+# # from essays.sitemaps import EssaySitemap GenerateEssayPDF,
+from essays.views import author_view
 
 # # from essays.admin import essays_admin
 
@@ -52,13 +52,13 @@ urlpatterns = [
     path("", include("drfpasswordless.urls")),
     path("", include("home.urls", namespace="home")),
     # channels
-    path(_("chat/"), include("chat.urls")),
+    # path(_("chat/"), include("chat.urls")),
     # # create a separate CMS that only authors can access, schema=schema
     # # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
     path(_("read/"), include("essays.urls", namespace="read")),
-    # #     path('hitcount/', include('hitcount.urls', namespace='hitcount')),
+    # path("hitcount/", include("hitcount.urls", namespace="hitcount")),
     path(_("author/<slug:slug>/"), author_view, name="author"),
-    path("pdf/<slug:slug>/", GenerateEssayPDF.as_view(), name="pdf"),
+    # path("pdf/<slug:slug>/", GenerateEssayPDF.as_view(), name="pdf"),
     path(_("learn/"), include("education.urls", namespace="learn")),
     # # path('edu-pdf/<slug:slug>/', GenerateEduPDF.as_view(), name='edu-pdf'),
     path(_("team/"), include("team.urls", namespace="team")),

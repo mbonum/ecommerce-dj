@@ -9,16 +9,18 @@ from .models import Note
 
 
 class NoteForm(forms.ModelForm):
-    parent = TreeNodeChoiceField(queryset=Note.objects.all())
+    parent = TreeNodeChoiceField(queryset=Note.objects.all())  # level_indicator='>--'
     body = forms.CharField(
         label="",
         required=True,
         widget=forms.Textarea(
             attrs={
-                "id": "comment",
+                "id": "id_note",
                 "rows": 4,
                 "placeholder": "Clear, concise, ideally, compelling",
-                "class": "hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-2",
+                "class": "hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-2",
+                "spellcheck": "true",
+                "autocapitalize": "sentences",
                 "type": "text",
             }
         ),
@@ -48,6 +50,10 @@ class NoteForm(forms.ModelForm):
             "body",
             "private",
         )
+
+    def save(self, *args, **kwargs):
+        Note.objects.rebuild()
+        return super(NoteForm, self).save(*args, **kwargs)
 
 
 # js = ('/static/js/tinymce.js',)Everyone knows something someone else doesn't.

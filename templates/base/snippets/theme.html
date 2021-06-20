@@ -2,18 +2,16 @@
 {% block css %}
 <style>
   .bg { background-color: #030303; color: #fefefe;}
-  ::selection { background: #ab79d6cc;}
+  ::selection { background: #C9A9E5;}
 </style>
 {% endblock %}
 {% block content %}
-<div class="inline-flex items-center text-gray-700 space-x-9">
-  <span>{% trans 'Doubleclick to focus' %}</span>
-  <div x-data="{ l: true }">
-    <button class="inline-flex items-center rounded-full focus:outline-none space-x-2 hover:text-yellow-400 ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent py-1 px-2" data-tippy-content="{% trans 'Lights' %}" @click="l = !l" onclick="theme()">
-      <svg class="focus:animate-spin fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#bulb"></use></svg>
-      <span>{% trans 'Light/Dark' %}</span>
-    </button>
-  </div>
+{% trans 'Doubleclick to focus' %}
+<div x-data="{ l: true }">
+  <button class="inline-flex items-center rounded-full focus:outline-none space-x-2 hover:text-yellow-400 ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent py-1 px-2" data-tippy-content="{% trans 'Lights' %}" @click="l = !l" onclick="theme()">
+    <svg class="focus:animate-spin fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#bulb"></use></svg>
+    <span>{% trans 'Light/Dark' %}</span>
+  </button>
 </div>
 {% endblock %}
 {% block js %}

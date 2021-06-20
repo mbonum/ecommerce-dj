@@ -1,10 +1,10 @@
 {% load i18n static %}
 {% spaceless %}
-<div class="align-top inline-flex overflow-hidden items-center mt-5 sm:mr-4 lg:mr-5">
-  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="rounded-lg bg-white border border-gray-300 shadow hover:border-gray-500 hover:shadow-md focus:outline-none p-4">
-    <div class="relative {% if object.img %}pb-{% endif %}">
+<div class="align-top inline-flex mt-5 sm:mr-4 lg:mr-5">
+  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
+    <div class="relative">
       {% if object.img %}
-      <img src="{{ object.img.url }}" alt="{{ object.name_product }}" class="lg:w-64 lg:h-64 absolut rounded-sm m-auto object-center">
+      <img src="{{ object.img.url }}" alt="{{ object.name_product }}" class="lg:w-64 lg:h-64 rounded mx-auto object-center">
       {% else %}
       <svg class="lg:w-64 lg:h-64 text-gray-400 fill-current mx-auto">
         <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
@@ -22,7 +22,7 @@
       {% endif %}
     </div>
     <div class="text-xs pt-1">
-    <p class="">{{ object.description|safe|truncatewords_html:6 }}</p>
+      <p>{{ object.description|safe|truncatewords_html:6 }}</p>
     </div>
   </a>
 </div>

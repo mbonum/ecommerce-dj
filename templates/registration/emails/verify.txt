@@ -1,10 +1,12 @@
 {% load i18n %}{% autoescape off %}
-{% blocktrans %}Hi{% if first_name %} {{ first_name }}{% endif %},{% endblocktrans %}
+{% blocktranslate %}Hi{% if first_name %} {{ first_name }}{% endif %},{% endblocktranslate %}
 
-{% trans "Please activate your {{ com }} account by clicking here:" %} {{ path }}.
+{% blocktranslate %}
+Please activate your {{ com }} account by clicking here: {{ path }}.
 
-{% trans "Thanks for joining us," %}
+Thanks for joining us,
 
-{% blocktrans %}The {{ com }} team{% endblocktrans %}
+The {{ com }} team
+{% endblocktranslate %}
 
 {% endautoescape %}

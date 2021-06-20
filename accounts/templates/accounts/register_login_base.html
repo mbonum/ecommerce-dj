@@ -27,14 +27,15 @@
     </div>
   </div>
   {% include 'base/noscript.html' %}
+  <script rel="preload" type="text/javascript" src="{% static 'js/popper-2.9.1.min.js' %}"></script>
   {% include 'base/snippets/tippy.html' %}
   {% block js %}{% endblock %}
 </body>
 </html>
 {% endwith %}
-{% comment %}<!-- <a href="{ { home_url }}"></a> https://asciinema.org/login/new passwordless recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' oncontextmenu="return false" onkeydown="return true;" onmousedown="return true;"
+{% comment %}<!--<base target="_blank" rel="noopener"> { % include 'base/js.html' %}<a href="{ { home_url }}"></a> https://asciinema.org/login/new passwordless recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' oncontextmenu="return false" onkeydown="return true;" onmousedown="return true;"
 { % with HCAPTCHA_SECRET_KEY='d7fbaf1d-fc21-41e9-9e9d-5555b16a7eba' %}<script src="https://hcaptcha.com/1/api.js" async defer></script><script src="{ % static 'js/hcaptcha.js' %}"></script>
 <script src="https://assets.hcaptcha.com/captcha/v1/88f8cd7/hcaptcha.js" integrity="sha384-VEF/+ve5fSbrXhXJ0k8p/QznSGTj0vaxJjC5eG6/YL4X4Tumcooelh0RAFuTIj18" crossorigin="anonymous"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=6LcQrKsZAAAAAO-qIYwbGmhmnL2O_MyHYc6x8nwE"></script>
 <script>grecaptcha.ready(function(){$('#rlform').submit(function(e){var form = this;e.preventDefault()grecaptcha.execute('6LcQrKsZAAAAAO-qIYwbGmhmnL2O_MyHYc6x8nwE', {action: 'rlform'}).then(function(token){$('#recaptcha').val(token)form.submit})})})</script>
-<div class="p-2 pt-0 h-captcha" data-sitekey="d7fbaf1d-fc21-41e9-9e9d-5555b16a7eba"></div>{ % include 'base/js.html' %}-->{% endcomment %}
+<div class="p-2 pt-0 h-captcha" data-sitekey="d7fbaf1d-fc21-41e9-9e9d-5555b16a7eba"></div>-->{% endcomment %}

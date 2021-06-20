@@ -5,12 +5,12 @@ import filecmp
 import os
 from pathlib import Path
 
-from django.conf import settings
-from core.utils import render_to_pdf
 from bs4 import BeautifulSoup
+from core.utils import render_to_pdf
+from django.conf import settings
 
 # from django.contrib.contenttypes.models import ContentType
-# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # from io import BytesIO
 # from django.core.files.storage import default_storage
 # from gTTS.cache import remove_cache
@@ -20,6 +20,7 @@ from bs4 import BeautifulSoup
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
 # from analytics.mixins import ObjectViewedMixin
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect  # JsonResponse Http404
 from django.shortcuts import get_object_or_404, render  # redirect
 
@@ -33,7 +34,7 @@ from gtts import gTTS
 from notes.forms import NoteForm
 from notes.models import Note
 
-from .models import Author, Essay
+from .models import Author, Essay  # , Section
 
 
 def index(request):
@@ -75,46 +76,35 @@ def details(request, slug: str):
     except:
         _next = None
 
-    cmts = essay.notes.filter(active=True)
-
-    user_comment = None
+    user_note = None
     if request.method == "POST":
-        comment_form = NoteForm(request.POST)
-        if comment_form.is_valid():
-            user_comment = comment_form.save(commit=False)
-            user_comment.essay = essay
-            user_comment.save()
-            return HttpRespons("/" + essay.slug)
+        note_form = NoteForm(request.POST)
+        if note_form.is_valid():
+            user_note = note_form.save(commit=False)
+            user_note.essay = essay
+            user_note.user = request.user
+            user_note.save()
+            return HttpResponseRedirect(essay.get_absolute_url())
     else:
-        comment_form = NoteForm()
-    # page = request.GET.get('page', 1)
-    # paginator = Paginator(all_cmts, 3)
-    # try:
-    #     cmts = paginator.page(page)
-    # except PageNotAnInteger:
-    #     cmts = paginator.page(1)
-    # except EmptyPage:
-    #     cmts = paginator.page(paginator.num_pages)
+        note_form = NoteForm()
 
-    # form = NoteForm(request.POST or None)
-    # if form.is_valid():  # request.method == 'POST'
-    #     parent = form.cleaned_data.get("parent")
-    #     b = form.cleaned_data.get("body")  # or request.POST.get('body')
-    #     p = form.cleaned_data.get("private")  # or request.POST.get('private')
-    #     p = False if p is None or p == "on" else True  # privacy by default
-    #     new_note, created = Note.objects.get_or_create(
-    #         user=request.user,
-    #         essay=essay,
-    #         parent=parent,
-    #         body=b,
-    #         private=p,
-    #     )
-    #     return HttpResponseRedirect("")
+    all_notes = essay.notes.filter(active=True).order_by("created_at")
+    paginator = Paginator(all_notes, 3)
+    page = request.GET.get("page", 1)
+    try:
+        notes = paginator.page(page)
+    except PageNotAnInteger:
+        notes = paginator.page(1)
+    except EmptyPage:
+        notes = paginator.page(paginator.num_pages)
+
     context = {
         "object": essay,
         "tts": f,
-        "form": comment_form,
-        "notes": cmts,
+        "form": note_form,
+        # "notes": notes,user_note
+        "notes": all_notes,
+        "pages": notes,
         "next": _next,
     }
     return render(request, "essays/wtext.html", context)
@@ -133,7 +123,6 @@ def like_view(request, slug: str, pk: int):
 
 class GenerateEssayPDF(View):
     def get(self, request, *args, **kwargs):
-        # essay_id = kwargs.get('id')
         if request.user.email:
             if request.user.first_name:
                 n = request.user.first_name
@@ -146,14 +135,24 @@ class GenerateEssayPDF(View):
         # slice out the domain name
         # domain = email[email.index("@")+1:]
         # email = f'Your username is {user} and your domain name is {domain}'
-        s = kwargs.get("slug")
-        essay = Essay.objects.get(slug=s)
-        text = essay.text
+
+        # s = kwargs.get("slug")
+        # essay = Essay.objects.get(slug=s)
+        # Use essay's pk (id) to link with the foreign key in Section
+        pk = kwargs.get("pk")
+        essay = Essay.objects.get(id=pk)
+        e = ""
+        # s = ""
+        for s in essay.section_set.all():
+            if s.title:
+                e += s.title
+            e += s.text
+        txt = BeautifulSoup(e, "lxml")
         if essay.author is None:
             author = "Øutis"
         else:
             author = essay.author
-        author2 = None
+        author2 = ""
         if essay.author_team and not essay.author:
             author = essay.author_team
         else:
@@ -163,7 +162,7 @@ class GenerateEssayPDF(View):
             "author": author,
             "author2": author2,
             "date": essay.updated,
-            "text": text,
+            "text": txt,
             "n": n,
         }
         pdf = render_to_pdf("essays/pdf/essay.html", context)

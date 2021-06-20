@@ -4,7 +4,7 @@
 {% block content %}
 <div x-data="{ click: false }" class="mx-10 my-6">
   <form method="post"> {% csrf_token %}
-    <div class="mb-6">
+    <div class="mb-3">
       <div class="text-gray-700 m-1">{{ form.email.label }}</div>
       {{ form.email }}
     </div>
@@ -19,32 +19,42 @@
     </div> -->{% endcomment %}
     {% if form.password %}
     <div class="border border-gray-300 bg-white shadow hover:shadow-md rounded-lg mt-5 mb-3">
-      <div class="text-sm text-gray-800 p-3">
-        <p class="inline-flex items-center text-black mb-2">
+      <div class="text-gray-900 py-3 px-2">
+      {% comment %}<!-- <details class="space-y-1">
+        <summary class="text-lg font-semibold inline-flex items-center">
+          <svg class="w-4 h-4 text-gray-500 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#key"></use></svg>
+          {% trans 'Security Tips' %}</summary>
+        <ul class="list-disc list-outside pl-5">
+          <li>{% trans 'Generate and store passwords with' %} <a class="font-semibold un focus:outline-none" href="https://keepassxc.org/download/">KeePassXC</a>*</li>
+          <li>{% trans 'It should have at least 15 characters.' %}</li>
+        </ul>
+        <p class="text-gray-700 ml-2 mt-1">(*) or whatever tool you <i>trust</i>.</p>
+      </details> -->{% endcomment %}
+        <p class="text-lg font-semibold inline-flex items-center mb-2">
           <svg class="w-4 h-4 text-gray-500 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#key"></use></svg>
           {% trans 'Security Tips' %}
         </p>
-        <ul class="list-disc list-outside pl-4">
-          <li>{% trans 'Generate and store passwords with' %} <a class="font-semibold un focus:outline-none" href="https://keepassxc.org/download/" target="_blank">KeePassXC</a>*</li>
+        <ul class="list-disc list-outside pl-5">
+          <li>{% trans 'Generate and store passwords with' %} <a class="font-semibold un focus:outline-none" href="https://keepassxc.org/download/" target="_blank" rel="noopener">KeePassXC</a>*</li>
           <li>{% trans 'It should have at least 15 characters.' %}</li>
-          {% comment %} <li>Download <a class="font-semibold un focus:outline-none" href="https://freeotp.github.io/" target="_blank">FreeOTP</a>* and add <a class="font-semibold un focus:outline-none" href="{{ 2fa_url }}" target="_blank">2-factor authentication</a></li> {% endcomment %}
+          {% comment %}<!--<li>Download <a class="font-semibold un focus:outline-none" href="https://freeotp.github.io/">FreeOTP</a>* and add <a class="font-semibold un focus:outline-none" href="{{ 2fa_url }}">2-factor authentication</a></li>-->{% endcomment %}
         </ul>
-        <p class="text-gray-600 text-gray-70 ml-2 mt-1">(*) or whatever tool you <i>trust</i>.</p>
+        <p class="text-gray-600 ml-2 mt-1">(*) or whatever tool you <i>trust</i>.</p>
       </div>
     </div>
     {% endif %}
     {{ form.captcha }}
     <p class="text-sm m-1 mt-3">{% trans 'Please read the' %}
-      <a class="font-semibold un focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1" href="{{ privacy_url }}" target="_blank" data-tippy-content="Your rights">Privacy</a> {% trans 'and' %}
-      <a class="font-semibold un focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1" href="{{ terms_url }}" target="_blank" data-tippy-content="{{ com }}'s rights">Terms</a> {% trans 'policies before signing up.' %}
+      <a href="{{ privacy_url }}" class="font-semibold un focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1" target="_blank" rel="noopener" data-tippy-content="Your rights">Privacy</a> {% trans 'and' %}
+      <a href="{{ terms_url }}" class="font-semibold un focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1" target="_blank" rel="noopener" data-tippy-content="{{ com }}'s rights">Terms</a> {% trans 'policies before signing up.' %}
     </p>
     <button @click="click=!click" class="mt-3 w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-900 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" type="submit">
-      <span x-show="!click">{% trans 'Create account' %}</span>
-      <p x-show="click">{% trans 'Sending verification email' %}</p>
+      <p x-show="!click">{% trans 'Create account' %}</p>
     </button>
+    <!-- <p x-show="click">{% trans 'Sending verification email' %}</p> -->
   </form>
-  <p class="m-1 mt-3">{% trans 'Have an account?' %}
-    <a class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1" href="{{ login_url }}">{% trans 'Log in' %}</a>
+  <p class="m-1 mt-4">{% trans 'Have an account?' %}
+    <a href="{{ login_url }}" class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1" target="_blank" rel="noopener">{% trans 'Log in' %}</a>
   </p>
 </div>
 {% endblock%}
@@ -52,7 +62,7 @@
   <use x-show="show" xlink:href="{% static 'img/svg-defs.svg' %}#show-psw"></use>
   <use x-show="!show" xlink:href="{% static 'img/svg-defs.svg' %}#!show-psw"></use>
 </svg>
-<a class="font-semibold un focus:outline-none focus:shadow-outline" href="{ { cookie_url }}" target="_blank" data-tippy-content="Your rights">Cookie</a>
+<a class="font-semibold un focus:outline-none focus:shadow-outline" href="{ { cookie_url }}" data-tippy-content="Your rights">Cookie</a>
 % if next_url %}<input type="hidden" name="next" value="{ { next_url }}"> { % csrf_token %}{ % endif %}
 take 5 minutes to
 { % if not next_url %}<h1 class="sc text-center text-gray-800 font-semibold"></h1>{ % endif %}

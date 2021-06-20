@@ -1,32 +1,19 @@
 {% extends 'base.html' %}
 {% load i18n mptt_tags static widget_tweaks %}
-
 {% block css %}{% include 'base/snippets/fullscreen.html' %}{% endblock %}
 {% block title %}{{ object.title }}{% endblock %}
-{% comment %}<!-- load hitcount_tags get_hit_count_js_variables for object as hitcount %}
-{% get_hit_count for object as tot_readers %}
-<script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
-<script type="text/javascript">
-  jQuery(document).ready(function($) {
-    $.postCSRF("{{ hitcount.ajax_url }}", { hitcountPK : "{{ hitcount.pk }}" })
-      .done(function(data){
-        $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
-        $('#hit-response').text(data.hit_message);
-    }).fail(function(data){
-        console.log('POST failed');// console.log(data);
-    });
-  });
-</script>-->{% endcomment %}
+{% comment %}<!--hitcount_tags { % get_hit_count_js_variables for object as hitcount %}
+{ % get_hit_count for object as readers %} -->{% endcomment %}
 {% block content %}
 <div ondblclick="exitFullscreen();">
-<div class="font-c-serif max-w-md md:max-w-lg mx-auto px-2">
+<div class="font-c-sans max-w-md md:max-w-lg mx-auto px-2">
   <div ondblclick="focusMode(document.documentElement);">
     {% if object.img %}
     <div class="mx-auto text-center mb-4"><img loading="lazy" src="{{ object.img.url }}" alt="{{ object.slug }}" class="m-auto rounded-lg"></div>
     {% endif %}
     <div class="border-t-2 border-b border-gray-400 pt-3 pb-2 rounded-lg text-center mb-4">
       <h1 class="text-4xl">{{ object.title }}</h1>
-      <div class="inline-flex items-center space-x-2 text-md my-3">
+      <div class="inline-flex items-center space-x-2 my-3">
       {% if not object.author_team and object.author %}
         {% if object.author == 'Team' or object.author == 'team' %}
           <a href="{{ team_url }}" class="flex rounded-full ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" data-tippy-content="{{ com }}" alt="{{ com }}'s logo" target="_blank" rel="noopener">
@@ -52,14 +39,14 @@
       <span data-tippy-content="Publication date (years since the current form of humans evolved)">20{{ object.updated|date:'Y-m-d' }}</span>
       </div>
       {% include 'base/snippets/audio.html' with obj=object %}
-      {% include 'base/snippets/theme.html' %}
+      <div class="inline-flex items-center space-x-9">{% include 'base/snippets/theme.html' %}</div>
     </div>
     <div class="text-xl text-justify hyphens list-inside">
       {% include 'base/snippets/summary.html' with obj=object %}
       {% include 'base/snippets/contents.html' with obj=object %}
-      <div class="border border-gray-300 shadow rounded-lg p-5 text-lg">
+      <div class="border border-gray-300 shadow text-lg rounded-xl px-5 py-4">
         {% for s in object.section_set.all %}
-        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-xl font-c-sans font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
+        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-2xl font-c-sans font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
         {{ s.text|safe }}
         {% if s.img %}
         <div class="my-2"><img loading="lazy" src="{{ s.img.url }}" class="rounded-lg mx-auto"></div>
@@ -76,7 +63,7 @@
       {% include 'base/snippets/backbtn.html' with url=essays_url id=object.slug %}
       {% if request.user.email %}
       <div class="hover:text-black border-l border-gray-300 hover:bg-gray-hover">
-        <a href="{% url 'pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2" target="_blank" rel="noopener">
+        <a href="{% url 'essays:pdf' pk=object.id %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2" target="_blank" rel="noopener">
         <svg class="w-3 h-3 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
         </a>
       </div>
@@ -92,12 +79,13 @@
   {% include 'base/snippets/cc.html' %}
 
   {% if request.user.email %}
-  {% comment %}<!-- if tot_readers % }
+
+  {% comment %}<!--{ % if readers %}
   <div class="text-center text-sm text-gray-500">
   <a class="inline-flex items-center" data-tippy-content="Readers"><svg class="w-4 h-4 text-gray-500 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#reader"></use></svg>
-  { { tot_readers } }</a>
+    { { readers }}</a>
   </div>
-  { % endif -->{% endcomment %}
+  { % endif %}-->{% endcomment %}
   {% if notes.all %}
   <div x-data="{ open: false }">
     <div class="text-center font-c-sans my-4">
@@ -117,31 +105,30 @@
 
       {% recursetree notes %}
         <div id="{{ node.id }}" class="border border-gray-300 rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
-        <div>{{ node.body|safe }}</div>
-
+        {{ node.body|linebreaks }}
         <div class="font-c-serif text-sm space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
           <p class="italic">—{% if node.private %} Anonym
           {% else %}
             {% if node.user.first_name %}
-            {{ node.user.first_name|safe }}
+            {{ node.user.first_name }}
             {% else %}
-            {{ node.user.email|safe|slice:"-9" }}***
+            {{ node.user.email }}***
             {% endif %}
           {% endif %}
           </p>
 
           <p class="sep">·</p>
           <p>20{{ node.created_at|date:'Y-m-d' }}</p>
-          {% if node.level < 1 %}
-          <button class="font-c-sans border border-gray-400 rounded-xl shadow hover:shadow-md focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
-          {% endif %}
-
+          
           <form action="{% url 'read:like' object.slug node.id %}" method="post"> {% csrf_token %}
             <button class="font-c-sans inline-flex items-center rounded-xl focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
               <svg class="fill-current h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
             </button>
           </form>
 
+          {% if node.level < 2 %}
+          <button class="font-c-sans border border-gray-400 hover:border-yellow-600 rounded-xl shadow hover:shadow-md focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
+          {% endif %}
         </div>
 
         {% if not node.is_leaf_node %}
@@ -152,42 +139,62 @@
         {% endif %}
       </div>
       {% endrecursetree %}
+      {% comment %}<!-- <div class="font-c-sans text-center text-gray-800 py-4">
+        <div class="inline-flex bg-white rounded-lg overflow-hidden border border-gray-300" aria-label="Note pages">
+        {% if pages.has_other_pages %}
+          {% if pages.has_previous %}
+          <a class="hover:bg-gray-hover py-1 px-2 rounded-l-lg hover:text-black" href="?page={{ pages.previous_page_number }}">{% trans 'Previous' %}</a>
+          {% endif %}
+          {% for num in pages.paginator.page_range %}
+          <div class="border-l {% if forloop.last %}border-r {% endif %}border-gray-300 {% if pages.number != num %}hover:bg-gray-hover{% endif %} py-1 px-2">
+            {% if pages.number == num %}
+            <span class="text-gray-400">{{ num }}</span>
+            {% else %}
+            <a class="hover:text-black" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+          </div>
+          {% endfor %}
+          {% if pages.has_next %}
+          <a class="hover:bg-gray-hover py-1 px-2 rounded-r-lg hover:text-black" href="?page={{ pages.next_page_number }}">{% trans 'Next' %}</a>
+          {% endif %}
+        {% endif %}
+        </div>
+      </div> -->{% endcomment %}
     </div>
   </div>
-  {% endif %}{% comment %}<!-- Consider whether add bravo btn <form action="{ % url 'read:like' object.slug node.id %}" method="POST"> { % csrf_token %}
-  <button class="text-xs inline-flex items-center rounded overflow-hidden ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
-    <svg class="fill-current h-4 w-4 ml-1"><use xlink:href="{ % static 'img/svg-defs.svg' %}#clap"></use></svg>
-  </button>
-</form>-->{% endcomment %}
-{% comment %}<!-- if there are too many comments add slider if notes.has_other_pages %}
-{ % if notes.has_previous %}
-{ % endif %}
-
-{ % endif % }
-{ % for num in notes.paginator.page_range % }
-{ % endfor % }
-
-{ % if notes.number == 1 % }
-{ % endif -->{% endcomment %}
+  {% endif %}
   <div class="font-c-sans pt-1 mt-2">
-    <form id="id_note_form" method="POST"> {% csrf_token %}
-      {{ form.parent }}
+    <form id="id_note_form" method="post"> {% csrf_token %}
       {{ form.body }}
-      <div class="text-right items-center space-x-1 mt-3"><span class="text-sm" data-tippy-content="Anonym">{% trans 'Check to show your name' %}</span> {{ form.private }}</div>
-      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit" data-tippy-content="{% trans 'Are you adding value to the Conversation?' %}">
-        <p class="text-center text-sm inline-flex items-center">{% trans 'Share' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg></p>
+      <div class="text-right items-center space-x-1 mt-3 mr-1"><span class="text-sm" data-tippy-content="Anonym">{% trans 'Check to hide your name' %}</span> {{ form.private }}</div>
+      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit" data-tippy-content="{% trans 'Are you adding value to the conversation?' %}">
+        <p class="text-center inline-flex items-center">{% trans 'Share' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg></p>
       </button>
     </form>
   </div>
   {% else %}
   <div class="font-c-sans text-center">
     <p>{% trans 'Eager to share your thoughts?' %}</p>
-    <p><a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Sign up' %}</a> or <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="un font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Log in' %}</a></p>
+    <p><a href="{% url 'register' %}" class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Sign up' %}</a> or <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="un font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Log in' %}</a></p>
   </div>
   {% endif %}
   </div>
 </div>
 {% endblock %}
+{% comment %}<!-- <script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+  // use the template tags in our JavaScript call
+  $.postCSRF('{{ hitcount.ajax_url }}', { hitcountPK : '{{ hitcount.pk }}' })
+    .done(function(data){
+      $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
+      $('#hit-response').text(data.hit_message);
+  }).fail(function(data){
+      console.log('POST failed');
+      console.log(data);
+  });
+});
+</script> -->{% endcomment %}
 {% block js %}
 {% include 'base/snippets/sharect.html' %}
 <script>
@@ -195,19 +202,34 @@ function formClose() {
   document.getElementById('id_note_reply').remove()
 };
 function replyBtn(id) {
-  if (document.contains(document.getElementById("id_note_reply"))) {
-    document.getElementById("id_note_reply").remove();
+  if (document.contains(document.getElementById('id_note_reply'))) {
+    document.getElementById('id_note_reply').remove();
   }
-  i = parseInt(id);
-  var e = document.getElementById(i);
+  var e = document.getElementById(id);
   e.insertAdjacentHTML('afterend', 
-   `<div class="font-c-sans ml-10 mb-6"><form id="id_note_reply" method="post"> {% csrf_token %}
-    <div class="text-right"><button type="button" class="focus:outline-none rounded-full focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 p-1" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button></div>
-    <select name="parent" id="id_parentt" class="hidden"><option value="' + i + '" selected="' + i + '"></option></select><textarea name="body" cols="30" rows="3" id="comment" placeholder="{% trans 'Are you adding value to the Conversation?' %}" class="hover:border-gray-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 hover:shadow-md" type="text" required></textarea>
-    <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit"><p class="text-center inline-flex items-center">{% trans 'Reply' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg></p></button></form></div>`);
-};
-</script>{% endblock %}{% comment %}<!--<div class="text-right items-center space-x-1 my-3"><span class="text-xs">{% trans 'Check to show your name' %}</span><input type="checkbox" name="private" class="transform hover:scale-110" id="id_private"></div>
-FIX if reply->x->all forms are removed and it has to reload page var generalForm = document.getElementById('id_noteForm')// $('#id_note_form').trigger('reset');action="."<div class="text-right items-center space-x-1 my-3"><span class="text-xs">Check to disable replies</span><input type="checkbox" name="reply" class="transform hover:scale-110" id="id_reply"></div>
+   '<div class="font-c-sans ml-10 mb-6 mr-1">\
+      <form id="id_note_reply" method="post"> {% csrf_token %}\
+        <div class="text-right">\
+          <button type="button" class="rounded-full focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
+        </div>\
+        <select name="parent" id="id_parentt" class="hidden"><option value="' + id + '" selected="' + id + '"></option></select>\
+        <textarea name="body" cols="30" rows="3" id="id_reply" placeholder="Are you adding value to the conversation?" class="hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 shadow hover:shadow-md  focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" "spellcheck": "true", type="text" required></textarea>\
+        <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit">\
+          <p class="text-center inline-flex items-center">{% trans "Reply" %}\
+          <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
+          </p>\
+        </button>\
+      </form>\
+    </div>'
+  );
+}
+$('#id_note_form').trigger('reset');
+</script>{% endblock %}{% comment %}<!--
+    //document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
+  }
+FIX if reply->x->all forms are removed and it has to reload page var generalForm = document.getElementById('id_noteForm')
+action="."
+Check to disable replies</span><input type="checkbox" name="reply" class="transform hover:scale-110" id="id_reply"></div>
 $('form').preventDoubleSubmission();
 jQuery.fn.preventDoubleSubmission = function() {
   $(this).on('submit',function(e){
