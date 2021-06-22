@@ -1,6 +1,6 @@
 {% load i18n %}
-{% trans 'Hi' %}{% if first_name %} {{ first_name|safe }}{% endif %},
+{% trans 'Hi' %}{% if first_name %} {{ first_name }}{% endif %},
 {% trans 'We have received your email. We are going to contact you as soon as possible.' %}
 
 {% trans 'Thank you' %}
-The Clavem team
+The {{ com }} team

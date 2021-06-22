@@ -26,6 +26,7 @@ from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 from core.utils import unique_key_generator
 
+# NOQA too skip linter import check
 # send_mail(subject, message, from_email, recipient_list, html_message) random_string_generator,
 
 # DEFAULT_ACTIVATION_DAYS = getattr(settings, "DEFAULT_ACTIVATION_DAYS", 7)
@@ -39,8 +40,8 @@ from core.utils import unique_key_generator
 #     # ('$', 'AUS'),
 # ]
 class CurrencyType(models.TextChoices):
-    EUR = "EUR", _("EURO")
-    USD = "USD", _("US Dollar")
+    EUR = "€", _("EUR")
+    USD = "$", _("USD")
 
 
 class UserManager(BaseUserManager):
@@ -99,14 +100,13 @@ def user_image_path(self, filename):
 
 
 class CUser(AbstractBaseUser, PermissionsMixin):
-    # id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=150, unique=True)  # db_index=True
     # username = CharField(max_length=90, unique=True)
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     bio = HTMLField(_("Bio"), blank=False, null=True)
     # img = models.FileField('Profile', upload_to=user_image_path, null=True, blank=True)
-    is_active = models.BooleanField(default=False)  # click on the link
+    is_active = models.BooleanField(default=False)  # activation link
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(
@@ -119,7 +119,7 @@ class CUser(AbstractBaseUser, PermissionsMixin):
     # confirmed_date = models.DateTimeField(auto_now_add=False)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ["first_name"]  # , "last_name"
 
     objects = UserManager()
 

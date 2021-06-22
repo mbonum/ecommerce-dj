@@ -19,7 +19,7 @@ from tinymce.models import HTMLField
 from tags.models import Tag
 from team.models import Member
 
-USER = settings.AUTH_USER_MODEL
+# USER = settings.AUTH_USER_MODEL
 
 
 def essay_media_path(self, filename):

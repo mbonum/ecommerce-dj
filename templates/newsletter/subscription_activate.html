@@ -1,11 +1,10 @@
-{% extends "newsletter/common.html" %}
+{% extends 'newsletter/common.html' %}
 {% load i18n %}
-{% block title %}{% trans "Newsletter" %} {{ newsletter.title }} {{ action }} {% trans "activate" %}{% endblock %}
+{% block title %}{% trans 'Newsletter' %} {{ newsletter.title }} {{ action }} {% trans 'activate' %}{% endblock %}
 {% block body %}
-<h1>{% trans "Newsletter" %} {{ newsletter.title }} {{ action }} {% trans "activate" %}</h1>
-
+<h1>{% trans 'Newsletter' %} {{ newsletter.title }} {{ action }} {% trans 'activate' %}</h1>
 <form enctype="multipart/form-data" class="text-center" method="post" action="."> {% csrf_token %}
   {{ form.as_p }}
-  <p><input id="id_submit" name="submit" value="{% trans 'Activate' %}" type="submit" /></p>
+  <input id="id_submit" name="submit" value="{% trans 'Activate' %}" type="submit">
 </form>
 {% endblock %}

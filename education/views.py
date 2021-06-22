@@ -44,7 +44,7 @@ def details(request, slug):
     except:
         _next = None
     context = {"object": book, "tts": f, "next": _next}
-    return render(request, "education/bnotes.html", context)
+    return render(request, "base/text.html", context)
 
 
 # class ReadDetailSlugView(DetailView):

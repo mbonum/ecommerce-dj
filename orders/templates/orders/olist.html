@@ -5,7 +5,7 @@
 <div class="font-c-sans max-w-sm mx-auto">
   {% if object_list.exists %}
   <div class="text-center mb-4">
-    <p class="text-lg font-semibold">{% trans 'Orders of' %} {{ request.user.first_name }}</p>
+    <h1 class="text-xl font-semibold">{% trans 'Orders of' %} {{ request.user.first_name }}</h1>
   </div>
   <table class="table-auto cart-table mx-auto">
     <thead class="border-t border-b border-gray-300">
@@ -17,10 +17,10 @@
     </thead>
     <tbody class="cart-body">
       {% for object in object_list %}
-      <tr class="cart-product border-b border-gray-300 align-middle text-center">
-        <td class="py-2"><a class="hover:text-yellow-600 focus:outline-none focus:shadow-outline" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
-        <td class="text-xs px-4 py-2">{{ object.get_status }}</td>
-        <td class="flex justify-around py-2">{{ user.currency }} {{ object.total }}</td>
+      <tr class="cart-product border-b border-gray-300 text-center">
+        <td class="py-2"><a class="text-blue-600 hover:text-blue-700 hover:underline focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
+        <td class="px-4 py-2">{{ object.get_status }}</td>
+        <td class="justify-aroun py-2">{% include 'base/snippets/currency.html' %} {{ object.total }}</td>
       </tr>
       {% endfor %}
     </tbody>

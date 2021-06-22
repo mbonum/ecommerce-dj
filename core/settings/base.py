@@ -236,8 +236,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-ASGI_APPLICATION = "core.asgi.application"  # slow
-MAX_ACTIVE_TASKS = 2
+ASGI_APPLICATION = "core.asgi.application"
+# MAX_ACTIVE_TASKS = 2
 
 CHANNEL_LAYERS = {
     "default": {
@@ -443,7 +443,9 @@ ACCOUNT_ACTIVATION_DAYS = 7  # the user has 1 week to activate the account
 #     # 'PAGE_SIZE': 2
 # }
 NEWSLETTER_THUMBNAIL = "sorl-thumbnail"
-# NEWSLETTER_CONFIRM_EMAIL = True# https://django-newsletter.readthedocs.io/en/latest/settings.html
+NEWSLETTER_CONFIRM_EMAIL = (
+    True  # https://django-newsletter.readthedocs.io/en/latest/settings.html
+)
 
 # django-imperavi "imperavi.widget.ImperaviWidget"
 NEWSLETTER_RICHTEXT_WIDGET = "tinymce.widgets.TinyMCE"

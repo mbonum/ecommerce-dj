@@ -102,12 +102,12 @@ def details(request, slug: str):
         "object": essay,
         "tts": f,
         "form": note_form,
-        # "notes": notes,user_note
+        # "notes": notes, user_note
         "notes": all_notes,
         "pages": notes,
         "next": _next,
     }
-    return render(request, "essays/wtext.html", context)
+    return render(request, "base/text.html", context)
     # if form.errors:
     #     errors = form.errors.as_json()
     #     if request.is_ajax():
@@ -136,18 +136,16 @@ class GenerateEssayPDF(View):
         # domain = email[email.index("@")+1:]
         # email = f'Your username is {user} and your domain name is {domain}'
 
-        # s = kwargs.get("slug")
-        # essay = Essay.objects.get(slug=s)
-        # Use essay's pk (id) to link with the foreign key in Section
-        pk = kwargs.get("pk")
-        essay = Essay.objects.get(id=pk)
+        slug = kwargs.get("slug")
+        # pk = kwargs.get("pk")# edit urls.py and wtext.html PDF
+        essay = Essay.objects.get(slug=slug)  # id=pk
         e = ""
         # s = ""
         for s in essay.section_set.all():
             if s.title:
-                e += s.title
+                e += "<h2>" + s.title + "</h2>"
             e += s.text
-        txt = BeautifulSoup(e, "lxml")
+        # txt = BeautifulSoup(e, "html.parser") txt.get_text() # "lxml"
         if essay.author is None:
             author = "Øutis"
         else:
@@ -157,18 +155,19 @@ class GenerateEssayPDF(View):
             author = essay.author_team
         else:
             author2 = essay.author_team
+        date = essay.updated.strftime("%Y-%m-%d")
         context = {
             "title": essay.title,
             "author": author,
             "author2": author2,
-            "date": essay.updated,
-            "text": txt,
+            "date": date,
+            "text": e,
             "n": n,
         }
         pdf = render_to_pdf("essays/pdf/essay.html", context)
         if pdf:
             response = HttpResponse(pdf, content_type="application/pdf")
-            filename = f"{settings.BASE_URL}_{s}.pdf"
+            filename = f"{settings.ENV_NAME}_{slug}_{date}.pdf"
             content = f"inline; filename={filename}"
             download = request.GET.get("download")
             if download:

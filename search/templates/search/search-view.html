@@ -6,28 +6,28 @@
 <div class="max-w-xs font-c-sans mx-auto">
   <div class="mr-6">
   <div class="border-b border-gray-300 pb-2">
-    <h1 class="text-lg">
+    <h1 class="text-xl font-semibold">
     {% if object_list and query %}{% trans 'Results for' %} {{ query }}
     {% else %}{% trans 'Search' %}{% endif %}
     </h1>
   </div>
   <div class="my-4">
-    {% include 'search/snippets/search-form.html' %}
+    {% include 'search/search-form.html' %}
   </div>
   <div>
-  {% for obj in object_list %}
-    {% with obj|class_name as klass %}
-      {% if klass == 'Book' and obj.active %}
-      <div class="pb-3">
-      {% include 'education/bcard.html' with book=obj %}
-      </div>
-      {% elif klass == 'Essay' and obj.publish %}
-      <div class="pb-3">
-      {% include 'essays/wcard.html' with essay=obj %}
-      </div>
-      {% elif klass == 'Product' and obj.available %}
-      {% include 'products/snippets/product-card.html' with object=obj %}
-      {% endif %}
+  {% for o in object_list %}
+    {% with o|class_name as klass %}
+    {% if klass == 'Book' and o.active %}
+    <div class="pb-3">
+      {% include 'base/text.html' with object=o %}
+    </div>
+    {% elif klass == 'Essay' and o.publish %}
+    <div class="pb-3">
+      {% include 'base/text.html' with object=o %}
+    </div>
+    {% elif klass == 'Product' and o.active %}
+    {% include 'products/snippets/pcard.html' with object=o %}
+    {% endif %}
     {% endwith %}
   {% endfor %}
   </div>

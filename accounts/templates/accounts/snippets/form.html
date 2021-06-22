@@ -1,7 +1,7 @@
 {#<!-- cart -> checkout a class="text-black" href="{{ cookie_url }}" target="_blank" title="Your rights">Cookie</a>,-->#}
 {% load i18n %}
 <div class="mt-2">
-  <form method="POST" action="{% if 'action_url' %}{{ action_url }}{% else %}{{ login_url }}{% endif %}"> {% csrf_token %}
+  <form method="post" action="{% if 'action_url' %}{{ action_url }}{% else %}{{ login_url }}{% endif %}"> {% csrf_token %}
     {% if next_url %}
     <input type='hidden' name='next' value='{{ next_url }}'> {% csrf_token %}
     {% endif %}
@@ -21,7 +21,7 @@
       <a class="text-black focus:outline-none" href="{{ privacy_url }}" target="_blank" data-tippy-content="Your rights">Privacy</a>, and
       <a class="text-black focus:outline-none" href="{{ terms_url }}" target="_blank" data-tippy-content="{{ com }}'s rights">Terms</a> policies.{% endblocktranslate %}
     </p>
-{#<!-- include 'accounts/snippets/captcha.html' #}-->
+{#<!-- include 'accounts/snippets/captcha.html'--> #}
     {% endif %}
     </div>
   </form>

@@ -1,9 +1,9 @@
-{% extends "newsletter/common.html" %}
+{% extends 'newsletter/common.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Newsletter unsubscribe' %}{% endblock %}
+{% block title %}{% trans 'Newsletter Unsubscribe' %}{% endblock %}
 
 {% block body %}
-<h1>{% trans 'Newsletter unsubscribe' %} {{ newsletter.title }}</h1>
+<h1>{% trans 'Newsletter Unsubscribe' %} {{ newsletter.title }}</h1>
 
 <p>Welcome, {{ user }}</p>
 
@@ -16,8 +16,8 @@
 {% else %}
 
 {% trans "Do you want to unsubscribe from this newsletter?" %}
-<form enctype="multipart/form-data" class="text-center" method="post" action="{% url "newsletter_unsubscribe_confirm" newsletter.slug %}"> {% csrf_token %}
-  <p><input id="id_submit" name="submit" value="{% trans 'Unsubscribe' %}" type="submit"></p>
+<form enctype="multipart/form-data" class="text-center" method="post" action="{% url 'newsletter_unsubscribe_confirm' newsletter.slug %}"> {% csrf_token %}
+  <input id="id_submit" name="submit" value="{% trans 'Unsubscribe' %}" type="submit">
 </form>
 {% endif %}
 {% endblock %}

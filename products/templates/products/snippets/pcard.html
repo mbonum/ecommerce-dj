@@ -4,15 +4,15 @@
   <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
     <div class="relative">
       {% if object.img %}
-      <img src="{{ object.img.url }}" alt="{{ object.name_product }}" class="lg:w-64 lg:h-64 rounded mx-auto object-center">
+      <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="lg:w-64 lg:h-64 rounded mx-auto object-center">
       {% else %}
       <svg class="lg:w-64 lg:h-64 text-gray-400 fill-current mx-auto">
         <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
       </svg>
       {% endif %}
     </div>
-    <div class="flex justify-between pt-1">
-      <p class="inline-flex">{{ object.name_product }}</p>
+    <div class="flex justify-between py-1">
+      <h1 class="text-lg inline-flex">{{ object.name_product }}</h1>
       {% if 'A' in object.product_type %}
       <input type="button" value="🎙️" data-tippy-content="Audio" class="inline-flex bg-white">
       {% elif 'E' in object.product_type %}
@@ -21,7 +21,7 @@
       <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="inline-flex bg-white">
       {% endif %}
     </div>
-    <div class="text-xs pt-1">
+    <div>
       <p>{{ object.description|safe|truncatewords_html:6 }}</p>
     </div>
   </a>
@@ -29,5 +29,4 @@
 {% endspaceless %}
 {% comment %}<!--TODO machine learning recommendation model
 { % if instance.recommended %}<span class="uppercase text-xs text-gray-700 hover:text-gray-900 inline-block ml-3">Recommended</span>{ % endif %}☯
-transform="rotate(180)" add gif instead of imgs or video % include 'products/snippets/update-cart.html' with product=instance cart=cart %}-->
-{% endcomment %}
+transform="rotate(180)" add gif instead of imgs or video % include 'products/snippets/update-cart.html' with product=instance cart=cart %}-->{% endcomment %}

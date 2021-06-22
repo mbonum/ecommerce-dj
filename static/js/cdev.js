@@ -94,7 +94,7 @@ $(document).ready(function () {
       success: function (data) {
         if (data.owner) {
           isOwner = true
-          submitSpan.html(`<a class="border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 text-xs rounded-lg focus:outline-none" href="/library/">In library</a>`)
+          submitSpan.html(`<a class="bg-blue-500 border-4 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded-xl focus:outline-none" href="/library/">In Library</a>`)
         } else {
           isOwner = false
         }

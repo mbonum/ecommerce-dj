@@ -13,21 +13,19 @@ from .models import Order, ProductPurchase
 
 
 class OrderListView(LoginRequiredMixin, ListView):
-    template_name = "orders/order-list.html"
+    template_name = "orders/olist.html"
 
     def get_queryset(self):
         return Order.objects.by_request(self.request).not_created()
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
-    template_name = "orders/order-detail.html"
+    template_name = "orders/odetail.html"
 
     def get_object(self):
-        # _id = self.kwargs.get('order_id')
         qs = Order.objects.by_request(self.request).filter(
             order_id=self.kwargs.get("order_id")
         )
-        # print(_id)
         if qs.count() == 1:
             return qs.first()
         return Http404(

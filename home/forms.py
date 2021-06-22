@@ -19,7 +19,7 @@ class ContactForm(forms.Form):
         widget=forms.Select(
             attrs={
                 "id": "messagetype",
-                "class": "flex appearance-none w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "flex w-full appearance-none border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -65,19 +65,19 @@ class ContactForm(forms.Form):
             attrs={
                 "id": "contact_subject",
                 "placeholder": _("Topic"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                "class": "flex w-full border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),
     )
     text = forms.CharField(
-        label="",
+        label=_("Message"),
         required=True,
         widget=forms.Textarea(  # widget=TinyMCE(attrs={'cols': 80, 'rows': 30, 'textarea':  "Everyone knows something someone else doesn't."})
             attrs={
                 "id": "contact_text",
                 "placeholder": _("Clear and concise."),
-                "class": "flex hover:border-yellow-600 w-full tracking-wid border border-gray-500 rounded-lg text-black placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
+                "class": "flex w-full hover:border-yellow-600 border border-gray-500 rounded-lg text-black placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),  #'cols': 80, 'rows': 40,

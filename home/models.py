@@ -76,7 +76,7 @@ class Cookie(models.Model):
     pdf = models.FileField(
         "PDF", upload_to="cookie/", max_length=100, blank=True, null=True
     )
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
         return self.title
@@ -92,7 +92,7 @@ class Privacy(models.Model):
     pdf = models.FileField(
         "PDF", upload_to=policy_media_path, max_length=255, blank=True, null=True
     )  # "privacy/"
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
         return self.title
@@ -104,21 +104,6 @@ class Privacy(models.Model):
     #     return reverse("home:detail", kwargs={"order_id": self.order_id})
 
 
-# class Return(models.Model):
-#     title = models.CharField(max_length=99)
-#     text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
-#     pdf = models.FileField(
-#         "PDF", upload_to="return/", max_length=255, blank=True, null=True
-#     )
-#     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-
-#     def __str__(self):
-#         return self.title
-
-#     class Meta:
-#         verbose_name_plural = _("Return policy")
-
-
 class Terms(models.Model):
     title = models.CharField(max_length=250)
     text = HTMLField(
@@ -127,7 +112,7 @@ class Terms(models.Model):
     pdf = models.FileField(
         "PDF", upload_to="terms/", max_length=255, blank=True, null=True
     )
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
         return self.title
@@ -164,7 +149,7 @@ class Trademark(models.Model):
 #     section3 = models.CharField(max_length=250, blank=True, null=True)
 #     sec3 = HTMLField('Body 3', blank=True, null=True)
 #     pdf = models.FileField(upload_to='email/', max_length=100, blank=True, null=True)
-#     updated_at = models.DateTimeField(_('Updated at'), auto_now=True)
+#     updated = models.DateTimeField(_('Updated at'), auto_now=True)
 
 #     def __str__(self):
 #         return self.title
@@ -179,7 +164,7 @@ class Trademark(models.Model):
 #     pdf = models.FileField(
 #         "PDF", upload_to="return/", max_length=255, blank=True, null=True
 #     )
-#     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+#     updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
 #     def __str__(self):
 #         return self.title
@@ -205,9 +190,7 @@ class Section(models.Model):
     text = HTMLField(
         blank=False,
         null=True,
-        help_text=_(
-            'Exordium (Pathos)-> Narratio -> Confirmatio (Logos) -> Refutatio (Ethos) -> Peroration (Pathos)[View->srcode->class="fl"]'
-        ),
+        help_text=_("Legal Design"),
     )
     img = models.FileField(
         _("Image"), upload_to=policy_media_path, blank=True, null=True

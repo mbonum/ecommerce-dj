@@ -1,15 +1,13 @@
 from django.urls import path
-from . import views  # CommentView author_view GenerateEssayPDF
-
+from django.utils.translation import gettext_lazy as _
+from . import views
 
 app_name = "essays"
-
 
 urlpatterns = [
     path("", views.index, name="index"),
     path("<slug:slug>/", views.details, name="detail"),
     path("<slug:slug>/<int:pk>/like/", views.like_view, name="like"),
-    # path('<slug:slug>/post/', CommentView.as_view(), name='post')
-    # path('author/<slug:slug>/', author_view, name='bio')
-    path("pdf/<int:pk>/", views.GenerateEssayPDF.as_view(), name="pdf"),
+    path("pdf/<slug:slug>/", views.GenerateEssayPDF.as_view(), name="pdf"),
+    path(_("author/<slug:slug>/"), views.author_view, name="author"),
 ]

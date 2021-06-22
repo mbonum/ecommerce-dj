@@ -33,8 +33,7 @@ class CartManager(models.Manager):
 
 
 class Cart(models.Model):
-    # id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(USER, blank=True, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(USER, null=True, on_delete=models.SET_NULL)
     products = models.ManyToManyField(Product, blank=False)
     order_qty = models.PositiveIntegerField(
         default=1, validators=[MinValueValidator(1)]
@@ -66,7 +65,7 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
         total = 0
         for p in products:
             # if p.quantity:
-            total += p.price# * p.quantity
+            total += p.price  # * p.quantity
             # else:
             # total += p.price
         instance.subtotal = total

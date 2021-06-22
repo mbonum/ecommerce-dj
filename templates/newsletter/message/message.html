@@ -7,7 +7,7 @@
   <h3>{{ article.title }}</h3>
 
   {% thumbnail article.image "200x200" as image %}
-  <img src="http://{{ site.domain }}{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}">
+  <img src="https://{{ site.domain }}{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}">
   {% endthumbnail %}
 
   <div>{{ article.text|safe }}</div>
@@ -19,10 +19,10 @@
 
   <ul>
     {% if submission.publish %}
-    <li><a href="http://{{ site.domain }}{{ submission.get_absolute_url }}">{% trans "Read message online" %}</a></li>
+    <li><a href="https://{{ site.domain }}{{ submission.get_absolute_url }}">{% trans "Read message online" %}</a></li>
     {% endif %}
     <li><a
-        href="http://{{ site.domain }}{% url 'newsletter_unsubscribe_request' newsletter.slug %}">{% trans "Unsubscribe" %}</a>
+        href="https://{{ site.domain }}{% url 'newsletter_unsubscribe_request' newsletter.slug %}">{% trans "Unsubscribe" %}</a>
     </li>
   </ul>
-{% endblock body %}
+{% endblock %}

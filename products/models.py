@@ -143,20 +143,21 @@ class Product(models.Model):
     # created_by = models.ForeignKey(
     #     CUser,
     #     related_name="product_creator",
-    #     on_delete=models.CASCADE,
-    #     blank=True,
-    #     null=True,
+    #     on_delete=models.SET_NULL,
+    #     null=True
     # )
-    description = HTMLField(_("Benefits"), blank=True, null=True)
+    description = HTMLField(
+        _("Description"), blank=True, null=True, help_text=_("Benefits per costs")
+    )
     price = models.DecimalField(
-        _("Price"),
+        _("Price (€)"),
         decimal_places=2,
         max_digits=9,
-        default=99.99,
+        default=9.99,
         validators=[MinValueValidator(0)],
-        help_text="EUR",
+        # help_text="EUR",
     )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')# IntegerField(default=9999)#cents
-    # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.CASCADE)
+    # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.SET_NULL)
     img = models.ImageField(
         _("Image"), upload_to=product_img_path, blank=True, null=True
     )
@@ -173,8 +174,10 @@ class Product(models.Model):
     recommend = models.BooleanField(default=False)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-    pdf = models.FileField(upload_to="products/", blank=True, null=True)
-    # manual if diy
+    pdf = models.FileField(
+        _("PDF Brochure/Manual"), upload_to="products/", blank=True, null=True
+    )
+    # Preview manual if diy
 
     objects = ProductManager()
 
@@ -197,7 +200,7 @@ class Product(models.Model):
     img_tag.short_description = _("Image")
 
     def get_absolute_url(self):
-        # namespace[in mgb/urls]:name[in app-name/urls]
+        # namespace[in core/urls]:name[in app-name/urls]
         return reverse("products:detail", kwargs={"slug": self.slug})
 
     # IF price is in cents
@@ -209,6 +212,8 @@ class Product(models.Model):
         if not self.is_digital and self.quantity > 1:
             q = list(range(1, self.quantity + 1))
         return q
+
+    # Update inventory after an order has been submitted -> signal
 
     def get_downloads(self):
         qs = self.productfile_set.all()

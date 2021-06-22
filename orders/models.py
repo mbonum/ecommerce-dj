@@ -131,24 +131,25 @@ class Order(models.Model):
         related_name="shipping_address",
         blank=False,
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
     )
     billing_address = models.ForeignKey(
         Address,
         related_name="billing_address",
         blank=False,
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
     )
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, null=True, on_delete=models.SET_NULL)
     status = models.CharField(
         max_length=9, choices=OrderStatus.choices, default=OrderStatus.CREATED
-    )  # default='created', choices=ORDER_STATUS_CHOICES
-    shipping_total = models.DecimalField(default=9.99, max_digits=19, decimal_places=2)
-    discount = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)  # %
+    )  # 'created', choices=ORDER_STATUS_CHOICES
+    shipping_total = models.DecimalField(max_digits=19, decimal_places=2, default=9.99)
+    discount = models.DecimalField(max_digits=19, decimal_places=2, default=0.00)  # %
     subtotal = models.DecimalField(
         default=0.00, max_digits=19, decimal_places=2
     )  # if digital subt=total
+    # tax = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
     total = models.DecimalField(
         default=0.00, max_digits=19, decimal_places=2
     )  # subtotal + shipping

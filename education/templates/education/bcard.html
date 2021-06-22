@@ -1,11 +1,12 @@
+{% spaceless %}
 {% if obj.img %}
 <div id="{{ obj.slug }}" class="text-gray-800 hover:text-black mx-auto">
   <a href="{{ obj.get_absolute_url }}" class="block rounded-lg bg-white border border-gray-300 shadow-md hover:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none">
-    <img src="{{ obj.img.url }}" loading="lazy" alt="{{ obj.title }}" class="t-img rounded-t-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500">
+    <img loading="lazy" src="{{ obj.img.url }}" alt="Content Thumbnail" class="t-img rounded-t-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500">
     <div class="space-y-2 p-4">
       {% for t in obj.tags.all %}<p class="bg-footer inline-flex rounded-full font-semibold mx-auto text-center px-2 py-1">#{{ t.name }}</p>{% endfor %}
       <div class="hyphens">
-        <p class="text-lg">{{ obj.title }}</p>
+        <h1 class="text-lg">{{ obj.title }}</h1>
         {% if obj.summary %}
         <p>{{ obj.summary|truncatewords:9 }}</p>
         {% endif %}
@@ -14,4 +15,4 @@
   </a>
 </div>
 {% endif %}
-<!-- object-cover object-center <div class="align-top lg:inline-block mx-auto text-center pt-6 lg:pr-6"> -->
+{% endspaceless %}

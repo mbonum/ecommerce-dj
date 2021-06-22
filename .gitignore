@@ -6,6 +6,7 @@ docs/locale/
 node_modules/
 tests/report/
 emails/
+fixtures/
 
 *.py[cod]
 *$py.class

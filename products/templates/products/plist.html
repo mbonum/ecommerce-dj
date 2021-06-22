@@ -10,7 +10,7 @@
   <div>
   {% for object in object_list %}
   {% if object.active %}
-    {% include 'products/snippets/product-card.html' with object=object %}
+    {% include 'products/snippets/pcard.html' with object=object %}
   {% endif %}
   {% endfor %}
   </div>

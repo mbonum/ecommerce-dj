@@ -1,22 +1,16 @@
-{% extends "newsletter/common.html" %}
+{% extends 'newsletter/common.html' %}
 {% load i18n %}
-{% block title %}{% trans "Newsletter update" %}{% endblock %}
-<!-- {# trans "Newsletter update" #} -->
+{% block title %}{% trans 'Newsletter Update' %}{% endblock %}
 {% block body %}
-<h1 class="uppercase font-semibold text-center mb-3">{{ newsletter.title }}</h1>
-
+<h1 class="text-xl font-semibold text-center mb-3">{{ newsletter.title }}</h1>
 {% if error %}
-<p>
-  {% trans "Due to a technical error we were not able to submit your confirmation email. The team has been notified and will update you as soon as humanly possible." %}
-</p>
-
-<p>{% trans "If the error persists, please don't hesitate to contact us at the following email address:" %} <a class="hover:underline" href="mailto:info@armonia.world" target="_blank">info@armonia.world</a></p>
-<p class="text-center">Thank you</p>
-
+<p>{% trans "Due to a technical error we were not able to submit your confirmation email. The team has been notified and will update you as soon as humanly possible." %}</p>
+<p>{% trans "If the error persists, please don't hesitate to contact us at the following email address:" %} <a class="un" href="mailto:support@{{ domain }}" target="_blank" rel="noopener">support@{{ domain }}</a></p>
+<p class="text-center">{% trans 'Thank you' %}</p>
 {% else %}
 <form enctype="multipart/form-data" class="text-center" method="post" action="."> {% csrf_token %}
   {{ form.as_p }}
-  <p class="text-center mt-4"><input class="uppercase border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded text-sm" id="id_submit" name="submit" value="{% trans 'Update subscription' %}" type="submit" /></p>
+  <p class="mt-4"><input class="border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded-lg" id="id_submit" name="submit" value="{% trans 'Update Subscription' %}" type="submit"></p>
 </form>
 {% endif %}
 {% endblock %}

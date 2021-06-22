@@ -1,20 +1,18 @@
-{% extends "newsletter/common.html" %}
+{% extends 'newsletter/common.html' %}
 {% load i18n %}
-{% block title %}{% trans "Newsletter subscribe" %}{% endblock %}
+{% block title %}{% trans 'Newsletter subscribe' %}{% endblock %}
 {% block body %}
 <div>
-<h1 class="uppercase font-semibold text-center mb-3">{{ newsletter.title }}</h1>
-
-{% if error %}
-<p>{% trans "Due to a technical error we were not able to submit your confirmation email. The team has been notified and will update you as soon as humanly possible. Thank you" %}</p>
-
-<p>{% trans "If the error persists, please don't hesitate to contact us at:" %} <a class="hover:underline" href="mailto:info@clavem.co" target="_blank">info@clavem.co</a></p>
-<p class="text-center">Thank you</p>
-{% else %}
-<form enctype="multipart/form-data" class="text-center" method="post" action=".">{% csrf_token %}
-  {{ form.as_p }}
-  <p class="text-center mt-4"><input class="border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 text-xs uppercase rounded-sm focus:outline-none focus:shadow-outline" id="id_submit" name="submit" value="{% trans 'Subscribe' %}" type="submit"/></p>
-</form>
-{% endif %}
+  <h1 class="text-xl font-semibold text-center mb-3">{{ newsletter.title }}</h1>
+  {% if error %}
+  <p>{% trans "Due to a technical error we were not able to submit your confirmation email. The team has been notified and will update you as soon as humanly possible. Thank you" %}</p>
+  <p>{% trans "If the error persists, please don't hesitate to contact us at:" %} <a class="un" href="mailto:support@clavem.co" target="_blank" rel="noopener">support@clavem.co</a></p>
+  <p class="text-center">{% trans 'Thank you' %}</p>
+  {% else %}
+  <form enctype="multipart/form-data" class="text-center" method="post" action="."> {% csrf_token %}
+    {{ form.as_p }}
+    <p class="mt-4"><input class="border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-lg focus:outline-none py-1 px-2" id="id_submit" name="submit" value="{% trans 'Subscribe' %}" type="submit"></p>
+  </form>
+  {% endif %}
 </div>
 {% endblock %}

@@ -45,8 +45,8 @@
 {% else %}
 <div class="font-c-sans text-gray-900 max-w-xs mx-auto">
   <h1 class="text-xl my-5">{% trans 'Call to action' %}</h1>
-    <p>{% trans 'If you have read' %} <a class="un font-semibold" href="{{ essays_url }}why-clavem-exists/">{{ com }} vision</a> {% trans 'and matches your purpose, please' %}
-    <a class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none" href="{{ contact_url }}">{% trans 'contact us' %}</a> {% trans 'and let us know how you can help' %} {{ com }}.</p>
+    <p>{% blocktranslate %} If you have read <a class="un font-semibold" href="{{ essays_url }}why-clavem-exists/">{{ com }} vision</a> and matches your purpose, please
+    <a class="text-yellow-500 hover:text-yellow-600 font-semibold focus:outline-none" href="{{ contact_url }}">contact us</a>.{% endblocktranslate %}</p>
   </div>
 {% endif %}
 </div>
