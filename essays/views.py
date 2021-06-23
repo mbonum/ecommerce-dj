@@ -1,6 +1,6 @@
 # from urllib.parse import quote_plus
 # from datetime import datetime
-# from django.contrib.auth import get_user
+# # from io import BytesIO
 import filecmp
 import os
 from pathlib import Path
@@ -8,10 +8,20 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from core.utils import render_to_pdf
 from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponse, HttpResponseRedirect  # JsonResponse Http404
+from django.shortcuts import get_object_or_404, render  # redirect
+from django.urls.base import reverse  # reverse_lazy
+from django.utils.translation import gettext as _
+from django.views.generic import View
+from gtts import gTTS
+from notes.forms import NoteForm
+from notes.models import Note
 
-# from django.contrib.contenttypes.models import ContentType
+from .models import Author, Essay  # , Section
 
-# from io import BytesIO
+# CreateViewDetailView, ListView, RedirectView
+# from django.contrib.auth import get_user
 # from django.core.files.storage import default_storage
 # from gTTS.cache import remove_cache
 # from django.template.loader import get_template, render_to_string
@@ -20,21 +30,8 @@ from django.conf import settings
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
 # from analytics.mixins import ObjectViewedMixin
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import HttpResponse, HttpResponseRedirect  # JsonResponse Http404
-from django.shortcuts import get_object_or_404, render  # redirect
-
 # from django.core.files.base import ContentFile
-from django.urls.base import reverse  # reverse_lazy
-from django.utils.translation import gettext as _
-
-# CreateViewDetailView, ListView, RedirectView
-from django.views.generic import View
-from gtts import gTTS
 from notes.forms import NoteForm
-from notes.models import Note
-
-from .models import Author, Essay  # , Section
 
 
 def index(request):
@@ -57,6 +54,14 @@ def details(request, slug: str):
     os.makedirs(path, exist_ok=True)
     f = f"{path}{slug}.mp3"  # static/media_root ogg not supported in mac
     if not essay.audio and not Path(f).is_file():
+        # from django.contrib.staticfiles import finders
+        # from django.contrib.staticfiles.storage import staticfiles_storage
+        # class TestStaticFiles(TestCase):
+        # """Check if app contains required static files"""
+        # def test_images(self):
+        #     abs_path = finders.find('myapp/test.jpg')
+        # self.assertTrue(staticfiles_storage.exists(abs_path))
+        # https://docs.python.org/3/library/filecmp.html
         # if not filecmp.cmp(Path(f), f, shallow=False):
         e = ""
         for s in essay.section_set.all():
@@ -67,7 +72,6 @@ def details(request, slug: str):
         tts = gTTS(txt.get_text(), lang="en")
         # 'static' + settings.MEDIA_URL + 'essays/' + f'{slug}/'#/media_root/
         # if there's a file see if they are the same
-        # https://docs.python.org/3/library/filecmp.html
         tts.save(f)
 
     _id = essay.index + 1

@@ -9,34 +9,34 @@
    {% endif %}</h1>
  </div>
  <div class="">
-  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-xl hover:shadow p-3 overflow-hidden items-center mt-5 lg:mr-5"
+  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-3 overflow-hidden items-center mt-5 lg:mr-5"
    id="billing">
    <p class="font-semibold pl-1 mb-1">{% trans 'Billing' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ order_url }}">{% trans 'Orders' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ billing_url }}">{% trans 'Payment method' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ addresses }}">{% trans 'Address' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ order_url }}">{% trans 'Orders' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ billing_url }}">{% trans 'Payment method' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ addresses }}">{% trans 'Address' %}</a></p>
   </div>
   <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'Support' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ contact_url }}">{% trans 'Contact' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ contact_url }}">{% trans 'Contact' %}</a></p>
   </div>
   <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'Account details' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ usr_update_url }}">{% trans 'Update profile' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ psw_change_url }}">{% trans 'Change password' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ usr_update_url }}">{% trans 'Update profile' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ psw_change_url }}">{% trans 'Change password' %}</a></p>
   </div>
   <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'Preferences' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ mkt_url }}">{% trans 'Email notification' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ mkt_url }}">{% trans 'Email notification' %}</a></p>
   </div>
   <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'History' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ prod_history_url }}">{% trans 'Products viewed' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ dig_lib_url }}">{% trans 'Digital purchases' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ prod_history_url }}">{% trans 'Products viewed' %}</a></p>
+   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ dig_lib_url }}">{% trans 'Digital purchases' %}</a></p>
   </div>
   {% if get_language_info_list %}
   <div x-data="{open: false}" class="relative inline-block mb-4">
-   <button @click="open=!open" type="button" class="flex mx-auto text-sm justify-center w-ful rounded-lg-lg border border-gray-300 shadow-sm px-2 py-1 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg" id="options-menu" aria-expanded="true" aria-haspopup="true">
+   <button @click="open=!open" type="button" class="flex mx-auto text-sm justify-center w-ful rounded-lg-lg border border-gray-300 shadow-sm px-2 py-1 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg" id="options-menu" aria-expanded="true" aria-haspopup="true">
     {% trans 'Language' %}
     <svg class="r-180 fill-current text-gray-600 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
    </button>

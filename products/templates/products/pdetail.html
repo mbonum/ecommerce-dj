@@ -7,7 +7,13 @@
     {% if object.video %}
     <video loading="lazy" class="rounded-lg border border-gray-300 shadow" controls>
       <source src="{{ object.video.url }}" type="video/mp4">
+      <source src="{{ object.video.url }}" type="video/ogg">
+      {#<!-- Fallback if the browser doesn't support video tag -->#}
+      <embed src="{flash_swf_file}.swf" type="application/x-shockwave-flash"></embed>
     </video>
+    {% elif object.video_link %}
+    <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    
     {% elif object.img %}
     <div id="img-div">
       <img loading="lazy" id="pic" src="{{ object.img.url }}" alt="{% trans 'Product detail' %}" class="border border-gray-300 rounded-xl shadow-md mx-auto">
@@ -17,18 +23,17 @@
       <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
     </svg>
     {% endif %}
-    {% comment %}<!--ogg{ % for img in object.img.all %}
-    { % if img.is_feature %}
-    <img src="{{ img.url }}" alt="{ { img.alt_text }}" class="">
-    {% else %}
-    <img
-    {% endif %}
-    {% endfor %}-->{% endcomment %}
+{% comment %}<!--muted width="560" height="315"{ % for img in object.img.all %}
+{ % if img.is_feature %}
+<img src="{{ img.url }}" alt="{{ img.alt_text }}" class="">
+{% endif %}
+{% endfor %}
+{% endif %}-->{% endcomment %}
   </div>
   <div class="lg:w-1/3 mt-6 lg:mt-0">
     <h1 class="text-2xl">{{ object.name_product }}</h1>
     <div class="list-inside mt-2">
-      {{ object.description|safe|linebreaks }}
+      {{ object.text|safe|linebreaks }}
     </div>
   </div>
   <div class="lg:w-1/3 space-y-8 m-auto border border-gray-300 bg-white p-4 xl:p-6 rounded-lg shadow">

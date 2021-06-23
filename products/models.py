@@ -54,7 +54,7 @@ class ProductQuerySet(models.query.QuerySet):
     def search(self, query):
         lookups = (
             Q(slug__icontains=query)
-            | Q(description__icontains=query)
+            | Q(text__icontains=query)
             | Q(price__icontains=query)
             | Q(tags__name__icontains=query)
             | Q(tags__slug__icontains=query)
@@ -129,6 +129,18 @@ class Product(models.Model):
         _("Name"), max_length=255, blank=True, null=True, db_index=True
     )
     slug = models.SlugField(blank=True, null=True, unique=True)
+    img = models.ImageField(
+        _("Image"), upload_to=product_img_path, blank=True, null=True
+    )
+    price = models.DecimalField(
+        _("Price (€)"),
+        decimal_places=2,
+        max_digits=9,
+        default=9.99,
+        validators=[MinValueValidator(0)],
+        # help_text="EUR",
+    )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')# IntegerField(default=9999)#cents
+    # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(Tag, blank=False)
     product_type = models.CharField(
         max_length=8, choices=ProductType.choices, default=ProductType.EBOOK
@@ -146,20 +158,8 @@ class Product(models.Model):
     #     on_delete=models.SET_NULL,
     #     null=True
     # )
-    description = HTMLField(
+    text = HTMLField(
         _("Description"), blank=True, null=True, help_text=_("Benefits per costs")
-    )
-    price = models.DecimalField(
-        _("Price (€)"),
-        decimal_places=2,
-        max_digits=9,
-        default=9.99,
-        validators=[MinValueValidator(0)],
-        # help_text="EUR",
-    )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')# IntegerField(default=9999)#cents
-    # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.SET_NULL)
-    img = models.ImageField(
-        _("Image"), upload_to=product_img_path, blank=True, null=True
     )
     is_digital = models.BooleanField(
         default=False, help_text=_("Digital (in stock, no shipment)")

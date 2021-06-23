@@ -21,87 +21,10 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-from .forms import ContactForm
 from .models import Cookie, Donate, Page, Privacy, Terms, Trademark
 
 # from core.utils import render_to_pdf
 # from subscribe.forms import JoinForm
-
-
-def policy_pdf(request):
-    buffer = BytesIO()
-
-    p = canvas.Canvas(buffer)
-
-    p.drawString(100, 100, "Hello world.")
-
-    p.showPage()
-    p.save()
-
-    buffer.seek(0)
-    return FileResponse(
-        buffer, as_attachment=True, filename="hello.pdf"
-    )  #  # download pop up
-
-    # fileName = "sample.pdf"
-    # documentTitle = "sample"
-    # title = "Technology"
-    # subTitle = "The largest thing now!!"
-    # textLines = [
-    #     "Technology makes us aware of",
-    #     "the world around us.",
-    # ]
-    # image = "image.jpg"
-
-    # pdf = canvas.Canvas(fileName)
-    # pdf.setTitle(documentTitle)
-    # pdfmetrics.registerFont(TTFont("clvm", "PT-Root-UI_Regular.ttf"))
-
-    # pdf.setFont("clvm", 36)
-    # pdf.drawCentredString(300, 770, title)
-
-    # pdf.setFillColorRGB(0, 0, 255)
-    # pdf.setFont("Courier-Bold", 24)
-    # pdf.drawCentredString(290, 720, subTitle)
-
-    # # drawing a line
-    # pdf.line(30, 710, 550, 710)
-
-    # # creating a multiline text using
-    # # textline and for loop
-    # text = pdf.beginText(40, 680)
-    # text.setFont("Courier", 18)
-    # text.setFillColor(colors.red)
-
-    # for line in textLines:
-    #     text.textLine(line)
-
-    # pdf.drawText(text)
-
-    # pdf.drawInlineImage(image, 130, 400)
-
-    # # saving the pdf
-    # pdf.save()
-
-    # response = HttpResponse(content_type="application/pdf")
-    # d = datetime.today().strftime("%Y-%m-%d")
-    # response["Content-Disposition"] = f"inline; filename={d}.pdf"
-    # buffer = BytesIO()
-    # p = canvas.Canvas(buffer, pagesize=A4)
-    # data = {}
-    # p.setFont("", 12, leading=None)
-    # p.setFillColorRGB()
-    # p.drawString(260,800, "Clavem")
-    # p.line()
-    # x1 =
-    # y1 =
-    # p.setTitle(f"Policy {d}")
-    # p.showPage()
-    # p.save()))
-    # pdf.buffer.getvalue()
-    # buffer.close()
-    # response.write(pdf)
-    # return response
 
 
 class HomeView(SuccessMessageMixin, CreateView):
@@ -115,7 +38,7 @@ class HomeView(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
-        context["page_obj"] = HomeView.get_queryset(self)
+        context["object"] = HomeView.get_queryset(self)
         return context
 
 
@@ -234,6 +157,82 @@ class TrademarkView(CreateView):
         context = super(TrademarkView, self).get_context_data(*args, **kwargs)
         context["text"] = TrademarkView.get_queryset(self)
         return context
+
+
+def policy_pdf(request):
+    buffer = BytesIO()
+
+    p = canvas.Canvas(buffer)
+
+    p.drawString(100, 100, "Hello world.")
+
+    p.showPage()
+    p.save()
+
+    buffer.seek(0)
+    return FileResponse(
+        buffer, as_attachment=True, filename="hello.pdf"
+    )  # download pop up
+
+    # fileName = "sample.pdf"
+    # documentTitle = "sample"
+    # title = "Technology"
+    # subTitle = "The largest thing now!!"
+    # textLines = [
+    #     "Technology makes us aware of",
+    #     "the world around us.",
+    # ]
+    # image = "image.jpg"
+
+    # pdf = canvas.Canvas(fileName)
+    # pdf.setTitle(documentTitle)
+    # pdfmetrics.registerFont(TTFont("clvm", "PT-Root-UI_Regular.ttf"))
+
+    # pdf.setFont("clvm", 36)
+    # pdf.drawCentredString(300, 770, title)
+
+    # pdf.setFillColorRGB(0, 0, 255)
+    # pdf.setFont("Courier-Bold", 24)
+    # pdf.drawCentredString(290, 720, subTitle)
+
+    # # drawing a line
+    # pdf.line(30, 710, 550, 710)
+
+    # # creating a multiline text using
+    # # textline and for loop
+    # text = pdf.beginText(40, 680)
+    # text.setFont("Courier", 18)
+    # text.setFillColor(colors.red)
+
+    # for line in textLines:
+    #     text.textLine(line)
+
+    # pdf.drawText(text)
+
+    # pdf.drawInlineImage(image, 130, 400)
+
+    # # saving the pdf
+    # pdf.save()
+
+    # response = HttpResponse(content_type="application/pdf")
+    # d = datetime.today().strftime("%Y-%m-%d")
+    # response["Content-Disposition"] = f"inline; filename={d}.pdf"
+    # buffer = BytesIO()
+    # p = canvas.Canvas(buffer, pagesize=A4)
+    # data = {}
+    # p.setFont("", 12, leading=None)
+    # p.setFillColorRGB()
+    # p.drawString(260,800, "Clavem")
+    # p.line()
+    # x1 =
+    # y1 =
+    # p.setTitle(f"Policy {d}")
+    # p.showPage()
+    # p.save()))
+    # pdf.buffer.getvalue()
+    # buffer.close()
+    # response.write(pdf)
+    # return response
 
 
 # def donate_page(request):

@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     # # "sslserver",  # https://pypi.org/project/django-sslserver
     # "django_hosts",  # https://pypi.org/project/django-hosts
     "django_extensions",  # https://pypi.org/project/django-extensions
+    "gdpr_assist",  # https://django-gdpr-assist.readthedocs.io/en/latest/installation.html
+    # "gdpr",  # https://github.com/druids/django-GDPR
     "meta",  # https://pypi.org/project/django-meta
     # # "defender",  # https://django-defender.readthedocs.io/en/latest # downgrade django
     # "corsheaders",  # https://pypi.org/project/django-cors-headers
@@ -252,8 +254,14 @@ DATABASES = {
         conn_max_age=600,
         ssl_require=True,
         engine="django.db.backends.postgresql",
-    )
+    ),
+    "gdpr_log": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "gdpr-log.sqlite3",
+    },
 }
+
+DATABASE_ROUTERS = ["gdpr_assist.routers.EventLogRouter"]
 # docker-compose https://docs.docker.com/compose/django/
 # DATABASES = {
 #     'default': {
@@ -385,9 +393,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # STATICFILES_STORAGE = 'config.storage.S3Storage'# AWS docs
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
+MEDIA_ROOT = BASE_DIR / "media"
+# os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
-PROTECTED_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "protected_root")
+PROTECTED_ROOT = MEDIA_ROOT / "protected"
+# os.path.join(os.path.dirname(BASE_DIR), "media", "protected_root")
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",

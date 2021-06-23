@@ -7,13 +7,13 @@
   <div class="text-center border-b border-gray-300">
     <h1 class="text-xl font-semibold pb-4">{% trans 'Products Viewed' %}</h1>
   </div>
-  {% for obj in object_list %}
-  {% include 'products/snippets/product-card.html' with object=obj %}
+  {% for o in object_list %}
+  {% include 'products/snippets/pcard.html' with object=o %}
   {% endfor %}
 </div>
 {% else %}
 <div class="max-w-sm mx-auto text-center">
-  <p class="text-xl inline-flex border-b border-gray-300 font-semibold pb-4" data-tippy-content="(or you deleted your cookies)">{% trans 'No product viewed ._.' %}</p>
+  <p class="text-xl inline-flex border-b border-gray-300 font-semibold pb-4" data-tippy-content="({% trans 'or you deleted your cookies)' %}">{% trans 'No product viewed' %} ._.</p>
 </div>
 {% endif %}
 {% endblock %}

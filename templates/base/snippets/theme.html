@@ -9,7 +9,7 @@
 <div class="inline-flex items-center space-x-9">
   <p>{% trans 'Doubleclick to Focus' %}</p>
   <div x-data="{ l: true }">
-    <button class="inline-flex items-center rounded-full focus:outline-none space-x-2 hover:text-yellow-400 ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent py-1 px-2" data-tippy-content="{% trans 'Lights' %}" @click="l = !l" onclick="theme()">
+    <button class="inline-flex items-center rounded-full focus:outline-none space-x-2 hover:text-yellow-500 ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent py-1 px-2" data-tippy-content="{% trans 'Lights' %}" @click="l = !l" onclick="theme()">
       <svg class="focus:animate-spin fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#bulb"></use></svg>
       <span>{% trans 'Light/Dark' %}</span>
     </button>

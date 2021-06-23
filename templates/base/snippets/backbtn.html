@@ -1,5 +1,5 @@
 {% load i18n static %}
-<div class="inline-flex overflow-hidden border border-gray-300 bg-white hover:text-black hover:bg-gray-hover shadow rounded-lg">
+<div class="inline-flex hover:text-black hover:bg-gray-hover{% if not edu_url in request.path and not essays_url in request.path %} overflow-hidden border border-gray-300 bg-white rounded-lg shadow{% endif %}">
   <a href="{{ url }}{% if id %}#{{ id }}{% endif %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2">
   <svg class="w-3 h-4 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg> {% trans 'Back' %}</a>
 </div>

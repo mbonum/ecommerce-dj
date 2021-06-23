@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 {% block title %}{% trans 'Cart' %}{% endblock %}
-{#<!--{ forloop.counter }} upgrade cdev.js 184 <a href="{ { register_url }}" class="text-yellow-500 hover:text-yellow-400 font-semibold focus:outline-none">Sign up</a> or <a href="{ % url 'login' %}?next={ { request.get_full_path|urlencode }}" class="un font-semibold focus:outline-none">log in</a></p> user currency add qty once edited update aproject.js line 183 div px-2 md:px-20 lg:px-20 xl:px-64"> p-4 border border-gray-500 rounded bg-white shadow -->#}
+{#<!--if edited user currency qty, update cdev.js 184 https://html.spec.whatwg.org/multipage/tables.html#the-th-element-->#}
 {% block content %}
 <div class="font-c-sans max-w-sm mx-auto">
   {% if cart.products.exists %}
@@ -21,8 +21,8 @@
     <tbody class="cart-body items-center">
       {% for object in cart.products.all %}
       <tr class="cart-product border-b border-gray-300 text-center">
-        <td colspan="1">
-{#<!--<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow-->#}
+        <td scope="row" colspan="1">
+{#<!--{ forloop.counter }}add thumbnail<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow-->#}
         </td>
         <td class="px-4 py-2">
           <a class="text-blue-600 hover:text-blue-700 hover:underline focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ object.get_absolute_url }}"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
@@ -58,7 +58,7 @@
         </td>
       </tr>
       {% endfor %}
-{#<!--Subtotal <p class="cart-subtotal">{ { cart.subtotal }}</p></td></tr>-->#}
+{#<!--Subtotal <p class="cart-subtotal">{ { cart.subtotal }}</p></td></tr>{ { object.tax }}-->#}
       <tr>
         <td colspan="3"></td>
         <th scope="col" class="font-semibold border-b border-gray-500 py-1">{% trans 'Total' %}</th>

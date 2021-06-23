@@ -10,7 +10,7 @@ urlpatterns = [
     path("", views.AccountHomeView.as_view(), name="user-home"),
     path("details/", views.UserDetailUpdateView.as_view(), name="user-update"),
     path(
-        "history/products",
+        "history/",
         UserProductHistoryView.as_view(),
         name="user-product-history",
     ),

@@ -1,20 +1,23 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from tinymce.models import HTMLField
+
+C = getattr(settings, "ENV_NAME", "clavem")
 
 
 def policy_media_path(self, filename):
     slug = self.slug
     if filename is not slug:
         filename = slug  # + '_' + self.job_title
-    return f"media/{filename}"
+    return f"policies/{C}-{filename}"
 
 
 class Page(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
-    background = models.FileField(upload_to="homepage/", blank=True, null=True)
+    media = models.FileField(upload_to="home/", blank=True, null=True)
     text = HTMLField(blank=True, null=True)
     quote = models.CharField(max_length=255, blank=True, null=True)
 
@@ -58,9 +61,9 @@ class Contact(models.Model):
 
 class Donate(models.Model):
     title = models.CharField(max_length=250)
-    btc_desc = HTMLField(_("BTC Description"), blank=True, null=True)
+    btc_desc = HTMLField(_("BTC Text"), blank=True, null=True)
     btc = models.CharField(max_length=250, blank=True, null=True)
-    eth_desc = HTMLField(_("ETH Description"), blank=True, null=True)
+    eth_desc = HTMLField(_("ETH Text"), blank=True, null=True)
     eth = models.CharField(max_length=250, blank=True, null=True)
 
     def __str__(self):
@@ -72,10 +75,11 @@ class Donate(models.Model):
 
 class Cookie(models.Model):
     title = models.CharField(max_length=99)
+    slug = models.SlugField(blank=True, null=True, unique=True)
     text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
     pdf = models.FileField(
-        "PDF", upload_to="cookie/", max_length=100, blank=True, null=True
-    )
+        "PDF", upload_to=policy_media_path, max_length=100, blank=True, null=True
+    )  # "cookie/"
     updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
@@ -85,10 +89,30 @@ class Cookie(models.Model):
         verbose_name_plural = _("Cookie policy")
 
 
+class CSection(models.Model):
+    policy = models.ForeignKey(
+        Cookie,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    title = models.CharField(
+        help_text=_("Skip if section 1"), max_length=99, blank=True, null=True
+    )
+    slug = models.SlugField(blank=True, null=True, unique=True)
+    text = HTMLField(
+        blank=False,
+        null=True,
+        help_text=_("Legal Design"),
+    )
+    img = models.FileField(
+        _("Image"), upload_to=policy_media_path, blank=True, null=True
+    )
+
+
 class Privacy(models.Model):
     title = models.CharField(max_length=99)
     slug = models.SlugField(blank=True, null=True, unique=True)
-    text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
     pdf = models.FileField(
         "PDF", upload_to=policy_media_path, max_length=255, blank=True, null=True
     )  # "privacy/"
@@ -104,14 +128,39 @@ class Privacy(models.Model):
     #     return reverse("home:detail", kwargs={"order_id": self.order_id})
 
 
+class PSection(models.Model):
+    policy = models.ForeignKey(
+        Privacy,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    # object_id = models.PositiveIntegerField()
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    # content_object = GenericForeignKey("content_type", "object_id")
+    title = models.CharField(
+        help_text=_("Skip if section 1"), max_length=99, blank=True, null=True
+    )
+    slug = models.SlugField(blank=True, null=True, unique=True)
+    text = HTMLField(
+        blank=False,
+        null=True,
+        help_text=_("Legal Design, clear, concise, no legalese"),
+    )
+    img = models.FileField(
+        _("Image"), upload_to=policy_media_path, blank=True, null=True
+    )
+
+
 class Terms(models.Model):
     title = models.CharField(max_length=250)
+    slug = models.SlugField(blank=True, null=True, unique=True)
     text = HTMLField(
         _("Terms"), blank=False, null=True, help_text=_("Clear, concise, no legalese")
     )
     pdf = models.FileField(
-        "PDF", upload_to="terms/", max_length=255, blank=True, null=True
-    )
+        "PDF", upload_to=policy_media_path, max_length=255, blank=True, null=True
+    )  # "terms/"
     updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
@@ -121,14 +170,35 @@ class Terms(models.Model):
         verbose_name_plural = _("Terms of use")
 
 
+class TSection(models.Model):
+    policy = models.ForeignKey(
+        Terms,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    title = models.CharField(
+        help_text=_("Skip if section 1"), max_length=99, blank=True, null=True
+    )
+    slug = models.SlugField(blank=True, null=True, unique=True)
+    text = HTMLField(
+        blank=False,
+        null=True,
+        help_text=_("Legal Design"),
+    )
+    img = models.FileField(
+        _("Image"), upload_to=policy_media_path, blank=True, null=True
+    )
+
+
 # transparency Imprint
 class Trademark(models.Model):
     title = models.CharField(max_length=99)
     text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
     pdf = models.FileField(
-        "PDF", upload_to="trademark/", max_length=255, blank=True, null=True
-    )
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+        "PDF", upload_to=policy_media_path, max_length=255, blank=True, null=True
+    )  # "trademark/"
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
         return self.title
@@ -148,7 +218,7 @@ class Trademark(models.Model):
 #     sec2 = HTMLField('Body 2', blank=True, null=True)
 #     section3 = models.CharField(max_length=250, blank=True, null=True)
 #     sec3 = HTMLField('Body 3', blank=True, null=True)
-#     pdf = models.FileField(upload_to='email/', max_length=100, blank=True, null=True)
+#     pdf = models.FileField(upload_to=policy_media_path, max_length=100, blank=True, null=True)
 #     updated = models.DateTimeField(_('Updated at'), auto_now=True)
 
 #     def __str__(self):
@@ -162,7 +232,7 @@ class Trademark(models.Model):
 #     title = models.CharField(max_length=99)
 #     text = HTMLField(blank=False, null=True, help_text=_("Clear, concise, no legalese"))
 #     pdf = models.FileField(
-#         "PDF", upload_to="return/", max_length=255, blank=True, null=True
+#         "PDF", upload_to=policy_media_path, max_length=255, blank=True, null=True
 #     )
 #     updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
@@ -171,27 +241,3 @@ class Trademark(models.Model):
 
 #     class Meta:
 #         verbose_name_plural = _("Return policy")
-
-
-class Section(models.Model):
-    # essay = models.ForeignKey(
-    #     Essay,
-    #     on_delete=models.CASCADE,
-    #     blank=True,
-    #     null=True,
-    # )
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-    title = models.CharField(
-        help_text=_("Skip if section 1"), max_length=90, blank=True, null=True
-    )
-    slug = models.SlugField(blank=True, null=True, unique=True)
-    text = HTMLField(
-        blank=False,
-        null=True,
-        help_text=_("Legal Design"),
-    )
-    img = models.FileField(
-        _("Image"), upload_to=policy_media_path, blank=True, null=True
-    )

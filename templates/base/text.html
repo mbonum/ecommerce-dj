@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load i18n mptt_tags static %}
 {% block css %}{% include 'base/snippets/fullscreen.html' %}{% endblock %}
-{% block title %}{{ object.title }}{% endblock %}
+{% block title %}{% if object.title %}{{ object.title }}{% else %}{% trans 'In Development' %}{% endif %}{% endblock %}
 {% comment %}<!--hitcount_tags { % get_hit_count_js_variables for object as hitcount %}
-{ % get_hit_count for object as readers %} -->{% endcomment %}
+{ % get_hit_count for object as readers %}-->{% endcomment %}
 {% block content %}
 {% if object %}
 <div ondblclick="exitFullscreen();" class="font-c-sans max-w-md md:max-w-lg mx-auto px-2">
@@ -13,7 +13,6 @@
     {% endif %}
     <div class="border-t-2 border-b border-gray-400 rounded-lg text-center space-y-3 pt-3 pb-2 mb-4">
       <h1 class="text-4xl">{{ object.title }}</h1>
-  
       <div class="inline-flex items-center space-x-2">
       {% if not object.author_team and object.author %}
         {% if object.author == 'Team' or object.author == 'team' %}
@@ -52,13 +51,20 @@
       {% include 'base/snippets/summary.html' with obj=object %}
       {% include 'base/snippets/contents.html' with obj=object %}
       <div class="border border-gray-300 shadow text-lg rounded-xl px-5 py-4">
+        {% if object.section_set %}
         {% for s in object.section_set.all %}
         {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-2xl font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
         {{ s.text|safe }}
+        {% endfor %}
+        {% elif object.psection_set %}
+        {% for s in object.psection_set.all %}
+        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-2xl font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
+        {{ s.text|safe }}
+        {% endfor %}
+        {% endif %}
         {% if s.img %}
         <div class="my-2"><img loading="lazy" src="{{ s.img.url }}" alt="{{ s.title }} {% trans 'Picture' %}" class="rounded-lg mx-auto"></div>
         {% endif %}
-        {% endfor %}
         {% comment %}<!-- hyphens text-justify <div class="text-right pr-5">
         <svg class="border border-gray-300 bg-gray-900 text-gray-100 w-4 h-4 fill-current inline-block absolute -mt-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
         </div> -->{% endcomment %}

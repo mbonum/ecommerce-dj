@@ -29,7 +29,7 @@ class AuthorAdmin(admin.ModelAdmin):
 #         }
 
 
-class SectionInline(admin.StackedInline):
+class SectionInline(admin.TabularInline):#StackedInline
     model = Section
     extra = 2
     prepopulated_fields = {"slug": ("title",)}

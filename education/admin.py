@@ -23,10 +23,10 @@ from .models import Book, Section
 #    "fields": ("",),
 #    "classes": ("collapse",),
 #  }),
-# )
+# )StackedInline
 
 
-class SectionInline(admin.StackedInline):
+class SectionInline(admin.TabularInline):  # StackedInline
     model = Section
     extra = 2
     prepopulated_fields = {"slug": ("title",)}

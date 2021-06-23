@@ -58,6 +58,22 @@ class Cart(models.Model):
             return False
         return True
 
+    def calc_tot(self, save=False):
+        if not self.products:
+            return {}
+        subtot = self.product.price  # cents
+        tax_rate = 0.12  # 12
+        tax_tot = subtot * tax_rate
+        tax_tot = float("%.2f" % (tax_tot))
+        tot = subtot + tax_tot
+        tot = float("%.2f" % (tax_tot))
+        totals = {"subtotal": subtot, "tax": tax_tot, "total": tot}
+        for k, v in totals.items():
+            setattr(self, k, v)
+            if save == True:
+                self.save()
+        return totals
+
 
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
     if action in ("post_add", "post_remove", "post_clear"):
