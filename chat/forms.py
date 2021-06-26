@@ -1,5 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import validate_email
 
 # from django.contrib.auth import get_user_model
 # from tinymce.widgets import TinyMCE # https://django-tinymce.readthedocs.io/en/latest/usage.html?highlight=attrs
@@ -106,6 +108,13 @@ class ContactForm(forms.Form):
             # "postal_code",
         )
 
+    def clean_first_name(self):
+        fn = self.cleaned_data["first_name"]
+        cl = ["clavem", "clvm", "Clavem team"]
+        if any(c in fn for c in cl):
+            raise ValidationError(_("Name reserved."))
+        return fn
+
     # def send_email(self):
     #     send_email_task.delay(
     #         self.cleaned_data["message_type"],
@@ -145,7 +154,7 @@ class ChatForm(forms.Form):
     text = forms.CharField(
         label=_("Message"),
         required=True,
-        widget=forms.Textarea(  # Clear and concise. widget=TinyMCE(attrs={'cols': 80, 'rows': 30, 'textarea':  "Everyone knows something someone else doesn't."})
+        widget=forms.Textarea(
             attrs={
                 "id": "chat_text",
                 "placeholder": _("How can we help?"),
@@ -165,21 +174,21 @@ class ChatForm(forms.Form):
         )
 
 
-class MessageForm(forms.Form):
-    text = forms.CharField(
-        label=_("Message"),
-        required=True,
-        widget=forms.Textarea(  # Clear and concise. widget=TinyMCE(attrs={'cols': 80, 'rows': 30, 'textarea':  "Everyone knows something someone else doesn't."})
-            attrs={
-                "id": "chat_text",
-                "placeholder": _("How can we help?"),
-                "class": "flex w-full hover:border-yellow-600 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
-                "rows": 4,
-                "spellcheck": "true",
-            }
-        ),
-    )
+# class MessageForm(forms.Form):
+#     text = forms.CharField(
+#         label=_("Message"),
+#         required=True,
+#         widget=forms.Textarea(
+#             attrs={
+#                 "id": "chat_text",
+#                 "placeholder": _("How can we help?"),
+#                 "class": "flex w-full hover:border-yellow-600 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
+#                 "rows": 4,
+#                 "spellcheck": "true",
+#             }
+#         ),
+#     )
 
-    class Meta:
-        model = Message
-        fields = ("text",)
+#     class Meta:
+#         model = Message
+#         fields = ("text",)

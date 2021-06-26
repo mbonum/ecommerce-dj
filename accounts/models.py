@@ -7,15 +7,19 @@ Login -> send email every time -> enforce 2fa
 """
 from datetime import timedelta
 
+from core.utils import unique_key_generator
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
-from django.core.mail import (
-    send_mail,
-)  # https://docs.djangoproject.com/en/3.1/topics/email/
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+
+# https://docs.djangoproject.com/en/3.2/topics/email/
+
+# from django.core.validators import EmailValidator
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save, pre_save
@@ -24,7 +28,6 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
-from core.utils import unique_key_generator
 
 # NOQA too skip linter import check
 # send_mail(subject, message, from_email, recipient_list, html_message) random_string_generator,
@@ -99,8 +102,26 @@ def user_image_path(self, filename):
     return f"users/{u}/{filename}"
 
 
+def validate_email(e):
+    d = e[e.index("@") + 1 :]  # get email domain
+    with open("media/temp-emails.txt") as emails:
+        if d in emails.read():
+            raise ValidationError(
+                _("Temporary emails are not allowed.")  # ,
+                # params={"email": e},
+            )
+
+
 class CUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=150, unique=True)  # db_index=True
+    email = models.EmailField(
+        max_length=150,
+        unique=True,
+        validators=[
+            # EmailValidator(
+            #     whitelist=["protonmail", "tutanota", "gmail", "yahoo", "hotmail"]
+            # )
+        ],
+    )  # db_index=True
     # username = CharField(max_length=90, unique=True)
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)

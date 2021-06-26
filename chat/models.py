@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import EmailValidator
 from django.utils.translation import gettext_lazy as _
 
 # from tinymce.models import HTMLField
@@ -16,10 +17,18 @@ class Contact(models.Model):
     message_type = models.CharField(
         max_length=255, choices=MsgType.choices, default=MsgType.COLLABORATION
     )  # tag msg for support team
-    first_name = models.CharField(max_length=255, blank=True, null=True)
-    last_name = models.CharField(max_length=255, blank=True, null=True)
-    email = models.EmailField(max_length=255, unique=True)
-    topic = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=60, blank=True, null=True)
+    last_name = models.CharField(max_length=60, blank=True, null=True)
+    email = models.EmailField(
+        max_length=60,
+        unique=True,
+        validators=[
+            EmailValidator(
+                whitelist=["protonmail", "tutanota", "gmail", "yahoo", "hotmail"]
+            )
+        ],
+    )
+    topic = models.CharField(max_length=99)
     text = models.TextField(blank=True, null=True)  # HTMLField
     # postal_code = models.CharField(max_length=19, blank=True, null=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
