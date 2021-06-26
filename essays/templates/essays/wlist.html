@@ -5,7 +5,7 @@
 <div class="font-c-sans max-w-xs mx-auto">
 {% if essays %}
   <div class="text-center mb-5">
-    <h1 class="text-xl font-semibold mb-2">{% if title %}{{ title }}{% else %}{% trans 'Writings' %}{% endif %}</h1>
+    <h1 class="text-2xl font-semibold mb-2">{% if title %}{{ title }}{% else %}{% trans 'Writings' %}{% endif %}</h1>
     <p class="inline-flex items-center"><svg class="w-3 h-3 fill-current mx-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#star"></use></svg> {% trans 'indicates recommended writings.' %}</p>
   </div>
   {% for essay in essays %}

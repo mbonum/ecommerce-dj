@@ -22,6 +22,7 @@ from django.conf import settings
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect  # , render
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import UpdateView, View
 
 from .forms import MarketingPreferenceForm
@@ -40,13 +41,12 @@ MAILCHIMP_EMAIL_LIST_ID = getattr(settings, "MAILCHIMP_EMAIL_LIST_ID", None)
 
 
 class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
-
-    form_class = MarketingPreferenceForm
+    form_class = MarketingPreferenceForm()
     template_name = "marketing/change-email-form.html"
     success_url = "/settings/email/"
-    success_message = (
-        "Your Email Preferences have been updated. Thank You!"  # show on Save button
-    )
+    success_message = _(
+        "Your email preferences have been updated. Thank you!"
+    )  # show on Save button
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user
@@ -58,7 +58,7 @@ class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
         context = super(MarketingPreferenceUpdateView, self).get_context_data(
             *args, **kwargs
         )
-        context["title"] = "Email Preferences"
+        context["title"] = _("Email Preferences")
         return context
 
     def get_object(self):  # get_absolute_url is the default
@@ -71,10 +71,10 @@ class MailchimpWebhookView(CsrfExemptMixin, View):
     """
     https://us19.admin.mailchimp.com/lists/tools/webhooks-create?id=321186
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Thank You', status=200)"""
+        return HttpResponse('Thank You', status=200)
+    """
 
     def post(self, request, *args, **kwargs):
-
         data = request.POST
         list_id = data.get("data[list_id]")
         if str(list_id) == str(MAILCHIMP_EMAIL_LIST_ID):
@@ -96,7 +96,7 @@ class MailchimpWebhookView(CsrfExemptMixin, View):
                         mailchimp_subscribed=mailchimp_subbed,
                         mailchimp_msg=str(data),
                     )
-        return HttpResponse("Thank You", status=200)
+        return HttpResponse(_("Thank You"), status=200)
 
 
 #  def mail_chimp_webhook_view(request):

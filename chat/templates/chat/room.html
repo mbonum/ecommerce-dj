@@ -2,66 +2,65 @@
 {% load i18n static widget_tweaks %}
 {% block title %}{% trans 'Contact' %}{% endblock %}
 {% block content %}
-<div class="font-c-sans max-w-sm mx-auto">
-  {% if messages %}
-  <div id="chat-text" class="w-full border border-gray-300 shadow bg-white py-2 px-3 rounded-lg" style="max-height: 300px; overflow-y: scroll;">
-    {% for m in messages %}{{ m.username }}: {{ m.content }}{% endfor %}
-  </div>
+<div class="font-c-sans text-lg max-w-sm mx-auto">
+  {% if texts %}
+    {% for t in texts %}
+    <div class="chat_text w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-xl shadow py-2 px-3 {% if not forloop.first > 1%}mb-4{% endif %}">
+      <p><b>{% if t.username %}{{ t.username }}{% else %}{{ user }}{% endif %}</b>: {{ t.text }}</p>
+    </div>
+    {% endfor %}
   {% endif %}
-  <form class="w-full">
-    <textarea name="message" id="id_message" placeholder="{% trans 'Message' %}" class="w-full rounded-lg appearance-none border border-gray-300 focus:border-yellow-500 py-2 px-3 focus:outline-none focus:bg-white placeholder-black shadow focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 mt-4" spellcheck="true" required></textarea>
-    <div class="mt-6">
-      <button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit">
-        <p class="text-center inline-flex items-center">{% trans 'Send' %}
-          <svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
+  <form>
+    <textarea name="message" id="id_text" placeholder="{% trans 'Message' %}" class="w-full rounded-lg appearance-none border border-gray-300 focus:border-yellow-500 focus:outline-none focus:bg-white placeholder-black shadow hover:shadow-md focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-2 px-3 mt-3" spellcheck="true" required></textarea>
+    <div class="text-right mt-6">
+      <a id="sendbtn" class="text-xl cursor-pointer w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-2 px-3" type="submit">
+        <p class="inline-flex items-center">{% trans 'Send' %}
+          <svg class="fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
         </p>
-      </button>
+      </a>
     </div>
   </form>
 </div>
-{{ username|json_script:"username" }}
-{{ room|json_script:"roomname" }}
+<div hidden>
+  {{ user|json_script:"user" }}
+  {{ room|json_script:"room" }}
+</div>
 {% endblock %}
 {% block js %}
 <script>
-  function scrollToBottom() {
-    let objDiv = document.getElementById('chat-text');
-    objDiv.scrollTop = objDiv.scrollHeight;
-  }
-  scrollToBottom();
-  const userName = JSON.parse(document.getElementById('username').textContent);
-  const roomName = JSON.parse(document.getElementById('roomname').textContent);
-  const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+$(document).ready(function () {
+  const user = JSON.parse(document.getElementById('user').textContent);
+  const room = JSON.parse(document.getElementById('room').textContent);
+  const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/contact/' + room + '/');
   chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    if (data.message) {
-      document.querySelector('#chat-text').innerHTML += ('<p><span class="font-semibold">' + data.username + '</span>: ' + data.message + '</p>');
+    if (data.text) {
+      location.reload();
+      // document.getElementByClass('chat_text');
+      // t.insertAdjacentHTML('afterend', '<div class="w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-xl shadow py-2 px-3"><p><b>' + data.username + '</b>: ' + data.text + '</p></div>');
     }
-    scrollToBottom();
   };
   document.querySelector("#sendbtn").onclick = function (e) {
-    const messageInputDom = document.querySelector("#id_message");
-    const message = messageInputDom.value;
-    chatSocket.send(JSON.stringify({
-      "message": message,
-      "username": userName,
-      "room": roomName
-    }));
-    messageInputDom.value = "";
+    const msgInput = document.querySelector("#id_text");
+    const msg = msgInput.value;
+    if (msg != "") {
+      chatSocket.send(JSON.stringify({
+        'user': user,
+        'text': msg,
+        'room': room
+      }));
+      msgInput.value = '';
+    } else {
+      $.alert('Empty message');
+    }
   };
+});
 </script>
 {% endblock %}
-{% comment %}<!--<a id="sendbtn" class="text-center inline-flex items-center"> <div class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
-// document.getElementById("chat-text").innerHTML = ('<p><span class="font-semibold">' + data.clvm + '</span>: ' + data.opener + '</p>');
-// document.getElementById("chat-text").value += ('<p><span class="font-semibold">' + data.username + '</span>: ' + data.message + '</p>');<input type="text" name="message" id="id_message" placeholder="{% trans 'Message' %}" class="rounded-lg focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 appearance-none w-full text-black border border-gray-300 py-2 px-3 focus:outline-none focus:bg-white placeholder-black shadow mt-4" required="">
-  <button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit">
-    <p class="text-center inline-flex items-center">
-<input id="sendbtn" value="{ % trans 'Send' %} class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" type="submit">
-request.user.email
-} else {
-  alert('The message is empty!');
+{% comment %}<!--//  $.alert method="post" // scrollToBottom(); button style="max-height: 200px; overflow-y: scroll;"
+chatSocket.onclose = function(e) {console.log('close')}
+// document.querySelector('.chat_text').innerHTML += ('<div class="w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-lg shadow py-2 px-3"><p><b>' + data.username + '</b>: ' + data.text + '</p></div>');function scrollToBottom() {
+  let objDiv = document.getElementsByClassName('chat_text');
+  objDiv.scrollTop = objDiv.scrollHeight;
 }
-scrollToBottom();
-chatSocket.onclose = function(e) {
-  console.log('The socket close unexpectadly');
-};-->{% endcomment %}
+scrollToBottom();-->{% endcomment %}

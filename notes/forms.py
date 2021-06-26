@@ -25,18 +25,18 @@ class NoteForm(forms.ModelForm):
             }
         ),
     )
-    private = forms.BooleanField(
-        label="",
-        required=False,
-        widget=forms.CheckboxInput(
-            attrs={
-                "id": "id_private",
-                "name": "anonym",
-                "class": "cursor-pointer transform hover:scale-110",
-                # "data-tippy-content": "Anonym",
-            }
-        ),
-    )
+    # private = forms.BooleanField(
+    #     label="",
+    #     required=False,
+    #     widget=forms.CheckboxInput(
+    #         attrs={
+    #             "id": "id_private",
+    #             "name": "anonym",
+    #             "class": "cursor-pointer transform hover:scale-110",
+    #             # "data-tippy-content": "Anonym",
+    #         }
+    #     ),
+    # )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,7 +49,7 @@ class NoteForm(forms.ModelForm):
         fields = (
             "parent",
             "body",
-            "private",
+            # "private",
         )
 
     def save(self, *args, **kwargs):

@@ -18,7 +18,7 @@ from gtts import gTTS
 from notes.forms import NoteForm
 from notes.models import Note
 
-from .models import Author, Essay  # , Section
+from .models import Author, Essay
 
 # CreateViewDetailView, ListView, RedirectView
 # from django.contrib.auth import get_user
@@ -49,10 +49,10 @@ def details(request, slug: str):
     generate audio
     """
     essay = get_object_or_404(Essay, slug=slug, publish=True)
-    path = "static/media_root/essays/" + f"{slug}/"
-    # # access on cdn getattr(settings, "MEDIA_ROOT") + "/essays/"
-    os.makedirs(path, exist_ok=True)
-    f = f"{path}{slug}.mp3"  # static/media_root ogg not supported in mac
+    p = f"media/essays/{slug}/"
+    # str(settings.MEDIA_ROOT) + f"/{slug}/" essay_media_path
+    os.makedirs(p, exist_ok=True)
+    f = f"{p}{slug}.mp3"  # ogg not supported in mac
     if not essay.audio and not Path(f).is_file():
         # from django.contrib.staticfiles import finders
         # from django.contrib.staticfiles.storage import staticfiles_storage
@@ -70,7 +70,6 @@ def details(request, slug: str):
             e += s.text
         txt = BeautifulSoup(e, "lxml")  # convert html to text
         tts = gTTS(txt.get_text(), lang="en")
-        # 'static' + settings.MEDIA_URL + 'essays/' + f'{slug}/'#/media_root/
         # if there's a file see if they are the same
         tts.save(f)
 

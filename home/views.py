@@ -10,7 +10,7 @@ from io import BytesIO
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import EmailMessage, send_mail
 from django.http import FileResponse, HttpResponse  # , JsonResponse#Http404
-from django.shortcuts import redirect, render
+from django.shortcuts import render  # redirect,
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView  # FormView

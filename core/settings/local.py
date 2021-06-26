@@ -6,7 +6,7 @@ from .base import *
 
 INSTALLED_APPS += [
     "home",
-    "chat",
+    # "chat",
     "accounts",
     "essays",
     "notes",

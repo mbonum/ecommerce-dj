@@ -39,9 +39,9 @@ class Note(MPTTModel):
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
     body = HTMLField(_("Note"), blank=False, null=True)
-    private = models.BooleanField(
-        blank=True, null=True, default=False, help_text=_("Hide name/email")
-    )
+    # private = models.BooleanField(
+    #     blank=True, null=True, default=False, help_text=_("Hide name/email")
+    # )
     # reply = models.BooleanField('Activate reply + email notification', blank=True, null=True, default=True)
     created_at = models.DateTimeField(
         _("Created at"), auto_now_add=True, editable=False

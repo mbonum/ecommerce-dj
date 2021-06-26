@@ -67,11 +67,11 @@ def cart_update(request):
             cart_obj.products.remove(product_obj)
             added = False
         else:
-            cart_obj.products.add(product_obj)  # product_id
+            cart_obj.products.add(product_obj)
             added = True
         request.session["cart_items"] = cart_obj.products.count()
         # return redirect(product_obj.get_absolute_url())
-        if request.is_ajax():  # Asynchronous Javascript and XML / JSON
+        if request.is_ajax():  # Asynchronous Javascript & XML/JSON
             json_data = {
                 "added": added,
                 "removed": not added,

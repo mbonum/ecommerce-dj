@@ -52,7 +52,7 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 class AccountEmailActivateView(FormMixin, View):
     # Send email when user creates an account
     success_url = "/login/"
-    form_class = ReactivationEmailForm
+    form_class = ReactivationEmailForm()
     key = None
 
     def get(self, request, key=None, *args, **kwargs):
@@ -96,8 +96,8 @@ class AccountEmailActivateView(FormMixin, View):
         except ValidationError:
             pass
         obj = EmailActivation.objects.email_exists(email).first()
-        user = obj.user
-        new_activation = EmailActivation.objects.create(user=user, email=email)
+        usr = obj.user
+        new_activation = EmailActivation.objects.create(user=usr, email=email)
         new_activation.send_activation()
         return super(AccountEmailActivateView, self).form_valid(form)
 
@@ -108,7 +108,7 @@ class AccountEmailActivateView(FormMixin, View):
 
 class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "accounts/edit-profile.html"
-    form_class = UserDetailChangeForm
+    form_class = UserDetailChangeForm()
 
     def get_object(self):
         return self.request.user
@@ -133,7 +133,7 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
 
 
 class RegisterView(CreateView):
-    form_class = RegisterForm
+    form_class = RegisterForm()
     template_name = "accounts/register.html"
     # send email link to confirm automatic block if it's not confirmed within 48 hours
     success_url = "/login/"

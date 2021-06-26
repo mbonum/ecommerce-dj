@@ -2,26 +2,28 @@ import datetime
 import os
 import random
 import string
-from io import BytesIO
 from base64 import b64decode
-from PIL import Image
+from io import BytesIO
+
 import six
+from django.conf import settings
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.utils.text import slugify
+from PIL import Image
 from xhtml2pdf import pisa
-from django.conf import settings
 
-SHORTCODE_MIN = getattr(settings, 'SHORTCODE_MIN', 6)
+SHORTCODE_MIN = getattr(settings, "SHORTCODE_MIN", 6)
 
 
 def code_gen(size=SHORTCODE_MIN, chars=string.ascii_lowercase + string.digits):
     """
     Shorturl
     """
-    return ''.join(random.choice(chars) for _ in range(size))
-    #shortcut of a = '' for _ in range(): a += random.choice(chars) return a
+    return "".join(random.choice(chars) for _ in range(size))
+    # shortcut of a = '' for _ in range(): a += random.choice(chars) return a
+
 
 def create_shortcode(instance, size=SHORTCODE_MIN):
     new = code_gen(size=size)
@@ -35,9 +37,11 @@ def create_shortcode(instance, size=SHORTCODE_MIN):
 class TokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         return (
-            six.text_type(user.pk) + six.text_type(timestamp) +
-            six.text_type(user.is_active)
+            six.text_type(user.pk)
+            + six.text_type(timestamp)
+            + six.text_type(user.is_active)
         )
+
 
 account_activation_token = TokenGenerator()
 
@@ -56,7 +60,7 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
     """
     Return random strings to naming files
     """
-    return ''.join(random.choice(chars) for _ in range(size))
+    return "".join(random.choice(chars) for _ in range(size))
 
 
 def unique_key_generator(instance):
@@ -101,8 +105,7 @@ def unique_slug_generator(instance, new_slug=None):
     qs_exists = klass.objects.filter(slug=slug).exists()
     if qs_exists:
         new_slug = "{slug}-{randstr}".format(
-            slug=slug,
-            randstr=random_string_generator(size=4)
+            slug=slug, randstr=random_string_generator(size=4)
         )
         return unique_slug_generator(instance, new_slug=new_slug)
     return slug
@@ -116,9 +119,9 @@ def render_to_pdf(template_src, context_dict=None):
     html = template.render(context_dict)
     result = BytesIO()
     # , link_callback=link_callback
-    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF8')), result)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF8")), result)
     if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
+        return HttpResponse(result.getvalue(), content_type="application/pdf")
     return None
 
 
@@ -128,8 +131,7 @@ def get_last_month_data(today):
     """
     this_month_start = datetime.datetime(today.year, today.month, 1)
     last_month_end = this_month_start - datetime.timedelta(days=1)
-    last_month_start = datetime.datetime(
-        last_month_end.year, last_month_end.month, 1)
+    last_month_start = datetime.datetime(last_month_end.year, last_month_end.month, 1)
     return (last_month_start, last_month_end)
 
 
@@ -144,32 +146,40 @@ def get_month_data_range(months_ago=1, include_this_month=False):
         next_month = today.replace(day=28) + datetime.timedelta(days=4)
         # use next month's data to get this month's data breakdown
         start, end = get_last_month_data(next_month)
-        dates_.insert(0, {
-            "start": start.timestamp(),
-            "end": end.timestamp(),
-            "start_json": start.isoformat(),
-            "end_json": end.isoformat(),
-            "timesince": 0,
-            "year": start.year,
-            "month": str(start.strftime('%B')),
-        })
+        dates_.insert(
+            0,
+            {
+                "start": start.timestamp(),
+                "end": end.timestamp(),
+                "start_json": start.isoformat(),
+                "end_json": end.isoformat(),
+                "timesince": 0,
+                "year": start.year,
+                "month": str(start.strftime("%B")),
+            },
+        )
     for _ in range(0, months_ago):
         start, end = get_last_month_data(today)
         today = start
-        dates_.insert(0, {
-            "start": start.timestamp(),
-            "start_json": start.isoformat(),
-            "end": end.timestamp(),
-            "end_json": end.isoformat(),
-            "timesince": int((datetime.datetime.now() - end).total_seconds()),
-            "year": start.year,
-            "month": str(start.strftime('%B'))
-        })
+        dates_.insert(
+            0,
+            {
+                "start": start.timestamp(),
+                "start_json": start.isoformat(),
+                "end": end.timestamp(),
+                "end_json": end.isoformat(),
+                "timesince": int((datetime.datetime.now() - end).total_seconds()),
+                "year": start.year,
+                "month": str(start.strftime("%B")),
+            },
+        )
     return dates_  # dates_.reverse()
 
 
 def get_filename(path):
     return os.path.basename(path)
+
+
 # from django.utils import timezone
 # from core import settings
 # xhtml2pdf doesn't render images

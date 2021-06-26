@@ -1,7 +1,5 @@
 from datetime import timezone  # datetime
 
-from django.conf import settings
-
 # from django.template.defaultfilters import slugify
 # from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MinValueValidator
@@ -19,22 +17,12 @@ from tinymce.models import HTMLField
 from tags.models import Tag
 from team.models import Member
 
-# USER = settings.AUTH_USER_MODEL
 
-
-def essay_media_path(self, filename):
+def essay_media_path(self, filename: str):
     return f"essays/{self.slug}/{filename}"
 
 
-# def essay_audio_path(self, filename):
-#     return f"essays/{self.slug}/{filename}"
-
-
-# def essay_auth_img_path(self, filename):
-#     return f"essays/{self.slug}/author-{filename}"
-
-
-def author_image_path(self, filename):
+def author_image_path(self, filename: str):
     slug = self.slug
     if filename is not slug:
         filename = slug  # + '_' + self.job_title

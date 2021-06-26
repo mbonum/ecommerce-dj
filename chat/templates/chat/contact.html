@@ -3,23 +3,24 @@
 {% block title %}{% trans 'Contact Vs' %}{% endblock %}
 {% block content %}
 <div class="max-w-sm mx-auto px-1">
-  <div class="font-c-sans bg-footer rounded-lg border border-gray-400 overflow-hidden py-6 px-5 md:px-7">
+  <div class="md:text-lg font-c-sans bg-footer rounded-lg border border-gray-400 overflow-hidden pt-5 pb-6 px-5 md:px-7">
     <form method="post"> {% csrf_token %}
       {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-      <div class="space-y-4 text-center">
-        <label for="messagetype">
+      <div class="space-y-2 text-center">
+        {% if form.message_type %}
+        <label for="msgtype">
           {{ form.message_type.label }}
         </label>
-        {% if form.message_type %}
-        <div class="relative md:w-1/2 mx-auto">
+        <div class="text-base lg:text-lg relative md:w-1/2 mx-auto">
           {{ form.message_type }}
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600">
             <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
           </div>
         </div>
         {% endif %}
       </div>
-      <div class="space-y-4 mx-auto mt-4">
+      <div class="space-y-3 mx-auto mt-3">
+        {% if not request.user.is_authenticated %}
         <div>
           <label class="text-gray-700 m-2" for="chat_fn">{{ form.first_name.label }}</label>
           {{ form.first_name }}
@@ -32,38 +33,40 @@
           <label class="text-gray-700 m-2" for="chat_email">{{ form.email.label }}</label>
           {{ form.email }}
         </div>
-        <div>
+        {% comment %}<!-- <div>
           <label class="text-gray-700 m-2" for="chat_pc">{{ form.postal_code.label }}</label>
           {{ form.postal_code }}
-        </div>
+        </div> -->{% endcomment %}
+        {% endif %}
         <div>
-          <label class="text-gray-700 m-2" for="chat_subject">{{ form.subject.label }}</label>
-          {{ form.subject }}
+          <label class="text-gray-700 m-2" for="chat_subject">{{ form.topic.label }}</label>
+          {{ form.topic }}
         </div>
         <div>
           <label class="text-gray-700 m-2" for="chat_text">{{ form.text.label }}</label>
-          {{ form.text }}</div>
+          {{ form.text }}
+        </div>
         <div class="mt-6">
-          <a id="sendbtn">
-          <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
+          <button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
             <span class="inline-flex items-center text-center">{% trans 'Send' %}<svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg></span>
-          </button></a>
+          </button>
         </div>
       </div>
     </form>
   </div>
 </div>
+{% endblock %}
+{% comment %}<!--{% block js %}
 <script>
   if (document.querySelector("#chat_fn").value) {
     document.querySelector("#sendbtn").onclick = function (e) {
-      var roomName = document.querySelector("#chat_fn").value + "-" + Math.floor(Math.random() * 1000000);
-      var userName = document.querySelector("#chat_fn").value
-      window.location.replace(roomName + '/?user=' + userName);
+      var room = document.querySelector("#chat_fn").value + "-" + Math.floor(Math.random() * 1000000);
+      var user = document.querySelector("#chat_fn").value
+      window.location.replace(room + '/?user=' + user);
     };
   }
-</script>
-{% endblock %}
-{% comment %}<!-- + "-" + document.querySelector("#chat_ln").value action="{ { contact_url }}" <a href="{ % url 'chat:room' with room= %}"
+</script>{% endblock %}
++ "-" + document.querySelector("#chat_ln").value action="{ { contact_url }}" <a href="{ % url 'chat:room' with room= %}"
 // var userName = document.querySelector("#chat_email").value;// + "/?username=" + userName { % block js %}{ % endblock %}
 <script>$('form').preventDoubleSubmission();</script>
 <script>

@@ -1,47 +1,55 @@
-from django.conf import settings
-from django.shortcuts import render
-
-# from django.views import View
 # from django.http import JsonResponse
+# from django.views import View
 # from django.views.generic import TemplateView
-from .forms import ContactForm
+from core.utils import random_string_generator
+from django.conf import settings
+from django.shortcuts import redirect, render
+from django.urls.base import reverse
+
+from .forms import ChatForm, ContactForm
 from .models import Message
 
 
 def contact(request):
-    form_class = ContactForm  # (request.POST or None)
+    if request.user.is_authenticated:
+        form = ChatForm(request.POST or None)  # remove email
+    else:
+        form = ContactForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            if request.user.is_authenticated:
+                e = request.user.email
+                name = e[: e.index("@")]  # remove email domain
+            else:
+                name = request.POST.get("first_name")  # , "Anonym"
+            room = name + "-" + random_string_generator(8)
+            msg = str(request.POST.get("topic") + "\n" + request.POST.get("text"))
+            # form Meta fields
+            message = Message.objects.get_or_create(username=name, room=room, text=msg)
+            return redirect(reverse("chat:room", args=[str(room)]) + f"?user={name}")
+        # kwargs={}
+        # return render(
+        #     request,
+        #     "chat/room.html",
+        #     {"room": room, "user": name, "texts": message},
+        # )
 
-    # if form_class.is_valid():
-    #     fn = form_class["first_name"]
-    #     ln = form_class["last_name"]
-    #     print("*** ", fn)
-    # else:
-    #     return HttpResponse("Not valid")
-    return render(request, "chat/contact.html", {"form": form_class})
+        # send automatic email with chatroom link
+
+    return render(request, "chat/contact.html", {"form": form})
 
 
 def room(request, room):
-    name = request.GET.get("username", "Anonym")
-    messages = Message.objects.filter(room=room)[0:25]
+    usr = (
+        request.GET.get("user") if request.GET.get("user") else room[: room.index("-")]
+    )
+    msg = Message.objects.filter(room=room)[0:25]
     return render(
         request,
         "chat/room.html",
-        {"room": room, "username": name, "messages": messages},
+        {"user": usr, "room": room, "texts": msg},
     )
 
-
-# class Success(TemplateView):
-#     template_name = "chat/success.html"
-
-
-# class Checkpage(TemplateView):
-#     template_name = "chat/check.html"
-
-#     def get_context_data(self, **kwargs):
-#         # product = Product.objects.get(name="test")
-#         context = super(Checkpage, self).get_context_data(**kwargs)
-#         context.update({"STRIPE_PUB_KEY": settings.STRIPE_PUB_KEY})
-#         return context
 
 # class ContactView(FormView):
 #     template_name = "home/contact.html"
@@ -84,18 +92,6 @@ def room(request, room):
 # render(request, "carts/checkout-done.html", {})
 
 
-# def contact(request):
-#     form_class = ContactForm  # (request.POST or None)
-
-#     # if form_class.is_valid():
-#     #     fn = form_class["first_name"]
-#     #     ln = form_class["last_name"]
-#     #     print("*** ", fn)
-#     # else:
-#     #     return HttpResponse("Not valid")
-#     return render(request, "home/contact.html", {"form": form_class})
-
-
 # def contact_page(request):
 #     """docs.djangoproject.com/en/3.2/topics/email/"""
 #     form_class = ContactForm(request.POST or None)
@@ -124,3 +120,16 @@ def room(request, room):
 #         "form": form_class,
 #     }
 #     return render(request, "home/contact.html", content)
+
+# class Success(TemplateView):
+#     template_name = "chat/success.html"
+
+
+# class Checkpage(TemplateView):
+#     template_name = "chat/check.html"
+
+#     def get_context_data(self, **kwargs):
+#         # product = Product.objects.get(name="test")
+#         context = super(Checkpage, self).get_context_data(**kwargs)
+#         context.update({"STRIPE_PUB_KEY": settings.STRIPE_PUB_KEY})
+#         return context

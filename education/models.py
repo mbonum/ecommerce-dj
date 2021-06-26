@@ -14,7 +14,7 @@ from tinymce.models import HTMLField
 from tags.models import Tag
 
 
-def book_media_path(self, filename):
+def book_media_path(self, filename: str):
     return f"edu/{self.slug}/{filename}"
 
 
@@ -28,7 +28,7 @@ class BookQuerySet(models.query.QuerySet):
             or_lookup = (
                 Q(title__icontains=query)
                 | Q(slug__icontains=query)
-                # | Q(text_icontains=query)
+                # | Q(text_icontains=query)# section
                 | Q(tags__name__icontains=query)
                 | Q(tags__slug__icontains=query)
             )

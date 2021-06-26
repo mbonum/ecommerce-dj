@@ -2,7 +2,8 @@ import filecmp
 import os
 from pathlib import Path
 
-# from django.conf import settings#BASE_URL
+from django.conf import settings
+
 # from core.utils import render_to_pdf
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
 
@@ -11,7 +12,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView  # DetailView, View
 from gtts import gTTS  # pip install gTTS
 
-from .models import Book
+from .models import Book  # , book_media_path
 
 
 class ReadListView(ListView):
@@ -23,7 +24,8 @@ class ReadListView(ListView):
 
 def details(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    p = "static/media_root/edu/" + f"{slug}/"
+    p = "media/edu/{slug}/"
+    # str(settings.MEDIA_ROOT) + f"{slug}" str(settings.MEDIA_ROOT + book_media_path(f"{slug}", f"{slug}") + ".mp3")
     os.makedirs(p, exist_ok=True)
     f = f"{p}{slug}.mp3"
     if not book.audio and not Path(f).is_file():

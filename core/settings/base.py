@@ -3,7 +3,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 """
 
-import os
+# import os
+import sys
 from pathlib import Path
 
 # , Csv # pip install python-decouple
@@ -14,6 +15,8 @@ from decouple import config
 from django.utils.translation import gettext_lazy as _
 
 # import lz4
+# ABSOLUTE_PATH = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
+# MEDIA_ROOT = ABSOLUTE_PATH('media/')
 
 
 DEFAULT_CHARSET = "utf-8"
@@ -45,12 +48,15 @@ INTERNAL_IPS = ["127.0.0.1", "localhost"]
 INSTALLED_APPS = [
     # 'grappelli',
     # 'filebrowser',
+    "chat",
+    "channels",
+    "whitenoise.runserver_nostatic",  # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
+    "django.contrib.staticfiles",
     "django.contrib.admin",  # 'essays.apps.EssaysAdminConfig', # overrided default admin
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.sitemaps",
     # # 'django.contrib.humanize',
@@ -72,7 +78,6 @@ INSTALLED_APPS = [
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
     "django_celery_beat",
     "django_celery_results",
-    "channels",
     "sslserver",
     "rest_framework",
     "rest_framework.authtoken",
@@ -108,7 +113,16 @@ INSTALLED_APPS = [
     # 'crispy_forms',# https://pypi.org/project/django-crispy-forms/
     # 'webpack_loader',
 ]
+WSGI_APPLICATION = "core.wsgi.application"
+ASGI_APPLICATION = "core.asgi.application"
+# MAX_ACTIVE_TASKS = 2
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("127.0.0.1", 6379)]},
+    }
+}
 # GRAPH_MODELS = {
 #     "all_applications": True,
 #     "group_models": True,
@@ -185,6 +199,8 @@ MIDDLEWARE = [
     # "defender.middleware.FailedLoginMiddleware",
     # "django_hosts.middleware.HostsResponseMiddleware",
 ]
+# https://docs.djangoproject.com/en/3.2/ref/contrib/messages/
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 # https://django-embed-video.readthedocs.io/en/latest/installation.html
 TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
@@ -237,16 +253,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
-ASGI_APPLICATION = "core.asgi.application"
-# MAX_ACTIVE_TASKS = 2
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {"hosts": [("127.0.0.1", 6379)]},
-    }
-}
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
     "default": dj_database_url.config(
@@ -260,6 +266,11 @@ DATABASES = {
         "NAME": BASE_DIR / "gdpr-log.sqlite3",
     },
 }
+# https://docs.djangoproject.com/en/3.2/topics/testing/advanced/#topics-testing-advanced-multidb
+if "test" in sys.argv:
+    DATABASES["default"] = {"ENGINE": "django.db.backends.sqlite3"}
+    # SOUTH_TESTS_MIGRATE = False https://south.readthedocs.io/en/latest/installation.html#installation
+
 
 DATABASE_ROUTERS = ["gdpr_assist.routers.EventLogRouter"]
 # docker-compose https://docs.docker.com/compose/django/
@@ -367,6 +378,8 @@ USE_L10N = False
 LOCALE_PATHS = (BASE_DIR / "locale",)
 
 # Static files (CSS, JavaScript, Images) https://docs.djangoproject.com/en/3.2/howto/static-files/
+# STATIC_HOST = config('STATIC_HOST', '')# http://whitenoise.evans.io/en/stable/django.html#use-a-content-delivery-network
+# STATIC_URL = STATIC_HOST + '/static/'
 STATIC_URL = "/static/"
 
 STATIC_ROOT = (
