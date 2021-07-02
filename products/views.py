@@ -91,15 +91,15 @@ class ProductDownloadView(View):
     def get(self, request, *args, **kwargs):
         # Permission checks
         slug = kwargs.get("slug")
-        _pk = kwargs.get("pk")
+        pk = kwargs.get("pk")
         # qs = Product.objects.filter(slug=slug)
         # if qs.count() != 1:
         # raise Http404('Product not found')
         # product_obj = qs.first()
         # product_obj.get_downloads().filter(pk=_pk)
-        downloads_qs = ProductFile.objects.filter(pk=_pk, product__slug=slug)
+        downloads_qs = ProductFile.objects.filter(pk=pk, product__slug=slug)
         if downloads_qs.count() != 1:
-            raise Http404(_("Product not found, sorry"))
+            raise Http404(_("Apologies, product not found."))
         download_obj = downloads_qs.first()
         can_download = False
         user_ready = True
@@ -117,8 +117,8 @@ class ProductDownloadView(View):
         if not can_download or not user_ready:
             messages.error(request, _("You do not have access to download this item"))
             return redirect(download_obj.get_default_url())
-        fileroot = getattr(settings, "PROTECTED_ROOT")
-        filepath = download_obj.file.path  # .url /media/
+        fileroot = getattr(settings, "PROTECTED_ROOT", "media/protected")
+        filepath = download_obj.file.path  # .url /
         final_filepath = os.path.join(fileroot, filepath)  # where the file is stored
         with open(final_filepath, "rb") as _f:
             wrapper = FileWrapper(_f)

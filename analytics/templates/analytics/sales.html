@@ -22,7 +22,7 @@
   <div class="space-y-4">
     <div class="border-t border-gray-300 pt-3 mt-3">
       <h3 class="text-lg">{% trans 'Current week revenue' %}:
-        <span class="bg-yellow-300 ml-1">{% include 'carts/snippets/currency.html' %}
+        <span class="bg-yellow-300 ml-1">{% include 'base/snippets/currency.html' %}
           {% if this_week.recent_data.total__sum %}{{ this_week.recent_data.total__sum }}
           {% else %}0{% endif %}
         </span>
@@ -47,7 +47,7 @@
           {% for o in this_week.recent %}
             <tr class="{% if not forloop.last %}border-b border-gray-300{% endif %}">
               <td>{{ o.order_id }}</td>
-              <td class="px-4">{% include 'carts/snippets/currency.html' %}{{ o.total }}</td>
+              <td class="px-4">{% include 'base/snippets/currency.html' %}{{ o.total }}</td>
               <td>{{ o.updated_at|date:'Y-m-d, G:i' }}</td>
             </tr>
           {% endfor %}
@@ -61,13 +61,13 @@
     </div>
     <div class="border-t border-gray-300 pt-3 mt-4">
       <p class="text-lg pb-1">{% trans 'Previous 4 weeks' %}</p>
-      <p>{% trans 'Orders total' %}: {% include 'carts/snippets/currency.html' %}
+      <p>{% trans 'Orders total' %}: {% include 'base/snippets/currency.html' %}
         {% if last_four_weeks.recent_data.total__sum %}{{ last_four_weeks.recent_data.total__sum }}{% else %}0{% endif %}
       </p>
-      <p>{% trans 'Shipped total' %}: {% include 'carts/snippets/currency.html' %}
+      <p>{% trans 'Shipped total' %}: {% include 'base/snippets/currency.html' %}
         {% if last_four_weeks.shipped_data.total__sum %}{{ last_four_weeks.shipped_data.total__sum }}{% else %}0{% endif %}
       </p>
-      <p>{% trans 'Paid total' %}: {% include 'carts/snippets/currency.html' %}
+      <p>{% trans 'Paid total' %}: {% include 'base/snippets/currency.html' %}
         {% if last_four_weeks.paid_data.total__sum %}{{ last_four_weeks.paid_data.total__sum }}{% else %}0{% endif %}
       </p>
     </div>
@@ -79,7 +79,7 @@
 {% endblock%}
 {% comment %}<!-- <div class="border-t border-gray-300 pt-3 mt-3">
   <h3 class="text-lg">{% trans "Revenue at" %} {% now 'Y-m-d' %}:
-    {% include 'carts/snippets/currency.html' %}{% if today.recent_data.total__sum %}{{ today.recent_data.total__sum }}{% else %}0{% endif %}
+    {% include 'base/snippets/currency.html' %}{% if today.recent_data.total__sum %}{{ today.recent_data.total__sum }}{% else %}0{% endif %}
   </h3>
   {% if today.recent %}
   <div x-data="{ open: false }">
@@ -103,7 +103,7 @@
       {% for o in today.recent %}{#<!-|slice:':5'D j, G:i->#}
         <tr class="{% if not forloop.last %}border-b border-gray-300{% endif %}">
           <td>{{ o.order_id }}</td>
-          <td class="px-4">{% include 'carts/snippets/currency.html' %}{{ o.total }}</td>
+          <td class="px-4">{% include 'base/snippets/currency.html' %}{{ o.total }}</td>
           <td>{{ o.updated_at|time:'Y-m-d, G:i' }}</td>
         </tr>
       {% endfor %}
@@ -116,7 +116,7 @@
   { % for order in this_week.recent|slice:':5' %}
   <li>
     <p>{% trans 'Order' %} ID: {{ order.order_id }}
-    {% include 'carts/snippets/currency.html' %}{{ order.total }}
+    {% include 'base/snippets/currency.html' %}{{ order.total }}
     {{ order.updated_at|timesince }} {% trans 'ago' %}</p>
   </li>
   {% endfor %}

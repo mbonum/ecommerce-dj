@@ -5,7 +5,7 @@ from .models import MarketingPreference
 
 class MarketingPreferenceAdmin(admin.ModelAdmin):
 
-    list_display = ("user", "subscribed", "updated_at")
+    list_display = ("user", "subscribed", "updated_at")  # __str__
     readonly_fields = (
         "mailchimp_msg",
         "mailchimp_subscribed",

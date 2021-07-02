@@ -7,7 +7,7 @@
     <svg class="ae s fill-current w-40 h-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
   </div>
   <p>{% trans "You're going to receive an email at" %} <code class="px-1">{{ user.email }}</code> {% trans 'shortly' %}.</p> 
-  <a href="{{ home_url }}" class="hover:text-yellow-600 inline-flex items-center border-4 border-yellow-400 hover:border-yellow-500 bg-white text-2xl sc rounded-xl focus:outline-none py-2 px-3 mt-6">{% trans 'Thank you' %}</a>
+  <a href="{% if object.is_digital %}{{ dig_lib_url }}{% else %}{{ home_url }}{% endif %}" class="hover:text-yellow-600 inline-flex items-center border-4 border-yellow-400 hover:border-yellow-500 bg-white text-2xl sc rounded-xl focus:outline-none py-2 px-3 mt-6">{% trans 'Thank you' %}</a>
 </div>
 {% endblock %}
-{#<!-- link to a grateful gift load static add image link to user mail <a href="{ { request.user.email }}">{ { request.user.email }}</a> -->#} 
+{#<!-- link to a grateful gift add image link to user mail <a href="{ { request.user.email }}">{ { request.user.email }}</a>-->#}

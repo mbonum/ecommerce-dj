@@ -2,13 +2,13 @@
 {% load i18n %}
 {% block title %}{% if title %}{{ title }}{% else %}{% trans 'Edit Profile' %}{% endif %}{% endblock %}
 {% block content %}
-<div class="font-c-sans max-w-xs mx-auto">
+<div class="text-lg font-c-sans max-w-xs mx-auto">
   {% if title %}
   <div class="border-b border-gray-300 mb-5">
-    <h1 class="text-xl font-semibold pb-3">{{ title }}</h1>
+    <h1 class="text-2xl font-semibold pb-3">{{ title }}</h1>
   </div>
   {% endif %}
-  <form method="post" {% if 'action_url' %}action="{{ action_url }}"{% endif %}> {% csrf_token %}
+  <form method="post" {% if action_url %}action="{{ action_url }}"{% endif %}> {% csrf_token %}
     {% if next %}
     <input type="hidden" name="next" value="{{ next_url }}">
     {% endif %}
@@ -18,9 +18,9 @@
       <div class="text-gray-700 m-1 mt-2">{{ form.last_name.label }}</div>
       {{ form.last_name }}
     </div>
-    <div class="text-center mt-4">
-      <a class="un text-sm text-gray-700 hover:text-gray-900 mb-6" href="{{ psw_change_url }}">{% trans 'Change password' %}</a>
-      <button type="submit" class="w-full border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded-lg focus:outline-none">{% trans 'Save' %}</button>
+    <div class="text-center space-y-6 mt-4">
+      <a class="text-base text-gray-700 hover:text-gray-900 rounded-xl border border-transparent hover:border-yellow-400 focus:outline-none py-1 px-2" href="{{ psw_change_url }}">{% trans 'Change password' %}</a>
+      <button type="submit" class="w-full text-white rounded-xl border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 focus:outline-none py-1 px-2">{% trans 'Save' %}</button>
     </div>
   </form>
 </div>

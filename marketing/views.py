@@ -41,7 +41,7 @@ MAILCHIMP_EMAIL_LIST_ID = getattr(settings, "MAILCHIMP_EMAIL_LIST_ID", None)
 
 
 class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
-    form_class = MarketingPreferenceForm()
+    form_class = MarketingPreferenceForm
     template_name = "marketing/change-email-form.html"
     success_url = "/settings/email/"
     success_message = _(
@@ -58,7 +58,7 @@ class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
         context = super(MarketingPreferenceUpdateView, self).get_context_data(
             *args, **kwargs
         )
-        context["title"] = _("Email Preferences")
+        context["title"] = _("Update Email Preferences")
         return context
 
     def get_object(self):  # get_absolute_url is the default
@@ -69,7 +69,7 @@ class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
 
 class MailchimpWebhookView(CsrfExemptMixin, View):
     """
-    https://us19.admin.mailchimp.com/lists/tools/webhooks-create?id=321186
+    https://us6.admin.mailchimp.com/lists/tools/webhooks-create?id=321186
     def get(self, request, *args, **kwargs):
         return HttpResponse('Thank You', status=200)
     """
@@ -99,31 +99,32 @@ class MailchimpWebhookView(CsrfExemptMixin, View):
         return HttpResponse(_("Thank You"), status=200)
 
 
-#  def mail_chimp_webhook_view(request):
-#     data = request.POST # usually it is a dictionary
-#     list_id = data.get('data[list_id]')
+# def mail_chimp_webhook_view(request):
+#     data = request.POST  # usually it's a dictionary
+#     list_id = data.get("data[list_id]")
 #     if str(list_id) == str(MAILCHIMP_EMAIL_LIST_ID):
-#         hook_type = data.get('type')
-#         email = data.get('data[email]')
+#         hook_type = data.get("type")
+#         email = data.get("data[email]")
 #         response_status, response = Mailchimp().check_subscription_status(email)
-#         sub_status = response['status']
+#         sub_status = response["status"]
 #         is_subbed = None
 #         mailchimp_subbed = None
-#         if sub_status == 'subscribed':
+#         if sub_status == "subscribed":
 #             is_subbed, mailchimp_subbed = (True, True)
-#         elif sub_status == 'unsubscribed':
+#         elif sub_status == "unsubscribed":
 #             is_subbed, mailchimp_subbed = (False, False)
 #         if is_subbed is not None and mailchimp_subbed is not None:
 #             qs = MarketingPreference.objects.filter(user__email__iexact=email)
 #             if qs.exists():
 #                 qs.update(
-#                         subscribed=is_subbed,
-#                         mailchimp_subscribed=mailchimp_subbed,
-#                         mailchimp_msg=str(data))
-#     return HttpResponse('Thank You', status=200)
+#                     subscribed=is_subbed,
+#                     mailchimp_subscribed=mailchimp_subbed,
+#                     mailchimp_msg=str(data),
+#                 )
+#     return HttpResponse("Thank You", status=200)
+
 
 # class SubscriberView(APIView):
-
 #     permission_classes = (permissions.AllowAny,)
 
 #     def post(self, request):

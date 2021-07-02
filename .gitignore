@@ -11,7 +11,7 @@ media/
 scripts/
 *.pem
 *.in
-
+*.cfg
 *.py[cod]
 *$py.class
 

@@ -14,11 +14,11 @@
     <div class="flex justify-between py-1">
       <h1 class="text-lg inline-flex">{{ object.name_product }}</h1>
       {% if 'A' in object.product_type %}
-      <input type="button" value="🎙️" data-tippy-content="Audio" class="inline-flex bg-white">
+      <input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex bg-white">
       {% elif 'E' in object.product_type %}
-      <input type="button" value="🕮" data-tippy-content="Ebook" class="inline-flex bg-white">
+      <input type="button" value="🕮" data-tippy-content="Ebook" class="cursor-pointer inline-flex bg-white">
       {% else %}
-      <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="inline-flex bg-white">
+      <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="cursor-pointer inline-flex bg-white">
       {% endif %}
     </div>
     <div>

@@ -1,50 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n static %}
-{% block title %}{% if form.instance.street %}{% trans 'Update Address' %}{% else %}{% trans 'Create Address' %}{% endif %}{% endblock %}
+{% block title %}{% if form.instance.street %}{% trans 'Update Address' %}{% else %}{% trans 'Add Address' %}{% endif %}{% endblock %}
 {% block content %}
 <div class="font-c-sans max-w-xs mx-auto">
-  <div class="text-center max-w-xs mx-auto mb-4">
-    <h1 class="text-xl border-b border-gray-300 font-semibold pb-3 md:mx-4 xl:mx-10">
-      {% if form.instance.street %}
+  <h1 class="text-center text-2xl border-b border-gray-300 font-semibold pb-3 mb-4">
+    {% if form.instance.street %}
     {% trans 'Update Address' %}
     {% else %}
-    {% trans 'Create Address' %}
+    {% trans 'Add Address' %}
     {% endif %}
-    </h1>
-  </div>
-  <form method="post" action=""> {% csrf_token %}
-    <div class="mx-auto xl:mx-10">
-      <div class="mt-1">
-        <div class="text-left ml-2 xl:ml-2">{{ form.address_type.label }}</div>
-        <div class="relative w-full mx-auto">
-          {{ form.address_type }}
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
-            <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-          </div>
-        </div>
-      </div>
-      <div class="mt-2">
-        <div class="text-left ml-2 xl:ml-2">{{ form.street.label }}</div>
-        {{ form.street }}
-      </div>
-      <div class="mt-2">
-        <div class="text-left ml-2 xl:ml-2">{{ form.city.label }}</div>
-        {{ form.city }}
-      </div>
-      <div class="mt-2">
-        <div class="text-left ml-2 xl:ml-2">{{ form.state.label }}</div>
-        {{ form.state }}
-      </div>
-      <div class="mt-2">
-        <div class="text-left ml-2 xl:ml-2">{{ form.country.label }}</div>
-        {{ form.country }}
-      </div>
-      <div class="mt-2">
-        <div class="text-left ml-2 xl:ml-2">{{ form.postal_code.label }}</div>
-        {{ form.postal_code }}
-      </div>
-      <button type="submit" class="mt-7 w-full text-lg bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'Save' %}</button>
-    </div>
-  </form>
+  </h1>
+  {% include 'addresses/form.html' with addupdate=form %}
 </div>
 {% endblock %}

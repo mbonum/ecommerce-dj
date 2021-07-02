@@ -3,36 +3,35 @@
 {% block title %}{% trans 'Account' %}{% endblock %}
 {% block content %}
 <div class="font-c-sans max-w-xl px-1 mx-auto">
- <div class="block border-b border-gray-300 pb-3">
-  <h1 class="text-xl font-semibold">
+ <div class="border-b border-gray-300 pb-3">
+  <h1 class="text-2xl font-semibold">
    {% if request.user.first_name %}{% trans 'Settings of ' %}{{ request.user.first_name }}{% else %}{% trans 'Settings' %} 
    {% endif %}</h1>
  </div>
- <div class="">
-  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-3 overflow-hidden items-center mt-5 lg:mr-5"
-   id="billing">
+ <div class="text-lg">
+  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-5 lg:mr-5" id="billing">
    <p class="font-semibold pl-1 mb-1">{% trans 'Billing' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ order_url }}">{% trans 'Orders' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ billing_url }}">{% trans 'Payment method' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ addresses }}">{% trans 'Address' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ order_url }}">{% trans 'Orders' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ billing_url }}">{% trans 'Payment Method' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ addresses }}">{% trans 'Update Address' %}</a></p>
   </div>
-  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
-   <p class="font-semibold pl-1 mb-1">{% trans 'Support' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ contact_url }}">{% trans 'Contact' %}</a></p>
-  </div>
-  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
+  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'Account details' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ usr_update_url }}">{% trans 'Update profile' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ psw_change_url }}">{% trans 'Change password' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ usr_update_url }}">{% trans 'Update Profile' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ psw_change_url }}">{% trans 'Change Password' %}</a></p>
   </div>
-  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
+  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'Preferences' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ mkt_url }}">{% trans 'Email notification' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ mkt_url }}">{% trans 'Email Notification' %}</a></p>
   </div>
-  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg hover:shadow p-4 overflow-hidden items-center mt-5 lg:mr-5">
+  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-5 lg:mr-5">
    <p class="font-semibold pl-1 mb-1">{% trans 'History' %}</p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ prod_history_url }}">{% trans 'Products viewed' %}</a></p>
-   <p><a class="un text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ dig_lib_url }}">{% trans 'Digital purchases' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ prod_history_url }}">{% trans 'Products Viewed' %}</a></p>
+   <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ dig_lib_url }}">{% trans 'Digital Purchases' %}</a></p>
+  </div>
+  <div class="lg:inline-block align-top border border-gray-300 bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-5 lg:mr-5">
+    <p class="font-semibold pl-1 mb-1">{% trans 'Support' %}</p>
+    <p><a class="border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 rounded-lg px-1" href="{{ contact_url }}">{% trans 'Contact' %}</a></p>
   </div>
   {% if get_language_info_list %}
   <div x-data="{open: false}" class="relative inline-block mb-4">

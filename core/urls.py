@@ -22,7 +22,7 @@ from carts.views import cart_detail_api_view
 # # from essays.admin import essays_admin
 
 # from marketing import urls as mktg_urls
-# from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
+from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
 from shorturl.views import ShortURLView, URLRedirectView
 
@@ -78,12 +78,16 @@ urlpatterns = [
     path(_("accounts/"), include("accounts.passwords.urls")),  # templates/registration
     path(_("analytics/"), include("analytics.urls", namespace="analytics")),
     path(_("newsletter/"), include("newsletter.urls")),  # , namespace='newsletter'
-    # #     # path('', Subscribe.as_view(), name='subscribe'),
-    # #     # path('subscribe-api/', include(mktg_urls)),
-    # #     path(_('settings/email/'), MarketingPreferenceUpdateView.as_view(),
-    # #          name='marketing-pref'),
-    # #     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(),
-    # #          name='webhooks-mailchimp'),
+    path(
+        _("settings/email/"),
+        MarketingPreferenceUpdateView.as_view(),
+        name="marketing-pref",
+    ),
+    path(
+        "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"
+    ),
+    # path('', Subscribe.as_view(), name='subscribe'),
+    # path('subscribe-api/', include(mktg_urls)),
     # #     # DL model
     # #     # path('classify/', views.call_model.as_view()),
     # #     # path('note/', include('todolists.api.urls', namespace='note')),
@@ -131,7 +135,7 @@ if settings.DEBUG:
 
 
 admin.site.site_header = getattr(settings, "ENV_NAME", "Clavem") + " admin"
-admin.site.index_title = ""
+admin.site.index_title = "Home"
 admin.site.site_title = admin.site.site_header
 
 # re_path(r'^', include('allauth_2fa.urls')),

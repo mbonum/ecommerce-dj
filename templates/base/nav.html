@@ -30,16 +30,16 @@
 
       {% if request.session.cart_items %}
       <a href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart"{% endif %} class="block hover:text-white md:rounded-xl focus:outline-none overflow-hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 border-b border-gray-600 md:border-none py-2 md:py-0 md:pt-1 px-1 md:px-2 md:mx-1 md:pr-4 xl:mx-2{% if cart_url in request.path %} text-white font-semibold{% endif %}">
-      <div class="relative inline-flex text-gray-300 hover:text-white hover:bg-gray-900 pt-1 items-center">
+      <div class="relative inline-flex text-gray-300 hover:text-white pt-1 items-center">
         <span class="md:hidden mr-3 md:mr-0">{% trans 'Cart' %}</span>
         <svg class="fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
-        <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart hover:bg-cart rounded-full h-4 w-4 inline-flex opacity-50 top-0 -right-2"></span>
-        <span class="absolute bg-cart text-gray-800 text-xs hover:bg-cart rounded-full h-4 w-4 top-0 -right-2 flex justify-center items-center">{{ request.session.cart_items }}</span>
+        <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart rounded-full h-4 w-4 inline-flex opacity-50 top-0 -right-2"></span>
+        <span class="absolute text-black text-sm bg-cart hover:bg-cart rounded-full h-4 w-4 top-0 -right-2 flex justify-center items-center">{{ request.session.cart_items }}</span>
       </div></a>
       <div id="cart-tip" class="hidden">
       {% for p in cart.products.all %}
         <p>{{ forloop.counter }}. {{ p.name_product }}</p>
-{#<!--<img src="{ { p.img.url }}" class="w-10 h-12 pr-1">-->#}
+{#<!--bg-red-500 hover:bg-red-600<img src="{ { p.img.url }}" class="w-10 h-12 pr-1">-->#}
       {% endfor %}
       </div>
       {% endif %}

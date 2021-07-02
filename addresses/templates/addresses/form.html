@@ -1,40 +1,58 @@
 {% load i18n static %}
-<form method="post" {% if 'action_url' %}action="{{ action_url }}" {% endif %}> {% csrf_token %}
+<div class="text-lg">
+<form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
   {% if next %}
   <input type="hidden" name="next" value="{{ next_url }}">
   {% endif %}
   {% if address_type %}
   <input type="hidden" name="address_type" value="{{ address_type }}">
   {% endif %}
-  <div class="xl:mx-">
-    <div class="mt-2">
-      <div class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.street.label }}</div>
+  {% if addupdate %}
+  <div class="mb-2">
+    <label class="text-left ml-2 xl:ml-2">{{ form.address_type.label }}</label>
+    <div class="relative w-full mx-auto">
+      {{ form.address_type }}
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
+        <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="space-y-2">
+    <div>
+      <label for="id_street" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.street.label }}</label>
       {{ form.street }}
     </div>
-    <div class="mt-2">
-      <div class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.city.label }}</div>
+    <div>
+      <label for="id_city" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.city.label }}</label>
       {{ form.city }}
     </div>
-    <div class="mt-2">
-      <div class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.state.label }} <span class="text-gray-700">{% trans 'Optional' %}</span></div>
+    <div>
+      <label for="id_state" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.state.label }}</label>
       {{ form.state }}
     </div>
-    <div class="mt-2">
-      <div class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.country.label }}</div>
+    <div>
+      <label for="id_country" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.country.label }}</label>
       {{ form.country }}
     </div>
-    <div class="mt-2">
-      <div class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.postal_code.label }}</div>
+    <div>
+      <label for="id_id_zip" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.postal_code.label }}</label>
       {{ form.postal_code }}
     </div>
-    <button type="submit"
-      class="mt-7 w-full{% if add_next_btn %} rounded-xl bg-white border-4 border-yellow-400 hover:border-yellow-500{% else %} rounded-lg bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400{% endif %} focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
-      {% if add_next_btn %}{% trans 'Add new' %}{% else %}
-      <div class="text-center inline-flex items-center">{% trans 'Next' %} <svg class="fill-current w-3 h-4 ml-1"
-          style="transform: scale(-1,1)">
-          <use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use>
-        </svg></div>{% endif %}
-    </button>
   </div>
+  <button type="submit" class="text-lg w-full {% if add_next_btn %}rounded-xl bg-white border-4 border-yellow-400 hover:border-yellow-500{% else %}rounded-lg bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400{% endif %} focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mt-7">
+    <span class="text-center inline-flex items-center">
+    {% if add_next_btn %}
+      <svg class="fill-current w-4 h-4 mr-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+      {% trans 'Add new' %}
+    {% elif addupdate %}
+      {% trans 'Save' %}
+    {% else %}
+      {% trans 'Next' %}
+      <svg class="fill-current w-3 h-4 ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg>
+    {% endif %}
+    </span>
+  </button>
 </form>
+</div>
 {% comment %}<!-- add map django geo check coordinates-->{% endcomment %}

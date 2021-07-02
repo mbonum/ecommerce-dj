@@ -65,7 +65,9 @@
     </div>
     <input type="hidden" name="y" id="y" value="{{ current_year }}">
     <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
-    <div class="w-screen font-c-sans bg-footer border-t border-gray-300 hover:shadow-inner pt-6 px-3 pb-4">{% include 'base/footer.html' %}</div>
+    <div class="font-c-sans bg-footer border-t border-gray-300 hover:shadow-inner pt-6 px-3 pb-4">
+      {% include 'base/footer.html' %}
+    </div>
   </div>
   {% include 'base/noscript.html' %}
   {% include 'base/js.html' %}

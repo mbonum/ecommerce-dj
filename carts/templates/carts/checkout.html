@@ -24,12 +24,12 @@
   </div>
   {% if address_qs %}
   <div class="md:inline-flex space-x-8">
-    <div class="md:w-1/2 border-b border-gray-300 md:border-none pb-6 md:pb-0 mt-2">
-      <p class="font-semibold">{% trans 'Same shipping address?' %}</p>
-      {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='shipping' %}
-    </div>
     <div class="md:w-1/2">
       {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' add_next_btn=shipping_address_required %}
+    </div>
+    <div class="md:w-1/2 border-b border-gray-300 md:border-none pb-6 md:pb-0">
+      <p class="font-semibold">{% trans 'Same shipping address?' %}</p>
+      {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='shipping' %}
     </div>
   </div>
   {% else %}
@@ -39,22 +39,24 @@
   {% endif %}
 
   {% elif not object.billing_address %}
-  <div class="text-center {% if shipping_address_required %}max-w-md{% else %}max-w-xs{% endif %} mb-4">
+  <div class="text-center {% if shipping_address_required %}max-w-md{% else %}max-w-xs{% endif %} mx-auto mb-4">
     <h1 class="text-xl border-b border-gray-300 font-semibold pb-3 {% if address_qs %}w-full{% else %}md:mx-4 xl:mx-10{% endif %}">
       {% trans 'Billing Address' %}</h1>
   </div>
   {% if shipping_address_required %}
   <div class="md:inline-flex space-x-8">
-    <div class="md:w-1/2 border-b border-gray-300 md:border-none pb-6 md:pb-0 mt-2">
-      <p class="font-semibold">{% trans 'Is it the same of your shipping address?' %}</p>
-      {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='billing' %}
-    </div>
     <div class="md:w-1/2">
       {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' add_next_btn=shipping_address_required %}
     </div>
+    <div class="md:w-1/2 border-b border-gray-300 md:border-none pb-6 md:pb-0">
+      <p class="font-semibold">{% trans 'Is it the same of your shipping address?' %}</p>
+      {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='billing' %}
+    </div>
   </div>
   {% else %}
+  <div class="max-w-xs mx-auto">
     {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
+  </div>
   {% endif %}
 
   {% else %}
@@ -74,14 +76,17 @@
       </p>
       {% if shipping_address_required %}
       <p class="mt-1">{% trans 'Shipping Address' %}: {{ object.shipping_address.get_address }}</p>
-      <p class="mt-1">{% trans 'Shipping Total' %}: {% include 'carts/snippets/currency.html' %}{{ object.shipping_total }}</p>
+      <p class="mt-1">{% trans 'Shipping Total' %}: {% include 'base/snippets/currency.html' %}{{ object.shipping_total }}</p>
       {% endif %}
-      <p class="mt-1">{% trans 'Cart Total' %}: {% include 'carts/snippets/currency.html' %}{{ object.cart.total }}</p>
+      <p class="mt-1">{% trans 'Cart Total' %}: {% include 'base/snippets/currency.html' %}{{ object.cart.total }}</p>
       
-      <p class="mt-1">{% trans 'Order Total' %}: {% include 'carts/snippets/currency.html' %}{{ object.total }}</p>
-      <form class="mt-6 text-center" method="post"> {% csrf_token %}
-        <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><div class="inline-flex items-center">{% trans 'Complete' %}
-          <svg class="w-4 h-4 fill-current ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg></div>
+      <p class="mt-1">{% trans 'Order Total' %}: {% include 'base/snippets/currency.html' %}{{ object.total }}</p>
+      <form method="post" class="mt-6 text-center"> {% csrf_token %}
+        <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
+          <span class="inline-flex items-center">
+            <svg class="w-4 h-4 fill-current ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
+            {% trans 'Complete' %}
+          </span>
         </button>
       </form>
     </div>

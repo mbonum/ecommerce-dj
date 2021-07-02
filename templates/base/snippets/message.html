@@ -1,5 +1,5 @@
 {% if messages %}
-<ul class="messages">
+<ul class="bg-white text-center text-xl font-c-sans border border-yellow-400 rounded-xl p-2 mb-8">
   {% for m in messages %}
   <li{% if m.tags %} class="{{ m.tags }}"{% endif %}>
     {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}

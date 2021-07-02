@@ -108,7 +108,7 @@ class AccountEmailActivateView(FormMixin, View):
 
 class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "accounts/edit-profile.html"
-    form_class = UserDetailChangeForm()
+    form_class = UserDetailChangeForm
 
     def get_object(self):
         return self.request.user

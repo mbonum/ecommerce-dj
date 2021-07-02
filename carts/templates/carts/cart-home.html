@@ -9,7 +9,7 @@
     <h1 class="text-2xl font-semibold">{% trans 'Cart' %}</h1>
   </div>
   <table class="table-auto cart-table mx-auto">
-    <thead class="border-b border-gray-500">
+    <thead class="text-lg border-b border-gray-500">
       <tr>
         <th scope="col" colspan="1"><span hidden>Index</span></th>
         <th scope="col" class="text-center py-1">{% trans 'Product' %}</th>
@@ -25,7 +25,7 @@
 {#<!--{ forloop.counter }}add thumbnail<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow-->#}
         </td>
         <td class="px-4 py-2">
-          <a class="text-blue-600 hover:text-blue-700 hover:underline focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ object.get_absolute_url }}"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
+          <a href="{{ object.get_absolute_url }}" class="text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
           {% if object.img %}
           <div id="product-cart-tip" class="hidden">
             <img class="w-64 h-64" src="{{ object.img.url }}" alt="Product Thumbnail">
@@ -37,7 +37,7 @@
           <p>1 ({% trans 'Digital' %})</p>
           {% else %}
           <div class="relative">
-            <select id="id_qty" class="rounded-lg shadow appearance-none border border-gray-400 focus:border-yellow-500 px-2 pr-5 py-1 bg-white focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2" name="qty">
+            <select id="id_qty" name="qty" class="bg-white shadow appearance-none border border-gray-400 rounded-lg focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 pr-5 py-1">
               {% for q in object.rangeqty %}
               <option class="qty-item" value="{{ q }}">{{ q }}</option>
               {% endfor %}
@@ -70,15 +70,17 @@
         </td>
       </tr>
       <tr>
+        <div class="items-stretch">
         <td colspan="1"></td>
-        <td colspan="1" class="pt-8">
+        <td class="pt-8">
           {% include 'base/snippets/backbtn.html' with url=shop_url %}
         </td>
-        <td colspan="3" class="pt-8">
-          <div class="inline-flex items-center">
-            <a class="text-yellow-500 hover:text-yellow-600 overflow-hidden mr-5" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡"><svg class="w-7 h-7 fill-current items-center"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg><span hidden>{% trans 'Buy with Crypto' %}</span></a>
-          {% include 'carts/snippets/checkbtn.html' %}</div>
+        <td class="pt-8">
+          <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡"><svg class="w-9 h-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg><span hidden>{% trans 'Buy with Crypto' %}</span></a>
         </td>
+        <td class="pt-8">
+          {% include 'carts/snippets/checkbtn.html' %}
+        </td></div>
       </tr>
     </tbody>
   </table>

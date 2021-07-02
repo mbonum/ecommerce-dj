@@ -94,7 +94,7 @@ $(document).ready(function () {
       success: function (data) {
         if (data.owner) {
           isOwner = true;
-          submitSpan.html(`<a class="bg-blue-500 border-4 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded-xl focus:outline-none" href="/library/">In Library</a>`);
+          submitSpan.html(`<a class="bg-blue-500 border-4 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="/library/">In Library</a>`);// dig_lib_url
         } else {
           isOwner = false;
         }
@@ -133,10 +133,10 @@ $(document).ready(function () {
       success: function (data) {
         var submitSpan = thisForm.find(".submit-span");
         if (data.added) {
-          submitSpan.html(`<a href="/cart/" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">In Cart<svg class="fill-current w-4 h-4 ml-2" aria-labelledby="title" preserveAspectRatio="xMidYMid meet"title="Your cart" viewBox="0 0 21 21"><path id="cart" d="M16.2 14.919H7.837l-.827-2.884 10.158-.746 1.9-7.063H4.783l-.051-.192C4.035 1.557 3.741.418 1.163.162A.815.815 0 1 0 1 1.784c1.73.172 1.793 1.38 2.162 2.694l3.3 11.506a1.694 1.694 0 1 0 .285.939 1.63 1.63 0 0 0-.042-.374h8.106a1.722 1.722 0 0 0-.044.386 1.688 1.688 0 0 0 1.689 1.691 1.776 1.776 0 0 0 1.692-1.788 1.905 1.905 0 0 0-1.948-1.919z"></path></svg></a>`);
-          /*<button type='submit' class='inline-flex items-center rounded border-b-4 border-gray-600 text-gray-700 hover:text-gray-800 hover:border-gray-700 bg-gray-300 p-2 pb-1'><svg class='fill-current w-4 h-4' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 25 24'><path d='M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z'/></svg><span class='text'>Remove</span></button>")*/
+          submitSpan.html(`<a href="/cart/" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><svg class="fill-current w-4 h-4 mr-2" aria-labelledby="title" title="Your cart" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21"><path d="M16.2 14.919H7.837l-.827-2.884 10.158-.746 1.9-7.063H4.783l-.051-.192C4.035 1.557 3.741.418 1.163.162A.815.815 0 1 0 1 1.784c1.73.172 1.793 1.38 2.162 2.694l3.3 11.506a1.694 1.694 0 1 0 .285.939 1.63 1.63 0 0 0-.042-.374h8.106a1.722 1.722 0 0 0-.044.386 1.688 1.688 0 0 0 1.689 1.691 1.776 1.776 0 0 0 1.692-1.788 1.905 1.905 0 0 0-1.948-1.919z"></path></svg>In Cart</a>`);
+          /*<button type='submit' class='inline-flex items-center rounded border-b-4 border-gray-600 text-gray-700 hover:text-gray-800 hover:border-gray-700 bg-gray-300 p-2 pb-1'><svg class='fill-current w-4 h-4' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 25 24'><path d='M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z'/></svg><span class='text'>Remove</span></button>") aria-labelledby="title"*/
         } else {
-          submitSpan.html(`<button type="submit" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><svg class="fill-current w-4 h-4 mr-2" aria-labelledby="title" preserveAspectRatio="xMidYMid meet" title="cart" id="cart" viewBox="0 0 21 21"><path d="M16.2 14.919H7.837l-.827-2.884 10.158-.746 1.9-7.063H4.783l-.051-.192C4.035 1.557 3.741.418 1.163.162A.815.815 0 1 0 1 1.784c1.73.172 1.793 1.38 2.162 2.694l3.3 11.506a1.694 1.694 0 1 0 .285.939 1.63 1.63 0 0 0-.042-.374h8.106a1.722 1.722 0 0 0-.044.386 1.688 1.688 0 0 0 1.689 1.691 1.776 1.776 0 0 0 1.692-1.788 1.905 1.905 0 0 0-1.948-1.919z"></path></svg>Buy</button>`);
+          submitSpan.html(`<button type="submit" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"><svg class="fill-current w-4 h-4 mr-2" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21"><path d="M16.2 14.919H7.837l-.827-2.884 10.158-.746 1.9-7.063H4.783l-.051-.192C4.035 1.557 3.741.418 1.163.162A.815.815 0 1 0 1 1.784c1.73.172 1.793 1.38 2.162 2.694l3.3 11.506a1.694 1.694 0 1 0 .285.939 1.63 1.63 0 0 0-.042-.374h8.106a1.722 1.722 0 0 0-.044.386 1.688 1.688 0 0 0 1.689 1.691 1.776 1.776 0 0 0 1.692-1.788 1.905 1.905 0 0 0-1.948-1.919z"></path></svg>Buy</button>`);
         }
         // document.getElementById("qty").innerHTML = $('#qty option:selected').text();//
         var navbarCount = $(".navbar-cart-count");
@@ -205,7 +205,7 @@ $(document).ready(function () {
           // }
         } else {
           $(location).attr('href', currentUrl);
-          // window.location.href = currentUrl; // bug
+          window.location.href = currentUrl; // bug
           location.reload();
         }
       },

@@ -1,6 +1,6 @@
-{% load i18n %}
+{% load i18n static %}
 {% if address_qs.exists %}
-<form method="post" {% if 'action_url' %}action="{{ action_url }}"{% endif %}> {% csrf_token %}
+<form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
   {% if next %}
   <input type="hidden" name="next" value="{{ next_url }}">
   {% endif %}
@@ -17,7 +17,10 @@
     </label>
   </div>
   {% endfor %}
-  <button type="submit" class="mt-7 w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
-  {% trans 'Next' %}</button>
+  <button type="submit" class="text-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mt-7">
+    <span class="text-center inline-flex items-center">
+      {% trans 'Next' %}
+      <svg class="fill-current w-4 h-4 ml-2" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg></span>
+</button>
 </form>
 {% endif %}

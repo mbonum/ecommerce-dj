@@ -1,18 +1,19 @@
 {% load i18n static %}
 {% spaceless %}
-<form class="form form-product-ajax" method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
-  <input type="hidden" id="product_id" name="product_id" value="{{ product.id }}" {% if product.is_digital %}data-is-digital="true"{% endif %}>
-  <div class="submit-span">
+<form class="form-product-ajax" method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
+  <input type="hidden" name="product_id" value="{{ product.id }}" {% if  product.is_digital %}data-is-digital="true"{% endif%}>
+  <span class="submit-span">
     {% if product in cart.products.all %}
-    <a href="{{ cart_url }}" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'In Cart' %}
-      <svg class='fill-current w-4 h-4 ml-2'><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+    <a href="{{ cart_url }}" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
+      <svg class='fill-current w-4 h-4 mr-2'><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+      {% trans 'In Cart' %}
     </a>
     {% else %}
     <button type="submit" id="buybtn" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
-      <svg class="fill-current w-4 h-4 mr-2" id="cart"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Buy' %}
+      <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Buy' %}
     </button>
     {% endif %}
-  </div>
+  </span>
 </form>
 {% endspaceless %}
-{#<!-- % include 'snippets/remove_product.html' %-->#}
+{#<!-- id="cart" data-is-digital="{% if product.is_digital %}true{% else %}false{% endif %}" id="product_id" % include 'snippets/remove_product.html' %-->#}

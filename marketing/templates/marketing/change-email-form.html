@@ -2,22 +2,21 @@
 {% load i18n %}
 {% block title %}{% if title %}{{ title }}{% else %}Email{% endif %}{% endblock %}
 {% block content %}
-<div class="px-8 max-w-sm mx-auto">
+<div class="text-lg font-c-sans max-w-xs mx-auto">
   <div class="border-b border-gray-400 pb-3">
-    <p class="text-lg text-center font-semibold uppercase">{% if title %}{{ title }}{% else %}
-      {% trans 'Update your email preferences' %}{% endif %}</p>
+    <h1 class="text-center text-2xl font-semibold">{% if title %}{{ title }}{% else %}
+      {% trans 'Update your email preferences' %}{% endif %}</h1>
   </div>
-  <form class="text-sm mt-6" method="post" action="{% if 'action_url' %}{{ action_url }}{% endif %}"> {% csrf_token %}
+  <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     {% if next %}
     <input type='hidden' name='next' value='{{ next_url }}'>
     {% endif %}
-    <div class="cursor-pointer my-6">
-      <label class="">{{ form }}</label>
+    <div class="inline-flex my-6">
+      <label for="id_subscribed">{{ form.subscribed.label }}</label>
+      <span class="text-right">{{ form.subscribed }}</span>
     </div>
     <div class="ext-center">
-      <button
-        class="w-full border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 text-sm uppercase rounded focus:outline-none"
-        type="submit">{% trans 'Save' %}</button>
+      <button type="submit" class="w-full border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-xl focus:outline-none py-1 px-2">{% trans 'Save' %}</button>
     </div>
   </form>
 </div>

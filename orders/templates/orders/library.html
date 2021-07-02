@@ -1,29 +1,39 @@
 {% extends 'base.html' %}
-{% load i18n %}
-
-{% block title %}{% trans 'Library' %}{% endblock %}
+{% load i18n static %}
+{% block title %}{% trans 'Digital Library' %}{% endblock %}
 {% block content %}
-<div class="font-c-sans max-w-sm mx-auto">
-  {% if order.products.exists %}
+<div class="font-c-sans max-w-xs mx-auto">
+  {% if object_list %}
   <div class="text-center mb-4">
-    <p class="text-lg font-semibold">{% trans 'Digital library of' %} {{ request.user.first_name }}</p>
+    <h1 class="text-2xl font-semibold">{% trans 'Digital Library' %}</h1>
   </div>
-  <table class="table-auto cart-table mx-auto">
-    <thead class="border-t border-b border-gray-300">
+  <table class="table-auto mx-auto">
+    <thead class="text-lg border-b border-gray-500">
       <tr>
         <th scope="col" class="font-semibold text-center py-1">{% trans 'Product' %}</th>
         <th scope="col" class="font-semibold text-center py-1">{% trans 'Download' %}</th>
       </tr>
     </thead>
-    <tbody class="cart-body">
+    <tbody class="items-center">
       {% for object in object_list %}
-      <tr class="cart-product border-b border-gray-300 align-middle text-center">
+      <tr class="border-b border-gray-300 text-center">
         <td scope="row" class="px-4 py-2 justify-around">
-          <a class="hover:text-blue-a hover:underline focus:outline-none focus:shadow-outline" href="{{ object.get_absolute_url }}" target="_blank" rel="noopener">{{ object.title }}</a>
+          <a href="{{ object.get_absolute_url }}" class="un rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" target="_blank" rel="noopener"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
+          {% if object.img %}
+          <div id="product-cart-tip" class="hidden">
+            <img class="w-64 h-64" src="{{ object.img.url }}" alt="Product Thumbnail">
+          </div>
+          {% endif %}
         </td>
         <td class="px-4 py-2 justify-around">
           {% for download in object.get_downloads %}
-          <a class="hover:text-blue-a hover:underline focus:outline-none focus:shadow-outline" href="{{ download.get_download_url }}">{{ download.name }}</a><br/>
+          <a class="text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ download.get_download_url }}">
+            {% if 'A' in download.product_type %}
+            <svg class="inline-flex w-8 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
+            {% elif 'E' in object.product_type %}
+            <svg class="inline-flex w-5 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+            {% endif %}
+            {{ download.name }}</a>
           {% endfor %}
         </td>
       </tr>
@@ -37,4 +47,7 @@
   {% endif %}
 </div>
 {% endblock %}
-<!--{# { % empty % }<tr><td colspan="3"><p>No orders yet.</p></td></tr> Your Library is empty ._. #}-->
+{% comment %}<!--<input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex">
+<input type="button" value="🕮" data-tippy-content="Ebook" class="cursor-pointer inline-flex">{ % else %}
+<input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="cursor-pointer inline-flex">
+order.products.exists { { request.user.first_name } { % empty %}<tr><td colspan="3"><p>No orders yet.</p></td></tr> Your Library is empty ._. -->{% endcomment %}
