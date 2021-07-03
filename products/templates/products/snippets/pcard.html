@@ -1,7 +1,7 @@
 {% load i18n static %}
 {% spaceless %}
-<div class="self-start mt-5 lg:mr-5">
-  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
+<div class="self-start mt-5 {% if not 'search' in request.path %}lg:mr-5{% endif %}">
+  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-yellow-400 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
     <div class="relative">
       {% if object.img %}
       <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="md:w-64 md:h-64 rounded mx-auto object-center">

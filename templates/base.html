@@ -29,7 +29,7 @@
 {% url 'account:user-product-history' as prod_history_url %}
 {% url 'orders:list' as order_url %}
 {% url 'billing:billing-payment-method' as billing_url %}
-{% url 'marketing-pref' as mkt_url %}
+{% url 'marketing-email-pref' as mkt_url %}
 {% url 'library' as dig_lib_url %}
 {% url 'account:user-update' as usr_update_url %}
 {% url 'password_change' as psw_change_url %}
@@ -37,7 +37,7 @@
 {% url 'clvmurl' as short_url %}
 {% url 'newsletter:newsletter_subscribe_request' as newsletter_url %}
 
-{% with url='https://www.clavem.co' com='Clavem' launched='May 30, 2020 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
+{% with url='https://www.clavem.co' com='Clavem' why='why/' launched='May 30, 2021 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
 {#<!-- recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' request.url :class="{ { error ? 'text-red-600' : 'text-green-600' }}" address_btc='btc_wallet' address_eth='eth_wallet' yt_url='https://www.youtube.com/channel/' fb_url='https://facebook.com/clavem' ig_url='https://instagram.com/clavem' -->#}
 {% spaceless %}
 {% autoescape off %}

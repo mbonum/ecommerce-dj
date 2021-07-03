@@ -8,7 +8,7 @@
     <h1 class="text-2xl font-semibold pb-3">{{ title }}</h1>
   </div>
   {% endif %}
-  <form method="post" {% if action_url %}action="{{ action_url }}"{% endif %}> {% csrf_token %}
+  <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     {% if next %}
     <input type="hidden" name="next" value="{{ next_url }}">
     {% endif %}

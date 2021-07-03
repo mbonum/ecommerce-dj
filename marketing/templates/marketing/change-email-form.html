@@ -5,7 +5,7 @@
 <div class="text-lg font-c-sans max-w-xs mx-auto">
   <div class="border-b border-gray-400 pb-3">
     <h1 class="text-center text-2xl font-semibold">{% if title %}{{ title }}{% else %}
-      {% trans 'Update your email preferences' %}{% endif %}</h1>
+      {% trans 'Update Email Notifications' %}{% endif %}</h1>
   </div>
   <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     {% if next %}

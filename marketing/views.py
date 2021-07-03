@@ -24,7 +24,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect  # , render
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import UpdateView, View
-
+from django.urls import reverse_lazy
 from .forms import MarketingPreferenceForm
 from .mixins import CsrfExemptMixin
 from .models import MarketingPreference
@@ -43,10 +43,9 @@ MAILCHIMP_EMAIL_LIST_ID = getattr(settings, "MAILCHIMP_EMAIL_LIST_ID", None)
 class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
     form_class = MarketingPreferenceForm
     template_name = "marketing/change-email-form.html"
-    success_url = "/settings/email/"
-    success_message = _(
-        "Your email preferences have been updated. Thank you!"
-    )  # show on Save button
+    success_url = reverse_lazy("marketing-email-pref")  # "/settings/email/"
+    success_message = _("Your email preferences have been updated. Thank you!")
+    # show on Save button
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user

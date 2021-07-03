@@ -5,10 +5,10 @@ from django.db.models import Q
 """
 from itertools import chain
 
+from django.http import Http404
 from django.views.generic import ListView
-
 from education.models import Book
-from essays.models import Essay
+from essays.models import Essay, Section
 from products.models import Product
 
 
@@ -29,14 +29,18 @@ class SearchView(ListView):
         if query is not None:
             book_results = Book.objects.search(query=query)
             essay_results = Essay.objects.search(query=query)
+            sec_results = Section.objects.search(query=query)
             product_results = Product.objects.search(query=query)
 
             # combine querysets
-            queryset_chain = chain(book_results, essay_results, product_results     )
+            queryset_chain = chain(
+                book_results, essay_results, sec_results, product_results
+            )
             qs = sorted(queryset_chain, key=lambda instance: instance.pk, reverse=True)
             self.count = len(qs)  # since qs is a list
             return qs
-        return Essay.objects.none()
+        return Http404(_("Nothing to look for."))
+        # Essay.objects.none()
 
 
 class SearchProductView(ListView):

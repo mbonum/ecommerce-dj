@@ -271,9 +271,9 @@ class EmailActivation(models.Model):
                 path = f"{base_url}/{key_path}"  #'{base}{path}'.format(base=base_url, path=key_path)
                 context = {"path": path, "email": self.email}
                 subject = (
-                    "Activate your "
+                    _("Activate your ")
                     + getattr(settings, "ENV_NAME", "Clavem")
-                    + " account"
+                    + _(" account")
                 )  # (expire in 1 week) Verify Email
                 msg = get_template("registration/emails/verify.txt").render(context)
                 from_email = settings.DEFAULT_FROM_EMAIL
@@ -292,7 +292,6 @@ class EmailActivation(models.Model):
 
 
 def pre_save_email_activation(sender, instance, *args, **kwargs):
-
     if not instance.activated and not instance.forced_expired:
         if not instance.key:
             instance.key = unique_key_generator(instance)
@@ -302,7 +301,6 @@ pre_save.connect(pre_save_email_activation, sender=EmailActivation)
 
 
 def post_save_user_create_receiver(sender, instance, created, *args, **kwargs):
-
     if created:
         obj = EmailActivation.objects.create(user=instance, email=instance.email)
         obj.send_activation()  # [Errno 101] Network is unreachable

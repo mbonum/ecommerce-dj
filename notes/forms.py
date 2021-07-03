@@ -59,3 +59,17 @@ class NoteForm(forms.ModelForm):
 
 # js = ('/static/js/tinymce.js',)Everyone knows something someone else doesn't.
 # <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+# class NoteSearchForm(forms.Form):
+#     q = forms.CharField()
+#     c = forms.ModelChoiceField(
+#         queryset=Category.objects.all().order_by('name'))
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['c'].label = ''
+#         self.fields['c'].required = False
+#         self.fields['c'].label = 'Category'
+#         self.fields['q'].label = 'Search For'
+#         self.fields['q'].widget.attrs.update(
+#             {'class': 'form-control'})

@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 
 # from django.contrib.sitemaps.views import sitemap
-from django.urls import include, path, re_path
+from django.urls import include, path  # , re_path
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import RedirectView, TemplateView
 from django.views.decorators.csrf import csrf_exempt
@@ -81,7 +81,7 @@ urlpatterns = [
     path(
         _("settings/email/"),
         MarketingPreferenceUpdateView.as_view(),
-        name="marketing-pref",
+        name="marketing-email-pref",
     ),
     path(
         "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"

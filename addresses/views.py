@@ -75,7 +75,7 @@ class AddressListView(LoginRequiredMixin, ListView):
 class AddressUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "addresses/update.html"
     form_class = AddressForm
-    success_url = "/addresses"
+    success_url = "/addresses/"
 
     def get_queryset(self):
         print("**", self.request)
@@ -88,7 +88,7 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
 class AddressCreateView(LoginRequiredMixin, CreateView):
     template_name = "addresses/update.html"
     form_class = AddressForm
-    success_url = "/addresses"
+    success_url = "/addresses/"
 
     def form_valid(self, form):
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(

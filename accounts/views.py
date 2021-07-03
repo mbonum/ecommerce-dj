@@ -6,6 +6,7 @@ from disposable_email_checker.validators import validate_disposable_email
 
 # from core.utils import account_activation_token
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 # from django.contrib.auth import authenticate, login#, get_user_model
 # from django.contrib.auth.decorators import login_required
@@ -19,7 +20,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 
 # from django.template.loader import render_to_string
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 # from django.utils.encoding import force_bytes, force_text
 from django.utils.safestring import mark_safe
@@ -50,8 +51,8 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 
 
 class AccountEmailActivateView(FormMixin, View):
-    # Send email when user creates an account
-    success_url = "/login/"
+    # Send email when user creates an account SuccessMessageMixin
+    success_url = reverse_lazy("login")  # "/login/"
     form_class = ReactivationEmailForm()
     key = None
 
@@ -66,16 +67,13 @@ class AccountEmailActivateView(FormMixin, View):
                 messages.success(
                     request, _("Your email has been confirmed. Please login.")
                 )
-                return redirect("/login/")
+                return redirect("login")
             activated_qs = qs.filter(activated=True)
             if activated_qs.exists():
                 reset_link = reverse("password_reset")
-                msg = (
-                    f"Your email has already been confirmed. "
-                    f'Do you need to <a href="{reset_link}">reset your password</a>'
-                )
+                msg = f"Your email has already been confirmed. Do you need to <a href='{reset_link}'>reset your password</a>"
                 messages.success(request, mark_safe(msg))
-                return redirect("/login/")
+                return redirect("login")
         context = {"form": self.get_form(), "key": key}
         return render(request, "registration/activation-error.html", context)
 
@@ -88,8 +86,7 @@ class AccountEmailActivateView(FormMixin, View):
 
     def form_valid(self, form):
         msg = _("Activation link sent, please check your email.")
-        request = self.request
-        messages.success(request, msg)
+        messages.success(self.request, msg)
         email = form.cleaned_data.get("email")
         try:
             validate_disposable_email(email)
@@ -122,21 +119,25 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("account:user-home")
 
 
-class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
+class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):  # SuccessMessageMixin,
     form_class = LoginForm
     template_name = "accounts/login.html"
-    # success_url = "/"
+    # success_url = "/" # reverse_lazy("home")
+    # success_message = _("Welcome back")
 
     def form_valid(self, form):
         human = True
         return redirect(self.get_next_url())
 
 
-class RegisterView(CreateView):
+class RegisterView(SuccessMessageMixin, CreateView):
     form_class = RegisterForm()
     template_name = "accounts/register.html"
     # send email link to confirm automatic block if it's not confirmed within 48 hours
-    success_url = "/login/"
+    success_url = reverse_lazy("login")
+    success_message = _(
+        "Check your email and click on the link to activate your account."
+    )
 
     def form_valid(self, form):
         human = True

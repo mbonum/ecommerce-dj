@@ -2,6 +2,7 @@ from datetime import timezone  # datetime
 
 # from django.template.defaultfilters import slugify
 # from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import IntegrityError, models
 from django.db.models import Q
@@ -62,7 +63,7 @@ class EssayQuerySet(models.QuerySet):
             or_lookup = (
                 Q(title__icontains=query)
                 | Q(slug__icontains=query)
-                # | Q(text_icontains=query)
+                # | Q(text__icontains=query)
                 | Q(tags__name__icontains=query)
                 | Q(tags__slug__icontains=query)
             )
@@ -89,7 +90,7 @@ class Essay(ModelMeta, models.Model):
     # Add sitemap and SEO metadata
     _metadata = {
         "extra_props": {
-            "author": "Team",
+            "author": getattr(settings, "ENV_NAME", "Clavem"),
         },
         # 'extra_custom_props': 'get_custom_props'
     }
@@ -120,10 +121,10 @@ class Essay(ModelMeta, models.Model):
         upload_to=essay_media_path, blank=True, null=True, help_text=_("Record reading")
     )
     summary = HTMLField(_("Summary"), blank=True, null=True)
-    created = models.DateTimeField(_("Created at"), auto_now_add=True)
-    updated = models.DateTimeField(_("Updated at"), auto_now=True)
     publish = models.BooleanField(default=False, help_text=_("Edit before publishing"))
     recommend = models.BooleanField(default=False, help_text=_("Must-read"))
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
     # language = models.CharField(max_length=2, default='en', choices=LANG_STATUS_CHOICES)
     # essay_rating = RatingField(range=5)# 5 possible rating values, 1-5
     # hit_count_generic = models.IntegerField(HitCountMixin, object_id_field='object_pk',
@@ -175,6 +176,34 @@ class Essay(ModelMeta, models.Model):
     #     return qs
 
 
+class SectionQuerySet(models.QuerySet):
+    def search(self, query=None):
+        qs = self
+        if query is not None:
+            or_lookup = (
+                Q(title__icontains=query)
+                | Q(slug__icontains=query)
+                | Q(text__icontains=query)
+            )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
+
+class SectionManager(models.Manager):
+    # def active(self, *args, **kwargs):
+    #     return (
+    #         super(EssayManager, self)
+    #         .filter(publish=True)
+    #         .filter(updated__lte=timezone.now())
+    #     )
+
+    def get_queryset(self):
+        return SectionQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query=query)
+
+
 class Section(models.Model):
     essay = models.ForeignKey(
         Essay,
@@ -196,3 +225,5 @@ class Section(models.Model):
     img = models.FileField(
         _("Image"), upload_to=essay_media_path, blank=True, null=True
     )
+
+    objects = SectionManager()

@@ -14,16 +14,16 @@
   <div class="my-4">
     {% include 'search/search-form.html' %}
   </div>
-  <div>
+  <div class="space-y-4">
   {% for o in object_list %}
     {% with o|class_name as klass %}
     {% if klass == 'Book' and o.active %}
-    <div class="pb-3">
-      {% include 'base/text.html' with object=o %}
+    <div>
+      {% include 'education/bcard.html' with object=o %}
     </div>
     {% elif klass == 'Essay' and o.publish %}
-    <div class="pb-3">
-      {% include 'base/text.html' with object=o %}
+    <div>
+      {% include 'essays/wcard.html' with object=o %}
     </div>
     {% elif klass == 'Product' and o.active %}
     {% include 'products/snippets/pcard.html' with object=o %}
