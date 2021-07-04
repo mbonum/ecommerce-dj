@@ -5,10 +5,10 @@
 <div x-data="{ click: false }" class="mx-10 my-6">
   <form method="post"> {% csrf_token %}
     <div class="mb-3">
-      <label class="text-gray-700 m-1" for="id_email">{{ form.email.label }}</label>
+      <label for="id_email" class="text-gray-700 m-1">{{ form.email.label }}</label>
       {{ form.email }}
     </div>
-    <label class="text-gray-700 m-1" for="id_password">{{ form.password.label }}</label>
+    <label for="id_password" class="text-gray-700 m-1">{{ form.password.label }}</label>
     {% comment %}<!-- <div class="relative" x-data="{ show: true }">
       <input :type="show ? 'password' : 'text'" -->{% endcomment %}
       {{ form.password }}

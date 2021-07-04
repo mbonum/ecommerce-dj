@@ -8,7 +8,7 @@
       <label for="id_email" class="text-gray-700 m-1">{{ form.email.label }}</label>
       {{ form.email }}
     </div>
-    <label for="id_password class="text-gray-700 m-1"">{{ form.password.label }}</label>
+    <label for="id_password" class="text-gray-700 m-1">{{ form.password.label }}</label>
     {% comment %}<!-- <div class="relative" x-data="{ show: true }">
       <input :type="show ? 'password' : 'text'"  -->{% endcomment %}
       {{ form.password }}
@@ -52,14 +52,13 @@
     <button @click="click=!click" class="mt-3 w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-900 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" type="submit">
       <p x-show="!click">{% trans 'Create account' %}</p>
     </button>
-    <!-- <p x-show="click">{% trans 'Sending verification email' %}</p> -->
   </form>
   <p class="m-1 mt-4">{% trans 'Have an account?' %}
-    <a href="{{ login_url }}" class="text-blue-600 hover:text-blue-700 font-semibold hover:border-blue-500 focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 p-1" target="_blank" rel="noopener">{% trans 'Log In' %}</a>
+    <a href="{{ login_url }}" class="border border-transparent hover:border-blue-400 text-blue-600 hover:text-blue-700 font-semibold hover:border-blue-500 focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" target="_blank" rel="noopener">{% trans 'Log In' %}</a>
   </p>
 </div>
 {% endblock%}
-{% comment %}<!--<fieldset><legend>
+{% comment %}<!--<fieldset><legend> <p x-show="click">{% trans 'Sending verification email' %}</p>
 Signing up means you read and agreed to our By signing up, you agree to the { { com }} Privacy Policy and Terms of Service. <svg class="fill-current h-4 w-4" viewbox="0 0 576 512">
   <use x-show="show" xlink:href="{% static 'img/svg-defs.svg' %}#show-psw"></use>
   <use x-show="!show" xlink:href="{% static 'img/svg-defs.svg' %}#!show-psw"></use>

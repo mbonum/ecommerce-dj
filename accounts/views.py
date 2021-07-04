@@ -131,7 +131,7 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):  # SuccessMessa
 
 
 class RegisterView(SuccessMessageMixin, CreateView):
-    form_class = RegisterForm()
+    form_class = RegisterForm
     template_name = "accounts/register.html"
     # send email link to confirm automatic block if it's not confirmed within 48 hours
     success_url = reverse_lazy("login")

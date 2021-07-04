@@ -3,8 +3,8 @@
 {% block title %}{% if title %}{{ title }}{% else %}Email{% endif %}{% endblock %}
 {% block content %}
 <div class="text-lg font-c-sans max-w-xs mx-auto">
-  <div class="border-b border-gray-400 pb-3">
-    <h1 class="text-center text-2xl font-semibold">{% if title %}{{ title }}{% else %}
+  <div class="border-b border-gray-300 pb-3">
+    <h1 class="text-2xl font-semibold">{% if title %}{{ title }}{% else %}
       {% trans 'Update Email Notifications' %}{% endif %}</h1>
   </div>
   <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
@@ -15,7 +15,7 @@
       <label for="id_subscribed">{{ form.subscribed.label }}</label>
       <span class="text-right">{{ form.subscribed }}</span>
     </div>
-    <div class="ext-center">
+    <div>
       <button type="submit" class="w-full border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-xl focus:outline-none py-1 px-2">{% trans 'Save' %}</button>
     </div>
   </form>

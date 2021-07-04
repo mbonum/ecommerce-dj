@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n mptt_tags static %}
+{% load i18n mptt_tags static readtime %}
 {% block css %}{% include 'base/snippets/fullscreen.html' %}{% endblock %}
 {% block title %}{% if object.title %}{{ object.title }}{% else %}{% trans 'In Development' %}{% endif %}{% endblock %}
 {% comment %}<!--hitcount_tags { % get_hit_count_js_variables for object as hitcount %}
@@ -50,17 +50,48 @@
     <div class="text-xl list-inside">
       {% include 'base/snippets/summary.html' with obj=object %}
       {% include 'base/snippets/contents.html' with obj=object %}
-      <div class="border border-gray-300 shadow text-lg rounded-xl px-5 py-4">
+      <div class="border border-gray-300 shadow-md rounded-xl px-5 py-4">
         {% if object.section_set %}
-        {% for s in object.section_set.all %}
-        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-2xl font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
-        {{ s.text|safe }}
-        {% endfor %}
+          {% for s in object.section_set.all %}
+          {% if not forloop.first %}
+          <div class="flex items-center justify-between pb-1 pt-3">
+            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+            <span class="text-base">{{ s.text|readtime }}</span>
+          </div>
+          {% endif %}
+          <div>{{ s.text|safe }}</div>
+          {% endfor %}
         {% elif object.psection_set %}
-        {% for s in object.psection_set.all %}
-        {% if not forloop.first %}<h2 id="{{ s.slug }}" class="text-2xl font-semibold pb-1 pt-3">{{ s.title|safe }}</h2>{% endif %}
-        {{ s.text|safe }}
-        {% endfor %}
+          {% for s in object.psection_set.all %}
+          {% if not forloop.first %}
+          <div class="flex items-center justify-between pb-1 pt-3">
+            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+            <span class="text-base">{{ s.text|readtime }}</span>
+          </div>
+          {% endif %}
+          <div>{{ s.text|safe }}</div>
+          {% endfor %}
+        {% elif object.csection_set %}
+          {% for s in object.csection_set.all %}
+          {% if not forloop.first %}
+          <div class="flex items-center justify-between pb-1 pt-3">
+            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+            <span class="text-base">{{ s.text|readtime }}</span>
+          </div>
+          {% endif %}
+          <div>{{ s.text|safe }}</div>
+          {% endfor %}
+        {#<!-- Terms -->#}
+        {% elif object.tsection_set %}
+          {% for s in object.tsection_set.all %}
+          {% if not forloop.first %}
+          <div class="flex items-center justify-between pb-1 pt-3">
+            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+            <span class="text-base">{{ s.text|readtime }}</span>
+          </div>
+          {% endif %}
+          {{ s.text|safe }}
+          {% endfor %}
         {% endif %}
         {% if s.img %}
         <div class="my-2"><img loading="lazy" src="{{ s.img.url }}" alt="{{ s.title }} {% trans 'Picture' %}" class="rounded-lg mx-auto"></div>

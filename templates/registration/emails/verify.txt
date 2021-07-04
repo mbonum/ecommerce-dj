@@ -1,7 +1,8 @@
-{% load i18n %}{% autoescape off %}
-{% blocktranslate %}Hi{% if first_name %} {{ first_name }}{% endif %},{% endblocktranslate %}
-
+{% load i18n %}
+{% autoescape off %}
 {% blocktranslate %}
+Hi{% if first_name %} {{ first_name }}{% endif %},
+
 Please activate your {{ com }} account by clicking here: {{ path }}.
 
 Thanks for joining us,
