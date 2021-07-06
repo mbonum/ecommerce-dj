@@ -17,8 +17,8 @@ class NoteForm(forms.ModelForm):
             attrs={
                 "id": "id_note",
                 "rows": 4,
-                "placeholder": "Clear, concise, ideally, compelling",
-                "class": "hover:border-yellow-600 w-full tracking-wide border border-gray-400 rounded-lg py-2 px-3 placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-2",
+                # "placeholder": "Clear, concise, ideally, compelling",
+                "class": "w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg py-2 px-3 placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-2",
                 "spellcheck": "true",
                 # "autocapitalize": "sentences",
                 "type": "text",

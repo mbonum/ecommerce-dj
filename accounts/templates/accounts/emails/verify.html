@@ -1,11 +1,12 @@
 {% load i18n %}
-
+{% blocktranslate %}
 <p>Hi{% if first_name %} {{ first_name }}{% endif %},</p>
 
-<p>Please activate your Clavem account by clicking <a href="{{ path }}">here</a></p>
+<p>Please activate your Clavem account by clicking <a href="{{ path }}">here</a>.</p>
 
 {#<!--Once you activate, you can login.</p> Team-->#}
 
 <p>Thank you,</p>
 
 <p>The Clavem team</p>
+{% endblocktranslate %}

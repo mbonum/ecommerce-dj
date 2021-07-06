@@ -5,10 +5,10 @@ from .validators import validate_url
 
 class SubmitURLForm(forms.Form):
     url = forms.CharField(
-        label="",  # _("Submit URL"),
+        label="URL",  # _("Submit URL"),
         widget=forms.TextInput(
             attrs={
-                "placeholder": _("Original URL"),
+                # "placeholder": _("Original URL"),
                 "class": "w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1 my-4",
             }
         ),

@@ -6,9 +6,9 @@
 <div class="max-w-xs font-c-sans mx-auto">
   <div class="mr-6">
   <div class="border-b border-gray-300 pb-2">
-    <h1 class="text-xl font-semibold">
+    <h1 class="text-2xl font-semibold">
     {% if object_list and query %}{% trans 'Results for' %} {{ query }}
-    {% else %}{% trans 'Search' %}{% endif %}
+    {% else %}{% trans 'Nothing found' %}{% endif %}
     </h1>
   </div>
   <div class="my-4">

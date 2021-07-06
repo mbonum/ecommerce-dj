@@ -35,7 +35,7 @@ class ReactivationEmailForm(forms.Form):
         label="Email",
         widget=forms.EmailInput(
             attrs={
-                "placeholder": "Email",
+                # "placeholder": "Email",
                 "class": "mx-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 my-3 rounded-lg shadow placeholder-gray-600 focus:outline-none",
             }
         ),
@@ -60,7 +60,7 @@ class UserAdminCreationForm(forms.ModelForm):
         label="Password",
         widget=forms.PasswordInput(
             attrs={
-                "placeholder": "",
+                # "placeholder": "",
                 "class": "border border-gray-500 py-1 px-1 rounded-lg shadow placeholder-gray-800",
                 "autocomplete": "current-password",
                 "autofocus": True,
@@ -97,7 +97,7 @@ class UserDetailChangeForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(
             attrs={
-                "placeholder": _("First name"),
+                # "placeholder": _("First name"),
                 "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
@@ -107,7 +107,7 @@ class UserDetailChangeForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(
             attrs={
-                "placeholder": _("Last name"),
+                # "placeholder": _("Last name"),
                 "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
@@ -144,7 +144,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.EmailInput(
             attrs={
                 "id": "id_email",
-                "placeholder": "Email",
+                # "placeholder": "Email",
                 "autofocus": True,
                 "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
@@ -156,7 +156,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 "id": "id_password",
-                "placeholder": _("Password"),
+                # "placeholder": _("Password"),
                 "autocomplete": "current-password",
                 "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
@@ -215,7 +215,7 @@ class LoginForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 "id": "id_email",
-                "placeholder": "Email",
+                # "placeholder": "Email",
                 "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
                 "autofocus": True,
             }
@@ -227,7 +227,7 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 "id": "id_password",
-                "placeholder": _("Password"),
+                # "placeholder": _("Password"),
                 "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
                 "autocomplete": "current-password",
             }

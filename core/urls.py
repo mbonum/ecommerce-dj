@@ -81,7 +81,7 @@ urlpatterns = [
     path(
         _("settings/email/"),
         MarketingPreferenceUpdateView.as_view(),
-        name="marketing-email-pref",
+        name="email-marketing-pref",
     ),
     path(
         "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"

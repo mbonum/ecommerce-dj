@@ -21,7 +21,7 @@ data[id]: c4fe21552a
 from django.conf import settings
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
-from django.shortcuts import redirect  # , render
+from django.shortcuts import redirect, reverse  # , render
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import UpdateView, View
 from django.urls import reverse_lazy
@@ -43,14 +43,17 @@ MAILCHIMP_EMAIL_LIST_ID = getattr(settings, "MAILCHIMP_EMAIL_LIST_ID", None)
 class MarketingPreferenceUpdateView(SuccessMessageMixin, UpdateView):
     form_class = MarketingPreferenceForm
     template_name = "marketing/change-email-form.html"
-    success_url = reverse_lazy("marketing-email-pref")  # "/settings/email/"
+    success_url = reverse_lazy("email-marketing-pref")  # "/settings/email/"
     success_message = _("Your email preferences have been updated. Thank you!")
     # show on Save button
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user
         if not user.is_authenticated:
-            return redirect("/login/?next=/settings/email/")
+            l = reverse("login")
+            # m = reverse("email-marketing-pref")
+            return redirect(f"{l}?next={success_url}")
+            # return redirect("/login/?next=/settings/email/")
         return super(MarketingPreferenceUpdateView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):

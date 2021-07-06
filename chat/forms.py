@@ -19,7 +19,7 @@ class ContactForm(forms.Form):
         widget=forms.Select(
             attrs={
                 "id": "msgtype",
-                "class": "flex w-full appearance-none bg-white border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "flex w-full appearance-none bg-white border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -29,8 +29,8 @@ class ContactForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "id": "chat_fn",
-                "placeholder": _("First name"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                # "placeholder": _("First name"),
+                "class": "flex border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
             }
         ),
     )
@@ -40,8 +40,8 @@ class ContactForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "id": "chat_ln",
-                "placeholder": _("Last name"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                # "placeholder": _("Last name"),
+                "class": "flex border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "type": "text",
             }
         ),
@@ -52,21 +52,20 @@ class ContactForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 "id": "chat_email",
-                "placeholder": _("Email"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                # "placeholder": _("Email"),
+                "class": "flex border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "autofocus": True,
             }
         ),
     )
-
     topic = forms.CharField(
         label=_("Topic"),
         required=True,
         widget=forms.TextInput(
             attrs={
                 "id": "chat_topic",
-                "placeholder": _("Topic"),
-                "class": "flex w-full border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                # "placeholder": _("Topic"),
+                "class": "flex w-full border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),
@@ -77,8 +76,8 @@ class ContactForm(forms.Form):
         widget=forms.Textarea(  # Clear and concise. widget=TinyMCE(attrs={'cols': 80, 'rows': 30, 'textarea':  "Everyone knows something someone else doesn't."})
             attrs={
                 "id": "chat_text",
-                "placeholder": _("How can we help?"),
-                "class": "flex w-full hover:border-yellow-600 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
+                # "placeholder": _("How can we help?"),
+                "class": "flex w-full border border-gray-400 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "rows": 4,
                 "spellcheck": "true",
             }
@@ -135,7 +134,7 @@ class ChatForm(forms.Form):
         widget=forms.Select(
             attrs={
                 "id": "msgtype",
-                "class": "flex w-full appearance-none bg-white border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "flex w-full appearance-none bg-white border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -145,8 +144,8 @@ class ChatForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "id": "chat_topic",
-                "placeholder": _("Topic"),
-                "class": "flex w-full border border-gray-300 focus:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                # "placeholder": _("Topic"),
+                "class": "flex w-full border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),
@@ -157,8 +156,8 @@ class ChatForm(forms.Form):
         widget=forms.Textarea(
             attrs={
                 "id": "chat_text",
-                "placeholder": _("How can we help?"),
-                "class": "flex w-full hover:border-yellow-600 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
+                # "placeholder": _("How can we help?"),
+                "class": "flex w-full focus:border-yellow-500 hover:border-yellow-500 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
                 "rows": 4,
                 "spellcheck": "true",
             }

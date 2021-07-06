@@ -44,6 +44,7 @@
       {% if obj.audio or tts %}
         {% include 'base/snippets/audio.html' with obj=object %}
       {% endif %}
+      <span id="rtime" class="text-base"></span>
       {% include 'base/snippets/theme.html' %}
       </div>
     </div>
@@ -56,7 +57,7 @@
           {% if not forloop.first %}
           <div class="flex items-center justify-between pb-1 pt-3">
             <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
-            <span class="text-base">{{ s.text|readtime }}</span>
+            <input type="hidden" class="readtime" name="reatime" value="{{ s.text|readtime }}">
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -151,18 +152,18 @@
         </p>
       </button>
     </div>
-    <div x-show="open" class="font-c-sans border-t border-gray-300 my-5">
+    <div x-show="open" class="text-lg font-c-sans border-t border-gray-300 my-5">
       <div class="text-center my-4">
-        <span>{{ com }} {% trans 'Community Contributions' %}</span>
+        <h1>{{ com }} {% trans 'Community Contributions' %}</h1>
       </div>
 
       {% recursetree notes %}
         <div id="{{ node.id }}" class="border border-gray-300 rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
         {{ node.body|linebreaks }}
-        <div class="font-c-serif text-sm space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
+        <div class="font-c-serif text-base space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
           <p class="italic">—
           {% comment %}<!-- if node.private %} Anonym
-        {% else %} -->{% endcomment %}
+        { % else %} -->{% endcomment %}
           {% if node.user.first_name %}
           {{ node.user.first_name }}
           {% else %}
@@ -180,7 +181,7 @@
           </form>
 
           {% if node.level < 2 %}
-          <button class="font-c-sans border border-gray-400 hover:border-yellow-500 rounded-xl shadow hover:shadow-md focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
+          <button class="font-c-sans border border-gray-300 hover:border-yellow-500 rounded-xl shadow hover:shadow-md focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
           {% endif %}
         </div>
 
@@ -244,30 +245,22 @@
 </div>
 {% endif %}
 {% endblock %}
-{% comment %}<!-- <script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-  // use the template tags in our JavaScript call
-  $.postCSRF('{{ hitcount.ajax_url }}', { hitcountPK : '{{ hitcount.pk }}' })
-    .done(function(data){
-      $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
-      $('#hit-response').text(data.hit_message);
-  }).fail(function(data){
-      console.log('POST failed');
-      console.log(data);
-  });
-});
-</script> -->{% endcomment %}
+
 {% block js %}
+<script>
+  var rt = document.getElementByClass('readtime').value;
+  console.log(rt);
+  document.getElementsById('rtime')[0].innerHTML = rt;
+</script>
 {% if essays_url in request.path or edu_url in request.path %}
 {% include 'base/snippets/sharect.html' %}
 <script>
 function formClose() {
-  document.getElementById('id_note_reply').remove()
+  document.getElementById('id_note_reply').remove();
 };
 function replyBtn(id) {
   if (document.contains(document.getElementById('id_note_reply'))) {
-    document.getElementById('id_note_reply').remove();
+    formClose();//document.getElementById('id_note_reply').remove();
   }
   var e = document.getElementById(id);
   e.insertAdjacentHTML('afterend', 
@@ -278,7 +271,7 @@ function replyBtn(id) {
           <button type="button" class="rounded-full focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
         </div>\
         <select name="parent" id="id_parentt" class="hidden"><option value="' + id + '" selected="' + id + '"></option></select>\
-        <textarea name="body" cols="30" rows="3" id="id_reply" placeholder="Are you adding value to the conversation?" class="hover:border-yellow-600 w-full tracking-wide border border-gray-500 rounded-lg text-black py-2 px-3 placeholder-gray-800 shadow hover:shadow-md  focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" "spellcheck": "true", type="text" required></textarea>\
+        <textarea name="body" cols="30" rows="3" id="id_reply" placeholder="Are you adding value to the conversation?" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg py-2 px-3 placeholder-gray-800 shadow hover:shadow-md  focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" "spellcheck": "true", type="text" required></textarea>\
         <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit">\
           <p class="text-center inline-flex items-center">{% trans "Reply" %}\
           <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
@@ -292,7 +285,21 @@ $('#id_note_form').trigger('reset');
 </script>
 {% endif %}
 {% endblock %}
-{% comment %}<!--document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
+{% comment %}<!-- <script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+  // use the template tags in our JavaScript call
+  $.postCSRF('{{ hitcount.ajax_url }}', { hitcountPK : '{{ hitcount.pk }}' })
+    .done(function(data){
+      $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
+      $('#hit-response').text(data.hit_message);
+  }).fail(function(data){
+      console.log('POST failed');
+      console.log(data);
+  });
+});
+</script>
+document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
 FIX if reply->x->all forms are removed and it has to reload page var generalForm = document.getElementById('id_noteForm')
 Check to disable replies</span><input type="checkbox" name="reply" class="transform hover:scale-110" id="id_reply"></div>
 $('form').preventDoubleSubmission();

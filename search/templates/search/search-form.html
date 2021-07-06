@@ -1,10 +1,10 @@
 {% load i18n static %}
 {% spaceless %}
-<form method="get" action="{% url 'search:query' %}" class="search-form opacity-90 hover:opacity-100 border border-gray-300 rounded-lg bg-white px-2">
+<form method="get" action="{{ search_url }}" class="search-form opacity-90 hover:opacity-100 border border-gray-300 hover:border-yellow-500 hover:shadow rounded-lg bg-white pl-2">
   <div class="text-gray-800 inline-flex items-center">
-    <button class="inline-flex rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 pr-1 mr-1" type="submit"><svg class="hover:text-black fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#search"></use></svg></button>
-    <input class="border-transparent placeholder-gray-800 rounded-lg overflow-hidden focus:outline-none pl-2 py-1 {% if 'search' in request.path %}py-2{% endif %}" type="search" placeholder="{% trans 'Search shop' %}" name="q" aria-label="{% trans 'Search' %}" value="{{ request.GET.q }}">
-    <button hidden type="submit"></button>{#<!-- focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 (Press Enter ↲)-->#}
+    <button class="inline-flex rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 pr-1 mr-2" type="submit"><svg class="hover:text-black fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#search"></use></svg></button>
+    <input class="bg-transparent border-transparent placeholder-gray-800 rounded-lg overflow-x-hidden focus:outline-none py-1{% if 'search' in request.path %} py-2{% endif %}" type="search" placeholder="{% trans 'Search' %}" name="q" aria-label="{% trans 'Search' %}" value="{{ request.GET.q }}">
+    <button hidden type="submit"></button>{#<!--{ % url 'search:query' %} focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 (Press Enter ↲)-->#}
   </div>
 </form>
 {% endspaceless %}

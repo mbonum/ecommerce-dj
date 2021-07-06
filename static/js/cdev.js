@@ -1,7 +1,7 @@
 $(document).ready(function () {
-  var contactForm = $(".contact-form");
-  var contactFormMethod = contactForm.attr("method");
-  var contactFormEndpoint = contactForm.attr("action");
+  var contactForm = $(".contact-form"),
+    contactFormMethod = contactForm.attr("method"),
+    contactFormEndpoint = contactForm.attr("action");
   function displaySubmitting(submitBtn, defaultText, doSubmit) {
     if (doSubmit) {
       submitBtn.addClass("disabled");
@@ -13,10 +13,10 @@ $(document).ready(function () {
   }
   contactForm.submit(function (e) {
     e.preventDefault();
-    var contactFormSubmitBtn = contactForm.find("[type='submit']");
-    var contactFormSubmitBtnTxt = contactFormSubmitBtn.text();
-    var contactFormData = contactForm.serialize();
-    var thisForm = $(this);
+    var contactFormSubmitBtn = contactForm.find("[type='submit']"),
+      contactFormSubmitBtnTxt = contactFormSubmitBtn.text(),
+      contactFormData = contactForm.serialize(),
+      thisForm = $(this);
     displaySubmitting(contactFormSubmitBtn, "", true)
     $.ajax({
       url: contactFormEndpoint,
@@ -34,8 +34,8 @@ $(document).ready(function () {
         }, 2000);
       },
       error: function (error) {
-        var jsonData = error.responseJSON;
-        var msg = "";
+        var jsonData = error.responseJSON,
+          msg = "";
         $.each(jsonData, function (key, value) {// key, value array index / object
           msg += key + ": " + value[0].message + "<br/>";
         });
@@ -51,11 +51,11 @@ $(document).ready(function () {
     });
   });
   // Auto Search
-  var searchForm = $(".search-form");
-  var searchInput = searchForm.find("[name='q']");// input name='q'
-  var typingTimer;
-  var typingInterval = 500;
-  var searchBtn = searchForm.find("[type='submit']");
+  var searchForm = $(".search-form"),
+    searchInput = searchForm.find("[name='q']"),// input name='q'
+    typingTimer,
+    typingInterval = 500,
+    searchBtn = searchForm.find("[type='submit']");
 
   searchInput.keyup(function (e) {
     // key released
@@ -81,12 +81,12 @@ $(document).ready(function () {
   var productForm = $(".form-product-ajax");
 
   function getOwnedProduct(productId, submitSpan) {
-    var actionEndpoint = "/orders/endpoint/verify/ownership/";
-    var httpMethod = "GET";
-    var data = {
-      product_id: productId
-    };
-    var isOwner;
+    var actionEndpoint = "/orders/endpoint/verify/ownership/",
+      httpMethod = "GET",
+      data = {
+        product_id: productId
+      },
+      isOwner;
     $.ajax({
       url: actionEndpoint,
       method: httpMethod,
@@ -106,12 +106,12 @@ $(document).ready(function () {
     return isOwner;
   }
   $.each(productForm, function (_index, _object) {
-    var $this = $(this);
-    var isUser = $this.attr("data-user");
-    var submitSpan = $this.find(".submit-span");
-    var productInput = $this.find("[name='product_id']");
-    var productId = productInput.attr("value");
-    var productIsDigital = productInput.attr("data-is-digital");
+    var $this = $(this),
+      isUser = $this.attr("data-user"),
+      submitSpan = $this.find(".submit-span"),
+      productInput = $this.find("[name='product_id']"),
+      productId = productInput.attr("value"),
+      productIsDigital = productInput.attr("data-is-digital");
     if (productIsDigital && isUser) {
       getOwnedProduct(productId, submitSpan);
       //var isOwned =  if (isOwned){
@@ -122,10 +122,10 @@ $(document).ready(function () {
   // Cart async Buy/In Cart moved Remove btn on Cart
   productForm.submit(function (e) {
     e.preventDefault();
-    var thisForm = $(this);
-    var actionEndpoint = thisForm.attr("data-endpoint");
-    var httpMethod = thisForm.attr("method");
-    var formData = thisForm.serialize();
+    var thisForm = $(this),
+      actionEndpoint = thisForm.attr("data-endpoint"),
+      httpMethod = thisForm.attr("method"),
+      formData = thisForm.serialize();
     $.ajax({
       url: actionEndpoint,
       method: httpMethod,
@@ -140,8 +140,8 @@ $(document).ready(function () {
         }
         // document.getElementById("qty").innerHTML = $('#qty option:selected').text();//
         var navbarCount = $(".navbar-cart-count");
-        navbarCount.text(data.cartItemCount);
-        var currentPath = window.location.href;
+        navbarCount.text(data.cartItemCount),
+          currentPath = window.location.href;
         if (currentPath.indexOf("cart") = -1) {
           refreshCart();
         }
@@ -156,13 +156,13 @@ $(document).ready(function () {
     })
   })
   function refreshCart() {
-    var cartTable = $(".cart-table");
-    var cartBody = cartTable.find(".cart-body");
-    var productRows = cartBody.find(".cart-product");
-    var currentUrl = window.location.href;
-    var refreshCartUrl = "/api/cart/";
-    var refreshCartMethod = "GET";
-    var data = {};
+    var cartTable = $(".cart-table"),
+      cartBody = cartTable.find(".cart-body"),
+      productRows = cartBody.find(".cart-product"),
+      currentUrl = window.location.href,
+      refreshCartUrl = "/api/cart/",
+      refreshCartMethod = "GET",
+      data = {};
     $.ajax({
       url: refreshCartUrl,
       method: refreshCartMethod,

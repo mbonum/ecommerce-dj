@@ -1,11 +1,12 @@
 {% load i18n static %}
-<div data-aos="fade-in" class="text-lg max-w-xs md:max-w-3xl xl:max-w-5xl mx-auto md:flex mx-auto px-5 md:px-0 mb-4">
+<div data-aos="fade-in">
+<div class="text-lg max-w-xs md:max-w-3xl xl:max-w-5xl mx-auto md:flex mx-auto px-5 md:px-0 mb-4">
   <div class="md:w-1/3 mx-auto text-center md:mt-1">
     <div class="border-b border-yellow-100 md:border-none py-1 md:py-0">
     <a href="{{ essays_url }}{{ why }}" id="rem" class="un text-gray-800 hover:text-black rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" >{% trans 'Purpose' %}</a>
       <div id="p-tip" class="hidden">
         <div class="p-2">
-          <h4 class="text-center font-semibold pb-1">{% blocktranslate %}{{ com }} Oath</h4>
+          <h1 class="text-center font-semibold pb-1">{% blocktranslate %}{{ com }} Oath</h1>
           <p>Know your reason of existence. Know your limit.</p>
           <p>The project will become 100% open source & non-profit once {{ com }} long-term stakeholders will become self-sustainable{% endblocktranslate %}.</p>
         </div>
@@ -66,19 +67,20 @@
 <div class="max-w-xs md:max-w-3xl xl:max-w-5xl lg:px-0 mx-auto">
   <div class="border-t border-yellow-100">
     <div class="text-gray-700 text-sm inline-flex space-x- items-center pt-3">
-    {% if request.path != home_url %}
-    <a href="{{ essays_url }}" class="hidden md:block hover:text-black rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2">
-      <svg class="w-6 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg><span hidden>{{ com }}</span>
-    </a>
-    {% endif %}
-    <p class="ml-1">
-      {{ com }} <span class="mr-1">©</span><span data-tippy-content="© 2021" class="font-c" id="year"></span>.
-      {% trans 'All rights reserved.' %}
-    </p>
-    <div class="inline-flex space-x-1 md:space-x-4 md:ml-4">
-      <a href="{{ privacy_url }}" class="hover:text-black un rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" data-tippy-content="{% trans 'Your rights' %}">Privacy</a>
-      <a href="{{ terms_url }}" class="hover:text-black un rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" data-tippy-content="{{ com }}'s rights">Terms</a>
-    </div>
+      {% if request.path != home_url %}
+      <a href="{{ essays_url }}" class="hidden md:block hover:text-black rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2">
+        <svg class="w-6 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg><span hidden>{{ com }}</span>
+      </a>
+      {% endif %}
+      <p class="ml-1">
+        {{ com }} <span class="mr-1">©</span><span data-tippy-content="© 2021" class="font-c" id="year"></span>.
+        {% trans 'All rights reserved.' %}
+      </p>
+      <div class="inline-flex space-x-1 md:space-x-4 md:ml-4">
+        <a href="{{ privacy_url }}" class="hover:text-black un rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" data-tippy-content="{% trans 'Your rights' %}">Privacy</a>
+        <a href="{{ terms_url }}" class="hover:text-black un rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1" data-tippy-content="{{ com }}'s rights">Terms</a>
+      </div>
     </div>
   </div>
+</div>
 </div>

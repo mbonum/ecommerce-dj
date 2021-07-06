@@ -9,6 +9,8 @@
     <p>{% trans 'A little test to ensure you are human' %}.</p>
     {% endif %}
   </div>
-  <div class="bg-white border border-gray-300 hover:border-yellow-500 py-1 px-2 rounded-lg shadow" aria-label="Captcha">{% include "django/forms/widgets/multiwidget.html" %}</div>
+  <label for="id_captcha_1" class="text-gray-700 m-1">{% trans 'Result' %}</label>
+  <div class="bg-white border border-gray-300 hover:border-yellow-500 py-1 px-2 rounded-lg shadow" aria-label="Captcha">
+    {% include "django/forms/widgets/multiwidget.html" %}</div>
 </div>
 {% endspaceless %}

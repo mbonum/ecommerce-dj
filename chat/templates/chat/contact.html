@@ -3,7 +3,7 @@
 {% block title %}{% trans 'Contact Vs' %}{% endblock %}
 {% block content %}
 <div class="max-w-sm mx-auto px-1">
-  <div class="md:text-lg font-c-sans bg-footer rounded-lg border border-gray-400 overflow-hidden pt-5 pb-6 px-5 md:px-7">
+  <div class="md:text-lg font-c-sans bg-footer rounded-xl border border-gray-300 shadow-md pt-5 pb-6 px-5 md:px-7">
     <form method="post"> {% csrf_token %}
       {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
       <div class="space-y-2 text-center">
@@ -22,15 +22,15 @@
       <div class="space-y-3 mx-auto mt-3">
         {% if not request.user.is_authenticated %}
         <div>
-          <label class="text-gray-700 m-2" for="chat_fn">{{ form.first_name.label }}</label>
+          <label class="text-gray-700 m-1" for="chat_fn">{{ form.first_name.label }}</label>
           {{ form.first_name }}
         </div>
         <div>
-          <label class="text-gray-700 m-2" for="chat_ln">{{ form.last_name.label }}</label>
+          <label class="text-gray-700 m-1" for="chat_ln">{{ form.last_name.label }}</label>
           {{ form.last_name }}
         </div>
         <div>
-          <label class="text-gray-700 m-2" for="chat_email">{{ form.email.label }}</label>
+          <label class="text-gray-700 m-1" for="chat_email">{{ form.email.label }}</label>
           {{ form.email }}
         </div>
         {% comment %}<!-- <div>
@@ -39,24 +39,24 @@
         </div> -->{% endcomment %}
         {% endif %}
         <div>
-          <label class="text-gray-700 m-2" for="chat_subject">{{ form.topic.label }}</label>
+          <label class="text-gray-700 m-1" for="chat_topic">{{ form.topic.label }}</label>
           {{ form.topic }}
         </div>
         <div>
-          <label class="text-gray-700 m-2" for="chat_text">{{ form.text.label }}</label>
+          <label class="text-gray-700 m-1" for="chat_text">{{ form.text.label }}</label>
           {{ form.text }}
         </div>
-        <div class="mt-6">
-          <button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
-            <span class="inline-flex items-center text-center">{% trans 'Send' %}<svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg></span>
-          </button>
-        </div>
+      </div>
+      <div class="mt-6">
+        <button id="sendbtn" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">
+          <span class="inline-flex items-center text-center">{% trans 'Send' %}<svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg></span>
+        </button>
       </div>
     </form>
   </div>
 </div>
 {% endblock %}
-{% comment %}<!--{% block js %}
+{% comment %}<!--{ % block js %}
 <script>
   if (document.querySelector("#chat_fn").value) {
     document.querySelector("#sendbtn").onclick = function (e) {
@@ -153,11 +153,11 @@ id="contact-subject" type="text" placeholder="Zip/Postal Code">
 <div class="w-full md:w-1/2 px-3 lg:px-6 mb-4 md:mb-6">
 <!-form-group <label for="{{ field.id_for_label }}">{{ field.label }}</label> ->
 {{ field }}
-{ % for error in field.errors % }
+{ % for error in field.errors %}
 <span class="help-block">{{ error }}</span>
-{ % endfor % }
+{ % endfor %}
 </div>
-{ % endfor % }
+{ % endfor %}
 { { form.as_table }} <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2" for="contact-first-name">First Name</label>
 border-red-500 <p class="text-red-500 text-xs italic">Please fill out this field.</p>
 <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2" for="contact-subject">Email</label>

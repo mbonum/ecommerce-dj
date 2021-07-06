@@ -119,10 +119,10 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("account:user-home")
 
 
-class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):  # SuccessMessageMixin,
+class LoginView(, NextUrlMixin, RequestFormAttachMixin, FormView):#SuccessMessageMixin
     form_class = LoginForm
     template_name = "accounts/login.html"
-    # success_url = "/" # reverse_lazy("home")
+    # success_url = "/" # reverse_lazy("home") 
     # success_message = _("Welcome back")
 
     def form_valid(self, form):
@@ -138,10 +138,13 @@ class RegisterView(SuccessMessageMixin, CreateView):
     success_message = _(
         "Check your email and click on the link to activate your account."
     )
-
     def form_valid(self, form):
         human = True
         return redirect("login")
+    
+    # def form_invalid(self, form, **kwargs):
+        # invalid if email is temp -> compare domain with temp-email.txt
+
 
     # def get_success_url(self):
     #     return self.get_next_url()

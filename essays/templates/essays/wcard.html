@@ -1,7 +1,7 @@
 {% load static %}
 {% spaceless %}
 <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="flex w-full bg-white text-gray-600 hover:text-yellow-500 hover:bg-gray-200 items-center justify-between shadow overflow-hidden border border-gray-200 hover:border-yellow-400 focus:outline-none {% if 'search' in request.path %}rounded-lg{% endif %}{% if forloop.first %}rounded-t-lg{% elif forloop.last %}rounded-b-lg{% endif %} p-3"{% if object.tags %} data-tippy-content="Keyword{% if object.tags.all|length > 1 %}s{% endif %}: {% for t in object.tags.all %}{{ t.name }}{% if forloop.counter > 1 or not forloop.last %}, {% endif %}{% endfor %}"{% endif %}>
-  <span class="text-black">">{{ object.index }}. {{ object.title }}</span>
+  <span class="text-black">{{ object.index }}. {{ object.title }}</span>
   {% if object.recommend %}<svg class="inline-flex w-3 h-3 fill-current mr-3"><use xlink:href="{% static 'img/svg-defs.svg' %}#star"></use></svg>{% endif %}
   {% if object.audio %}
   <svg class="inline-flex w-8 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>

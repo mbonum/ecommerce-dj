@@ -68,7 +68,7 @@ def room(request, room):
 #         # "textarea": self.cleaned_data["textarea"],
 #         # "postal_code": kwargs.get("postal_code"),
 #     }
-#     subject = "Thank you for contacting " + getattr(settings, "ENV_NAME", "Clavem")
+#     subject = _("Thank you for contacting us") # + getattr(settings, "ENV_NAME", "Clavem")
 #     body = render_to_string("email_msg.txt", context)
 #     email = EmailMessage(
 #         subject,
@@ -79,7 +79,7 @@ def room(request, room):
 #         headers={"Message-ID": make_msgid()},
 #     )
 #     email.send(fail_silently=False)
-#     # msg = "Thank you for contacting us. We will answer you as soon as humanly possible."
+#     # msg = _("Thank you for contacting us. We will answer you as soon as humanly possible.")
 #     return render(
 #         request,
 #         "home/room.html",
