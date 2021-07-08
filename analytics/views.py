@@ -1,18 +1,19 @@
 import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse  # , HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, View
-
 from orders.models import Order
 
 
 class SalesAjaxView(View):
     def get(self, request, *args, **kwargs):
         data = {}
-        if request.user.staff:  # is_admin
+        if request.user.is_admin or request.user.is_staff:
             qs = Order.objects.all().by_weeks_range(weeks_ago=5, number_of_weeks=5)
             if request.GET.get("type") == "week":
                 days = 7  # today included
@@ -46,16 +47,19 @@ class SalesAjaxView(View):
                     sales_total = new_qs.totals_data()["total__sum"] or 0
                     data["data"].append(sales_total)
                     current -= 1
-        return JsonResponse(data)
+            return JsonResponse(data)
+        raise PermissionDenied
 
 
-class SalesView(LoginRequiredMixin, TemplateView):
+class SalesView(LoginRequiredMixin, TemplateView):  # View
     template_name = "analytics/sales.html"
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user
-        if not user.is_staff:
-            return render(self.request, "400.html", {})  # status=401
+        # if user.is_authenticated:
+        if not user.is_staff:  # not user.is_admin or
+            raise PermissionDenied
+            # return render(self.request, "400.html", {})  # status=401 403
         return super(SalesView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):

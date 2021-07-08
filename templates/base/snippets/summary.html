@@ -1,7 +1,7 @@
 {% load i18n %}
 {% spaceless %}
 {% if obj.summary %}
-<div class="my-4 mx-5">
+<div class="m-4">
   <details class="space-y-1" open>
     <summary class="text-xl font-semibold">{% trans 'Summary' %}</summary>
     <p>{{ obj.summary|safe }}</p>

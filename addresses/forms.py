@@ -19,8 +19,8 @@ class AddressForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "id": "id_street",
-                # "placeholder": "3 Main St.",
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                # "placeholder": "3 Main St.", placeholder-gray-600
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -30,7 +30,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_city",
                 # "placeholder": _("City"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -41,7 +41,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_state",
                 # "placeholder": _("State"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -51,7 +51,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_country",
                 # "placeholder": _("Country"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -61,7 +61,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_zip",
                 # "placeholder": _("Postal code"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )

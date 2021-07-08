@@ -38,13 +38,12 @@
         <span class="sep">·</span>
         {% endif %}
       {% endif %}
-      <p class="inline-flex items-center" {% if essays_url in request.path %}data-tippy-content="Publication date (years since the current form of humans evolved)"{% endif %}>{% if essays_url in request.path %}20{% endif %}{% if not edu_url in request.path and not essays_url in request.path %}Effective date: {% endif %}{{ object.updated|date:'Y-m-d' }}</p>
+      <span class="inline-flex items-center" {% if essays_url in request.path %}data-tippy-content="Publication date (years since the current form of humans evolved)"{% endif %}>{% if essays_url in request.path %}20{% endif %}{% if not edu_url in request.path and not essays_url in request.path %}Effective date: {% endif %}{{ object.updated|date:'Y-m-d' }}</span>
       </div>
       <div>
       {% if obj.audio or tts %}
         {% include 'base/snippets/audio.html' with obj=object %}
       {% endif %}
-      <span id="rtime" class="text-base"></span>
       {% include 'base/snippets/theme.html' %}
       </div>
     </div>
@@ -54,10 +53,10 @@
       <div class="border border-gray-300 shadow-md rounded-xl px-5 py-4">
         {% if object.section_set %}
           {% for s in object.section_set.all %}
+          <input type="hidden" value="{{ s.text|readtime }}" id="rtime" name="rtime">
           {% if not forloop.first %}
           <div class="flex items-center justify-between pb-1 pt-3">
             <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
-            <input type="hidden" class="readtime" name="reatime" value="{{ s.text|readtime }}">
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -67,7 +66,6 @@
           {% if not forloop.first %}
           <div class="flex items-center justify-between pb-1 pt-3">
             <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
-            <span class="text-base">{{ s.text|readtime }}</span>
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -77,7 +75,6 @@
           {% if not forloop.first %}
           <div class="flex items-center justify-between pb-1 pt-3">
             <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
-            <span class="text-base">{{ s.text|readtime }}</span>
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -88,7 +85,6 @@
           {% if not forloop.first %}
           <div class="flex items-center justify-between pb-1 pt-3">
             <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
-            <span class="text-base">{{ s.text|readtime }}</span>
           </div>
           {% endif %}
           {{ s.text|safe }}
@@ -142,14 +138,16 @@
   { % endif %}-->{% endcomment %}
   {% if notes.all %}
   <div x-data="{ open: false }">
-    <div class="text-center font-c-sans my-4">
-      <button @click="open=!open" class="border-2 border-yellow-300 shadow rounded-full focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" type="button">
-        <p x-show="!open" class="inline-flex items-center">{% blocktranslate %}Show {{ com }} Community Contributions{% endblocktranslate %}
-          <svg class="text-yellow-400 w-4 h-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
-        </p>
-        <p x-show="open" class="inline-flex items-center">{% trans 'Hide' %}
-          <svg class="text-yellow-400 w-4 h-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
-        </p>
+    <div class="text-center text-lg font-c-sans my-4">
+      <button @click="open=!open" class="border-2 border-yellow-300 shadow rounded-full focus:outline-none focus:ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-3 py-1" type="button">
+        <div x-show="!open" class="inline-flex items-center space-x-2">
+          <span>{% blocktranslate %}Show {{ com }} Community Contributions{% endblocktranslate %}</span>
+          <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+        </div>
+        <div x-show="open" class="inline-flex items-center space-x-2">
+          <span>{% trans 'Hide' %}</span>
+          <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+        </div>
       </button>
     </div>
     <div x-show="open" class="text-lg font-c-sans border-t border-gray-300 my-5">
@@ -226,7 +224,10 @@
         {{ form.private }}
       </div>-->{% endcomment %}
       <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit" data-tippy-content="{% trans 'Are you adding value to the conversation?' %}">
-        <p class="text-center inline-flex items-center">{% trans 'Share' %} <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg></p>
+        <div class="text-center text-lg inline-flex items-center space-x-1">
+          <span>{% trans 'Share' %}</span>
+          <svg class="w-6 h-6 fill-current" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
+        </div>
       </button>
     </form>
   </div>
@@ -239,22 +240,22 @@
   {% endif %}
 </div>
 {% else %}
-<div class="font-c-sans text-gray-900 max-w-xs mx-auto">
-  <h1 class="text-xl text-black my-5">{% trans 'Legal work in progress' %}</h1>
+<div class="font-c-sans text-lg text-gray-900 max-w-xs mx-auto">
+  <h1 class="text-2xl text-black my-5">{% trans 'Work in progress' %}</h1>
   <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
 </div>
 {% endif %}
 {% endblock %}
 
 {% block js %}
-<script>
-  var rt = document.getElementByClass('readtime').value;
-  console.log(rt);
-  document.getElementsById('rtime')[0].innerHTML = rt;
-</script>
 {% if essays_url in request.path or edu_url in request.path %}
 {% include 'base/snippets/sharect.html' %}
 <script>
+  var rt = document.getElementById('rtime').value;
+  rt = Number(rt.match(/\d+/)[0]);
+  rt += rt;
+  document.getElementById('rt').innerHTML = rt + " min";
+
 function formClose() {
   document.getElementById('id_note_reply').remove();
 };
@@ -271,7 +272,7 @@ function replyBtn(id) {
           <button type="button" class="rounded-full focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
         </div>\
         <select name="parent" id="id_parentt" class="hidden"><option value="' + id + '" selected="' + id + '"></option></select>\
-        <textarea name="body" cols="30" rows="3" id="id_reply" placeholder="Are you adding value to the conversation?" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg py-2 px-3 placeholder-gray-800 shadow hover:shadow-md  focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" "spellcheck": "true", type="text" required></textarea>\
+        <textarea name="body" cols="30" rows="3" id="id_reply" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg py-2 px-3 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" spellcheck="true" type="text" required></textarea>\
         <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit">\
           <p class="text-center inline-flex items-center">{% trans "Reply" %}\
           <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
@@ -285,7 +286,7 @@ $('#id_note_form').trigger('reset');
 </script>
 {% endif %}
 {% endblock %}
-{% comment %}<!-- <script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
+{% comment %}<!-- placeholder="Are you adding value to the conversation?" placeholder-gray-800 <script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
   // use the template tags in our JavaScript call

@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Bad Request' %}{% endblock %}
+{% block title %}{% trans 'Error' %}{% endblock %}
 {% block content %}
 <div class="font-c-sans max-w-xs mx-auto">
-  <h1 class="text-xl text-black my-5">{% if message %}{{ message }}{% else %}{% trans 'This URL does not exist.' %}{% endif %}</h1>
+  <h1 class="text-2xl my-5">{% if message %}{{ message }}{% else %}{% trans 'This URL does not exist' %}.{% endif %}</h1>
+  <div class="mx-auto">{% include 'search/snippets/search-form.html' %}</div>
 </div>
 {% endblock %}
-{#<!--<p>{% trans '400 error | Please try another URL.' %}</p>-->#}
+{#<!--<p>400 error Bad Request | Please try another URL.</p>-->#}

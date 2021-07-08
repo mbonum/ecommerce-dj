@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     # "rosetta",  # https://pypi.org/project/django-rosetta
     # "hitcount",  # https://dj-hitcount.readthedocs.io/en/latest/installation.html# 'django_cleanup.apps.CleanupConfig',
     # "robots",  # https://pypi.org/project/django-robots
-    # "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
+    "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
     "django_celery_beat",
     "django_celery_results",

@@ -1,5 +1,5 @@
 """
-https://docs.djangoproject.com/en/3.1/topics/signals/
+https://docs.djangoproject.com/en/3.2/topics/signals/
 """
 from django.dispatch import Signal
 

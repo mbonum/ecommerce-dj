@@ -9,7 +9,7 @@ class SubmitURLForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 # "placeholder": _("Original URL"),
-                "class": "w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1 my-4",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
         validators=[validate_url],

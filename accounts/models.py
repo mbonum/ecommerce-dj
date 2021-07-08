@@ -7,7 +7,8 @@ Login -> send email every time -> enforce 2fa
 """
 from datetime import timedelta
 
-from core.utils import unique_key_generator
+from core.utils import code_gen, unique_key_generator
+from disposable_email_checker.validators import validate_disposable_email
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -16,8 +17,6 @@ from django.contrib.auth.models import (
 )
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-
-# https://docs.djangoproject.com/en/3.2/topics/email/
 
 # from django.core.validators import EmailValidator
 from django.db import models
@@ -29,10 +28,13 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 
+# https://docs.djangoproject.com/en/3.2/topics/email/
+
 # NOQA too skip linter import check
 # send_mail(subject, message, from_email, recipient_list, html_message) random_string_generator,
 
 # DEFAULT_ACTIVATION_DAYS = getattr(settings, "DEFAULT_ACTIVATION_DAYS", 7)
+
 # CLVM = getattr(settings, "ENV_NAME", "Clavem")
 
 # CURRENCIES = [
@@ -51,65 +53,72 @@ class UserManager(BaseUserManager):
     # Create and save a User with email and password
 
     def create_user(
-        self, email, password=None, fn=None, **kwargs
-    ):  # ln=None, staff=False, active=True, admin=False
+        self, email, password=None, is_staff=False, is_admin=False, **kwargs
+    ):  # fn=None, ln=None, is_active=True if email verified
         if not email:
             raise ValueError(_("Please add your email address"))
         if not password:
             raise ValueError(_("Please set your password"))
-        if not fn:
-            raise ValueError(_("Please add your name"))
-        e = self.normalize_email(email)  # self.model(email=self.normalize_email(email))
-        user = self.model(email=e, first_name=fn, **kwargs)
-        user.set_password(password)
-        # user.first_name = fn# Use first name to send personalize email
-        # user.last_name = ln
-        # user.is_staff = staff
-        # user.is_active = active
-        # user.is_superuser = admin
-        # user.date_joined.timezone.now()
-        user.save(using=self._db)
-        return user
+        # if not fn:
+        #     raise ValueError(_("Please add your name"))
+        if validate_disposable_email(email):  # validate_email(email):
+            e = self.normalize_email(
+                email
+            )  # self.model(email=self.normalize_email(email))
+            user = self.model(email=e, **kwargs)  # , first_name=fn
+            user.set_password(password)
+            # user.first_name = fn# Use first name to send personalize email
+            # user.last_name = ln
+            # user.is_staff = staff
+            # user.is_active = active
+            # user.is_admin = admin
+            # user.date_joined.timezone.now()
+            user.save(using=self._db)
+            return user
+        raise ValidationError
 
     def create_staffuser(
-        self, email, password=None, first_name=None, **kwargs
-    ):  # last_name=None,
+        self, email, password=None, **kwargs
+    ):  # first_name=None, last_name=None,
         kwargs.setdefault("is_active", True)
+        kwargs.setdefault("is_admin", False)
         kwargs.setdefault("is_staff", True)
         if kwargs.get("is_active") is False:
             raise ValueError(_("Forgot active=True"))
         if kwargs.get("is_staff") is False:
             raise ValueError(_("Forgot staff=True"))
-        if kwargs.get("is_superuser") is False:
+        if kwargs.get("is_admin") is True:
             raise ValueError(_("Staff is not admin"))
         return self.create_user(email, password, first_name, **kwargs)
 
-    def create_superuser(self, email, password=None, first_name=None, **kwargs):
-        kwargs.setdefault("is_staff", True)
+    def create_admin(self, email, password=None, first_name=None, **kwargs):
         kwargs.setdefault("is_active", True)
-        kwargs.setdefault("is_superuser", True)
+        kwargs.setdefault("is_admin", True)
+        kwargs.setdefault("is_staff", True)
         if kwargs.get("is_active") is False:
             raise ValueError("Forgot to set is_active=True")
         if kwargs.get("is_staff") is False:
             raise ValueError("Forgot to set is_active=True")
-        if kwargs.get("is_superuser") is False:  # remove
-            raise ValueError("Forgot to set is_superuser=True")
+        if kwargs.get("is_admin") is False:  # remove
+            raise ValueError("Forgot to set is_admin=True")
         return self.create_user(email, password, first_name, **kwargs)
 
 
 def user_image_path(self, filename):
-    u = self.first_name + "-" + self.last_name
+    e = self.email
+    u = e[: e.index("@")] + code_gen(6)  # self.first_name + "-" + self.last_name
     return f"users/{u}/{filename}"
 
+    u = e[: e.index("@")]  # self.first_name + "-" + self.last_name
 
-def validate_email(e):
-    d = e[e.index("@") + 1 :]  # get email domain
-    with open("media/temp-emails.txt") as emails:
-        if d in emails.read():
-            raise ValidationError(
-                _("Temporary emails are not allowed.")  # ,
-                # params={"email": e},
-            )
+
+#     d = e[e.index("@") + 1 :]  # get email domain
+#     with open("media/temp-emails.txt") as emails:
+#         if d in emails.read():
+#             raise ValidationError(
+#                 _("Temporary emails are not allowed.")  # ,
+#                 # params={"email": e},
+#             )
 
 
 class CUser(AbstractBaseUser, PermissionsMixin):
@@ -125,8 +134,10 @@ class CUser(AbstractBaseUser, PermissionsMixin):
     # username = CharField(max_length=90, unique=True)
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
-    bio = HTMLField(_("Bio"), blank=False, null=True)
-    # img = models.FileField('Profile', upload_to=user_image_path, null=True, blank=True)
+    bio = HTMLField(_("Bio"), blank=True, null=True)
+    img = models.FileField(
+        _("Profile image"), upload_to=user_image_path, null=True, blank=True
+    )
     is_active = models.BooleanField(default=False)  # activation link
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -173,18 +184,18 @@ class CUser(AbstractBaseUser, PermissionsMixin):
         return True
 
     @property
-    def staff(self):
-        if self.is_admin:
-            return True
-        return self.is_staff
+    def active(self):
+        return self.is_active
 
     @property
     def admin(self):
         return self.is_admin
 
     @property
-    def active(self):
-        return self.is_active
+    def staff(self):
+        if self.is_admin:
+            return True
+        return self.is_staff
 
 
 class EmailActivationQuerySet(models.query.QuerySet):

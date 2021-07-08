@@ -1,12 +1,4 @@
 from django.contrib import admin
-
-# from django.contrib.admin.views.decorators import staff_member_required ## https://django-allauth-2fa.readthedocs.io/en/latest/installation/
-
-# # Ensure users go through the allauth workflow when logging into admin.
-# admin.site.login = staff_member_required(admin.site.login, login_url='/bmltZGEtbWdiLTI1Cg/login')#/accounts/login
-# # Run the standard admin set-up.
-# admin.autodiscover()
-
 from django.contrib.auth import get_user_model
 
 # from django.contrib.auth.models import Group
@@ -17,25 +9,36 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserAdminChangeForm, UserAdminCreationForm
 from .models import EmailActivation
 
+# from django.contrib.admin.views.decorators import staff_member_required ## https://django-allauth-2fa.readthedocs.io/en/latest/installation/
+
+# # Ensure users go through the allauth workflow when logging into admin.
+# admin.site.login = staff_member_required(admin.site.login, login_url='/bmltZGEtbWdiLTI1Cg/login')#/accounts/login
+# # Run the standard admin set-up.
+# admin.autodiscover()
+
+
 USER = get_user_model()
 
 
 class UserAdmin(BaseUserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
-    list_display = ("email", "is_superuser", "is_active", "is_staff", "date_joined")
-    list_filter = ("is_active", "is_superuser", "is_staff")
+    list_display = ("email", "is_active", "is_admin", "is_staff", "date_joined")
+    list_filter = ("is_active", "is_admin", "is_staff")
     fieldsets = (
         (None, {"fields": ("email", "first_name", "password", "currency")}),
-        ("Permissions", {"fields": ("is_active", "is_staff")}),  # 'is_superuser',
-        ("Personal", {"fields": ("bio",)}),
+        (
+            "Permissions",
+            {"fields": ("is_admin", "is_active", "is_staff")},
+        ),  # 'is_superuser',
+        ("Profile", {"fields": ("bio", "img")}),
     )
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = ((None, {"classes": ("wide",), "fields": ("email", "password")}),)
     # formfield_overrides = {
     #     USER.bio: {'widget': Textarea(attrs={'rows': 10, 'cols': 40})},
     # }
-    search_fields = ("email", "first_name")
+    search_fields = ("email",)  # geo
     ordering = ["-date_joined"]
     filter_horizontal = ()
 

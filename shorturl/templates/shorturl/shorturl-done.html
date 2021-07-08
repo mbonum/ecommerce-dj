@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n static %}
-{% block title %}{% if title %}{{ title }}{% else %}{% trans 'URL shortner' %}{% endif %}{% endblock %}
+{% block title %}{% if title %}{{ title }}{% else %}{% trans 'URL Shortner' %}{% endif %}{% endblock %}
 {% block content %}
 {% if request.user.is_authenticated %}
 <div class="max-w-xs mx-auto">
   <div class="font-c-sans mr-6">
     <div class="border-b border-gray-300 pb-2 mb-4">
-      <h1 class="text-lg">{% if title %}{{ title }}{% else %}{% trans 'Short URL created' %}{% endif %}</h1>
+      <h1 class="text-2xl">{% if title %}{{ title }}{% else %}{% trans 'Short URL created' %}{% endif %}</h1>
     </div>
-    <!-- <p>{{ object.url }}</p> -->
     <a class="un text-blue-600" href="{{ object.get_short_url }}">{{ object.get_short_url }}</a>
   </div>
 </div>
 {% endif %}
-{% endblock %}
+{% endblock %}{#<!-- <p>{ { object.url }}</p> -->#}

@@ -19,7 +19,7 @@
       <img loading="lazy" id="pic" src="{{ object.img.url }}" alt="{% trans 'Product detail' %}" class="border border-gray-300 rounded-xl shadow-md mx-auto">
     </div>
     {% else %}
-    <svg class="lg:w-28 lg:h-28 text-gray-400 fill-current mx-auto">
+    <svg class="text-gray-400 fill-current lg:w-28 lg:h-28 mx-auto">
       <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
     </svg>
     {% endif %}

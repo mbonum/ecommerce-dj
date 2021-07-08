@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 
-# from django.contrib.sitemaps.views import sitemap
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path  # , re_path
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import RedirectView, TemplateView
@@ -18,8 +18,9 @@ from django.views.decorators.csrf import csrf_exempt
 from accounts.views import LoginView, RegisterView
 from carts.views import cart_detail_api_view
 
-# # from essays.sitemaps import EssaySitemap GenerateEssayPDF,
-# # from essays.admin import essays_admin
+from essays.sitemaps import EssaySitemap  #  ,
+
+# from essays.admin import essays_admin# add separate CMS for authors
 
 # from marketing import urls as mktg_urls
 from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
@@ -35,20 +36,15 @@ from shorturl.views import ShortURLView, URLRedirectView
 # router.register(r'notes', NotesViewSet)
 # path('', include(router.urls)),
 
-# SITEMAPS = {
-#     'static': EssaySitemap,
-# }
+sitemaps = {
+    "essays": EssaySitemap,  # static
+}
 
 urlpatterns = [
-    # path(
-    #     "robots.txt",
-    #     TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
-    #     name="robots-txt",
-    # ),
-    path("captcha/", include("captcha.urls")),
     # https://pypi.org/project/drfpasswordless/
     path("", include("drfpasswordless.urls")),
     path("", include("home.urls", namespace="home")),
+    path("captcha/", include("captcha.urls")),
     # channels
     path(_("contact/"), include("chat.urls", namespace="chat")),
     # # create a separate CMS that only authors can access, schema=schema
@@ -86,6 +82,17 @@ urlpatterns = [
     path(
         "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"
     ),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+        name="robots-txt",
+    ),
     # path('', Subscribe.as_view(), name='subscribe'),
     # path('subscribe-api/', include(mktg_urls)),
     # #     # DL model
@@ -98,11 +105,12 @@ urlpatterns = [
     # #     # 64encode sitemaps.txt robot.xml
     # #     path('cm9ib3QueG1s0/', include('robots.urls')),
     # #     # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
-    # path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
     # # short urls
     # re_path(r"^c/(?P<shortcode>[\w-]+)/$", URLRedirectView.as_view(), name="clvmcode"),
-    # path("c/", ShortURLView.as_view(), name="clvmurl") # only for admin
+    path("c/", ShortURLView.as_view(), name="clvmurl"),  # only for admin
+    # fake admin
+    path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
 ]
 
 # urlpatterns += i18n_patterns()
@@ -111,9 +119,11 @@ if "rosetta" in settings.INSTALLED_APPS:
     urlpatterns.append(path("rosetta/", include("rosetta.urls")))  # += []
 
 try:
-    urlpatterns.append(path("bmltZGEtbWdiLTI1Cg/", include(admin.site.urls)))
+    urlpatterns.append(
+        path("bmltZGEtbWdiLTI1Cg/", include(admin.site.urls, namespace="admin"))
+    )
 except:
-    urlpatterns.append(path("bmltZGEtbWdiLTI1Cg/", admin.site.urls))
+    urlpatterns.append(path("bmltZGEtbWdiLTI1Cg/", admin.site.urls, name="admin"))
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

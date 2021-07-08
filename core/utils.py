@@ -17,10 +17,29 @@ from xhtml2pdf import pisa
 SHORTCODE_MIN = getattr(settings, "SHORTCODE_MIN", 6)
 
 
+# import re
+
+
+def find_string(filename, string: str):
+    f = open(filename, "r")
+    temp = False
+    if string in f.read():
+        temp = True
+    return temp
+    # w = raw_input("Input the English word: ")
+
+    # open the file using `with` context manager, it'll automatically close the file for you
+    # with open("temp-emails.txt") as f:
+    #     temp = False
+    #     for domain in f:  # iterate over the file one line at a time(memory efficient)
+    #         if re.search(f"\b{email}\b", line):
+    #             temp = True
+    #     if not found:
+    #         print("The translation cannot be found!")
+
+
 def code_gen(size=SHORTCODE_MIN, chars=string.ascii_lowercase + string.digits):
-    """
-    Shorturl
-    """
+    # Shorturl
     return "".join(random.choice(chars) for _ in range(size))
     # shortcut of a = '' for _ in range(): a += random.choice(chars) return a
 

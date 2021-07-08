@@ -1,17 +1,28 @@
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from analytics.models import ClickEvent
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+
+# from django.http import HttpResponseRedirect # Http404
+from django.shortcuts import redirect, render  # , get_object_or_404
+
+# from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
-from analytics.models import ClickEvent
 from .forms import SubmitURLForm
 from .models import ClUrl
 
 
-class ShortURLView(View):
+class ShortURLView(LoginRequiredMixin, View):
+    # permission_denied_message = _("You are not allowed here.")
     def get(self, request, *args, **kwargs):
-        form = SubmitURLForm()
-        context = {"title": "CLVM URL shortener", "form": form}
+        if request.user.is_authenticated:
+            if not request.user.is_admin or not request.user.is_staff:
+                raise PermissionDenied
+        else:
+            raise PermissionDenied
+        form = SubmitURLForm
+        context = {"title": "CLVM URL Shortener", "form": form}
         return render(request, "shorturl/shorturl.html", context)
 
     def post(self, request, *args, **kwargs):
@@ -43,4 +54,4 @@ class URLRedirectView(View):
             raise Http404
         obj = qs.first()
         print(ClickEvent.objects.create_event(obj))
-        return HttpResponseRedirect(obj.url)
+        return redirect(obj.url)  # HttpResponseRedirect

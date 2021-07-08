@@ -1,4 +1,5 @@
-# clavem
+# Clavem
+
 Commands to set up the Clavem platform.
 
 ## Instructions for running locally on Debian 10 with Python 3.9:
@@ -13,13 +14,14 @@ Commands to set up the Clavem platform.
 
 5. Run `pip-compile --output-file requirements.txt requirements.in && pip install -r requirements.txt`. This generates the requirements.txt file from the requirements.in file. If this doesn't work, try upgrading setuptools `pip install -U setuptools`.
 
-
-
 ## Start server:
+
 ./manage.py runserver
 
 ## Run tests:
+
 ./manage.py test
 
 ## Check for outdated root dependencies:
+
 python scripts/list_outdated.py

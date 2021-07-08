@@ -2,15 +2,12 @@
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3#, ReCaptchaV2Checkbox
 from captcha.fields import CaptchaField, CaptchaTextInput
+from django.contrib import messages
+from core.utils import find_string
 from disposable_email_checker.validators import validate_disposable_email
 from django import forms
 from django.conf import settings
-from django.contrib.auth import (
-    authenticate,
-    password_validation,
-    get_user_model,
-    login,
-)
+from django.contrib.auth import authenticate, get_user_model, login, password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.urls import reverse
@@ -43,10 +40,19 @@ class ReactivationEmailForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
+        if find_string("media/temp-emails.txt", email):
+            messages.error(
+                self.request, _("Please register with a non-disposable email")
+            )
+            raise ValidationError(
+                self.error_messages["invalid_login"], code="invalid_login"
+            )
         try:
             validate_disposable_email(email)
-        except ValidationError:
-            pass
+        except:  # ValidationError:
+            raise ValidationError(
+                self.error_messages["invalid_login"], code="invalid_login"
+            )
         qs = EmailActivation.objects.email_exists(email)
         if not qs.exists():
             register_link = reverse("register")
@@ -127,6 +133,8 @@ class UserAdminChangeForm(forms.ModelForm):
             "email",
             "password",
             "first_name",
+            "last_name",
+            "is_active",
             "is_active",
             "is_staff",
         )
@@ -135,7 +143,7 @@ class UserAdminChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-# birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'})) pikaday
+# birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'})) #pikaday
 
 
 class RegisterForm(forms.ModelForm):
@@ -185,12 +193,19 @@ class RegisterForm(forms.ModelForm):
         fields = ("email", "password")  # 'password2'(RegistrationForm.Meta)
 
     def save(self, commit=True):
-        # Save the password in hashed format
-        user = super(RegisterForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()  # [Errno 101] Network is unreachable
-        return user
+        # If email is not disposable, save the password in hashed format
+        request = self.request
+        email = self.cleaned_data.get("email")
+        if not find_string("media/temp-emails.txt", email):
+            user = super(RegisterForm, self).save(commit=False)
+            user.set_password(self.cleaned_data["password"])
+            if commit:
+                user.save()  # [Errno 101] Network is unreachable
+            return user
+        messages.error(self.request, _("Please register with a non-disposable email"))
+        raise ValidationError(
+            self.error_messages["invalid_login"], code="invalid_login"
+        )
 
     # def __init__(self, *args, **kwargs):
     #     super(RegisterForm, self).__init__(*args, **kwargs)
@@ -245,26 +260,17 @@ class LoginForm(forms.Form):
         request = self.request
         data = self.cleaned_data
         email = data.get("email")
-        try:
-            validate_disposable_email(email)
-        except:
-            raise ValidationError(
-                self.error_messages["invalid_login"], code="invalid_login"
-            )
-        #     raise ValidationError(
-        #         self.error_messages['password_mismatch'],
-        #         code='password_mismatch',
-        #     )
-        # password_validation.validate_password(password2, self.user)
         password = data.get("password")
         qs = USER.objects.filter(email=email)
         if qs.exists():
-            # user email is registered, check active
+            # email is registered check if active
             not_active = qs.filter(is_active=False)
             if not_active.exists():
                 # not active, check email activation
                 link = reverse("account:resend-activation")
-                reconfirm_ms = f'<a href="{link}">Resend confirmation email</a>.'
+                reconfirm_ms = (
+                    f'<a href="{link}">' + _("Resend confirmation email") + "</a>."
+                )
                 confirm_email = EmailActivation.objects.filter(email=email)
                 is_confirmable = confirm_email.confirmable().exists()
                 if is_confirmable:
@@ -280,7 +286,7 @@ class LoginForm(forms.Form):
                     msg2 = _("Email not confirmed. ") + reconfirm_ms
                     raise forms.ValidationError(mark_safe(msg2))
                 if not is_confirmable and not email_confirm_exists:
-                    raise forms.ValidationError(_("This email is inactive"))
+                    raise forms.ValidationError(_("This email has not been verified."))
         user = authenticate(request, email=email, password=password)
         if user is None:
             raise forms.ValidationError(_("Invalid credentials"))
@@ -294,6 +300,17 @@ class LoginForm(forms.Form):
         #     pass
         return data
 
+
+# if not find_string("media/temp-emails.txt", email):
+#     user = super(RegisterForm, self).save(commit=False)
+#     user.set_password(self.cleaned_data["password"])
+#     if commit:
+#         user.save()  # [Errno 101] Network is unreachable
+#     return user
+# messages.error(self.request, _("Please register with a non-disposable email"))
+# raise ValidationError(
+#     self.error_messages["invalid_login"], code="invalid_login"
+# )
 
 # class AuthenticationForm(forms.Form):
 #     """

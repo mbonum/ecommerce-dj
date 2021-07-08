@@ -18,16 +18,16 @@
       {% for object in object_list %}
       <tr class="border-b border-gray-300 text-center">
         <td scope="row" class="px-4 py-2 justify-around">
-          <a href="{{ object.get_absolute_url }}" class="un rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" target="_blank" rel="noopener"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
+          <a href="{{ object.get_absolute_url }}" class="block un rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" target="_blank" rel="noopener"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
           {% if object.img %}
           <div id="product-cart-tip" class="hidden">
-            <img class="w-64 h-64" src="{{ object.img.url }}" alt="Product Thumbnail">
+            <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="w-64 h-64">
           </div>
           {% endif %}
         </td>
         <td class="px-4 py-2 justify-around">
           {% for download in object.get_downloads %}
-          <a class="text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ download.get_download_url }}">
+          <a class="block text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ download.get_download_url }}">
             {% if 'A' in download.product_type %}
             <svg class="inline-flex w-8 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
             {% elif 'E' in object.product_type %}
@@ -45,6 +45,9 @@
     <p class="text-2xl inline-flex border-b border-gray-300 pb-4">{% trans "You haven't bought anything yet ._." %}</p>
   </div>
   {% endif %}
+  <div class="text-center mt-8">
+  {% include 'base/snippets/backbtn.html' with url=account_url %}
+  </div>
 </div>
 {% endblock %}
 {% comment %}<!--<input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex">

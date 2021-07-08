@@ -2,7 +2,6 @@
 # import requests
 # from django.http import Http404, HttpResponse
 from core.mixins import NextUrlMixin, RequestFormAttachMixin
-from disposable_email_checker.validators import validate_disposable_email
 
 # from core.utils import account_activation_token
 from django.contrib import messages
@@ -13,7 +12,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 # from django.contrib.auth.models import User
 # from django.utils.http import is_safe_url, urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ValidationError
 
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.core.mail import EmailMessage, send_mail
@@ -53,7 +51,7 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 class AccountEmailActivateView(FormMixin, View):
     # Send email when user creates an account SuccessMessageMixin
     success_url = reverse_lazy("login")  # "/login/"
-    form_class = ReactivationEmailForm()
+    form_class = ReactivationEmailForm
     key = None
 
     def get(self, request, key=None, *args, **kwargs):
@@ -71,7 +69,12 @@ class AccountEmailActivateView(FormMixin, View):
             activated_qs = qs.filter(activated=True)
             if activated_qs.exists():
                 reset_link = reverse("password_reset")
-                msg = f"Your email has already been confirmed. Do you need to <a href='{reset_link}'>reset your password</a>"
+                msg = (
+                    _("Your account has been activated. Do you need to")
+                    + f'<a href="{reset_link}">'
+                    + _("update your password?")
+                    + "</a>"
+                )  # Your email has already been confirmed
                 messages.success(request, mark_safe(msg))
                 return redirect("login")
         context = {"form": self.get_form(), "key": key}
@@ -85,13 +88,10 @@ class AccountEmailActivateView(FormMixin, View):
         return self.form_invalid(form)
 
     def form_valid(self, form):
-        msg = _("Activation link sent, please check your email.")
-        messages.success(self.request, msg)
+        messages.success(
+            self.request, _("Activation link sent, please check your email.")
+        )
         email = form.cleaned_data.get("email")
-        try:
-            validate_disposable_email(email)
-        except ValidationError:
-            pass
         obj = EmailActivation.objects.email_exists(email).first()
         usr = obj.user
         new_activation = EmailActivation.objects.create(user=usr, email=email)
@@ -119,10 +119,10 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("account:user-home")
 
 
-class LoginView(, NextUrlMixin, RequestFormAttachMixin, FormView):#SuccessMessageMixin
+class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):  # SuccessMessageMixin
     form_class = LoginForm
     template_name = "accounts/login.html"
-    # success_url = "/" # reverse_lazy("home") 
+    # success_url = "/" # reverse_lazy("home")
     # success_message = _("Welcome back")
 
     def form_valid(self, form):
@@ -138,13 +138,13 @@ class RegisterView(SuccessMessageMixin, CreateView):
     success_message = _(
         "Check your email and click on the link to activate your account."
     )
+
     def form_valid(self, form):
         human = True
         return redirect("login")
-    
-    # def form_invalid(self, form, **kwargs):
-        # invalid if email is temp -> compare domain with temp-email.txt
 
+    # def form_invalid(self, form, **kwargs):
+    # invalid if email is temp -> compare domain with temp-email.txt
 
     # def get_success_url(self):
     #     return self.get_next_url()
@@ -194,7 +194,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
     #     return redirect('your/redirect/url')
     # else:
     # context = {
-    #     'form': YourCrispyForm(),
+    #     'form': YourCrispyForm,
     #     'invalid_hcaptcha': messages.add_message(request, messages.INFO, 'Your message.')
     # }
 
@@ -233,7 +233,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
     #         email.send()
     #         return HttpResponse('Please confirm your email address to complete the registration')
     # else:
-    #     form = SignupForm()
+    #     form = SignupForm
     # return render(request, 'signup.html', {'form': form})
 
     # def activate(request, uidb64, token):

@@ -3,11 +3,11 @@
 {% block title %}{% trans 'Order' %} {{ object.order_id }}{% endblock %}
 {% block content %}
 {% if object %}
-<div class="font-c-sans max-w-sm mx-auto">
+<div class="font-c-sans text-lg max-w-sm mx-auto">
   <div class="text-center border-b border-gray-300 pb-3 mb-5">
-    <h1 class="text-lg font-semibold">{% trans 'Order' %} ID {{ object.order_id }}</h1>
+    <h1 class="text-2xl font-semibold">{% trans 'Order' %} ID: {{ object.order_id }}</h1>
     <a href="{{ object.get_invoice_url }}" class="inline-flex items-center hover:text-yellow-500 focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mt-1" target="_blank" rel="noopener">
-      {% trans 'Invoice' %} <svg class="w-5 h-6 fill-current ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+      {% trans 'Invoice' %} <svg class="fill-current w-5 h-6 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
     </a>
   </div>
   <div class="mx-auto space-y-2">
@@ -23,7 +23,9 @@
     <p>{% trans 'Order Status' %}: {{ object.get_status }}</p>
   </div>
 </div>
-{% include 'base/snippets/backbtn.html' with url=order_url id=object.slug %}
+<div class="text-center mt-8">
+  {% include 'base/snippets/backbtn.html' with url=order_url %}
+</div>
 {% endif %}
 {% endblock %}
-<!-- { % url 'order-pdf' order.order_id %} -->
+{#<!--  % url 'order-pdf' order.order_id % -->#}
