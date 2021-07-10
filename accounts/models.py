@@ -29,24 +29,24 @@ from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 
 # https://docs.djangoproject.com/en/3.2/topics/email/
-
-# NOQA too skip linter import check
 # send_mail(subject, message, from_email, recipient_list, html_message) random_string_generator,
 
 # DEFAULT_ACTIVATION_DAYS = getattr(settings, "DEFAULT_ACTIVATION_DAYS", 7)
 
 # CLVM = getattr(settings, "ENV_NAME", "Clavem")
 
-# CURRENCIES = [
-#     ('€', 'EUR'),
-#     ('$', 'USD'),
-#     # ('£', 'GBP'), Add crypto
-#     # ('$', 'CAD'),
-#     # ('$', 'AUS'),
-# ]
-class CurrencyType(models.TextChoices):
-    EUR = "€", _("EUR")
-    USD = "$", _("USD")
+CURRENCIES = [
+    ("€", "EUR"),
+    ("$", "USD"),
+    # ('£', 'GBP'), Add crypto
+    # ('$', 'CAD'),
+    # ('$', 'AUS'),
+]
+
+
+# class CurrencyType(models.TextChoices):
+#     EUR = "€", _("EUR")
+#     USD = "$", _("USD")
 
 
 class UserManager(BaseUserManager):
@@ -144,9 +144,8 @@ class CUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(
         _("Date joined"), auto_now_add=True
     )  # default=timezone.now
-    currency = models.CharField(
-        max_length=3, choices=CurrencyType.choices, default=CurrencyType.EUR
-    )
+    currency = models.CharField(max_length=3, choices=CURRENCIES, default="$")
+    # CurrencyType.choices, default=CurrencyType.EUR
     # confirm = models.BooleanField(default=False)blank=True, null=True,
     # confirmed_date = models.DateTimeField(auto_now_add=False)
 

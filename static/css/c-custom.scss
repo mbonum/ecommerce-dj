@@ -103,6 +103,11 @@ $maroon: #AC3833;// complementary 3833AC
 .font-c-serif { font-family: "Source", "Lora", "Tiempo", "Book Antiqua", "Palatino", serif; }/*"CMU Serif",  Fanwood Text, Georgia, Times New Roman, Times, serif "Libre Baskerville", "Palatino Linotype",  "Libre Franklin", "Gotham", sans-serif; */
 .font-c { font-family: "Latin", "Trajan", "Cinzel"; font-variant: small-caps;}
 
+input {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
 .sc { font-variant: small-caps;}
 
 #nojs, #nojsrl { display: none; }// noscript
@@ -125,7 +130,7 @@ $maroon: #AC3833;// complementary 3833AC
 //   content: "·";
 // }
 .arrowl:hover { padding-right: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
-.arrowr::hover { padding-left: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
+.arrowr:hover { padding-left: .2em; display: inline-block; transition: all .2s ease-in-out; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; }
 
 .expand:hover { transform: scale(0.9, 0.9); /* width: 18px; height: 18px; */ margin-left: .2em; /* margin-right: 0; */ margin-bottom: .26em; display: inline-block; transition: all .3s ease-in-out; -webkit-transition: all .3s ease-in-out; -moz-transition: all .3s ease-in-out; -o-transition: all .3s ease-in-out; }
 
@@ -151,6 +156,10 @@ $maroon: #AC3833;// complementary 3833AC
 // .r-180 { transition: all .7s; transform: rotate(0deg); -ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); }
 // .r-180:hover { transform: rotate(180deg); -ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); }
 // .r-180:focus { transform: rotate(180deg); -ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); }
+
+.scale-1 {
+  transform: scale(-1,1);
+}
 
 .un { display: inline-block;}
 .un::after {

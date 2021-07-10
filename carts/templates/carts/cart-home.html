@@ -43,9 +43,7 @@
               {% endfor %}
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-gray-600">
-              <svg class="r-180 fill-current h-4 w-4">
-                <use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use>
-              </svg>
+              <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
             </div>
           </div>
           {% endif %}
@@ -86,11 +84,12 @@
   </table>
   {% else %}
   <div class="text-center">
-    <p class="text-2xl inline-flex border-b border-gray-300 pb-4">{% trans 'Your cart is empty' %} ._.</p>
+    <p class="text-2xl my-6">{% trans 'Your cart is empty' %}</p>
+    <svg class="text-gray-700 fill-current h-32 w-32 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#sad"></use></svg>
   </div>
   {% endif %}
 </div>
 {% endblock %}
-{% comment %}<!-- multiply qty*price and update total
+{% comment %}<!--._. multiply qty*price and update total currency
 Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->
 {% endcomment %}

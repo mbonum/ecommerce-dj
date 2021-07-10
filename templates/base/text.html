@@ -110,14 +110,14 @@
       {% if request.user.email and essays_url in request.path %}
       <div class="hover:text-black border-l border-gray-300 hover:bg-gray-hover">
         <a href="{% url 'essays:pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2" target="_blank" rel="noopener">
-        <svg class="w-3 h-3 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
+        <svg class="fill-current w-3 h-3 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
         </a>
       </div>
       {% endif %}
       {% if next %}
       <div class="hover:text-black border-l border-gray-300 hover:bg-gray-hover">
         <a class="flex items-center rounded-lg focus:outline-none py-1 px-2" href="{{ next.get_absolute_url }}" data-tippy-content="{{ next.index }}. {{ next.title }}">{% trans 'Next' %}
-        <svg class="w-3 h-4 fill-current ml-1" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg></a>
+        <svg class="fill-current scale-1 w-3 h-4 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg></a>
       </div>
       {% endif %}
     </div>
@@ -226,7 +226,7 @@
       <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit" data-tippy-content="{% trans 'Are you adding value to the conversation?' %}">
         <div class="text-center text-lg inline-flex items-center space-x-1">
           <span>{% trans 'Share' %}</span>
-          <svg class="w-6 h-6 fill-current" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
+          <svg class="fill-current scale-1 w-6 h-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
         </div>
       </button>
     </form>
@@ -234,7 +234,7 @@
   {% else %}
   <div class="font-c-sans text-center">
     <p>{% trans 'Eager to share your thoughts?' %}</p>
-    <p><a href="{% url 'register' %}" class="text-blue-600 hover:text-blue-800 font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Sign Vp' %}</a> or <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="un font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2">{% trans 'Log in' %}</a></p>
+    <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="un font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 px-1 mx-1">{% trans 'Sign in' %}</a> or <a href="{{ register_url }}" class="text-blue-600 hover:text-blue-800 font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 px-1 mx-1">{% trans 'Sign Vp' %}</a></p>
   </div>
   {% endif %}
   {% endif %}
@@ -250,7 +250,7 @@
 {% block js %}
 {% if essays_url in request.path or edu_url in request.path %}
 {% include 'base/snippets/sharect.html' %}
-<script>
+<script type="text/javascript">
   var rt = document.getElementById('rtime').value;
   rt = Number(rt.match(/\d+/)[0]);
   rt += rt;
@@ -275,7 +275,7 @@ function replyBtn(id) {
         <textarea name="body" cols="30" rows="3" id="id_reply" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg py-2 px-3 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" spellcheck="true" type="text" required></textarea>\
         <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit">\
           <p class="text-center inline-flex items-center">{% trans "Reply" %}\
-          <svg class="w-6 h-6 fill-current ml-1" style="transform: scale(-1,1)"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
+          <svg class="fill-current scale-1 w-6 h-6 ml-1"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
           </p>\
         </button>\
       </form>\

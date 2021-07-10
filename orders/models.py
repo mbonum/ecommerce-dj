@@ -185,7 +185,7 @@ class Order(models.Model):
         cart_total = self.cart.total
         shipping_total = self.shipping_total
         new_total = fsum([cart_total, shipping_total])
-        formatted_total = format(new_total, ".2f")
+        formatted_total = format(new_total, ".2f")  # round(new_total, 2)
         self.total = formatted_total
         self.save()
         return new_total

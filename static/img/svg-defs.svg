@@ -46,4 +46,5 @@
 <symbol id="remove" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></symbol>
 <symbol id="add" viewBox="0 0 20 20"><g fill="currentColor" fill-rule="nonzero"><path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z"/><path d="m11 8.982 3.982-.07.035 2-4.017.07V15H9v-3.982l-3.982.07-.035-2L9 9.017V5h2v3.982z"/></g></symbol>
 <symbol id="content" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"><path d="M21 10H7M21 6H3M21 14H3M21 18H7"/></symbol>
+<symbol id="sad" viewBox="0 0 100 100" fill="none"><path d="M38.385 67.383a16.667 16.667 0 0 1 23.566 0M37.668 41.667h.042m24.958 0h.042M87.668 50a37.5 37.5 0 1 1-75.001 0 37.5 37.5 0 0 1 75.001 0z" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>

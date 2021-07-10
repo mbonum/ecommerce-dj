@@ -6,7 +6,7 @@
 </style>
 {% endblock %}
 {% block content %}
-<div class="inline-flex items-center space-x-12">
+<div class="inline-flex items-center space-x-6 md:space-x-12">
   <span>{% trans 'Doubleclick to Focus' %}</span>
   <div x-data="{ l: true }">
     <button class="inline-flex items-center rounded-full focus:outline-none space-x-2 hover:text-yellow-500 ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent py-1 px-2" data-tippy-content="{% trans 'Lux' %}" @click="l = !l" onclick="theme()">

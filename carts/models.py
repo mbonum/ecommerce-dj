@@ -64,9 +64,9 @@ class Cart(models.Model):
         subtot = self.product.price  # cents
         tax_rate = 0.12  # 12
         tax_tot = subtot * tax_rate
-        tax_tot = float("%.2f" % (tax_tot))
+        tax_tot = float("%.2f" % (tax_tot))  # round(eur_usd, 2)
         tot = subtot + tax_tot
-        tot = float("%.2f" % (tax_tot))
+        tot = float("%.2f" % (tax_tot))  # format(eur_usd, ".2f")
         totals = {"subtotal": subtot, "tax": tax_tot, "total": tot}
         for k, v in totals.items():
             setattr(self, k, v)

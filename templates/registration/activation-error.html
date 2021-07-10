@@ -7,7 +7,6 @@
     {% if key %}
     {% blocktranslate %}
     <p>We're sorry, an error has occured. Please reload the page.</p>
-    {#<!--<p>The team has been notified and will update you once the issue will be fixed.</p>-->#}
     <p>If the error persists please <a class="un text-gray-700 hover:text-black" href="{{ contact_url }}">contact us</a> and select feedback.</p>
     {% endblocktranslate %}
     {% else %}
@@ -21,4 +20,4 @@
     </form>
   </div>
 </div>
-{% endblock %}
+{% endblock %}{#<!--<p>The team has been notified and will update you once the issue will be fixed.</p>-->#}

@@ -3,6 +3,7 @@
 {% block title %}{% trans 'Sign Vp' %}{% endblock %}
 {% block content %}
 <div x-data="{ click: false }" class="mx-10 my-6">
+  <h1 class="text-2xl m-1">{% trans 'Sign Vp' %}</h1>
   <form method="post"> {% csrf_token %}
     <div class="mb-3">
       <label for="id_email" class="text-gray-700 m-1">{{ form.email.label }}</label>

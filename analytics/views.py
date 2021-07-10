@@ -8,9 +8,17 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, View
 from orders.models import Order
+from accounts.models import CURRENCIES  # , CurrencyType
+
+# from forex_python.converter import CurrencyRates
+# from currency_converter import CurrencyConverter
+
+# def exchange_rate():
+#     c = CurrencyRates()
+#     c.get_rate('EUR', 'USD')
 
 
-class SalesAjaxView(View):
+class SalesAjaxView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         data = {}
         if request.user.is_admin or request.user.is_staff:
@@ -77,4 +85,19 @@ class SalesView(LoginRequiredMixin, TemplateView):  # View
         context["last_four_weeks"] = qs.by_weeks_range(
             weeks_ago=5, number_of_weeks=4
         ).get_sales_breakdown()
+        context["currencies"] = CURRENCIES
+        print(CURRENCIES[1])  # CurrencyType.EUR)
         return context
+
+
+# pip install currencyconverter
+# co = CurrencyConverter()
+# print(co.convert(1, "EUR", "USD"))
+
+# forex-python
+# c = CurrencyRates()
+# eur_usd = float(c.get_rate("EUR", "USD"))
+# force_decimal=True c.get_symbol('EUR')
+# context["eur_usd"] = eur_usd  # round(eur_usd, 2)
+# format(eur_usd, ".2f")
+# float("%.2f" % (eur_usd))

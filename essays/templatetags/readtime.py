@@ -1,10 +1,10 @@
 # pip install readtime
-from django import template
+from django.template import Library
 import readtime
 
-register = template.Library()
+register = Library()
 
-
+# @register.filter()
 def read(html):
     return readtime.of_html(html)
 

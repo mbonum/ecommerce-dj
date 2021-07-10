@@ -1,37 +1,36 @@
 {% extends 'base.html' %}
-{% load i18n static %}
+{% load convert i18n static %}
 {% block title %}{% trans 'Revenues' %}{% endblock %}
-{#<!-- Add currency converter, company-default-currency * exchange rate -->#}
 {% block content %}
-<div class="font-c-sans text-lg max-w-lg mx-auto">
+<div x-data="{ cur: '1' }" class="font-c-sans text-lg max-w-lg mx-auto">
   <div class="flex justify-between">
     <h1 class="text-2xl font-semibold">📈 {% trans 'Revenue' %}</h1>
     <div class="inline-flex items-center space-x-2">
-    <label for="id_currency">{% trans 'Currency' %}</label>
-    <div class="relative">
-      <select name="currency" id="id_currency" class="rounded-xl shadow appearance-none w-full border border-gray-300 focus:border-yellow-500 bg-white focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 pr-5 py-1">
-        <option value="EUR">EUR</option>
-        {#<!--€ connect with xe for exchange rate <option value="USD">US$</option>-->#}
-      </select>
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1 text-gray-600">
-        <svg class="fill-current h-4 w-4">
-          <use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use>
-        </svg>
+      {#<!-- <input type="hidden" id="xr" value="{{ eur_usd }}"> -->#}
+      <label for="id_currency">{% trans 'Currency' %}</label>
+      <div class="relative">
+        <select @change="cur = $event.target.value" id="id_currency" name="cur" class="appearance-none bg-white rounded-xl shadow border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 pr-5 py-1">
+          {% for c in currencies %}
+          <option value="{{c.1}}" x-bind:value="{{forloop.counter}}">{{c.1}}</option>
+          {% endfor %}
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1 text-gray-600">
+          <svg class="fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
+        </div>
       </div>
     </div>
   </div>
-  </div>
   <div class="space-y-6">
+    {% if this_week.recent %}
     <div class="border-t border-gray-300 pt-3 mt-3">
       <h2 class="text-xl">{% trans 'Current week revenue' %}:
         <span class="bg-white border-2 border-yellow-300 rounded-xl px-2 py-1 ml-1">
-          {% include 'base/snippets/currency.html' %}
           {% if this_week.recent_data.total__sum %}
-          {{ this_week.recent_data.total__sum }}
+          <span x-show="cur === '1'">€{{ this_week.recent_data.total__sum }}</span>
+          <span x-show="cur === '2'">${{ this_week.recent_data.total__sum|convert }}</span>
           {% else %}0{% endif %}
         </span>
       </h2>
-      {% if this_week.recent %}
       <div x-data="{ open: false }">
         <div class="text-center font-c-sans my-6">
           <button @click="open=!open" class="bg-white border-2 border-yellow-300 shadow rounded-full focus:outline-none focus:ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-3 py-1" type="button">
@@ -55,41 +54,62 @@
           </thead>
           <tbody>
           {% for o in this_week.recent %}
-            <tr class="{% if not forloop.last %}border-b border-gray-300{% endif %}">
+            <tr{% if not forloop.last %} class="border-b border-gray-300"{% endif %}>
               <td>{{ o.order_id }}</td>
-              <td class="px-4">{% include 'base/snippets/currency.html' %}{{ o.total }}</td>
+              <td class="px-4">
+                <span x-show="cur === '1'">€{{ o.total }}</span>
+                <span x-show="cur === '2'">${{ o.total|convert }}</span>
+              </td>
               <td>{{ o.updated_at|date:'Y-m-d, G:i' }}</td>
             </tr>
           {% endfor %}
           </tbody>
         </table>
         <div class="bg-white rounded-xl border border-gray-400 shadow p-1">
-          <canvas class="render-saleschart" id="thisWeekSales" data-type='week' width="400" height="400"></canvas>
+          <canvas id="thisWeekSales" class="render-saleschart" data-type='week' width="400" height="400"></canvas>
         </div>
       </div>
-      {% endif %}
     </div>
-    <div class="border-t border-gray-300 space-y-2 pt-3 ml-1">
+    {% endif %}
+    <div class="border-t border-gray-300 pt-3 mt-3 ml-2">
       <h2 class="text-xl">{% trans 'Previous 4 weeks' %}</h2>
-      <p>{% trans 'Orders total' %}: {% include 'base/snippets/currency.html' %}
-        {% if last_four_weeks.recent_data.total__sum %}{{ last_four_weeks.recent_data.total__sum }}{% else %}0{% endif %}
+      <p>{% trans 'Orders total' %}:
+        {#<!-- % include 'base/snippets/currency.html' % -->#}
+        {% if last_four_weeks.recent_data.total__sum %}
+        <span x-show="cur === '1'">€{{ last_four_weeks.recent_data.total__sum }}</span>
+        <span x-show="cur === '2'">${{ last_four_weeks.recent_data.total__sum|convert }}</span>
+        {% else %}0{% endif %}
       </p>
-      <p>{% trans 'Shipped total' %}: {% include 'base/snippets/currency.html' %}
-        {% if last_four_weeks.shipped_data.total__sum %}{{ last_four_weeks.shipped_data.total__sum }}{% else %}0{% endif %}
+      <p>{% trans 'Shipped total' %}:
+        {% if last_four_weeks.shipped_data.total__sum %}
+        <span x-show="cur === '1'">€{{ last_four_weeks.shipped_data.total__sum }}</span>
+        <span x-show="cur === '2'">${{ last_four_weeks.shipped_data.total__sum|convert }}</span>
+        {% else %}0{% endif %}
       </p>
-      <p>{% trans 'Paid total' %}: <span class="bg-white border-2 border-yellow-300 rounded-xl px-2 py-1">{% include 'base/snippets/currency.html' %}
+      <p>{% trans 'Paid total' %}: <span class="bg-white border-2 border-yellow-300 rounded-xl px-2 py-1">
         {% if last_four_weeks.paid_data.total__sum %}
-        {{ last_four_weeks.paid_data.total__sum }}
+        <span x-show="cur === '1'">€{{ last_four_weeks.paid_data.total__sum }}</span>
+        <span x-show="cur === '2'">${{ last_four_weeks.paid_data.total__sum|convert }}</span>
         {% else %}0{% endif %}</span>
       </p>
     </div>
     <div class="bg-white rounded-xl border border-gray-400 shadow p-1">
-      <canvas class="render-saleschart" id="4weekSales" data-type="4weeks" width="400" height="400"></canvas>
+      <canvas id="4weekSales" class="render-saleschart" data-type="4weeks" width="400" height="400"></canvas>
     </div>
   </div>
 </div>
 {% endblock%}
-{% comment %}<!-- <div class="border-t border-gray-300 pt-3">
+{% comment %}<!--{% block js %}
+<script type="text/javascript">
+var xr = document.getElementById('xr').value,
+  c = document.getElementById('id_currency').value;
+// console.log(xr);
+// if (c == "USD"){
+//   // Get all the amounts * xr -> try templatetags
+// }
+</script>
+{% endblock%}
+ <div class="border-t border-gray-300 pt-3">
   <h2>{% trans "Revenue at" %} {% now 'Y-m-d' %}:
     {% include 'base/snippets/currency.html' %}{% if today.recent_data.total__sum %}{{ today.recent_data.total__sum }}{% else %}0{% endif %}
   </h2>
@@ -124,6 +144,4 @@
   </li>
   {% endfor %}
 </ul>
-&#x24; &#36; $ &#x20AC; &#8364; { % if user.currency == None or user.currency == '$' % }$ {{ last_four_weeks.paid_data.total__sum }}
-{% elif user.currency == '£' % }{{ user.currency }} {{ last_four_weeks.paid_data.total__sum }}
-{% elif user.currency == '€' % }{{ last_four_weeks.paid_data.total__sum }} {{ user.currency }}{% endif %}-->{% endcomment %}
+&#x24; &#36; $ &#x20AC; &#8364;-->{% endcomment %}

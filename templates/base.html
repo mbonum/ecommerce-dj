@@ -53,14 +53,14 @@
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
 <body class="bg-primary antialiased overflow-x-hidden">
-{#<!-- % analytical_body_top % -->#}
+{#<!-- % analytical_body_top % {% block sidebar %}{% endblock %}-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     {% include 'base/nav.html' %}
     <div class="mb-auto">
       {% block media %}{% endblock %}
-      <div class="max-w-xs md:max-w-sm lg:max-w-3xl xl:max-w-6xl mx-auto py-8 px-5 lg:px-0">
+      <div class="max-w-xs md:max-w-sm lg:max-w-3xl xl:max-w-6xl mx-auto py-8 px-3 md:px-0">
         {% include 'base/snippets/message.html' %}
-        {% block leftside %}{% endblock %}
+        
         {% block content %}{% endblock %}
       </div>
     </div>

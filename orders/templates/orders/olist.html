@@ -28,7 +28,8 @@
   </table>
   {% else %}
   <div class="text-center">
-    <p class="text-2xl inline-flex border-b border-gray-300 pb-4">{% trans 'No orders yet' %} ._.</p>
+    <p class="text-2xl my-6">{% trans 'No orders yet' %}</p>
+    <svg class="text-gray-700 fill-current h-32 w-32 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#sad"></use></svg>
   </div>
   {% endif %}
 </div>
