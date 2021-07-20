@@ -1,5 +1,5 @@
 """
-https://docs.djangoproject.com/en/3.1/howto/custom-management-commands/
+https://docs.djangoproject.com/en/3.2/howto/custom-management-commands/
 """
 
 from django.core.management.base import BaseCommand, CommandError

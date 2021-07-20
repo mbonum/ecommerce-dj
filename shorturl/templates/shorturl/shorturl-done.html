@@ -4,11 +4,11 @@
 {% block content %}
 {% if request.user.is_authenticated %}
 <div class="max-w-xs mx-auto">
-  <div class="font-c-sans mr-6">
-    <div class="border-b border-gray-300 pb-2 mb-4">
-      <h1 class="text-2xl">{% if title %}{{ title }}{% else %}{% trans 'Short URL created' %}{% endif %}</h1>
+  <div class="font-c-sans">
+    <div class="border-b border-gray-300 pb-2 mb-4 xl:mr-6">
+      <h1 class="text-2xl">{% if title %}{{ title }}{% else %}{% trans 'Short URL Created' %}{% endif %}</h1>
     </div>
-    <a class="un text-blue-600" href="{{ object.get_short_url }}">{{ object.get_short_url }}</a>
+    <a href="{{ object.get_short_url }}" class="block text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{{ object.get_short_url }}</a>
   </div>
 </div>
 {% endif %}

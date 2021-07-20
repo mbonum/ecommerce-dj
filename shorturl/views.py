@@ -2,8 +2,8 @@ from analytics.models import ClickEvent
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 
-# from django.http import HttpResponseRedirect # Http404
-from django.shortcuts import redirect, render  # , get_object_or_404
+from django.http import Http404  # HttpResponseRedirect
+from django.shortcuts import redirect, render, get_object_or_404
 
 # from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +14,7 @@ from .models import ClUrl
 
 
 class ShortURLView(LoginRequiredMixin, View):
-    # permission_denied_message = _("You are not allowed here.")
+    # permission_denied_message = _("You do not have enough access privileges.")
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if not request.user.is_admin or not request.user.is_staff:
@@ -27,15 +27,16 @@ class ShortURLView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = SubmitURLForm(request.POST)
-        context = {"title": "CLVM URL shortener", "form": form}
+        context = {"title": "CLVM URL Shortner", "form": form}
         template = "shorturl/shorturl.html"
         if form.is_valid():
             new_url = form.cleaned_data.get("url")
             obj, created = ClUrl.objects.get_or_create(url=new_url)
             # context = {"object": obj, "created": created}
+            print("##### ", obj)
             if created:
                 context = {
-                    "title": _("Short URL created"),
+                    "title": _("Short URL Created"),
                     "object": obj,
                     "created": created,
                 }
@@ -53,5 +54,5 @@ class URLRedirectView(View):
         if qs.count() != 1 and not qs.exists():
             raise Http404
         obj = qs.first()
-        print(ClickEvent.objects.create_event(obj))
+        ClickEvent.objects.create_event(obj)  # clicks
         return redirect(obj.url)  # HttpResponseRedirect

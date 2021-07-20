@@ -5,6 +5,7 @@ __pycache__
 docs/locale/
 node_modules/
 tests/report/
+clvm/
 emails/
 fixtures/
 media/

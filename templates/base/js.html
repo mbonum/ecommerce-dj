@@ -1,6 +1,5 @@
 {% load compress static %}
 <script rel="preload" type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-<script rel="preload" type="text/javascript" src="{% static 'js/chart-2.9.4.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'js/jsrender-1.0.11.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'js/marked.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'jq-confirm/jquery-confirm.min.js' %}"></script>
@@ -8,6 +7,9 @@
 <script rel="preload" type="text/javascript" src="{% static 'js/popper-2.9.1.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'cookieconsent/cookieconsent.min.js' %}"></script>
 <script rel="preload" type="text/javascript" src="{% static 'aos/aos.js' %}"></script>
+{% if sales_url in request.path %}
+<script rel="preload" type="text/javascript" src="{% static 'js/chart-2.9.4.min.js' %}"></script>
+{% endif %}
 {% if essays_url in request.path or edu_url in request.path %}
 <script rel="preload" type="text/javascript" src="{% static 'js/sharect-2.0.0.min.js' %}"></script>
 {% endif %}

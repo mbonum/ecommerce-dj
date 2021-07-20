@@ -9,13 +9,18 @@ class SubmitURLForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 # "placeholder": _("Original URL"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
             }
         ),
         validators=[validate_url],
     )
 
     # def clean(self):
+    #     url = self.cleaned_data.get("url")#cleaned_data["url"]
+    #     if "http" in url:
+    #         url = url.replace("http://www.", "")
+    #     return url
+
     #     cleaned_data = super(SubmitURLForm, self).clean()
     #     url = cleaned_data["url"]
 

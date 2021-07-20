@@ -35,13 +35,10 @@ from tinymce.models import HTMLField
 
 # CLVM = getattr(settings, "ENV_NAME", "Clavem")
 
-CURRENCIES = [
-    ("€", "EUR"),
-    ("$", "USD"),
-    # ('£', 'GBP'), Add crypto
-    # ('$', 'CAD'),
-    # ('$', 'AUS'),
-]
+CURRENCIES = [("€", "EUR"), ("$", "USD")]
+# ('£', 'GBP'), Add crypto
+# ('$', 'CAD'),
+# ('$', 'AUS'),
 
 
 # class CurrencyType(models.TextChoices):
@@ -127,7 +124,7 @@ class CUser(AbstractBaseUser, PermissionsMixin):
         unique=True,
         validators=[
             # EmailValidator(
-            #     whitelist=["protonmail", "tutanota", "gmail", "yahoo", "hotmail"]
+            #     whitelist=["protonmail", "tutanota", "gmail", "yahoo", "hotmail"]# what about less known valid domains? Better check whether the domain is in the disposable list which has to be weekly updated.
             # )
         ],
     )  # db_index=True

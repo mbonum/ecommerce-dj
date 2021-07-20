@@ -1,6 +1,9 @@
 {% load i18n %}
-{% trans 'Hi' %}{% if first_name %} {{ first_name }}{% endif %},
-{% trans 'We have received your email. We are going to contact you as soon as possible.' %}
+{% blocktranslate %}
+Hi{% if first_name %} {{ first_name }}{% endif %},
+We have received your email. We are going to contact you as soon as possible.
 
-{% trans 'Thank you' %}
+Thank you
+
 The {{ com }} team
+{% endblocktranslate %}

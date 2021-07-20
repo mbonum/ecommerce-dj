@@ -2,7 +2,7 @@
 {% load i18n static widget_tweaks %}
 {% block title %}{% trans 'Contact Vs' %}{% endblock %}
 {% block content %}
-<div class="max-w-sm mx-auto px-1">
+<div class="max-w-sm mx-auto">
   <div class="md:text-lg font-c-sans bg-footer rounded-xl border border-gray-300 shadow-md pt-5 pb-6 px-5 md:px-7">
     <form method="post"> {% csrf_token %}
       {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}

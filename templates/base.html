@@ -2,6 +2,7 @@
 {#<!-- analytical render_bundle from webpack_loader crispy_forms_tags -->#}
 {% now 'Y' as current_year %}
 {% now 'H' as current_hour %}
+{% url 'analytics:sales' as sales_url %}
 {% url 'home:home' as home_url %}
 {% url 'home:trademark' as mark_url %}
 {% url 'chat:contact' as contact_url %}
@@ -35,7 +36,7 @@
 {% url 'account:user-update' as usr_update_url %}
 {% url 'password_change' as psw_change_url %}
 {% url 'password_reset' as psw_reset_url %}
-{% url 'clvmurl' as short_url %}
+{% url 'clvm:curl' as short_url %}
 {% url 'newsletter:newsletter_subscribe_request' as newsletter_url %}
 
 {% with url='https://www.clavem.co' com='Clavem' why='why/' launched='May 30, 2021 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
@@ -53,12 +54,12 @@
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
 <body class="bg-primary antialiased overflow-x-hidden">
-{#<!-- % analytical_body_top % {% block sidebar %}{% endblock %}-->#}
+{#<!-- % analytical_body_top % {% block sidebar %}{% endblock %} px-3 md:px-0-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     {% include 'base/nav.html' %}
     <div class="mb-auto">
       {% block media %}{% endblock %}
-      <div class="max-w-xs md:max-w-sm lg:max-w-3xl xl:max-w-6xl mx-auto py-8 px-3 md:px-0">
+      <div class="max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-3xl xl:max-w-6xl mx-auto py-8">
         {% include 'base/snippets/message.html' %}
         
         {% block content %}{% endblock %}

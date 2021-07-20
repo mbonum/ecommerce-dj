@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from .schema import schema
 from accounts.views import LoginView, RegisterView
 from carts.views import cart_detail_api_view
-
+from core.views import robots_txt
 from essays.sitemaps import EssaySitemap  #  ,
 
 # from essays.admin import essays_admin# add separate CMS for authors
@@ -25,7 +25,7 @@ from essays.sitemaps import EssaySitemap  #  ,
 # from marketing import urls as mktg_urls
 from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
-from shorturl.views import ShortURLView, URLRedirectView
+# from shorturl.views import ShortURLView, URLRedirectView
 
 # # from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 # # from two_factor.urls import urlpatterns as tf_urls
@@ -82,17 +82,16 @@ urlpatterns = [
     path(
         "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"
     ),
+    path("clvm/", include("shorturl.urls", namespace="clvm")),
     path(
         "sitemap.xml",
         sitemap,
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
-    path(
-        "robots.txt",
-        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
-        name="robots-txt",
-    ),
+    path("robots.txt", robots_txt),
+    # Creating template/robots.txt
+    # TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots-txt",
     # path('', Subscribe.as_view(), name='subscribe'),
     # path('subscribe-api/', include(mktg_urls)),
     # #     # DL model
@@ -106,9 +105,7 @@ urlpatterns = [
     # #     path('cm9ib3QueG1s0/', include('robots.urls')),
     # #     # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
-    # # short urls
-    # re_path(r"^c/(?P<shortcode>[\w-]+)/$", URLRedirectView.as_view(), name="clvmcode"),
-    path("c/", ShortURLView.as_view(), name="clvmurl"),  # only for admin
+
     # fake admin
     path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
 ]

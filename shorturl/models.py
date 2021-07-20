@@ -1,9 +1,9 @@
-from core.utils import create_shortcode
 from django.conf import settings
-from django_hosts.resolvers import reverse
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django_hosts.resolvers import reverse
+# from analytics.models import ClickEvent
+from core.utils import create_shortcode
 from .validators import validate_url  # validate_dotcom_url,
 
 SHORTCODE_MAX = getattr(settings, "SHORTCODE_MAX", 7)
@@ -24,14 +24,14 @@ class ClUrlManager(models.Manager):
             q.shortcode = create_shortcode(q)
             q.save()
             new += 1
-        return f"New codes created {new}"
+        return _(f"New codes created {new}")
 
 
 class ClUrl(models.Model):
-    # id = models.AutoField(primary_key=True)
     url = models.CharField(
         max_length=240, validators=[validate_url]  # , validate_dotcom_url
     )
+    # clicks = models.ForeignKey()
     shortcode = models.CharField(max_length=SHORTCODE_MAX, unique=True, blank=True)
     # null=False
     active = models.BooleanField(default=True)
@@ -51,12 +51,15 @@ class ClUrl(models.Model):
     def save(self, *args, **kwargs):
         if self.shortcode is None or self.shortcode == "":
             self.shortcode = create_shortcode(self)
-        if not "https" in self.url:
-            self.url = "https://" + self.url
+        url = self.url
+        # if not "https" in url:
+        #     url = "https://" + url
+        # print("&&&&&&&& ", url)
         super(ClUrl, self).save(*args, **kwargs)
 
     def get_short_url(self):
         url_path = reverse(
-            "clvmcode", kwargs={"shortcode": self.shortcode}, host="www", scheme="http"
+            "clvm:code",
+            kwargs={"shortcode": self.shortcode},  # , host="www", scheme="http"
         )  # , port="8000"
         return url_path

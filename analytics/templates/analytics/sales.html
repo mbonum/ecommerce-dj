@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load convert i18n static %}
 {% block title %}{% trans 'Revenues' %}{% endblock %}
+{#<!-- <input type="hidden" id="xr" value="{{ eur_usd }}"> -->#}
 {% block content %}
 <div x-data="{ cur: '1' }" class="font-c-sans text-lg max-w-lg mx-auto">
   <div class="flex justify-between">
     <h1 class="text-2xl font-semibold">📈 {% trans 'Revenue' %}</h1>
     <div class="inline-flex items-center space-x-2">
-      {#<!-- <input type="hidden" id="xr" value="{{ eur_usd }}"> -->#}
       <label for="id_currency">{% trans 'Currency' %}</label>
       <div class="relative">
         <select @change="cur = $event.target.value" id="id_currency" name="cur" class="appearance-none bg-white rounded-xl shadow border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 pr-5 py-1">
@@ -74,7 +74,6 @@
     <div class="border-t border-gray-300 pt-3 mt-3 ml-2">
       <h2 class="text-xl">{% trans 'Previous 4 weeks' %}</h2>
       <p>{% trans 'Orders total' %}:
-        {#<!-- % include 'base/snippets/currency.html' % -->#}
         {% if last_four_weeks.recent_data.total__sum %}
         <span x-show="cur === '1'">€{{ last_four_weeks.recent_data.total__sum }}</span>
         <span x-show="cur === '2'">${{ last_four_weeks.recent_data.total__sum|convert }}</span>
@@ -100,6 +99,16 @@
 </div>
 {% endblock%}
 {% comment %}<!--{% block js %}
+  options: {
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: 'linear',
+        from: 1,
+        to: 0,
+        loop: true
+      }
+    },
 <script type="text/javascript">
 var xr = document.getElementById('xr').value,
   c = document.getElementById('id_currency').value;

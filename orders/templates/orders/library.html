@@ -27,7 +27,7 @@
         </td>
         <td class="px-4 py-2 justify-around">
           {% for download in object.get_downloads %}
-          <a class="block text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ download.get_download_url }}">
+          <a href="{{ download.get_download_url }}" class="block text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
             {% if 'A' in download.product_type %}
             <svg class="inline-flex w-8 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
             {% elif 'E' in object.product_type %}

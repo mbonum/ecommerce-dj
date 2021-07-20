@@ -1,8 +1,8 @@
 {% load i18n static %}
 <header :class="{ 'max-h-full': open === 'false' }" class="md:sticky top-0 z-40 bg-gray-a font-c-sans shadow-md">
-  <div x-data="{ open: false }" class="text-lg max-w-xs md:max-w-2xl lg:max-w-3xl xl:max-w-5xl mx-auto md:flex items-center justify-between text-gray-300 px-3 md:px-0 py-2">
+  <div x-data="{ open: false }" class="text-lg max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-3xl xl:max-w-6xl mx-auto md:flex items-center justify-between text-gray-300 px- md:px- my-2">
 
-    <div class="flex text-center justify-between mx-auto md:mx-0">
+    <div :class="{ 'pb-2': open == 'true' }" class="flex justify-between mx-auto md:mx-0 md:pb-0">
       <button @click="open=!open" class="hover:text-white focus:outline-none md:hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 p-1" type="button">
         <svg class="fill-current mx-auto w-4 h-4">
           <use x-show="open" xlink:href="{% static 'img/svg-defs.svg' %}#o"></use>
@@ -10,14 +10,14 @@
         </svg>
         <span hidden>{% trans 'Menu' %}</span>
       </button>
-      <a oncontextmenu="mark();" class="hover:text-white inline-flex items-center focus:outline-none overflow-hidden mx-auto" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
-        <svg class="fill-current w-40 h-10"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
+      <a oncontextmenu="mark();" class="hover:text-white inline-flex items-center focus:outline-none overflow-hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 mx-auto" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
+        <svg class="fill-current w-32 h-10"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
         <span hidden>{{ com }}</span>
       </a>
       {% include 'base/snippets/brandredirect.html' with url=request.url brand_url=brand_url %}
     </div>
 
-    <nav x-show="!open" class="overflow-hidden items-center block md:flex md:space-x-4 px-1 py-3 md:py-0">
+    <nav x-show="!open" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
     {% if essays_url in request.path or edu_url in request.path %}
       <a href="{{ edu_url }}" class="block hover:text-white md:rounded-xl focus:outline-none overflow-hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 border-b border-gray-600 md:border-none py-3 md:py-1 px-1 my-1{% if edu_url in request.path %} text-white font-semibold{% endif %}">{% trans 'Learn' %}</a>
     {% endif %}
@@ -43,27 +43,26 @@
       </div>
       {% endif %}
       {% if not 'search' in request.path %}
-      <div class="overflow-hidden py-2 my-1 md:py-1 md:my-0 md:mx-2">
+      <div class="overflow-hidden py-2 md:py-1 my-1 md:my-0 md:mx-2">
         <div class="block md:hidden xl:flex">{% include 'search/search-form.html' %}</div>
         <a href="{% url 'search:query' %}" class="hidden md:block xl:hidden rounded-xl border-2 items-center focus:outline-none overflow-hidden border-gray-400 hover:border-white hover:text-white focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 pl-1 pr-2">
           <svg class="fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#search"></use></svg><span hidden>{% trans 'Search' %}</span>
         </a>
       </div>
       {% endif %}
-      <div class="md:space-x-4 border-t border-gray-600 md:border-none pt-2 md:pt-0 md:mt-0 mt-1">
-        <div class="flex items-center justify-between">
-        {% if request.user.is_authenticated %}
-        <a href="{{ logout_url }}" class="rounded-xl overflow-hidden hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-2 md:py-1 px-1 md:px-2 my-1 md:mr-3">{% trans 'Sign out' %}</a>
+      <div class="md:space-x- lg:space-x-2 border-t border-gray-600 md:border-none pt-2 md:pt-0 my-1 md:my-0 flex items-center justify-between">
+      {% if request.user.is_authenticated %}
+        <a href="{{ logout_url }}" class="md:rounded-xl overflow-hidden hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 m y-2 lg:py-1 lg:mx-2 px-1 md:px-0 lg:px-2 md:mr-3">{% trans 'Sign out' %}</a>
 {#<!--<svg class="ml-2 w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#out"></use></svg>-->#}
-        <a href="{{ account_url }}" class="inline-flex rounded-xl border-2 border-gray-300 hover:border-white items-center hover:text-white focus:outline-none overflow-hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 p-2 md:py-1"{% if request.user.first_name %} data-tippy-content="{% trans 'Account of' %} {{ request.user.first_name }}"{% endif %}>
+        <a href="{{ account_url }}" class="inline-flex md:rounded-xl border-2 border-gray-300 hover:border-white items-center hover:text-white focus:outline-none overflow-hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1"{% if request.user.first_name %} data-tippy-content="{% trans 'Account of' %} {{ request.user.first_name }}"{% endif %}>
           <svg class="fill-current w-5 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#set"></use></svg>
           <span>{% trans 'Account' %}</span>
         </a>
         {% elif request.path != checkout_url %}
-        <a href="{{ login_url }}" class="rounded-xl overflow-hidden hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-2 md:py-1 px-1 md:px-2 my-1 md:mr-3">{% trans 'Sign in' %}</a>
+        <a href="{{ login_url }}" class="rounded-xl overflow-hidden hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 my-2 md:my-1 mx- lg:mx- md:mr-3">{% trans 'Sign in' %}</a>
         <a href="{{ register_url }}" class="bg-gradient-to-tr hover:to-gray-400 hover:via-gray-800 hover:from-black border-2 rounded-xl text-gray-100 hover:text-white border-gray-400 hover:border-white items-center focus:outline-none overflow-hidden focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1">{% trans 'Sign Vp' %}</a>
 {#<!--<svg class="w-4 h-4 text-gray-200 fill-current hidden xl:inline-block ml-2"> <use xlink:href="{% static 'img/svg-defs.svg' %}#signup"></use></svg>-->#}
-        {% endif %}
+      {% endif %}
       </div>
     </nav>
   </div>

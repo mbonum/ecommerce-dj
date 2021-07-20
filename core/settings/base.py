@@ -23,8 +23,8 @@ DEFAULT_CHARSET = "utf-8"
 VERSION = 1
 
 ENV_NAME = "Clavem"
-BASE_URL = "http://www.clavem.co:8000"
-# http://www. mgbonum.com
+BASE_URL = "www.clavem.co:8000"
+#http://www. mgbonum.com
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 PROJECT_DIR = Path(__file__).resolve(strict=True)

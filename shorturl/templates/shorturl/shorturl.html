@@ -10,7 +10,7 @@
   <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     <label for="id_url" class="text-gray-700 m-1">{{ form.url.label }}</label>
     {{ form.url }}
-    <input type="submit" value="{% trans 'Shorthen' %}" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1 mt-6">
+    <input type="submit" value="{% trans 'Shorthen' %}" class="w-full cursor-pointer bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1 mt-6">
   </form>
 {% else %}
   <div>

@@ -167,8 +167,7 @@ input {
   width: 0px;
   height: 1px;
   display: block;
-  // background: rgba(55, 55, 55, .9);
-  background: $nav;//$marzipan;//#30e8bf
+  background: $nav;//$marzipan;//#30e8bf rgba(55, 55, 55, .9);
     background: -webkit-linear-gradient(to right, $nav, $gray-hover);//$selection-color
     background: linear-gradient(to right, $nav, $gray-hover);//#ff8235
   transition: 300ms;
