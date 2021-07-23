@@ -28,8 +28,8 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DetailView, FormView, UpdateView, View
 from django.views.generic.edit import FormMixin
 
-from .forms import LoginForm, ReactivationEmailForm, RegisterForm, UserDetailChangeForm
-from .models import EmailActivation
+from .forms import LoginForm, ReactivationEmailForm, RegisterForm, UserDetailUpdateForm
+from .models import CUser, EmailActivation
 
 # RECAPTCHAV3_SECRET = getattr('RECAPTCHAV3_SECRET')
 # CAPTCHA_SECRET = getattr('CAPTCHA_SECRET')VERIFY_URL = settings('VERIFY_URL', 'https://hcaptcha.com/siteverify')
@@ -102,21 +102,57 @@ class AccountEmailActivateView(FormMixin, View):
         context = {"form": form, "key": self.key}
         return render(self.request, "registration/activation-error.html", context)
 
+# from .forms import UserUpdateForm,ProfileUpdateForm
+# @login_required
+# def profile(request):
+#     if request.method == 'POST':
+#         p_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
+#         u_form = UserUpdateForm(request.POST,instance=request.user)
+#         if p_form.is_valid() and u_form.is_valid():
+#             u_form.save()
+#             p_form.save()
+#             messages.success(request,'Your Profile has been updated!')
+#             return redirect('profile')
+#     else:
+#         p_form = ProfileUpdateForm(instance=request.user)
+#         u_form = UserUpdateForm(instance=request.user.profile)
+
+#     context={'p_form': p_form, 'u_form': u_form}
+#     return render(request, 'users/profile.html',context )
+
 
 class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "accounts/edit-profile.html"
-    form_class = UserDetailChangeForm
+    form_class = UserDetailUpdateForm
 
     def get_object(self):
         return self.request.user
 
     def get_context_data(self, *args, **kwargs):
         context = super(UserDetailUpdateView, self).get_context_data(*args, **kwargs)
-        context["title"] = _("Edit Profile")  # Account Details
+        context["title"] = _("Edit Profile")  # Personilize Account Details
+        context["img"] =  self.request.user.img
+        if self.request.user.first_name:
+            context["fn"] =  self.request.user.first_name
+        else:
+            context["usr"] =  self.request.user.get_usrname
         return context
 
+    def form_valid(self, form):
+        messages.success(
+            self.request, _("Account Updated")
+        )
+        img = self.request.FILES#form.cleaned_data.get("img")
+        first_name = form.cleaned_data.get("first_name")# None
+        last_name = form.cleaned_data.get("last_name")
+        usr = CUser.objects.get(email=self.request.user)
+        usr.img = img
+        usr.first_name = first_name
+        usr.last_name = last_name
+        return super(UserDetailUpdateView, self).form_valid(form)
+
     def get_success_url(self):
-        return reverse("account:user-home")
+        return reverse("account:user-update")
 
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):  # SuccessMessageMixin

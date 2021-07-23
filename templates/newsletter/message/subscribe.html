@@ -7,13 +7,13 @@
   </title>
 </head>
 <body>
-  {% blocktranslate with name=subscription.name|default:_('Mr/Ms') title=newsletter.title domain=site.domain url=subscription.subscribe_activate_url %}Dear
+  {% blocktranslate with name=subscription.name|default:_('Mr/Ms') title=newsletter.title url=subscription.subscribe_activate_url %}Dear
   {{ name }},
 
   you, or someone in your name requested a subscription to {{ title }}.
 
   If you would like to confirm your subscription, please follow this activation link:
-  https://{{ domain }}{{ url }}
+  https://{{ site.domain }}{{ url }}
 
   Kind regards,{% endblocktranslate %}
   {{ newsletter.sender }}

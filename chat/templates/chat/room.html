@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n static widget_tweaks %}
-{% block title %}{% trans 'Contact' %}{% endblock %}
+{% block title %}{% trans 'Chat' %}{% endblock %}
 {% block content %}
 <div class="font-c-sans text-lg max-w-sm mx-auto">
   {% if texts %}
@@ -57,7 +57,7 @@ $(document).ready(function () {
 });
 </script>
 {% endblock %}
-{% comment %}<!--//  $.alert method="post" // scrollToBottom(); button style="max-height: 200px; overflow-y: scroll;"
+{% comment %}<!--// add usr img $.alert method="post" // scrollToBottom(); button style="max-height: 200px; overflow-y: scroll;"
 chatSocket.onclose = function(e) {console.log('close')}
 // document.querySelector('.chat_text').innerHTML += ('<div class="w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-lg shadow py-2 px-3"><p><b>' + data.username + '</b>: ' + data.text + '</p></div>');function scrollToBottom() {
   let objDiv = document.getElementsByClassName('chat_text');

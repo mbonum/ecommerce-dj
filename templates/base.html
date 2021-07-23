@@ -37,10 +37,13 @@
 {% url 'password_change' as psw_change_url %}
 {% url 'password_reset' as psw_reset_url %}
 {% url 'clvm:curl' as short_url %}
-{% url 'newsletter:newsletter_subscribe_request' as newsletter_url %}
+{#<!-- url 'newsletter:newsletter_subscribe_request' as newsletter -->#}
 
-{% with url='https://www.clavem.co' com='Clavem' why='why/' launched='May 30, 2021 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
-{#<!-- recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' request.url :class="{ { error ? 'text-red-600' : 'text-green-600' }}" address_btc='btc_wallet' address_eth='eth_wallet' yt_url='https://www.youtube.com/channel/' fb_url='https://facebook.com/clavem' ig_url='https://instagram.com/clavem' -->#}
+{% with url='https://www.clavem.co' com='Clavem' why='why/' newsletter='/newsletter/clavem-news/subscribe/' launched='May 30, 2021 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
+{% comment %}<!-- request.scheme # http or https
+ equest.META['HTTP_HOST'] # example.com
+request.path # /some/content/
+/newsletter/[NAME-OF-NEWSLETTER]/subscribe/ recaptchav3='6LcicwYaAAAAAKyAuNUO8ZJK_epWL5dzZdyoDdnS' request.url :class="{ { error ? 'text-red-600' : 'text-green-600' }}" address_btc='btc_wallet' address_eth='eth_wallet' yt_url='https://www.youtube.com/channel/' fb_url='https://facebook.com/clavem' ig_url='https://instagram.com/clavem' -->{% endcomment %}
 {% spaceless %}
 {% autoescape off %}
 <!DOCTYPE html>
@@ -54,22 +57,19 @@
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
 <body class="bg-primary antialiased overflow-x-hidden">
-{#<!-- % analytical_body_top % {% block sidebar %}{% endblock %} px-3 md:px-0-->#}
+{#<!-- % analytical_body_top % {% block sidebar %}{% endblock %}-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     {% include 'base/nav.html' %}
     <div class="mb-auto">
       {% block media %}{% endblock %}
       <div class="max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-3xl xl:max-w-6xl mx-auto py-8">
         {% include 'base/snippets/message.html' %}
-        
         {% block content %}{% endblock %}
       </div>
     </div>
     <input type="hidden" name="y" id="y" value="{{ current_year }}">
     <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
-    <div class="font-c-sans bg-footer border-t border-gray-300 hover:shadow-inner pt-6 px-3 pb-4">
-      {% include 'base/footer.html' %}
-    </div>
+    {% include 'base/footer.html' %}
   </div>
   {% include 'base/noscript.html' %}
   {% include 'base/js.html' %}

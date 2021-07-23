@@ -1,69 +1,66 @@
 $(document).ready(function () {
-  var contactForm = $(".contact-form"),
-    contactFormMethod = contactForm.attr("method"),
-    contactFormEndpoint = contactForm.attr("action");
-  function displaySubmitting(submitBtn, defaultText, doSubmit) {
-    if (doSubmit) {
-      submitBtn.addClass("disabled");
-      submitBtn.html(`<svg class="animate-spin" viewBox="0 0 80 80"><path d="M40,72C22.4,72,8,57.6,8,40C8,22.4, 22.4,8,40,8c17.6,0,32,14.4,32,32c0,1.1-0.9,2-2,2 s-2-0.9-2-2c0-15.4-12.6-28-28-28S12,24.6,12,40s12.6, 28,28,28c1.1,0,2,0.9,2,2S41.1,72,40,72z"></path></svg>`);
-    } else {// xml:space="preserve" aria-hidden="true" w-4 h-4 text-gray-700 fill-current mr-2 Sending...<animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="0.8s" repeatCount="indefinite"/>
-      submitBtn.removeClass("disabled");
-      submitBtn.html(defaultText);
-    }
-  }
-  contactForm.submit(function (e) {
-    e.preventDefault();
-    var contactFormSubmitBtn = contactForm.find("[type='submit']"),
-      contactFormSubmitBtnTxt = contactFormSubmitBtn.text(),
-      contactFormData = contactForm.serialize(),
-      thisForm = $(this);
-    displaySubmitting(contactFormSubmitBtn, "", true)
-    $.ajax({
-      url: contactFormEndpoint,
-      method: contactFormMethod,
-      data: contactFormData,
-      success: function (_data) {
-        thisForm[0].reset();
-        $.alert({
-          title: "Thank you!",
-          content: "We're going to answer you as soon as we can.",// data.message
-          theme: "modern",
-        });
-        setTimeout(function () {
-          displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false);
-        }, 2000);
-      },
-      error: function (error) {
-        var jsonData = error.responseJSON,
-          msg = "";
-        $.each(jsonData, function (key, value) {// key, value array index / object
-          msg += key + ": " + value[0].message + "<br/>";
-        });
-        $.alert({
-          title: "Apologies, try to reload the page",
-          content: msg,
-          theme: "modern",
-        });
-        setTimeout(function () {
-          displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false);
-        }, 500);
-      }
-    });
-  });
+  // var contactForm = $(".contact-form"),// add chat
+  //   contactFormMethod = contactForm.attr("method"),
+  //   contactFormEndpoint = contactForm.attr("action");
+  // function displaySubmitting(submitBtn, defaultText, doSubmit) {
+  //   if (doSubmit) {
+  //     submitBtn.addClass("disabled");
+  //     submitBtn.html(`<svg class="animate-spin" viewBox="0 0 80 80"><path d="M40,72C22.4,72,8,57.6,8,40C8,22.4, 22.4,8,40,8c17.6,0,32,14.4,32,32c0,1.1-0.9,2-2,2 s-2-0.9-2-2c0-15.4-12.6-28-28-28S12,24.6,12,40s12.6, 28,28,28c1.1,0,2,0.9,2,2S41.1,72,40,72z"></path></svg>`);
+  //   } else {// xml:space="preserve" aria-hidden="true" w-4 h-4 text-gray-700 fill-current mr-2 Sending...<animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="0.8s" repeatCount="indefinite"/>
+  //     submitBtn.removeClass("disabled");
+  //     submitBtn.html(defaultText);
+  //   }
+  // }
+  // contactForm.submit(function (e) {
+  //   e.preventDefault();
+  //   var contactFormSubmitBtn = contactForm.find("[type='submit']"),
+  //     contactFormSubmitBtnTxt = contactFormSubmitBtn.text(),
+  //     contactFormData = contactForm.serialize(),
+  //     thisForm = $(this);
+  //   displaySubmitting(contactFormSubmitBtn, "", true)
+  //   $.ajax({
+  //     url: contactFormEndpoint,
+  //     method: contactFormMethod,
+  //     data: contactFormData,
+  //     success: function (_data) {
+  //       thisForm[0].reset();
+  //       $.alert({
+  //         title: "Thank you!",
+  //         content: "We're going to answer you as soon as we can.",// data.message
+  //         theme: "modern",
+  //       });
+  //       setTimeout(function () {
+  //         displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false);
+  //       }, 2000);
+  //     },
+  //     error: function (error) {
+  //       var jsonData = error.responseJSON,
+  //         msg = "";
+  //       $.each(jsonData, function (key, value) {// key, value array index / object
+  //         msg += key + ": " + value[0].message + "<br/>";
+  //       });
+  //       $.alert({
+  //         title: "Apologies, try to reload the page",
+  //         content: msg,
+  //         theme: "modern",
+  //       });
+  //       setTimeout(function () {
+  //         displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false);
+  //       }, 500);
+  //     }
+  //   });
+  // });
   // Auto Search
   var searchForm = $(".search-form"),
     searchInput = searchForm.find("[name='q']"),// input name='q'
     typingTimer,
     typingInterval = 500,
     searchBtn = searchForm.find("[type='submit']");
-
-  searchInput.keyup(function (e) {
-    // key released
+  searchInput.keyup(function (e) {// key released
     clearTimeout(typingTimer);
     typingTimer = setTimeout(performSearch, typingInterval);
   })
-  searchInput.keydown(function (e) {
-    // key pressed
+  searchInput.keydown(function (e) {// key pressed
     clearTimeout(typingTimer);
   })
   function displaySearching() {
@@ -79,7 +76,6 @@ $(document).ready(function () {
   }
   // Cart + add products
   var productForm = $(".form-product-ajax");
-
   function getOwnedProduct(productId, submitSpan) {
     var actionEndpoint = "/orders/endpoint/verify/ownership/",
       httpMethod = "GET",
@@ -168,12 +164,13 @@ $(document).ready(function () {
       method: refreshCartMethod,
       data: data,
       success: function (data) {
-        var hiddenCartItemRemoveForm = $(".cart-item-remove-form")
+        var hiddenCartItemRemoveForm = $(".cart-item-remove-form");
         if (data.products.length > 0) {
           productRows.html(" ");
           i = data.products.length;
-          // var qty = $('#qty option:selected').text();
-          var currency = data.currency;
+          var qty = $('#qty option:selected').text(),
+            currency = data.currency;
+          console.log(qty);
           if (currency == "USD") { currency = "$" } else { currency = "€" }
           $.each(data.products, function (_index, value) {
             var newCartItemRemove = hiddenCartItemRemoveForm.clone();

@@ -1,10 +1,10 @@
 {% load i18n static %}
+<div class="font-c-sans bg-footer border-t border-gray-300 hover:shadow-inner py-5">
 <div class="text-lg max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-3xl xl:max-w-6xl mx-auto">
-  <div class="block md:flex text-gray-800 md:mt-1">
-    <div class="md:w-1/3 text-center md:space-y-5">
-      <div class="border-b border-yellow-100 md:border-none py-1 md:py-0">
-        <div class="inline-flex">
-        <a href="{{ essays_url }}{{ why }}" id="rem" class="block un overflow-hidden hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1">{% trans 'Purpose' %}</a></div>
+  <div class="block md:flex text-gray-800">
+    <div class="md:w-1/3 text-center md:space-y-4">
+      <div class="border-b border-yellow-100 md:border-none">
+        <div class="inline-flex"><a href="{{ essays_url }}{{ why }}" id="rem" class="block un overflow-hidden hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1">{% trans 'Purpose' %}</a></div>
         <div id="p-tip" class="hidden">
           <div class="p-2">
             <h1 class="text-center font-semibold pb-1">{% blocktranslate %}{{ com }} Oath</h1>
@@ -14,55 +14,51 @@
         </div>
       </div>
       <div class="border-b border-yellow-100 md:border-none">
-        <div class="inline-flex">
-        <a href="{{ team_url }}" class="block un overflow-hidden items-center hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1" data-tippy-content="{% trans 'Who we are' %}">C-Team</a>{#<!-- data-aos="fade-in" and shareholders<svg class="w-4 h-3 fill-current ml-2"><use xlink:href="{ % static 'img/svg-defs.svg' %}#team"></use></svg> data-tippy-content="📧 {% trans 'Email us' %}"-->#}</div>
+        <div class="inline-flex"><a href="{{ team_url }}" class="block un overflow-hidden items-center hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1" data-tippy-content="{% trans 'Who we are' %}">C-Team</a></div>
       </div>
     </div>
-    <div class="md:w-1/3 md:border-l md:border-r border-yellow-100 text-center">
+    <div class="md:w-1/3 md:border-l md:border-r border-yellow-100 text-center md:space-y-4">
       <div class="border-b border-yellow-100 md:border-none">
-        <div class="inline-flex">
-        <a href="{{ contact_url }}" class="block un overflow-hidden items-center hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1">{% trans 'Contact us' %}</a></div>
+        <div class="inline-flex"><a href="{{ contact_url }}" class="block un overflow-hidden items-center hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1">{% trans 'Contact us' %}</a></div>
       </div>
-      <div class="border-b border-yellow-100 md:border-none overflow-hidden">
+      <div class="border-b border-yellow-100 md:border-none overflow-hidden py-3 md:py-1">
       {% if not request.user.email %}
-        <form method="post" action="{{ newsletter_url }}" enctype="multipart/form-data" class="text-right text-base mx-1 md:mx-0 lg:mx-1 my-5"> {% csrf_token %}{#<!-- /newsletter/clavem-letter/subscribe/ Stay in the Know clavem newsletter url Spam Subscribe to Clavem's newsletter Get Updates ❤️-->#}
-          <label for="id_email_field" hidden>{% trans 'Subscribe' %}</label>
-          <input id="id_email_field" class="md:w-auto md:inline-flex border xl:rounded-l-lg border-gray-300 focus:border-yellow-500 hover:border-yellow-500 placeholder-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Your email' %}" type="email" name="email_field" required="false">
-          <button id="id_submit" name="submit" type="submit" value="subscribe" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 xl:rounded-r-lg border border-yellow-400 hover:border-yellow-500 focus:outline-none py-1 px-3" data-tippy-content="{% trans 'Frugal in words, rich in meaning' %}">{% trans 'Get Vpdates' %}
+        <form enctype="multipart/form-data" method="post" action="{{ newsletter }}" class="text-right text-base mx-1 md:mx-0 lg:mx-1"> {% csrf_token %}
+          <label for="id_email_field" hidden>{% trans 'Email' %}</label>
+          <input id="id_email_field" type="email" name="email_field" required="false" class="md:w-auto md:inline-flex border xl:rounded-l-lg border-gray-300 focus:border-yellow-500 hover:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Email' %}">
+          <button id="id_submit" name="submit" type="submit" value="Get Vpdates" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 xl:rounded-r-lg border border-yellow-400 hover:border-yellow-500 focus:outline-none py-1 px-3" data-tippy-content="{% trans 'Frugal in words, rich in meaning' %}">{% trans 'Get Vpdates' %}
             <svg class="fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#dm"></use></svg>
           </button>
         </form>
         {% else %}
-        <a href="{{ privacy_url }}" class="block md:inline-flex un hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1" data-tippy-content="Privacy, Terms, Cookies">{% trans 'Policies' %}</a>
+        <div class="inline-flex"><a href="{{ privacy_url }}" class="block un overflow-hidden items-center hover:text-black md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 md:py-1 md:px-1" data-tippy-content="Privacy, Terms, Cookies">{% trans 'Policies' %}</a></div>
       {% endif %}
       </div>
     </div>
     <div class="md:w-1/3 mx-auto text-center md:space-y-5">
       <div class="border-b border-yellow-100 md:border-none overflow-hidden">
       {% if shop_url in request.path or request.path == cart_url %}
-        <div class="my-5">
+        <div class="py-5 md:py-1 md:mb-2">
           <picture data-tippy-content="{% trans 'Payment methods' %}">
             <source srcset="{% static 'img/cc.webp' %}" type="image/webp">
             <img src="{% static 'img/cc.png' %}" alt="{% trans 'Payment methods' %}" class="h-6 w-40 md:w-44 mx-auto">
           </picture>
         </div>
       {% else %}
-        <div class="inline-flex mx-auto space-x-10 py-4 md:py-0">
+        <div class="inline-flex mx-auto space-x-9 py-4 md:py-0">
           <a class="text-yellow-500 hover:text-yellow-600 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ donate_url }}" data-tippy-content="🎁 Support us with cryptocurrencies"><svg class="w-7 h-7 fill-current items-center"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg><span hidden>{% trans 'Donate cryptocurrencies' %}</span></a>
           <a class="text-yellow-400 hover:text-yellow-500 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2" href="{{ liberapay_url }}" data-tippy-content="{% trans 'Donate on' %} Liberapay"><svg class="w-7 h-7 rounded-full fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#lp"></use></svg><span hidden>{% trans 'Donate on' %} Liberapay</span>
           </a>
         </div>
       {% endif %}
       </div>
-      <div>
-        <div class="inline-flex space-x-10 mx-auto mt-2 md:mt-0">
-          <a href="{{ gitlab_url }}" class="text-gray-700 hover:text-black md:rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-3 px-1 md:py-1" target="_blank" rel="noopener" data-tippy-content="{{ com }} open source projects">
-          <svg class="w-6 h-6 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#gl"></use></svg><span hidden>{{ com }} {% trans 'open source projects' %}</span></a>{#<!--community you need to pass a test to access. This proves to you are knowledgeable and motivated.-->#}
-        </div>
+      <div class="inline-flex space-x-9 mx-auto">
+        <a href="{{ gitlab_url }}" class="text-gray-700 hover:text-black md:rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 pt-4 pb-3 px-1 md:py-1" target="_blank" rel="noopener" data-tippy-content="{{ com }} open source projects">
+        <svg class="w-6 h-6 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#gl"></use></svg><span hidden>{{ com }} {% trans 'open source projects' %}</span></a>
       </div>
     </div>
   </div>
-  <div class="text-gray-700 text-sm border-t border-yellow-100 pt-3 md:mt-3">
+  <div class="text-gray-700 text-sm border-t border-yellow-100 pt-3 md:mt-4">
     <div class="inline-flex items-center">
       {% if request.path != home_url %}
       <a href="{{ essays_url }}" class="hidden md:block hover:text-black rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2">
@@ -80,3 +76,7 @@
     </div>
   </div>
 </div>
+</div>
+{% comment %}<!-- data-aos="fade-in" and shareholders action=/newsletter/[NAME-OF-NEWSLETTER]/subscribe/
+<label for="id_name_field">Name:</label> <input type="text" name="name_field" maxlength="30" id="id_name_field"><span class="helptext">optional</span>
+Stay in the know Spam Subscribe to Clavem's newsletter Get Updates ❤️ <svg class="w-4 h-3 fill-current ml-2"><use xlink:href="{ % static 'img/svg-defs.svg' %}#team"></use></svg> data-tippy-content="📧 {% trans 'Email us' %}"community you need to pass a test to access. This proves to you are knowledgeable and motivated.-->{% endcomment %}

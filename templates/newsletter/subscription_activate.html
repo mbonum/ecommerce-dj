@@ -1,9 +1,9 @@
 {% extends 'newsletter/common.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Newsletter' %} {{ newsletter.title }} {{ action }} {% trans 'activate' %}{% endblock %}
+{% block title %}% blocktranslate %}Newsletter {{ newsletter.title }} {{ action }} activate{% endblocktranslate %}{% endblock %}
 {% block body %}
-<h1>{% trans 'Newsletter' %} {{ newsletter.title }} {{ action }} {% trans 'activate' %}</h1>
-<form enctype="multipart/form-data" class="text-center" method="post" action="."> {% csrf_token %}
+<h1>% blocktranslate %}Newsletter {{ newsletter.title }} {{ action }} activate{% endblocktranslate %}</h1>
+<form enctype="multipart/form-data" class="text-center" method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
   {{ form.as_p }}
   <input id="id_submit" name="submit" value="{% trans 'Activate' %}" type="submit">
 </form>

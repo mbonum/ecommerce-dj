@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='cuser',
             name='img',
-            field=models.FileField(blank=True, null=True, upload_to=accounts.models.user_image_path, verbose_name='Profile image'),
+            field=models.FileField(blank=True, null=True, upload_to=accounts.models.usr_img_path, verbose_name='Profile image'),
         ),
     ]

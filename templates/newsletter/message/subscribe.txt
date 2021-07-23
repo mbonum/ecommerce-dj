@@ -3,7 +3,7 @@
 you, or someone in your name requested a subscription to {{ title }}.
 
 If you would like to confirm your subscription, please follow this activation link:
-https://{{ domain }}{{ url }}
+https://{{ request.get_host }}{{ url }}
 
 Kind regards,{% endblocktranslate %}
 {{ newsletter.sender }}

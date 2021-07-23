@@ -1,9 +1,10 @@
-{% load i18n %}{% blocktranslate with name=subscription.name|default:_('Mr/Ms') title=newsletter.title domain=site.domain url=subscription.update_activate_url %}Dear {{ name }},
+{% load i18n %}
+{% blocktranslate with name=subscription.name|default:_('Mr/Ms') title=newsletter.title site=site.domain url=subscription.update_activate_url %}
+Dear {{ name }},
 
-you, or someone in your name requested updating your personal information for {{ title }}.
+To make changes to your information, please click on this link:
 
-To make changes to your information in our database, please follow this activation link:
-https://{{ domain }}{{ url }}
+https://{{ site }}{{ url }}
 
-Kind regards,{% endblocktranslate %}
+Kind regards{% endblocktranslate %},
 {{ newsletter.sender }}

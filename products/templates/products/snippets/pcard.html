@@ -1,10 +1,10 @@
 {% load i18n static %}
 {% spaceless %}
-<div class="self-start mt-5 {% if not 'search' in request.path %}lg:mr-5{% endif %}">
-  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg p-4 bg-white border border-gray-300 shadow-md hover:border-yellow-400 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
+<div class="self-start mt-6{% if not 'search' in request.path %} lg:mr-6{% endif %}">
+  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg bg-white border border-gray-300 shadow-md hover:border-yellow-400 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
     <div class="relative">
       {% if object.img %}
-      <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="md:w-64 md:h-64 rounded mx-auto object-center">
+      <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="w-64 h-64 rounded mx-auto object-center">
       {% else %}
       <svg class="lg:w-64 lg:h-64 text-gray-400 fill-current mx-auto">
         <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>

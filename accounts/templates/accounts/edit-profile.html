@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n static %}
 {% block title %}{% if title %}{{ title }}{% else %}{% trans 'Edit Profile' %}{% endif %}{% endblock %}
 {% block content %}
 <div class="text-lg font-c-sans max-w-xs mx-auto">
@@ -8,19 +8,34 @@
     <h1 class="text-2xl font-semibold">{{ title }}</h1>
   </div>
   {% endif %}
-  <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
+  <form method="post" enctype="multipart/form-data"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     {% if next %}
     <input type="hidden" name="next" value="{{ next_url }}">
     {% endif %}
-    <div class="space-y-2 mt-5">
-      <div class="text-gray-700 m-1">{{ form.first_name.label }}</div>
-      {{ form.first_name }}
-      <div class="text-gray-700 m-1">{{ form.last_name.label }}</div>
-      {{ form.last_name }}
+    <div class="space-y-3 mt-5">
+      <div class="text-center">
+        {% if img.url %}
+        <img src="{{ img.url }}" alt="{% if fn %}{{ fn }}{% else %}{{ usr }}{% endif %} {% trans 'Image' %}" class="w-64 h-64 border border-gray-300 rounded-full mx-auto">
+        {% else %}
+        <svg class="text-gray-600 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#smile"></use></svg>
+        {% endif %}
+      </div>
+      <div>
+        <label for="id_img" class="text-gray-800 m-1">{{ form.img.label }}</label>
+        {{ form.img }}
+      </div>
+      <div>
+        <label for="id_first_name" class="text-gray-800 m-1">{{ form.first_name.label }}</label>
+        {{ form.first_name }}
+      </div>
+      <div>
+        <label for="id_last_name" class="text-gray-800 m-1">{{ form.last_name.label }}</label>
+        {{ form.last_name }}
+      </div>
     </div>
     <div class="text-center space-y-5 mt-4">
       <a class="text-base text-gray-700 hover:text-gray-900 rounded-xl border border-transparent hover:border-yellow-400 focus:outline-none py-1 px-2" href="{{ psw_change_url }}">{% trans 'Change password' %}</a>
-      <button type="submit" class="w-full text-white rounded-xl border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 focus:outline-none py-1 px-2">{% trans 'Save' %}</button>
+      <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'Save' %}</button>
     </div>
   </form>
 </div>

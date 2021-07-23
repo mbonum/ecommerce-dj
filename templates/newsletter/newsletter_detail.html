@@ -4,7 +4,7 @@
 {% block body %}
 <table>
   <tr>
-    <th class="text-xl font-semibold mb-2">{{ object.title }}</th>
+    <th class="text-2xl font-semibold mb-2">{{ object.title }}</th>
   </tr>
   <tr>
     <td><a class="un" href="{% url 'newsletter_subscribe_request' object.slug %}">{% trans 'Subscribe' %}</a></td>
@@ -22,7 +22,8 @@
     <td><a class="un" href="{% url 'newsletter_archive' object.slug %}">{% trans 'Archive' %}</a></td>
   </tr>
   <tr>
-    <td><a class="mt-1 hover:text-gray-800 inline-flex items-center border-4 border-gray-400 text-sm px-2 py-1 hover:shadow-inner hover:bg-gray-hover py-1 px-2 rounded-lg focus:outline-none " href="../">← {% trans 'Back' %}</a></td>
+    <td><a class="mt-1 hover:text-gray-800 inline-flex items-center border-4 border-gray-400 text-sm px-2 py-1 hover:shadow-inner hover:bg-gray-hover py-1 px-2 rounded-lg focus:outline-none " href="../">
+      ← {% trans 'Back' %}</a></td>
   </tr>
 </table>
 {% endblock %}

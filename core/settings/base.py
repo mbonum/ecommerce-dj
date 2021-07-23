@@ -465,22 +465,20 @@ ACCOUNT_ACTIVATION_DAYS = 7  # the user has 1 week to activate the account
 #     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 #     # 'PAGE_SIZE': 2
 # }
+# https://django-newsletter.readthedocs.io/en/latest/settings.html
 NEWSLETTER_THUMBNAIL = "sorl-thumbnail"
-NEWSLETTER_CONFIRM_EMAIL = (
-    True  # https://django-newsletter.readthedocs.io/en/latest/settings.html
-)
-
+NEWSLETTER_CONFIRM_EMAIL = False
 # django-imperavi "imperavi.widget.ImperaviWidget"
 NEWSLETTER_RICHTEXT_WIDGET = "tinymce.widgets.TinyMCE"
 
 # # Amount of seconds to wait between each email. Here 50ms is used.
-# NEWSLETTER_EMAIL_DELAY = 0.05
+NEWSLETTER_EMAIL_DELAY = 0.05
 
 # # Amount of seconds to wait between each batch. Here 30 seconds is used.
-# NEWSLETTER_BATCH_DELAY = 30
+NEWSLETTER_BATCH_DELAY = 30
 
 # # Number of emails in one batch
-# NEWSLETTER_BATCH_SIZE = 100
+NEWSLETTER_BATCH_SIZE = 100
 
 
 # https://us19.admin.mailchimp.com/account/api/ # lists/settings/defaults?id=321186

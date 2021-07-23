@@ -1,7 +1,7 @@
 {% extends "newsletter/common.html" %}
 {% load thumbnail i18n %}
 {% block body %}
-  <h1 class="font-semibold uppercase mb-2">{{ newsletter.title }}</h1>
+  <h1 class="text-2xl font-semibold mb-2">{{ newsletter.title }}</h1>
   <h2>{{ message.title }}</h2>
   {% for article in message.articles.all %}
   <h3>{{ article.title }}</h3>

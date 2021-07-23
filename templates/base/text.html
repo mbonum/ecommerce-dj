@@ -6,8 +6,9 @@
 { % get_hit_count for object as readers %}-->{% endcomment %}
 {% block content %}
 {% if object %}
-<div ondblclick="exitFullscreen();" class="font-c-sans md:max-w-lg mx-auto">
+<div ondblclick="exitFullscreen();">
   <div ondblclick="focusMode(document.documentElement);">
+    <div class="font-c-sans md:max-w-lg mx-auto">
     {% if object.img %}
     <div class="mb-4"><img loading="lazy" src="{{ object.img.url }}" alt="{% trans 'Header Picture' %}" class="w-full object-cover rounded-xl"></div>
     {% endif %}
@@ -154,35 +155,33 @@
       <div class="text-center my-4">
         <h1>{{ com }} {% trans 'Community Contributions' %}</h1>
       </div>
-
       {% recursetree notes %}
-        <div id="{{ node.id }}" class="border border-gray-300 rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
+      <div id="{{ node.id }}" class="border border-gray-300 rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
         {{ node.body|linebreaks }}
         <div class="font-c-serif text-base space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
-          <p class="italic">—
-          {% comment %}<!-- if node.private %} Anonym
+          <p class="inline-flex italic items-center">
+          {% comment %}<!--— if node.private %} Anonym
         { % else %} -->{% endcomment %}
+          {% if node.user.img %}
+          <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="w-11 h-11 border border-gray-300 rounded-full mr-2">
+          {% endif %}
           {% if node.user.first_name %}
           {{ node.user.first_name }}
           {% else %}
-          {{ node.user.email }}***
+          {{ node.user.get_usrname }}
           {% endif %}
           </p>
-
           <p class="sep">·</p>
           <p>20{{ node.created_at|date:'Y-m-d' }}</p>
-          
           <form action="{% url 'read:like' object.slug node.id %}" method="post"> {% csrf_token %}
             <button class="font-c-sans inline-flex items-center rounded-xl focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
               <svg class="fill-current hover:text-yellow-500 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
             </button>
           </form>
-
           {% if node.level < 2 %}
           <button class="font-c-sans border border-gray-300 hover:border-yellow-500 rounded-xl shadow hover:shadow-md focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
           {% endif %}
         </div>
-
         {% if not node.is_leaf_node %}
         <div class="items-center overflow-hidden pt-3">
           <div class="absolute text-gray-500 mt-3"><svg class="w-4 h-5 fill-current" style="transform: scale(-1,-1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#reply"></use></svg></div>
@@ -238,6 +237,7 @@
   {% endif %}
   {% endif %}
 </div>
+</div>
 {% else %}
 <div class="font-c-sans text-lg text-gray-900 max-w-xs mx-auto">
   <h1 class="text-2xl text-black my-5">{% trans 'Work in progress' %}</h1>
@@ -253,7 +253,7 @@
   var rt = document.getElementById('rtime').value;
   rt = Number(rt.match(/\d+/)[0]);
   rt += rt;
-  document.getElementById('rt').innerHTML = rt + " min";
+  document.getElementById('rt').innerHTML = "< " + rt + " min";//~
 
 function formClose() {
   document.getElementById('id_note_reply').remove();

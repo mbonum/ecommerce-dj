@@ -3,18 +3,19 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{% blocktranslate with title=newsletter.title %}Update of subscription to {{ title }}{% endblocktranslate %}</title>
+  <title>
+    % blocktranslate %}Update of subscription to {{ newsletter.title }}{% endblocktranslate %}</title>
 </head>
 <body>
-  {% blocktranslate with name=subscription.name|default:_('Mr/Ms') title=newsletter.title domain=site.domain url=subscription.update_activate_url %}Dear
-  {{ name }},
+  {% blocktranslate with name=subscription.name|default:_('Mr/Ms') title=newsletter.title site=site.domain url=subscription.update_activate_url %}
+  Dear {{ name }},
 
-  you, or someone in your name requested updating your personal information for {{ title }}.
+  {#<!-- Tou requested updating your personal information for {{ title }}. -->#}
 
-  To make changes to your information in our database, please follow this activation link:
-  https://{{ domain }}{{ url }}
+  To make changes to your information, please click on this link:
+  https://{{ site }}{{ url }}
 
-  Kind regards,{% endblocktranslate %}
+  Kind regards{% endblocktranslate %},
   {{ newsletter.sender }}
 </body>
 </html>

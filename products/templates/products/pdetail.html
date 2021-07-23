@@ -2,13 +2,12 @@
 {% load i18n static %}
 {% block title %}{% trans 'Buy' %} {{ object.name_product }}{% endblock %}
 {% block content %}
-<div class="font-c-sans max-w-4xl lg:max-w-5xl lg:flex px-2 sm:px-0 md:px-2 space-y-8 lg:space-y-0 lg:space-x-8 mx-auto">
+<div class="font-c-sans text-lg lg:flex sm:px-1 space-y-8 lg:space-y-0 lg:space-x-8 mx-auto">
   <div class="lg:w-1/3 mx-auto">
     {% if object.video %}
     <video loading="lazy" class="rounded-lg border border-gray-300 shadow" controls>
       <source src="{{ object.video.url }}" type="video/mp4">
-      <source src="{{ object.video.url }}" type="video/ogg">
-      {#<!-- Fallback if the browser doesn't support video tag -->#}
+      {#<!--<source src="{{ object.video.url }}" type="video/ogg"> Fallback if the browser doesn't support video tag -->#}
       <embed src="{flash_swf_file}.swf" type="application/x-shockwave-flash"></embed>
     </video>
     {% elif object.video_link %}
@@ -29,7 +28,7 @@
 {% endfor %}
 {% endif %}-->{% endcomment %}
   </div>
-  <div class="lg:w-1/3 mt- lg:mt-">
+  <div class="lg:w-1/3">
     <h1 class="text-2xl">{{ object.name_product }}</h1>
     <div class="list-inside mt-2">
       {{ object.text|safe|linebreaks }}
@@ -54,7 +53,7 @@
         </div>
         {% endif %}
       </div>
-      <div class="text-right mr-1">
+      <div class="text-right">
         <p>{% include 'base/snippets/currency.html' %}{{ object.price }}</p>
         <p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>
       </div>
@@ -65,6 +64,12 @@
     </div>
   </div>
 </div>
+<script>
+$(document).ready(function () {
+  var qty = $('#qty option:selected').text();
+  console.log(qty);
+})
+</script>
 {% endblock %}
 {% comment %}<!--{ % block js %}&times;
   productqty: $('#qty option:selected').text(),

@@ -97,7 +97,68 @@ class UserAdminCreationForm(forms.ModelForm):
         return user
 
 
-class UserDetailChangeForm(forms.ModelForm):
+# def thumbnail(img_path, width, height):
+#     absolute_url = posixpath.join(settings.MEDIA_URL, img_path)
+#     return f'<img src="{absolute_url}" alt="{img_path}" class="widget-img">'
+
+
+# class ImageWidget(forms.ClearableFileInput):
+#     template = (
+#         "<div>%(image)s</div>" "<div>%(clear_template)s</div>" "<div>%(input)s</div>"
+#     )
+
+#     def __init__(self, attrs=None, template=None, width=200, height=200):
+#         if template is not None:
+#             self.template = template
+#         self.width = width
+#         self.height = height
+#         super(ImageWidget, self).__init__(attrs)
+
+#     def render(self, name, value, attrs=None):
+#         substitutions = {
+#             "initial_text": self.initial_text,
+#             "input_text": self.input_text,
+#             "clear_template": "",
+#             "clear_checkbox_label": self.clear_checkbox_label,
+#         }
+#         if not self.is_required:
+#             checkbox_name = self.clear_checkbox_name(name)
+#             checkbox_id = self.clear_checkbox_id(checkbox_name)
+#             substitutions["clear_checkbox_name"] = conditional_escape(checkbox_name)
+#             substitutions["clear_checkbox_id"] = conditional_escape(checkbox_id)
+#             substitutions["clear"] = forms.CheckboxInput().render(
+#                 checkbox_name, False, attrs={"id": checkbox_id}
+#             )
+
+#         input_html = super(forms.ClearableFileInput, self).render(name, value, attrs)
+#         if value and hasattr(value, "width") and hasattr(value, "height"):
+#             img_html = thumbnail(value.name, self.width, self.height)
+#             output = self.template % {
+#                 "input": input_html,
+#                 "image": img_html,
+#                 "clear_template": self.template_with_clear % substitutions,
+#             }
+#         else:
+#             output = input_html
+#         return mark_safe(output)
+
+
+# class EditProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = models.Profile
+#         fields = '__all__'
+#         widgets = {
+#             'avatar': ImageWidget
+#         }
+
+
+class UserDetailUpdateForm(forms.ModelForm):
+    img = forms.ImageField(
+        label=_("Upload Image"),
+        required=False,
+        error_messages={"invalid": _("Image files only")},
+        widget=forms.FileInput,
+    )  # FileFieldwidget=ImageWidget
     first_name = forms.CharField(
         label=_("First name"),
         required=False,
@@ -121,7 +182,20 @@ class UserDetailChangeForm(forms.ModelForm):
 
     class Meta:
         model = USER
-        fields = ("first_name", "last_name")
+        fields = ("img", "first_name", "last_name")
+        # widgets = {"img": ImageWidget}
+
+    # def __init__(self, request, *args, **kwargs):
+    #     self.request = request
+    #     super(UserDetailUpdateForm, self).__init__(*args, **kwargs)
+
+    # def clean(self):
+    #     # request = self.request
+    #     data = self.cleaned_data
+    #     self.initial["img"] = data.get("img")
+    #     self.initial["first_name"] = data.get("first_name")
+    #     self.initial["last_name"] = data.get("last_name")
+    # user.save()
 
 
 class UserAdminChangeForm(forms.ModelForm):
@@ -143,7 +217,7 @@ class UserAdminChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-# birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'})) #pikaday
+# birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'})) #pikaday # add if age requirements
 
 
 class RegisterForm(forms.ModelForm):
@@ -194,7 +268,7 @@ class RegisterForm(forms.ModelForm):
 
     def save(self, commit=True):
         # If email is not disposable, save the password in hashed format
-        request = self.request
+        # request = self.request
         email = self.cleaned_data.get("email")
         if not find_string("media/temp-emails.txt", email):
             user = super(RegisterForm, self).save(commit=False)

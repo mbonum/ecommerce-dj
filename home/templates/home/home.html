@@ -23,14 +23,22 @@ padding: 12px 42px;
 border-radius: 12px;
 font-size: 1.25rem;
 background: hsl(345deg 100% 47%);
-color: white; <span class="hero__scroll aos-init aos-animate" data-aos="fade-up" data-aos-easing="ease" data-aos-delay="800">Scroll down<i class="chevron bottom"></i></span> { % if object.media %}-->{% endcomment %}
+color: white; <span class="hero__scroll aos-init aos-animate" data-aos="fade-up" data-aos-easing="ease" data-aos-delay="800">Scroll down<i class="chevron bottom"></i></span> { % if object.media %}
+https://appleple.github.io/modal-video/
+<button class="js-modal-btn" data-video-id="202177974">Open Vimeo</button>
+$(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
+    <button class="js-modal-btn text-gray-200 focus:outline-none" data-video-id="mdqjHwhv47w">{#<!-id youtube video->#}
+      <svg class="w-20 h-20 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#play"></use></svg>
+    </button>
+  </div>-->{% endcomment %}
 {% endblock %}
 {% block media %}
 <div class="bg-black block h-screen space-y-8 shadow-xl">
+  
   <video loading="lazy" class="md:w-1/2 mx-auto" autoplay loop muted onerror="failed(e)">
     <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.mp4' %}{% endif %}" type="video/mp4">
     <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.ogg' %}{% endif %}" type="video/ogg">
-    {#<!-- Fallback if the browser doesn't support video tag -->#}
+{#<!-- Fallback if the browser doesn't support video tag -->#}
     <embed src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.swf' %}{% endif %}" type="application/x-shockwave-flash"></embed>
   </video>
   {% if object.video_link %}
@@ -90,6 +98,7 @@ color: white; <span class="hero__scroll aos-init aos-animate" data-aos="fade-up"
 {% endblock %}
 {% block js %}
 <script>
+$(".js-modal-btn").modalVideo();
 function failed(e) {
   switch (e.target.error.code) {
     case e.target.error.MEDIA_ERR_ABORTED:

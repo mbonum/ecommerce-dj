@@ -10,14 +10,10 @@ from datetime import timedelta
 from core.utils import code_gen, unique_key_generator
 from disposable_email_checker.validators import validate_disposable_email
 from django.conf import settings
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-
 # from django.core.validators import EmailValidator
 from django.db import models
 from django.db.models import Q
@@ -26,6 +22,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from PIL import Image
 from tinymce.models import HTMLField
 
 # https://docs.djangoproject.com/en/3.2/topics/email/
@@ -101,13 +98,10 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, first_name, **kwargs)
 
 
-def user_image_path(self, filename):
+def usr_img_path(self, filename):
     e = self.email
-    u = e[: e.index("@")] + code_gen(6)  # self.first_name + "-" + self.last_name
+    u = e[: e.index("@")] + "-" + code_gen(6)  # self.first_name + "-" + self.last_name
     return f"users/{u}/{filename}"
-
-    u = e[: e.index("@")]  # self.first_name + "-" + self.last_name
-
 
 #     d = e[e.index("@") + 1 :]  # get email domain
 #     with open("media/temp-emails.txt") as emails:
@@ -120,7 +114,7 @@ def user_image_path(self, filename):
 
 class CUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
-        max_length=150,
+        max_length=99,
         unique=True,
         validators=[
             # EmailValidator(
@@ -129,11 +123,11 @@ class CUser(AbstractBaseUser, PermissionsMixin):
         ],
     )  # db_index=True
     # username = CharField(max_length=90, unique=True)
-    first_name = models.CharField(max_length=150, blank=True, null=True)
-    last_name = models.CharField(max_length=150, blank=True, null=True)
+    first_name = models.CharField(max_length=99, blank=True, null=True)
+    last_name = models.CharField(max_length=99, blank=True, null=True)
     bio = HTMLField(_("Bio"), blank=True, null=True)
     img = models.FileField(
-        _("Profile image"), upload_to=user_image_path, null=True, blank=True
+        _("Profile image"), upload_to=usr_img_path, null=True, blank=True
     )
     is_active = models.BooleanField(default=False)  # activation link
     is_admin = models.BooleanField(default=False)
@@ -168,7 +162,11 @@ class CUser(AbstractBaseUser, PermissionsMixin):
     #     return self.first_name
 
     def get_full_name(self):
-        return str(self.first_name + self.last_name)
+        return str(self.first_name + " " + self.last_name)
+    
+    def get_usrname(self):
+        e = self.email
+        return str(e[: e.index("@")])
 
     def get_short_name(self):
         return self.first_name
@@ -192,6 +190,16 @@ class CUser(AbstractBaseUser, PermissionsMixin):
         if self.is_admin:
             return True
         return self.is_staff
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.img.path)
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.img.path)
 
 
 class EmailActivationQuerySet(models.query.QuerySet):

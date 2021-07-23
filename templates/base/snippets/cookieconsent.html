@@ -14,9 +14,9 @@
         }
       },
     "content": {
-    "message": "{{ com }}'s services may collect data while you're using them. So far, there's no other way to learn about issues and persistently improve your experience.",
+    "message": "{{ com }}'s services may collect data while you're using them to continuously improve your experience.",
     "allow": "Ok, thanks for letting me know.",
-    "link": "<div class='inline-flex font-c-sans items-center'>Transparency: Please, read about the data we may collect. <svg class='w-5 h-5 inline-flex ml-2'><use xlink:href=\"{% static 'img/svg-defs.svg' %}#eu\"></use></svg></div>",
+    "link": "<div class='inline-flex items-center'>Transparency: Please, read about the data we may collect. <svg class='w-5 h-5 inline-flex ml-2'><use xlink:href=\"{% static 'img/svg-defs.svg' %}#eu\"></use></svg></div>",
     "href": "{{ cookie_url }}",
     "target": "_blank",
   },
@@ -25,7 +25,7 @@
     })
   });
 </script>
-{% comment %}<!--I agree using cookie See your data add data graph in home/<username>-data transparency https://www.osano.com/cookieconsent/documentation/javascript-api/
+{% comment %}<!-- #F8F8F8 ECC24C F59E0B agree using cookie See your data add data graph in home/<username>-data transparency https://www.osano.com/cookieconsent/documentation/javascript-api/
 Privacy Reminder: the sharing system used for this video implies that some technical information about your system (such as a public IP address) can be sent to other peers. More information
   elements: {
   message: '<span id="cookieconsent:desc" class="cc-message">To improve your experience, {{ com }}\'s services may collect data about you using cookie.</span>',

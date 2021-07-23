@@ -31,7 +31,7 @@
             {% if 'A' in download.product_type %}
             <svg class="inline-flex w-8 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
             {% elif 'E' in object.product_type %}
-            <svg class="inline-flex w-5 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+            <span class="mr-1">🕮</span>
             {% endif %}
             {{ download.name }}</a>
           {% endfor %}
@@ -51,7 +51,8 @@
   </div>
 </div>
 {% endblock %}
-{% comment %}<!--<input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex">
+{% comment %}<!--<svg class="inline-flex items-center fill-current w-5 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg><svg class="inline-flex w-5 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+<input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex">
 <input type="button" value="🕮" data-tippy-content="Ebook" class="cursor-pointer inline-flex">{ % else %}
 <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="cursor-pointer inline-flex">
 order.products.exists { { request.user.first_name } { % empty %}<tr><td colspan="3"><p>No orders yet.</p></td></tr> Your Library is empty ._. -->{% endcomment %}

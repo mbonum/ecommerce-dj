@@ -11,13 +11,24 @@
     {% if next %}
     <input type='hidden' name='next' value='{{ next_url }}'>
     {% endif %}
-    <div class="inline-flex my-6">
+    <div class="flex items-center my-6">
       <label for="id_subscribed">{{ form.subscribed.label }}</label>
-      <span class="text-right">{{ form.subscribed }}</span>
+      <span class="text-right bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">{{ form.subscribed }}</span>
     </div>
-    <div>
-      <button type="submit" class="w-full border-2 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-xl focus:outline-none py-1 px-2">{% trans 'Save' %}</button>
-    </div>
+    <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'Save' %}</button>
   </form>
 </div>
 {% endblock %}
+{% comment %}<!-- <label class="flex justify-start items-start">
+  <div class="bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">
+    <input type="checkbox" class="opacity-0 absolute">
+    <svg class="fill-current hidden w-4 h-4 text-green-500 pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+  </div>
+  <div class="select-none">Label Text</div>
+</label>
+
+<style>
+  input:checked + svg {
+    display: block;
+  }
+</style> -->{% endcomment %}
