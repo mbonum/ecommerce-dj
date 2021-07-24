@@ -13,9 +13,7 @@
         </label>
         <div class="text-base lg:text-lg relative md:w-1/2 mx-auto">
           {{ form.message_type }}
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600">
-            <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-          </div>
+          
         </div>
         {% endif %}
       </div>
@@ -33,10 +31,11 @@
           <label class="text-gray-700 m-1" for="chat_email">{{ form.email.label }}</label>
           {{ form.email }}
         </div>
-        {% comment %}<!-- <div>
-          <label class="text-gray-700 m-2" for="chat_pc">{{ form.postal_code.label }}</label>
-          {{ form.postal_code }}
-        </div> -->{% endcomment %}
+{% comment %}<!--<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600">
+    <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
+  </div>
+  <label class="text-gray-700 m-2" for="chat_pc">{{ form.postal_code.label }}</label>
+  {{ form.postal_code }}-->{% endcomment %}
         {% endif %}
         <div>
           <label class="text-gray-700 m-1" for="chat_topic">{{ form.topic.label }}</label>

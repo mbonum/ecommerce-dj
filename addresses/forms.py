@@ -15,7 +15,7 @@ class AddressForm(forms.ModelForm):
         ),
     )
     street = forms.CharField(
-        label=_("Street address or post office box"),
+        label=_("Street address"),  # / post office box
         widget=forms.TextInput(
             attrs={
                 "id": "id_street",

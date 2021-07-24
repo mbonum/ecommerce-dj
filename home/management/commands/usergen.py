@@ -4,7 +4,7 @@ from django.utils.crypto import get_random_string
 
 
 class Command(BaseCommand):
-    help = "Random user generator"
+    help = "Generate random user"
 
     def add_argurment(self, parser):
         parser.add_argument("qty", type=int, help="How many users to add")

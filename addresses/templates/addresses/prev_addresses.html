@@ -8,12 +8,12 @@
   <input type="hidden" name="address_type" value="{{ address_type }}">
   {% endif %}
   {% for address in address_qs %}
-  <div class="border border-gray-300 bg-white rounded-lg shadow p-2 mt-3">
-    <input id="address-{{ address.id }}" type="radio" name="shipping_address" value="{{ address.id }}">
-    <label for="address-{{ address.id }}" class="items-center">
-      {{ address.street }}
-      <p class="ml-4">{{ address.city }}, {{ address.state }}</p>
-      <p class="ml-5">{{ address.country }}, {{ address.postal_code }}</p>
+  <div class="flex items-center border border-gray-300 bg-white rounded-lg shadow p-2 {% if forloop.first %}mt-1{% else %}mt-3{% endif %}">
+    <input id="address-{{ address.id }}" type="radio" name="shipping_address" value="{{ address.id }}" class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-white focus:ring-offset-2">
+    <label for="address-{{ address.id }}" class="ml-3">
+      <p>{{ address.street }}</p>
+      <p>{{ address.city }}, {{ address.state }}</p>
+      <p>{{ address.country }}, {{ address.postal_code }}</p>
     </label>
   </div>
   {% endfor %}

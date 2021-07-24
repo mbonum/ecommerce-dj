@@ -1,5 +1,4 @@
-{% load cache i18n static meta custom_template_tags %}
-{#<!-- analytical render_bundle from webpack_loader crispy_forms_tags -->#}
+{% load cache i18n static meta custom_template_tags %}{#<!-- analytical render_bundle from webpack_loader crispy_forms_tags -->#}
 {% now 'Y' as current_year %}
 {% now 'H' as current_hour %}
 {% url 'analytics:sales' as sales_url %}
@@ -57,18 +56,18 @@ request.path # /some/content/
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
 <body class="bg-primary antialiased overflow-x-hidden">
-{#<!-- % analytical_body_top % {% block sidebar %}{% endblock %}-->#}
+{#<!-- % analytical_body_top % {% block sidebar %}-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     {% include 'base/nav.html' %}
-    <div class="mb-auto">
+    <main class="mb-auto">
       {% block media %}{% endblock %}
-      <div class="max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-3xl xl:max-w-6xl mx-auto py-8">
+      <div class="max-w-xs sm:max-w-sm md:max-w-2xl lg:max-w-3xl xl:max-w-6xl mx-auto py-8">
         {% include 'base/snippets/message.html' %}
         {% block content %}{% endblock %}
       </div>
-    </div>
     <input type="hidden" name="y" id="y" value="{{ current_year }}">
     <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
+    </main>
     {% include 'base/footer.html' %}
   </div>
   {% include 'base/noscript.html' %}

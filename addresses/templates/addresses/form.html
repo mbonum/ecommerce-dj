@@ -9,7 +9,7 @@
   {% endif %}
   {% if addupdate %}
   <div class="mb-2">
-    <label class="text-left ml-2 xl:ml-2">{{ form.address_type.label }}</label>
+    <label class="ml-2">{{ form.address_type.label }}</label>
     <div class="relative w-full mx-auto">
       {{ form.address_type }}
       <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
@@ -20,23 +20,23 @@
   {% endif %}
   <div class="space-y-2">
     <div>
-      <label for="id_street" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.street.label }}</label>
+      <label for="id_street" class="ml-2">{{ form.street.label }}</label>
       {{ form.street }}
     </div>
     <div>
-      <label for="id_city" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.city.label }}</label>
+      <label for="id_city" class="ml-2">{{ form.city.label }}</label>
       {{ form.city }}
     </div>
     <div>
-      <label for="id_state" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.state.label }}</label>
+      <label for="id_state" class="ml-2">{{ form.state.label }}</label>
       {{ form.state }}
     </div>
     <div>
-      <label for="id_country" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.country.label }}</label>
+      <label for="id_country" class="ml-2">{{ form.country.label }}</label>
       {{ form.country }}
     </div>
     <div>
-      <label for="id_id_zip" class="text-left ml-2 md:ml-6 xl:ml-2">{{ form.postal_code.label }}</label>
+      <label for="id_zip" class="ml-2">{{ form.postal_code.label }}</label>
       {{ form.postal_code }}
     </div>
   </div>

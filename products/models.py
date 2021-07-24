@@ -145,7 +145,7 @@ class Product(models.Model):
     product_type = models.CharField(
         max_length=8, choices=ProductType.choices, default=ProductType.EBOOK
     )
-    category = models.ForeignKey(
+    category = models.ForeignKey(#TextChoices
         Category,
         related_name="product",
         on_delete=models.CASCADE,

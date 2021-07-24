@@ -24,7 +24,7 @@
         <td scope="row" colspan="1">
 {#<!--{ forloop.counter }}add thumbnail<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow-->#}
         </td>
-        <td class="px-4 py-2">
+        <td class="px-4 py-3">
           <a href="{{ object.get_absolute_url }}" class="text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
           {% if object.img %}
           <div id="product-cart-tip" class="hidden">
@@ -37,21 +37,21 @@
           <p>1 ({% trans 'Digital' %})</p>
           {% else %}
           <div class="relative">
-            <select id="id_qty" name="qty" class="bg-white shadow appearance-none border border-gray-400 rounded-lg focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 pr-5 py-1">
+            <select id="id_qty" name="qty" class="block w-full bg-white border border-gray-300 text-gray-700 px-3 pr-8 rounded-lg leading-tight hover:border-blue-500 focus:outline-none shadow">
               {% for q in object.rangeqty %}
               <option class="qty-item" value="{{ q }}">{{ q }}</option>
               {% endfor %}
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-gray-600">
+            {% comment %}<!-- <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-gray-600">
               <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-            </div>
+            </div> -->{% endcomment %}
           </div>
           {% endif %}
         </td>
         <td class="text-center">
           <p class="price-item">{% include 'base/snippets/currency.html' %}{{ object.price }}</p>
         </td>
-        <td class="cart-item-remove-form xl:border-b xl:border-gray-300 py-2 sm:pl-2">
+        <td class="cart-item-remove-form xl:border-b xl:border-gray-300">
           {% include 'carts/snippets/remove-product.html' with id=object.id %}
         </td>
       </tr>

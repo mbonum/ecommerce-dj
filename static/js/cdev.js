@@ -78,11 +78,13 @@ $(document).ready(function () {
   var productForm = $(".form-product-ajax");
   function getOwnedProduct(productId, submitSpan) {
     var actionEndpoint = "/orders/endpoint/verify/ownership/",
+      qty = $('#qty option:selected').text(),
       httpMethod = "GET",
       data = {
         product_id: productId
       },
       isOwner;
+      console.log(data.owner);
     $.ajax({
       url: actionEndpoint,
       method: httpMethod,

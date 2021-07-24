@@ -99,7 +99,6 @@
         </div> -->{% endcomment %}
       </div>
     </div>
-  </div>
   {% if edu_url in request.path or essays_url in request.path %}
   <div class="text-center text-gray-700 my-4">
     <div class="inline-flex overflow-hidden border border-gray-300 bg-white shadow rounded-lg">
@@ -128,10 +127,8 @@
   {% endif %}
   {% if essays_url in request.path %}
   {% include 'base/snippets/cc.html' %}
-
   {% if request.user.email %}
-
-  {% comment %}<!--{ % if readers %}
+  {% comment %}<!--{ % if readers %} show only if staff or admin
   <div class="text-center text-sm text-gray-500">
   <a class="inline-flex items-center" data-tippy-content="Readers"><svg class="w-4 h-4 text-gray-500 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#reader"></use></svg>
     { { readers }}</a>
@@ -152,27 +149,27 @@
       </button>
     </div>
     <div x-show="open" class="text-lg font-c-sans border-t border-gray-300 my-5">
-      <div class="text-center my-4">
+      <div class="text-center text-xl my-4">
         <h1>{{ com }} {% trans 'Community Contributions' %}</h1>
       </div>
       {% recursetree notes %}
       <div id="{{ node.id }}" class="border border-gray-300 rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
         {{ node.body|linebreaks }}
         <div class="font-c-serif text-base space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
-          <p class="inline-flex italic items-center">
-          {% comment %}<!--— if node.private %} Anonym
-        { % else %} -->{% endcomment %}
+          <span class="inline-flex italic items-center">
           {% if node.user.img %}
           <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="w-11 h-11 border border-gray-300 rounded-full mr-2">
+          {% else %}
+          —
           {% endif %}
           {% if node.user.first_name %}
           {{ node.user.first_name }}
           {% else %}
           {{ node.user.get_usrname }}
           {% endif %}
-          </p>
-          <p class="sep">·</p>
-          <p>20{{ node.created_at|date:'Y-m-d' }}</p>
+          </span>
+          <span class="sep">·</span>
+          <span>20{{ node.created_at|date:'Y-m-d' }}</span>
           <form action="{% url 'read:like' object.slug node.id %}" method="post"> {% csrf_token %}
             <button class="font-c-sans inline-flex items-center rounded-xl focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
               <svg class="fill-current hover:text-yellow-500 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
@@ -190,7 +187,7 @@
         {% endif %}
       </div>
       {% endrecursetree %}
-      {% comment %}<!-- <div class="font-c-sans text-center text-gray-800 py-4">
+      {% comment %}<!-- if node.private %} Anonym <div class="font-c-sans text-center text-gray-800 py-4">
         <div class="inline-flex bg-white rounded-lg overflow-hidden border border-gray-300" aria-label="Note pages">
         {% if pages.has_other_pages %}
           {% if pages.has_previous %}
@@ -236,6 +233,7 @@
   </div>
   {% endif %}
   {% endif %}
+</div>
 </div>
 </div>
 {% else %}

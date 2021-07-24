@@ -24,7 +24,7 @@ VERSION = 1
 
 ENV_NAME = "Clavem"
 BASE_URL = "www.clavem.co:8000"
-#http://www. mgbonum.com
+# http://www. mgbonum.com
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 PROJECT_DIR = Path(__file__).resolve(strict=True)
@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     # # 'django.contrib.humanize',
     # # "sslserver",  # https://pypi.org/project/django-sslserver
     # "django_hosts",  # https://pypi.org/project/django-hosts
+    "tailwind",
+    "ui",
     "django_extensions",  # https://pypi.org/project/django-extensions
     "gdpr_assist",  # https://django-gdpr-assist.readthedocs.io/en/latest/installation.html
     # "gdpr",  # https://github.com/druids/django-GDPR
@@ -113,6 +115,7 @@ INSTALLED_APPS = [
     # 'crispy_forms',# https://pypi.org/project/django-crispy-forms/
     # 'webpack_loader',
 ]
+TAILWIND_APP_NAME = "ui"
 WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 # MAX_ACTIVE_TASKS = 2

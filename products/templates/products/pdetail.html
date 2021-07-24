@@ -42,14 +42,14 @@
         {% else %}
         <label for="qty" class="mr-2">{% trans 'Quantity' %}:</label>
         <div class="relative space-x-2">
-          <select id="qty" @change="qty = $event.target.value" name="qty" class="appearance-none border border-gray-400 text-black rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-yellow-500 shadow px-2 pr-4 py-1">
+          <select id="qty" @change="qty = $event.target.value" name="qty" class="block w-full bg-white border border-gray-300 text-gray-700 px-3 py-2 pr-8 rounded-lg leading-tight hover:border-blue-500 focus:outline-none shadow">
             {% for q in object.rangeqty %}
             <option value="{{ q }}" x-bind:value="{{ q }}">{{ q }}</option>
             {% endfor %}
           </select>
-          <div class="flex text-gray-600 pointer-events-none absolute inset-y-0 right-0 items-center pr-1">
+          {% comment %}<!-- focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 <div class="flex text-gray-600 pointer-events-none absolute inset-y-0 right-0 items-center pr-1">
             <svg class="fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-          </div>
+          </div> -->{% endcomment %}
         </div>
         {% endif %}
       </div>
@@ -64,12 +64,16 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block js %}
 <script>
 $(document).ready(function () {
-  var qty = $('#qty option:selected').text();
-  console.log(qty);
+  var qty = $('#qty option:selected').text(),
+    qtySel = $('#qty_sel');
+  qtySel.value = qty;
+  console.log(qtySel);
 })
-</script>
+ </script>
 {% endblock %}
 {% comment %}<!--{ % block js %}&times;
   productqty: $('#qty option:selected').text(),
