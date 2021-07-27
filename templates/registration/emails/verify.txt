@@ -7,7 +7,7 @@ Please activate your {{ com }} account by clicking here: {{ path }}.
 
 Thanks for joining us,
 
-The {{ com }} team
+The {{ com }} Team
 {% endblocktranslate %}
 
 {% endautoescape %}

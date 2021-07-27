@@ -62,7 +62,7 @@ class AccountEmailActivateView(FormMixin, View):
             if confirm_qs.count() == 1:
                 obj = confirm_qs.first()
                 obj.activate()
-                messages.success(
+                messages.success(#info
                     request, _("Your email has been confirmed. Please login.")
                 )
                 return redirect("login")
@@ -75,7 +75,7 @@ class AccountEmailActivateView(FormMixin, View):
                     + _("update your password?")
                     + "</a>"
                 )  # Your email has already been confirmed
-                messages.success(request, mark_safe(msg))
+                messages.info(request, mark_safe(msg))
                 return redirect("login")
         context = {"form": self.get_form(), "key": key}
         return render(request, "registration/activation-error.html", context)
@@ -139,7 +139,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(
+        messages.success(#info
             self.request, _("Account Updated")
         )
         img = self.request.FILES#form.cleaned_data.get("img")

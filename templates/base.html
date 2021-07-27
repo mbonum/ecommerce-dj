@@ -11,7 +11,6 @@
 {% url 'home:donate' as donate_url %}
 {% url 'team:index' as team_url %}
 {% url 'read:index' as essays_url %}
-{#<!-- % url 'author' as author_bio_url % } url 'pdf' as pdf_url -->#}
 {% url 'learn:booklist' as edu_url %}
 {% url 'products:list' as shop_url %}
 {% url 'search:query' as search_url %}
@@ -36,7 +35,7 @@
 {% url 'password_change' as psw_change_url %}
 {% url 'password_reset' as psw_reset_url %}
 {% url 'clvm:curl' as short_url %}
-{#<!-- url 'newsletter:newsletter_subscribe_request' as newsletter -->#}
+{#<!-- % url 'author' as author_bio_url % } url 'pdf' as pdf_url url 'newsletter:newsletter_subscribe_request' as newsletter -->#}
 
 {% with url='https://www.clavem.co' com='Clavem' why='why/' newsletter='/newsletter/clavem-news/subscribe/' launched='May 30, 2021 9:00:00' liberapay_url='https://liberapay.com/Clavem/donate' gitlab_url='https://github.com/clavem' twit_url='https://twitter.com/clavem' %}
 {% comment %}<!-- request.scheme # http or https
@@ -55,13 +54,13 @@ request.path # /some/content/
   {% block css %}{% endblock %}
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
-<body class="bg-primary antialiased overflow-x-hidden">
+<body class="bg-primary cb">
 {#<!-- % analytical_body_top % {% block sidebar %}-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     {% include 'base/nav.html' %}
     <main class="mb-auto">
       {% block media %}{% endblock %}
-      <div class="max-w-xs sm:max-w-sm md:max-w-2xl lg:max-w-3xl xl:max-w-6xl mx-auto py-8">
+      <div class="cw py-8">
         {% include 'base/snippets/message.html' %}
         {% block content %}{% endblock %}
       </div>

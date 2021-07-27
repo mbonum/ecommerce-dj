@@ -2,21 +2,19 @@
 {% load i18n %}
 {% block title %}{% trans 'Change Password' %}{% endblock %}
 {% block content %}
-<div class="max-w-xs mx-auto text-center">
-  <div class="mb-4">
+<div class="wxs text-center space-y-2">
+  <div>
     {% if key %}
-    {% blocktranslate %}
-    <p>We're sorry, an error has occured. Please reload the page.</p>
-    <p>If the error persists please <a class="un text-gray-700 hover:text-black" href="{{ contact_url }}">contact us</a> and select feedback.</p>
-    {% endblocktranslate %}
+    <p>{% trans "Apologies, an error has occured. Please reload the page" %}.</p>
+    <p>{% trans 'If the error persists, please' %} <a class="un text-gray-700 hover:text-black" href="{{ contact_url }}">{% trans 'contact us' %}</a> {% trans 'and select support' %}.</p>
     {% else %}
-    <p class="text-xl font-semibold">{% trans 'Reactivate Account' %}</p>
+    <p class="h1">{% trans 'Reactivate Account' %}</p>
     {% endif %}
   </div>
   <div>
     <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
       {{ form }}
-      <input value="{% trans 'Resend Email' %}" class="mt-3 border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded-lg focus:outline-none" type="submit">
+      <input value="{% trans 'Resend Email' %}" class="border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white py-1 px-2 rounded-xl focus:outline-none" type="submit">
     </form>
   </div>
 </div>

@@ -16,25 +16,10 @@
   .ddd:active .front {
     transform: translateY(-2px);
   }
-</style>{% comment %}<!-- style="transform: scale(-1,1)"<p style="-webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8));" class="opacity-1 text-center animate-pulse uppercase text-gray-30 text-7xl font-c font-semibold text-transparent bg-gradient-to-tr bg-clip-text from-gray-200 to-yellow-300 pt-1">{ { com } }</p> border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300
-background: hsl(340deg 100% 32%);
-border-radius: 12px;
-padding: 12px 42px;
-border-radius: 12px;
-font-size: 1.25rem;
-background: hsl(345deg 100% 47%);
-color: white; <span class="hero__scroll aos-init aos-animate" data-aos="fade-up" data-aos-easing="ease" data-aos-delay="800">Scroll down<i class="chevron bottom"></i></span> { % if object.media %}
-https://appleple.github.io/modal-video/
-<button class="js-modal-btn" data-video-id="202177974">Open Vimeo</button>
-$(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
-    <button class="js-modal-btn text-gray-200 focus:outline-none" data-video-id="mdqjHwhv47w">{#<!-id youtube video->#}
-      <svg class="w-20 h-20 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#play"></use></svg>
-    </button>
-  </div>-->{% endcomment %}
+</style>
 {% endblock %}
 {% block media %}
 <div class="bg-black block h-screen space-y-8 shadow-xl">
-  
   <video loading="lazy" class="md:w-1/2 mx-auto" autoplay loop muted onerror="failed(e)">
     <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.mp4' %}{% endif %}" type="video/mp4">
     <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.ogg' %}{% endif %}" type="video/ogg">
@@ -53,19 +38,19 @@ $(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
     <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
   </svg>
   <div>
-    <svg class="w-7 h-7 text-gray-400 transition duration-500 ease-in-out animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
+    <svg class="h-7 w-7 text-gray-400 transition duration-500 ease-in-out animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
   </div>
 </div>
 {% endblock %}
 {% block content %}
-<div class="max-w-sm mx-auto text-center px-3 sm:px-0">
-  <div class="text-xl font-c-serif px-2 sm:px-0" data-aos="fade-in">
-    <blockquote class="relative p-4 text-xl italic">
-      <div style="font-size: 5rem;" class="-ml-7 font-c-serif text-yellow-200 opacity-75 absolute top-0 leading-none" aria-hidden="true">
+<div class="max-w-sm mx-auto text-center">
+  <div class="text-xl font-c-serif" data-aos="fade-in">
+    <blockquote class="relative p-4 italic">
+      <div style="font-size: 5rem;" class="-ml-7 text-yellow-200 opacity-75 absolute top-0 leading-none" aria-hidden="true">
         &ldquo;
       </div>
       <div>{% if object.quote %}{{ object.quote|safe }}{% else %}{% trans 'The only human limits are lack of imagination, long-term thinking and persistence.' %}{% endif %}</div>
-      <div style="font-size: 5rem;" class="-mt-8 font-c-serif text-yellow-200 opacity-75 absolute right-1 leading-none" aria-hidden="true">
+      <div style="font-size: 5rem;" class="-mt-8 text-yellow-200 opacity-75 absolute right-1 leading-none" aria-hidden="true">
         &rdquo;
       </div>
     </blockquote>
@@ -78,7 +63,7 @@ $(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
     {% endif %}
   </div>
 <div class="font-c-sans space-x-12">
-<button class="ddd bg-gray-600 rounded-lg shadow focus:outline-none" data-aos="fade-in">
+<button class="ddd bg-gray-600 rounded-lg shadow hover:-translate-y-0.5 transform transition focus:outline-none" data-aos="fade-in">
   <a class="front text-xl bg-gray-300 rounded-lg px-6 py-3" href="{{ essays_url }}">
     {% trans 'Read' %}
   </a>
@@ -121,8 +106,21 @@ function scrollFunction() {
   document.getElementById("haid").style.display = 'none';
 }
 </script>
-{% endblock %}
-{% comment %}<!-- id="haid"
+{% endblock %}{% comment %}<!--style="transform: scale(-1,1)"<p style="-webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8));" class="opacity-1 text-center animate-pulse uppercase text-gray-30 text-7xl font-c font-semibold text-transparent bg-gradient-to-tr bg-clip-text from-gray-200 to-yellow-300 pt-1">{ { com } }</p> border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300
+background: hsl(340deg 100% 32%);
+border-radius: 12px;
+padding: 12px 42px;
+border-radius: 12px;
+font-size: 1.25rem;
+background: hsl(345deg 100% 47%);
+color: white; <span class="hero__scroll aos-init aos-animate" data-aos="fade-up" data-aos-easing="ease" data-aos-delay="800">Scroll down<i class="chevron bottom"></i></span> { % if object.media %}
+https://appleple.github.io/modal-video/
+<button class="js-modal-btn" data-video-id="202177974">Open Vimeo</button>
+$(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
+    <button class="js-modal-btn text-gray-200 focus:outline-none" data-video-id="mdqjHwhv47w">{#<!-id youtube video->#}
+      <svg class="w-20 h-20 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#play"></use></svg>
+    </button>
+  </div>id="haid"
 if (document.body.scrollTop >= 200 || document.documentElement.scrollTop >= 200 ){
   window.onscroll = scrollFunction;
 } -->{% endcomment %}

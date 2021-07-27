@@ -2,13 +2,13 @@
 <script id="stripeTemplate" type="text/x-jsrender">
   <form class="payment-form" action="" method="post" id="payment-form" data-token="{{:publishKey}}" data-next-url="{{:nextUrl}}">
     <div class="form-row">
-      <div id="card-element" class="border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2"></div>
-      <div id="card-errors" class="text-sm text-yellow-600 transform hover:scale-110 pl-1" role="alert"></div>
+      <div id="card-element"></div>
+      <div id="card-errors" class="text-yellow-600 transform hover:scale-110 hover:pl-4 pt-1" role="alert"></div>
     </div>
-    <div class="text-center mt-4">
-      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">
+    <div class="text-center">
+      <button class="cbtn mt-6">
         {{:btnTitle}}</button>
     </div>
   </form>
 </script>
-{% endverbatim %}
+{% endverbatim %}{#<!--% if action_url %}{{action_url}}{% endif-->#}

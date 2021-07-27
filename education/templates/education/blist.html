@@ -4,7 +4,7 @@
 {% block content %}
 <div class="font-c-sans max-w-sm mx-auto">
 {% if object_list %}
-  <div class="font-c-serif bg-white border border-gray-300 shadow rounded-lg p-6">
+  <div class="font-c-serif bg-white bord0 shadow rounded-xl p-5">
     <blockquote class="relative px-4 text-xl">
       <div class="italic">
         <div style="font-size: 5rem;" class="-ml-10 text-yellow-200 opacity-75 absolute -top-3 leading-none" aria-hidden="true">
@@ -29,13 +29,11 @@
     </div>
   </div>
   {% for o in object_list %}
-  <div class="mt-6">
-    {% include 'education/bcard.html' with obj=o %}
-  </div>
+  {% include 'education/bcard.html' with obj=o %}
   {% endfor %}
 {% else %}
-<div class="text-gray-900">
-  <h1 class="text-xl text-black my-5">{% trans 'Studying in progress' %}</h1>
+<div class="text-gray-900 wxs">
+  <h1 class="text-2xl text-black my-5">{% trans 'Studying in progress' %}</h1>
   <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
 </div>
 {% endif %}

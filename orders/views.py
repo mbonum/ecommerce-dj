@@ -11,6 +11,20 @@ from django.views.generic import DetailView, ListView, View
 # from billing.models import BillingProfile
 from .models import Order, ProductPurchase
 
+# templatetags.py
+# from django.template import Library
+# from core.models import Order
+
+# register = Library()
+
+
+# @register.filter
+# def cart_item_count(user):
+#     if user.is_authenticated:
+#         qs = Order.objects.filter(user=user, ordered=False)
+#         if qs.exists():
+#             return qs[0].items.count()
+#     return 0
 
 class OrderListView(LoginRequiredMixin, ListView):
     template_name = "orders/olist.html"
@@ -134,7 +148,7 @@ class GenerateOrderPDF(View):
                 content = f"attachment; filename={filename}"
             response["Content-Disposition"] = content
             return response
-        return HttpResponse(
+        raise Http404(#HttpResponse
             _(
                 "Apologies, document not found, please retry. If the problem persists please contact us."
             )

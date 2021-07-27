@@ -5,31 +5,31 @@
 {% block content %}
 <div class="font-c-sans max-w-sm mx-auto">
   {% if object_list.exists %}
-  <div class="text-center mb-4">
-    <h1 class="text-2xl font-semibold">{% trans 'Purchase History' %}</h1>
+  <div class="text-center">
+    <h1 class="h1">{% trans 'Purchase History' %}</h1>
   </div>
-  <table class="table-auto cart-table mx-auto">
-    <thead class="border-t border-b border-gray-300">
+  <table class="table-auto mx-auto">
+    <thead class="border-b border-gray-500">
       <tr>
-        <th scope="col" class="text-center py-1">ID</th>
-        <th scope="col" class="text-center py-1">{% trans 'Status' %}</th>
-        <th scope="col" class="text-center py-1">{% trans 'Total' %}</th>
+        <th scope="col" class="tabcol">ID</th>
+        <th scope="col" class="tabcol">{% trans 'Status' %}</th>
+        <th scope="col" class="tabcol">{% trans 'Total' %}</th>
       </tr>
     </thead>
-    <tbody class="cart-body">
+    <tbody>
       {% for object in object_list %}
-      <tr class="cart-product border-b border-gray-300 text-center">
-        <td class="py-2"><a class="text-blue-600 hover:text-blue-700 hover:underline focus:outline-none rounded-xl focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
-        <td class="px-4 py-2">{{ object.get_status }}</td>
-        <td class="justify-aroun py-2">{% include 'base/snippets/currency.html' %} {{ object.total }}</td>
+      <tr class="bordb text-center">
+        <td class="py-2"><a class="tabitem cr px-1" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
+        <td class="px-4">{{ object.get_status }}</td>
+        <td>{% include 'base/snippets/currency.html' %} {{ object.total }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
   {% else %}
   <div class="text-center">
-    <p class="text-2xl my-6">{% trans 'No orders yet' %}</p>
-    <svg class="text-gray-700 fill-current h-32 w-32 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#sad"></use></svg>
+    <h1 class="h1 my-6">{% trans 'No orders yet' %}</h1>
+    {% include 'base/snippets/sad.html' %}
   </div>
   {% endif %}
 </div>

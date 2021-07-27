@@ -50,12 +50,13 @@ def cart_update(request):
     if product_id is not None:
         try:
             product_obj = Product.objects.get(id=product_id)
+        #from django.core.exceptions import ObjectDoesNotExist try: except ObjectDoesNotExist: messages.error(request, "No product")return redirect("")#raise
         except Product.DoesNotExist:
             msg = _(
                 "Sorry, the product is not available at the moment."
                 "Contact us to know when the product will be available."
             )
-            messages.success(request, msg)
+            messages.info(request, msg)#error
             return redirect("cart:home")
         # product_qty = int(request.POST.get("productqty")) or None input hidden
         # if product_qty is None:

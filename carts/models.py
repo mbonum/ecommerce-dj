@@ -61,8 +61,8 @@ class Cart(models.Model):
     def calc_tot(self, save=False):
         if not self.products:
             return {}
-        subtot = self.product.price  # cents
-        tax_rate = 0.12  # 12
+        subtot = self.products.price * self.order_qty # cents
+        tax_rate = 0.12  # get tax rate country
         tax_tot = subtot * tax_rate
         tax_tot = float("%.2f" % (tax_tot))  # round(eur_usd, 2)
         tot = subtot + tax_tot
@@ -81,7 +81,7 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
         total = 0
         for p in products:
             # if p.quantity:
-            total += p.price  # * p.quantity
+            total += p.price * instance.order_qty
             # else:
             # total += p.price
         instance.subtotal = total

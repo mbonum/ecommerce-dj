@@ -1,32 +1,31 @@
 {% load i18n static %}
 {% spaceless %}
-<div class="self-start mt-6{% if not 'search' in request.path %} lg:mr-6{% endif %}">
-  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="block rounded-lg bg-white border border-gray-300 shadow-md hover:border-yellow-400 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
+<div class="self-start mt-6{% if not 'search' in request.path %} md:mr-6{% endif %}">
+  <a href="{{ object.get_absolute_url }}" id="{{ object.slug }}" class="carditem">
     <div class="relative">
       {% if object.img %}
-      <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="w-64 h-64 rounded mx-auto object-center">
+      <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="h-64 w-64 mx-auto object-center rounded-t-xl">
       {% else %}
-      <svg class="lg:w-64 lg:h-64 text-gray-400 fill-current mx-auto">
+      <svg class="h-64 w-64 text-gray-400 fill-current mx-auto">
         <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
       </svg>
       {% endif %}
     </div>
-    <div class="flex justify-between py-1">
-      <h1 class="text-lg inline-flex">{{ object.name_product }}</h1>
-      {% if 'A' in object.product_type %}
-      <input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex bg-white">
-      {% elif 'E' in object.product_type %}
-      <input type="button" value="🕮" data-tippy-content="Ebook" class="cursor-pointer inline-flex bg-white">
-      {% else %}
-      <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="cursor-pointer inline-flex bg-white">
-      {% endif %}
-    </div>
-    <div>
-      <p>{{ object.text|safe|truncatewords_html:6 }}</p>
+    <div class="space-y-2 m-4">
+      <div class="flex justify-between">
+        <h1 class="text-lg inline-flex">{{ object.name_product }}</h1>
+        {% if 'A' in object.product_type %}
+        <input type="button" value="🎙️" data-tippy-content="Audio" class="incard">
+        {% elif 'E' in object.product_type %}
+        <input type="button" value="🕮" data-tippy-content="Ebook" class="incard">
+        {% else %}
+        <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="incard">
+        {% endif %}
+      </div>
+      {{ object.text|safe|truncatewords_html:6 }}
     </div>
   </a>
 </div>
-{% endspaceless %}
-{% comment %}<!--TODO machine learning recommendation model
+{% endspaceless %}{% comment %}<!--TODO machine learning recommendation model
 { % if instance.recommended %}<span class="uppercase text-xs text-gray-700 hover:text-gray-900 inline-block ml-3">Recommended</span>{ % endif %}☯
 transform="rotate(180)" add gif instead of imgs or video % include 'products/snippets/update-cart.html' with product=instance cart=cart %}-->{% endcomment %}

@@ -1,8 +1,10 @@
 {% load i18n static %}
-<form class="form form-product-ajax" method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}"enctype="multipart/form-data"> {% csrf_token %}
-  <input class="cart-item-product-id hidden" type="hidden" name="product_id" value="{{ id }}">
-  <button type="submit" class="rem flex text-gray-500 hover:text-red-600 rounded-full focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2" data-tippy-content="{% trans 'Remove' %}">
-    <svg class="w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+{% spaceless %}
+<form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-ajax"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
+  <input class="cart-item-product-id" type="hidden" name="product_id" value="{{ id }}">
+  <button type="submit" class="flex text-gray-500 hover:text-red-500 rounded-full focus:outline-none cr2" data-tippy-content="{% trans 'Remove' %}">
+    <svg class="h-4 w-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
     <span hidden>{% trans 'Remove' %}</span>
   </button>
 </form>
+{% endspaceless %}

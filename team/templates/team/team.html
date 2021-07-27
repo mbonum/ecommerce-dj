@@ -3,38 +3,36 @@
 {% block title %}{% trans 'Team' %}{% endblock %}
 {% block content %}
 {% if team %}
-<div class="font-c-sans overflow-hidden md:max-w-s lg:max-w-3xl xl:max-w-5xl mx-auto">
+<div class="font-c-sans lg:max-w-3xl xl:max-w-5xl mx-auto">
   <div>
-    <svg class="s fill-current w-40 h-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    <svg class="s fill-current h-40 w-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
   </div>
-  <div class="text-center mt-8 mb-2 mx-auto">
+  <div class="text-center mb-2 mt-8 mx-auto">
     <h1 class="text-2xl font-semibold uppercase">{% if title %}{{ title }}{% else %}{{ com }} Team{% endif %}</h1>
-    <p class="font-c uppercase text-gray-800 border-b border-gray-300 pb-4 mt-2">{% if motto %}{{ motto }}{% else %}Qualis Super Quantitas{% endif %}</p>
+    <p class="font-c uppercase text-gray-800 bordb pb-4 mt-2">{% if motto %}{{ motto }}{% else %}Qualis Super Quantitas{% endif %}</p>
   </div>
-  <div class="lg:flex items-stretch">
+  <div class="md:flex items-stretch">
   {% for m in team %}
-    {% if m.show %}
-    <div class="self-start text-center mt-5 lg:mr-5">
-      <a{% if m.bio %} href="{{ m.get_absolute_url }}"{% endif %} id="{{ m.slug }}" class="block rounded-lg bg-white border border-gray-300 shadow-md hover:border-yellow-400 focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 hover:shadow-lg focus:outline-none p-4">
-        <div class="relative">
-        {% if m.img %}<img loading="lazy" src="{{ m.img.url }}" alt="{{ m.name }}" class="w-64 h-64 rounded object-center mx-auto">
-        {% else %}
-        <svg class="w-64 h-64 text-gray-600 fill-current mx-auto">
-          <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
-        </svg>
-        {% endif %}
-        </div>
-        <p class="mt-2 mb-1">{{ m.name }}</p>
+  {% if m.show %}
+  <div class="self-start mt-6">
+    <a {% if m.bio %}href="{{ m.get_absolute_url }}" {% endif %}id="{{ m.slug }}" class="carditem">
+      {% if m.img %}<img loading="lazy" src="{{ m.img.url }}" alt="{{ m.name }}" class="h-64 w-64 mx-auto object-center rounded-t-xl">
+      {% else %}
+      <svg class="h-64 w-64 text-gray-600 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+      {% endif %}
+      <div class="text-center space-y-2 m-4">
+        <p class="mb-1 mt-2">{{ m.name }}</p>
         <p class="text-sm text-gray-700">{{ m.job_title }}</p>
-      </a>
-    </div>
-    {% endif %}
+      </div>
+    </a>
+  </div>
+  {% endif %}
   {% endfor %}
   </div>
-  <div class="text-center mt-8 mb-4">
-    <div class="inline-block space-y-4 border-t border-gray-300">
+  <div class="text-center mb-4 mt-8">
+    <div class="inline-block space-y-4 bordt">
       <p class="text-lg pt-4">{% blocktranslate %}Time since {{ com }} foundation{% endblocktranslate %}</p>
-      <div id="ctime" class="inline-flex border border-gray-300 bg-white shadow rounded-full px-1">
+      <div id="ctime" class="inline-flex bord bg-white shadow rounded-full px-1">
         <div class="border-r border-gray-300 px-2 py-1">
           <span class="days pr-1">00</span>
           <span class="timeRefDays">{% trans 'days' %}</span>

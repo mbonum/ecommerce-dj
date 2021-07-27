@@ -5,61 +5,51 @@
 {% block content %}
 <div class="font-c-sans max-w-sm mx-auto">
   {% if cart.products.exists %}
-  <div class="text-center mb-4">
-    <h1 class="text-2xl font-semibold">{% trans 'Cart' %}</h1>
+  <div class="text-center">
+    <h1 class="h1">{% trans 'Cart' %}</h1>
   </div>
-  <table class="table-auto cart-table mx-auto">
-    <thead class="text-lg border-b border-gray-500">
+  <table class="cart-table text-lg table-auto mx-auto">
+    <thead class="border-b border-gray-500">
       <tr>
         <th scope="col" colspan="1"><span hidden>Index</span></th>
-        <th scope="col" class="text-center py-1">{% trans 'Product' %}</th>
-        <th scope="col" class="text-center py-1"><label for="id_qty">{% trans 'Quantity' %}</label></th>
-        <th scope="col" class="text-center py-1">{% trans 'Price' %}</th>
-        <th scope="col" colspan="1"><span hidden>Padding</span></th>
+        <th scope="col" class="tabcol">{% trans 'Product' %}</th>
+        <th scope="col" class="tabcol"><label for="id_qty">{% trans 'Quantity' %}</label></th>
+        <th scope="col" class="tabcol">{% trans 'Price' %}</th>
+        <th scope="col" colspan="1"><span hidden>Pad</span></th>
       </tr>
     </thead>
     <tbody class="cart-body items-center">
       {% for object in cart.products.all %}
-      <tr class="cart-product border-b border-gray-300 text-center">
-        <td scope="row" colspan="1">
-{#<!--{ forloop.counter }}add thumbnail<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow-->#}
+      <tr class="cart-product bordb">
+        <td scope="row" colspan="1"></td>{#<!--{ forloop.counter }}add thumbnail<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow {% if object.img %}{% endif %}-->#}
+        <td class="p-4">
+          <a href="{{ object.get_absolute_url }}" class="tabitem px-2 py-1" id="product-cart">{{ object.name_product }}</a>
         </td>
-        <td class="px-4 py-3">
-          <a href="{{ object.get_absolute_url }}" class="text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
-          {% if object.img %}
-          <div id="product-cart-tip" class="hidden">
-            <img class="w-64 h-64" src="{{ object.img.url }}" alt="Product Thumbnail">
-          </div>
-          {% endif %}
-        </td>
-        <td colspan="1">
+        <div id="product-cart-tip" class="hidden">
+          <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name_product }} {% trans 'Image' %}" class="h-64 w-64">
+        </div>
+        <td class="px-4">
           {% if object.is_digital %}
           <p>1 ({% trans 'Digital' %})</p>
           {% else %}
-          <div class="relative">
-            <select id="id_qty" name="qty" class="block w-full bg-white border border-gray-300 text-gray-700 px-3 pr-8 rounded-lg leading-tight hover:border-blue-500 focus:outline-none shadow">
-              {% for q in object.rangeqty %}
-              <option class="qty-item" value="{{ q }}">{{ q }}</option>
-              {% endfor %}
-            </select>
-            {% comment %}<!-- <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-gray-600">
-              <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-            </div> -->{% endcomment %}
-          </div>
+          <select id="id_qty" name="qty">
+            {% for q in object.rangeqty %}
+            <option value="{{ q }}" class="qty-item">{{ q }}</option>
+            {% endfor %}
+          </select>{#<!--class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-gray-600"><svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>-->#}
           {% endif %}
         </td>
-        <td class="text-center">
-          <p class="price-item">{% include 'base/snippets/currency.html' %}{{ object.price }}</p>
+        <td class="px-4">
+          <p class="price-item">{% include 'base/snippets/currency.html' %} {{ object.price }}</p>
         </td>
-        <td class="cart-item-remove-form xl:border-b xl:border-gray-300">
-          {% include 'carts/snippets/remove-product.html' with id=object.id %}
+        <td class="cart-item-remove-form pl-4">
+          {% include 'carts/snippets/remove-product.html' with id=object.id cart=cart in_cart=True %}
         </td>
       </tr>
-      {% endfor %}
-{#<!--Subtotal <p class="cart-subtotal">{ { cart.subtotal }}</p></td></tr>{ { object.tax }}-->#}
+      {% endfor %}{#<!--carts/snippets/remove-product.html id=object.id Subtotal <p class="cart-subtotal">{ { cart.subtotal }}</p></td></tr>{ { object.tax }}-->#}
       <tr>
         <td colspan="3"></td>
-        <th scope="col" class="font-semibold border-b border-gray-500 py-1">{% trans 'Total' %}</th>
+        <th scope="col" class="border-b border-gray-500 py-2">{% trans 'Total' %}</th>
       </tr>
       <tr>
         <td colspan="3"></td>
@@ -67,29 +57,22 @@
           <p class="cart-total">{% include 'base/snippets/currency.html' %}{{ cart.total }}</p>
         </td>
       </tr>
-      <tr>
-        <div class="items-stretch">
-        <td colspan="1"></td>
-        <td class="pt-8">
-          {% include 'base/snippets/backbtn.html' with url=shop_url %}
-        </td>
-        <td class="pt-8">
-          <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡"><svg class="w-9 h-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg><span hidden>{% trans 'Buy with Crypto' %}</span></a>
-        </td>
-        <td class="pt-8">
-          {% include 'carts/snippets/checkbtn.html' %}
-        </td></div>
-      </tr>
     </tbody>
   </table>
+  <div class="flex items-center justify-between text-lg mt-6">
+    {% include 'base/snippets/backbtn.html' with url=shop_url %}
+    <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full cr2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡">
+      <svg class="h-9 w-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
+      <span hidden>{% trans 'Buy with Crypto' %}</span>
+    </a>
+    {% include 'carts/snippets/checkbtn.html' %}
+</div>
   {% else %}
   <div class="text-center">
-    <p class="text-2xl my-6">{% trans 'Your cart is empty' %}</p>
-    <svg class="text-gray-700 fill-current h-32 w-32 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#sad"></use></svg>
+    <h1 class="h1 my-6">{% trans 'Your cart is empty' %}</h1>
+    {% include 'base/snippets/sad.html' %}
   </div>
   {% endif %}
 </div>
-{% endblock %}
-{% comment %}<!--._. multiply qty*price and update total currency
-Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->
-{% endcomment %}
+{% endblock %}{% comment %}<!--._. multiply qty*price and update total currency
+Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->{% endcomment %}

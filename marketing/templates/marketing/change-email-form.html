@@ -2,9 +2,9 @@
 {% load i18n %}
 {% block title %}{% if title %}{{ title }}{% else %}Email{% endif %}{% endblock %}
 {% block content %}
-<div class="text-lg font-c-sans max-w-xs mx-auto">
-  <div class="border-b border-gray-300 pb-3">
-    <h1 class="text-2xl font-semibold">{% if title %}{{ title }}{% else %}
+<div class="wxs">
+  <div class="bordb">
+    <h1 class="h1">{% if title %}{{ title }}{% else %}
       {% trans 'Update Email Notifications' %}{% endif %}</h1>
   </div>
   <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
@@ -15,20 +15,14 @@
       <label for="id_subscribed">{{ form.subscribed.label }}</label>
       <span class="text-right bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">{{ form.subscribed }}</span>
     </div>
-    <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'Save' %}</button>
+    <button type="submit" class="cbtn">{% trans 'Save' %}</button>
   </form>
 </div>
-{% endblock %}
-{% comment %}<!-- <label class="flex justify-start items-start">
+{% endblock %}{% comment %}<!--<label class="flex justify-start items-start">
   <div class="bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">
     <input type="checkbox" class="opacity-0 absolute">
     <svg class="fill-current hidden w-4 h-4 text-green-500 pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
   </div>
   <div class="select-none">Label Text</div>
 </label>
-
-<style>
-  input:checked + svg {
-    display: block;
-  }
-</style> -->{% endcomment %}
+<style>input:checked + svg {display: block;}</style>-->{% endcomment %}

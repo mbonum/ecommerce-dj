@@ -71,7 +71,7 @@ class DonateView(CreateView):
 
 
 class CookieView(CreateView):
-    template_name = "base/text.html"  # home/policy.html"  #'policies/cookie.html'
+    template_name = "base/txt.html"  # home/policy.html"  #'policies/cookie.html'
     success_url = "/cookie/"
     model = Cookie
     fields = "__all__"
@@ -115,7 +115,7 @@ class CookieView(CreateView):
 
 
 class PrivacyView(CreateView):
-    template_name = "base/text.html"  #'policies/privacy.html'
+    template_name = "base/txt.html"  #'policies/privacy.html'
     success_url = "/privacy/"
     model = Privacy
     fields = "__all__"
@@ -130,7 +130,7 @@ class PrivacyView(CreateView):
 
 
 class TermsView(CreateView):
-    template_name = "base/text.html"
+    template_name = "base/txt.html"
     success_url = "/terms/"
     model = Terms
     fields = "__all__"

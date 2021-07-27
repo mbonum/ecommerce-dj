@@ -10,11 +10,8 @@
   {% if addupdate %}
   <div class="mb-2">
     <label class="ml-2">{{ form.address_type.label }}</label>
-    <div class="relative w-full mx-auto">
+    <div class="w-full mx-auto">
       {{ form.address_type }}
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
-        <svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg>
-      </div>
     </div>
   </div>
   {% endif %}
@@ -54,5 +51,4 @@
     </span>
   </button>
 </form>
-</div>
-{% comment %}<!-- add map django geo check coordinates-->{% endcomment %}
+</div>{% comment %}<!--<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600"><svg class="r-180 fill-current h-4 w-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow-d"></use></svg></div> add map django geo check coordinates-->{% endcomment %}

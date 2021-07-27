@@ -1,4 +1,4 @@
-<span class="currency">{% if user.currency == "USD" %}$ {% else %}€ {% endif %}</span>
-{% comment %}<!-- { % if user.currency == None or user.currency == '$' % }$ {{ last_four_weeks.paid_data.total__sum }}
+<span>{% if user.currency == "USD" %}$ {% else %}€ {% endif %}</span>
+{% comment %}<!-- class="currency" { % if user.currency == None or user.currency == '$' % }$ {{ last_four_weeks.paid_data.total__sum }}
 {% elif user.currency == '£' % }{{ user.currency }} {{ last_four_weeks.paid_data.total__sum }}
 {% elif user.currency == '€' % }{{ last_four_weeks.paid_data.total__sum }} {{ user.currency }}{% endif %} -->{% endcomment %}

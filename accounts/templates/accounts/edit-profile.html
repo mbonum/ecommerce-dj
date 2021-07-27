@@ -4,8 +4,8 @@
 {% block content %}
 <div class="text-lg font-c-sans max-w-xs mx-auto">
   {% if title %}
-  <div class="border-b border-gray-300 pb-3">
-    <h1 class="text-2xl font-semibold">{{ title }}</h1>
+  <div class="border-b border-gray-300">
+    <h1 class="h1">{{ title }}</h1>
   </div>
   {% endif %}
   <form method="post" enctype="multipart/form-data"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
@@ -21,21 +21,21 @@
         {% endif %}
       </div>
       <div>
-        <label for="id_img" class="text-gray-800 m-1">{{ form.img.label }}</label>
+        <label for="id_img" class="lf">{{ form.img.label }}</label>
         {{ form.img }}
       </div>
       <div>
-        <label for="id_first_name" class="text-gray-800 m-1">{{ form.first_name.label }}</label>
+        <label for="id_first_name" class="lf">{{ form.first_name.label }}</label>
         {{ form.first_name }}
       </div>
       <div>
-        <label for="id_last_name" class="text-gray-800 m-1">{{ form.last_name.label }}</label>
+        <label for="id_last_name" class="lf">{{ form.last_name.label }}</label>
         {{ form.last_name }}
       </div>
     </div>
     <div class="text-center space-y-5 mt-4">
       <a class="text-base text-gray-700 hover:text-gray-900 rounded-xl border border-transparent hover:border-yellow-400 focus:outline-none py-1 px-2" href="{{ psw_change_url }}">{% trans 'Change password' %}</a>
-      <button type="submit" class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2">{% trans 'Save' %}</button>
+      <button type="submit" class="cbtn">{% trans 'Save' %}</button>
     </div>
   </form>
 </div>

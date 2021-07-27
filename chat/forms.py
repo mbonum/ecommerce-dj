@@ -76,8 +76,7 @@ class ContactForm(forms.Form):
         widget=forms.Textarea(  # Clear and concise. widget=TinyMCE(attrs={'cols': 80, 'rows': 30, 'textarea':  "Everyone knows something someone else doesn't."})
             attrs={
                 "id": "chat_text",
-                # "placeholder": _("How can we help?"),
-                "class": "flex w-full border border-gray-400 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                # "placeholder": _("How can we help?"),"class": "",
                 "rows": 4,
                 "spellcheck": "true",
             }

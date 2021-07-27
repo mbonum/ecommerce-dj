@@ -1,6 +1,6 @@
 {% load i18n %}
-<div class="font-c-sans max-w-xs mx-auto">
-  <h1 class="text-xl text-center font-semibold pb-2">{% trans 'Payment Card' %}</h1>
-  <div class="stripe-payment-form mt-6" data-token="{{ publish_key }}" data-next-url="{% if next_url %}{{ next_url }}{% endif %}" data-btn-title="{% trans 'Add card' %} 💳"></div>
+<div class="wxs">
+  <h1 class="text-center h1">{% trans 'Payment Card' %}</h1>
+  <div class="stripe-payment-form mt-6" data-token="{{ publish_key }}"{% if next_url %} data-next-url="{{ next_url }}"{% endif %} data-btn-title="{% trans 'Add card' %} 💳"></div>
 </div>
-{% comment %}<!--id="checkout-btn" cdev.stripe.js -->{% endcomment %}
+{% comment %}<!--id="checkout-btn" cdev.stripe.js-->{% endcomment %}

@@ -17,22 +17,22 @@
       <div class="inline-flex items-center space-x-2">
       {% if not object.author_team and object.author %}
         {% if object.author == 'Team' or object.author == 'team' %}
-          <a href="{{ team_url }}" class="flex rounded-full ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" data-tippy-content="{{ com }}" alt="{{ com }}'s logo" target="_blank" rel="noopener">
+          <a href="{{ team_url }}" class="authimg" data-tippy-content="{{ com }}" alt="{{ com }}'s logo" target="_blank" rel="noopener">
           <svg class="fill-current mx-auto w-10 h-10 xl:w-12 xl:h-12"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg></a>
-          <a class="un rounded-xl ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" href="{{ team_url }}" data-tippy-content="C-Team" target="_blank" rel="noopener">{{ com }} team</a>
+          <a class="authtxt" href="{{ team_url }}" data-tippy-content="C-Team" target="_blank" rel="noopener">{{ com }} team</a>
         {% else %}
           {% if object.author.img %}
-          <a href="{% if object.author_url %}{{ object.author_url }}{% else %}{% url 'home:author' slug=object.author.slug %}{% endif %}" class="flex rounded-full ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener"><img loading="lazy" src="{{ object.author.img.url }}" alt="{% trans 'Author Picture' %}" class="t-img rounde-full w-10 h-10 bg-gradient-to-tl to-yellow-200 from-red-700 shadow"></a>
+          <a href="{% if object.author_url %}{{ object.author_url }}{% else %}{% url 'home:author' slug=object.author.slug %}{% endif %}" class="authimg" target="_blank" rel="noopener"><img loading="lazy" src="{{ object.author.img.url }}" alt="{% trans 'Author Picture' %}" class="t-img rounde-full w-10 h-10 bg-gradient-to-tl to-yellow-200 from-red-700 shadow"></a>
           {% endif %}
-        <a href="{% if object.author_url %}{{ object.author_url }}{% else %}{% url 'home:author' slug=object.author.slug %}{% endif %}" class="un rounded-xl ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener">{{ object.author.name }}</a>
+        <a href="{% if object.author_url %}{{ object.author_url }}{% else %}{% url 'home:author' slug=object.author.slug %}{% endif %}" class="authtxt" target="_blank" rel="noopener">{{ object.author.name }}</a>
         {% endif %}
       {% endif %}
       {% if object.author_team %}
       {% if object.author_team.img %}
-        <a href="{% url 'team:detail' slug=object.author_team.slug %}" class="flex rounded-full ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener">
+        <a href="{% url 'team:detail' slug=object.author_team.slug %}" class="authimg" target="_blank" rel="noopener">
         <img loading="lazy" src="{{ object.author_team.img.url }}" alt="{% trans 'Author Picture' %}" class="t-img rounded-full w-10 h-10 shadow"></a>
       {% endif %}
-      <a href="{% url 'team:detail' slug=object.author_team.slug %}" class="un rounded-xl ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent focus:outline-none px-1 pt-1" target="_blank" rel="noopener">{{ object.author_team.name }}</a>
+      <a href="{% url 'team:detail' slug=object.author_team.slug %}" class="authtxt" target="_blank" rel="noopener">{{ object.author_team.name }}</a>
       {% else %}
         {% if edu_url in request.path or essays_url in request.path %}
         <span>Øutis</span>
@@ -56,8 +56,8 @@
           {% for s in object.section_set.all %}
           <input type="hidden" value="{{ s.text|readtime }}" id="rtime" name="rtime">
           {% if not forloop.first %}
-          <div class="flex items-center justify-between pb-1 pt-3">
-            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+          <div class="sectxt">
+            <h2 id="{{ s.slug }}" class="h2txt">{{ s.title|safe }}</h2>
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -65,8 +65,8 @@
         {% elif object.psection_set %}
           {% for s in object.psection_set.all %}
           {% if not forloop.first %}
-          <div class="flex items-center justify-between pb-1 pt-3">
-            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+          <div class="sectxt">
+            <h2 id="{{ s.slug }}" class="h2txt">{{ s.title|safe }}</h2>
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -74,8 +74,8 @@
         {% elif object.csection_set %}
           {% for s in object.csection_set.all %}
           {% if not forloop.first %}
-          <div class="flex items-center justify-between pb-1 pt-3">
-            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+          <div class="sectxt">
+            <h2 id="{{ s.slug }}" class="h2txt">{{ s.title|safe }}</h2>
           </div>
           {% endif %}
           <div>{{ s.text|safe }}</div>
@@ -84,8 +84,8 @@
         {% elif object.tsection_set %}
           {% for s in object.tsection_set.all %}
           {% if not forloop.first %}
-          <div class="flex items-center justify-between pb-1 pt-3">
-            <h2 id="{{ s.slug }}" class="text-2xl font-semibold">{{ s.title|safe }}</h2>
+          <div class="sectxt">
+            <h2 id="{{ s.slug }}" class="h2txt">{{ s.title|safe }}</h2>
           </div>
           {% endif %}
           {{ s.text|safe }}
@@ -108,15 +108,15 @@
       {% include 'base/snippets/backbtn.html' with url=essays_url id=object.slug %}
       {% endif %}
       {% if request.user.email and essays_url in request.path %}
-      <div class="hover:text-black border-l border-gray-300 hover:bg-gray-hover">
-        <a href="{% url 'essays:pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2" target="_blank" rel="noopener">
+      <div class="btntxt">
+        <a href="{% url 'essays:pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none px-2 py-1" target="_blank" rel="noopener">
         <svg class="fill-current w-3 h-3 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
         </a>
       </div>
       {% endif %}
       {% if next %}
-      <div class="hover:text-black border-l border-gray-300 hover:bg-gray-hover">
-        <a class="flex items-center rounded-lg focus:outline-none py-1 px-2" href="{{ next.get_absolute_url }}" data-tippy-content="{{ next.index }}. {{ next.title }}">{% trans 'Next' %}
+      <div class="btntxt">
+        <a class="flex items-center rounded-lg focus:outline-none px-2 py-1" href="{{ next.get_absolute_url }}" data-tippy-content="{{ next.index }}. {{ next.title }}">{% trans 'Next' %}
         <svg class="fill-current scale-1 w-3 h-4 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg></a>
       </div>
       {% endif %}
@@ -137,7 +137,7 @@
   {% if notes.all %}
   <div x-data="{ open: false }">
     <div class="text-center text-lg font-c-sans my-4">
-      <button @click="open=!open" class="border-2 border-yellow-300 shadow rounded-full focus:outline-none focus:ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-3 py-1" type="button">
+      <button @click="open=!open" class="border-2 border-yellow-300 shadow rounded-full cr2 px-3 py-1" type="button">
         <div x-show="!open" class="inline-flex items-center space-x-2">
           <span>{% blocktranslate %}Show {{ com }} Community Contributions{% endblocktranslate %}</span>
           <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
@@ -158,7 +158,7 @@
         <div class="font-c-serif text-base space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
           <span class="inline-flex italic items-center">
           {% if node.user.img %}
-          <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="w-11 h-11 border border-gray-300 rounded-full mr-2">
+          <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="h-11 w-11 border border-gray-300 rounded-full mr-2">
           {% else %}
           —
           {% endif %}
@@ -170,18 +170,18 @@
           </span>
           <span class="sep">·</span>
           <span>20{{ node.created_at|date:'Y-m-d' }}</span>
-          <form action="{% url 'read:like' object.slug node.id %}" method="post"> {% csrf_token %}
-            <button class="font-c-sans inline-flex items-center rounded-xl focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
+          <form method="post" action="{% url 'read:like' object.slug node.id %}"> {% csrf_token %}
+            <button class="font-c-sans inline-flex items-center rounded-xl cr2 px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
               <svg class="fill-current hover:text-yellow-500 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
             </button>
           </form>
           {% if node.level < 2 %}
-          <button class="font-c-sans border border-gray-300 hover:border-yellow-500 rounded-xl shadow hover:shadow-md focus:outline-none ring-yellow-200 focus:ring-2 ring-offset-2 ring-offset-transparent px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
+          <button class="font-c-sans border border-gray-300 hover:border-yellow-500 rounded-xl shadow hover:shadow-md cr2 px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
           {% endif %}
         </div>
         {% if not node.is_leaf_node %}
         <div class="items-center overflow-hidden pt-3">
-          <div class="absolute text-gray-500 mt-3"><svg class="w-4 h-5 fill-current" style="transform: scale(-1,-1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#reply"></use></svg></div>
+          <div class="absolute text-gray-500 mt-3"><svg class="fill-current h-5 w-4" style="transform: scale(-1,-1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#reply"></use></svg></div>
           <div class="kid ml-6">{{ children }}</div>
         </div>
         {% endif %}
@@ -191,10 +191,10 @@
         <div class="inline-flex bg-white rounded-lg overflow-hidden border border-gray-300" aria-label="Note pages">
         {% if pages.has_other_pages %}
           {% if pages.has_previous %}
-          <a class="hover:bg-gray-hover py-1 px-2 rounded-l-lg hover:text-black" href="?page={{ pages.previous_page_number }}">{% trans 'Previous' %}</a>
+          <a class="hover:bg-gray-hover px-2 py-1 rounded-l-lg hover:text-black" href="?page={{ pages.previous_page_number }}">{% trans 'Previous' %}</a>
           {% endif %}
           {% for num in pages.paginator.page_range %}
-          <div class="border-l {% if forloop.last %}border-r {% endif %}border-gray-300 {% if pages.number != num %}hover:bg-gray-hover{% endif %} py-1 px-2">
+          <div class="border-l {% if forloop.last %}border-r {% endif %}border-gray-300 {% if pages.number != num %}hover:bg-gray-hover{% endif %} px-2 py-1">
             {% if pages.number == num %}
             <span class="text-gray-400">{{ num }}</span>
             {% else %}
@@ -203,7 +203,7 @@
           </div>
           {% endfor %}
           {% if pages.has_next %}
-          <a class="hover:bg-gray-hover py-1 px-2 rounded-r-lg hover:text-black" href="?page={{ pages.next_page_number }}">{% trans 'Next' %}</a>
+          <a class="hover:bg-gray-hover px-2 py-1 rounded-r-lg hover:text-black" href="?page={{ pages.next_page_number }}">{% trans 'Next' %}</a>
           {% endif %}
         {% endif %}
         </div>
@@ -218,10 +218,10 @@
 {% comment %}<!--<div class="text-right items-center space-x-1 mt-3 mr-1">
 <label for="id_private" class="text-sm" data-tippy-content="Anonym">{% trans 'Check to hide your name' %}</label>
 {{ form.private }}</div> data-tippy-content="{% trans 'Are you adding value to the conversation?' %}"-->{% endcomment %}
-      <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit">
+      <button class="cbtn px-2 py-1 mt-3" type="submit">
         <div class="text-center text-lg inline-flex items-center space-x-1">
           <span>{% trans 'Share' %}</span>
-          <svg class="fill-current scale-1 w-6 h-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
+          <svg class="fill-current scale-1 h-6 w-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
         </div>
       </button>
     </form>
@@ -229,7 +229,7 @@
   {% else %}
   <div class="font-c-sans text-center">
     <p>{% trans 'Eager to share your thoughts?' %}</p>
-    <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="un font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 px-1 mx-1">{% trans 'Sign in' %}</a> or <a href="{{ register_url }}" class="text-blue-600 hover:text-blue-800 font-semibold focus:outline-none rounded-xl focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 px-1 mx-1">{% trans 'Sign Vp' %}</a></p>
+    <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="un font-semibold cr2 px-2 py-1">{% trans 'Log in' %}</a> or <a href="{{ register_url }}" class="regbtn">{% trans 'Sign Vp' %}</a></p>
   </div>
   {% endif %}
   {% endif %}
@@ -237,7 +237,7 @@
 </div>
 </div>
 {% else %}
-<div class="font-c-sans text-lg text-gray-900 max-w-xs mx-auto">
+<div class="text-gray-900 wxs">
   <h1 class="text-2xl text-black my-5">{% trans 'Work in progress' %}</h1>
   <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
 </div>
@@ -266,11 +266,11 @@ function replyBtn(id) {
       <label for="id_reply" hidden>{% trans "Reply" %}</label>\
       <form id="id_note_reply" method="post"> {% csrf_token %}\
         <div class="text-right">\
-          <button type="button" class="rounded-full focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
+          <button type="button" class="rounded-full focus:outline-none cr" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
         </div>\
         <select name="parent" id="id_parentt" class="hidden"><option value="' + id + '" selected="' + id + '"></option></select>\
-        <textarea name="body" cols="30" rows="3" id="id_reply" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg py-2 px-3 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" spellcheck="true" type="text" required></textarea>\
-        <button class="w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2 mt-3" type="submit">\
+        <textarea name="body" cols="30" rows="3" id="id_reply" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg shadow hover:shadow-md cr2 py-1 px-2" spellcheck="true" type="text" required></textarea>\
+        <button class="cbtn mt-3" type="submit">\
           <p class="text-center inline-flex items-center">{% trans "Reply" %}\
           <svg class="fill-current scale-1 w-6 h-6 ml-1"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
           </p>\

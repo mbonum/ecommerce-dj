@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="{% static 'css/c-custom.min.css' %}" media="screen,projection">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="screen,projection">
+  {% tailwind_css %}
+{% comment %}<!--  <link rel="stylesheet" type="text/css" href="{ % static 'css/main.css' %}" media="screen,projection">
+ Once you activate, you can login {% include 'base/snippets/meta.html' %} -->{% endcomment %}
   <title>{% trans 'Activare Clavem Account' %}</title>
 </head>
 <body>
-  <div class="font-c-sans text-lg">
-    <div class="my-6">
-      <svg class="mx-auto animate-pulse s fill-current w-24 h-24"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
-    </div>
+  <div class="wxs">
+    <svg class="animate-pulse s fill-current w-24 h-24 my-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     <p>{% trans 'Hi' %}{% if first_name %} {{ first_name }}{% endif %},</p>
-    <p>{% blocktranslate %}Please activate your Clavem account by clicking' %} <a class="border border-gray-300 rounded-lg p-2" href="{{ path }}">here</a>.{% endblocktrans %}</p>
-    {#<!--Once you activate, you can login.</p> Team-->#}
+    <p>{% trans 'Please activate your Clavem account by clicking' %} <a href="{{ path }}" class="border border-gray-300 rounded-lg p-2">{% trans 'here' %}</a>.</p>
     <p>{% trans 'Thank you' %},</p>
-    <p>The Clavem team</p>
+    <p>The Clavem Team</p>
   </div>
 </body>
 </html>

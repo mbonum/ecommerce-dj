@@ -1,11 +1,13 @@
 """
 Make all apps searchable
-from django.shortcuts import render
-from django.db.models import Q
+
 """
 from itertools import chain
 
 from django.http import Http404
+from django.shortcuts import render  # redirect from django.db.models import Q
+from django.urls.base import reverse
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from education.models import Book
 from essays.models import Essay, Section
@@ -37,9 +39,11 @@ class SearchView(ListView):
                 book_results, essay_results, sec_results, product_results
             )
             qs = sorted(queryset_chain, key=lambda instance: instance.pk, reverse=True)
-            self.count = len(qs)  # since qs is a list
+            self.count = len(qs)  # qs is a list
             return qs
-        return Http404(_("Nothing to look for."))
+        self.count = 0
+        return render(request, "search/search-view.html", {})#redirect(reverse("search:query"))#, args=[str(room)]) + f"?user={name}" 
+        # raise Http404(_("Nothing to look for."))
         # Essay.objects.none()
 
 

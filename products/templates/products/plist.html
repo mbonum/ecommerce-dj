@@ -3,20 +3,18 @@
 {% block title %}{% trans 'Shop' %}{% endblock %}
 {% block content %}
 {% if object_list %}
-<div class="font-c-sans md:max-w-s lg:max-w-3x xl:max-w-5x mx-auto">
+<div class="font-c-sans lg:max-w-3x xl:max-w-5x mx-auto">
   <div class="text-center border-b border-gray-300">
-    <h1 class="text-2xl font-semibold pb-4">{% trans 'Products' %}</h1>
+    <h1 class="h1">{% trans 'Products' %}</h1>
   </div>
-  <div class="lg:flex items-stretch">
+  <div class="md:flex items-stretch">
   {% for o in object_list %}
-  {% if o.active %}
-    {% include 'products/snippets/pcard.html' with object=o %}
-  {% endif %}
+  {% if o.active %}{% include 'products/snippets/pcard.html' with object=o %}{% endif %}
   {% endfor %}
   </div>
 </div>
 {% else %}
-<div class="text-gray-900 font-c-sans max-w-xs mx-auto">
+<div class="text-gray-900 wxs">
   <h1 class="text-2xl text-black my-5">{% trans 'Product development in progress' %}</h1>
   <p>{% trans 'If you would like to be notified when product are available, please type your email and click on Get Vpdates. Thank You' %}</p>
 </div>

@@ -209,7 +209,7 @@ class Product(models.Model):
 
     def rangeqty(self):
         q = []
-        if not self.is_digital and self.quantity > 1:
+        if not self.is_digital and self.quantity > 0:
             q = list(range(1, self.quantity + 1))
         return q
 

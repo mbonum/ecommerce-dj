@@ -110,7 +110,7 @@ def details(request, slug: str):
         "pages": notes,
         "next": _next,
     }
-    return render(request, "base/text.html", context)
+    return render(request, "base/txt.html", context)
     # if form.errors:
     #     errors = form.errors.as_json()
     #     if request.is_ajax():
@@ -140,7 +140,7 @@ class GenerateEssayPDF(View):
         # email = f'Your username is {user} and your domain name is {domain}'
 
         slug = kwargs.get("slug")
-        # pk = kwargs.get("pk")# edit urls.py and wtext.html PDF
+        # pk = kwargs.get("pk")# edit urls.py and wtxt.html PDF
         essay = Essay.objects.get(slug=slug)  # id=pk
         e = ""
         # s = ""

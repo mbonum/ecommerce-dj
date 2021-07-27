@@ -3,11 +3,11 @@
 {% block title %}{% trans 'History' %}{% endblock %}
 {% block content %}
 {% if object_list %}
-<div class="font-c-sans max-w-xs md:max-w-3xl xl:max-w-5xl mx-auto">
-  <div class="text-center border-b border-gray-300">
-    <h1 class="text-2xl font-semibold pb-4">{% trans 'Products Viewed' %}</h1>
+<div class="wxs md:max-w-3xl xl:max-w-5xl">
+  <div class="text-center bordb">
+    <h1 class="h1">{% trans 'Products Viewed' %}</h1>
   </div>
-  <div class="lg:flex items-stretch">
+  <div class="md:flex items-stretch">
   {% for o in object_list %}
   {% if o.active %}
     {% include 'products/snippets/pcard.html' with object=o %}
@@ -16,8 +16,8 @@
   </div>
 </div>
 {% else %}
-<div class="font-c-sans max-w-xs mx-auto">
-  <h1 class="text-xl inline-flex border-b border-gray-300 font-semibold pb-4" data-tippy-content="({% trans 'or you deleted your cookies)' %}">{% trans 'No product viewed' %} ._.</h1>
+<div class="wxs">
+  <h1 class="h1" data-tippy-content="({% trans 'or you deleted your cookies)' %}">{% trans 'No product viewed' %} ._.</h1>
 </div>
 {% endif %}
 {% endblock %}

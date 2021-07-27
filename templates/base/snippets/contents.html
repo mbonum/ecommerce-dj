@@ -1,18 +1,17 @@
 {% load i18n static %}
 {% if obj.section_set.count > 1 %}
-<div class="text-lg border border-gray-400 rounded-xl shadow px-4 py-2 mx- mb-4">
+<div class="text-lg border border-gray-400 rounded-xl shadow px-4 py-2 mb-4">
 <details class="space-y-1">
-  <summary class="text-xl font-semibold inline-flex items-center">
+  <summary class="h2txt inline-flex items-center">
     <svg class="w-5 h-5 fill-current mr-2" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#content"></use></svg>
     {% trans 'Contents' %}</summary>
   <ul class="list-inside">
   {% for s in obj.section_set.all %}
     {% if not forloop.first %}
-    <li class="pl-1" style="list-style-type: disc;"><a class="un font-c-sans pl-2" href="#{{ s.slug }}">{{ s.title|safe }}</a></li>
+    <li class="list-disc pl-1"><a class="un font-c-sans pl-2" href="#{{ s.slug }}">{{ s.title|safe }}</a></li>
     {% endif %}
   {% endfor %}
   </ul>
 </details>
 </div>
-{% endif %}
-{#<!--{% if s.slug in request.get_full_path %}{% else %}circle{% endif %}ol list-style-type: upper-roman; -->#}
+{% endif %}{#<!--{% if s.slug in request.get_full_path %}{% else %}circle{% endif %}ol list-style-type: upper-roman; -->#}

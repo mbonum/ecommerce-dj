@@ -165,7 +165,7 @@ class UserDetailUpdateForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 # "placeholder": _("First name"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-2",
             }
         ),
     )
@@ -174,8 +174,9 @@ class UserDetailUpdateForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(
             attrs={
+                # "id": "l"
                 # "placeholder": _("Last name"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-2",
             }
         ),
     )
