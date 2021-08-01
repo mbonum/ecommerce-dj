@@ -8,7 +8,7 @@
   <div class="text-center">
     <h1 class="h1">{% trans 'Cart' %}</h1>
   </div>
-  <table class="cart-table text-lg table-auto mx-auto">
+  <table class="cart-table text-lg mx-auto">
     <thead class="border-b border-gray-500">
       <tr>
         <th scope="col" colspan="1"><span hidden>Index</span></th>
@@ -59,10 +59,10 @@
       </tr>
     </tbody>
   </table>
-  <div class="flex items-center justify-between text-lg mt-6">
+  <div class="flex items-center justify-around text-lg mt-6">
     {% include 'base/snippets/backbtn.html' with url=shop_url %}
     <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full cr2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡">
-      <svg class="h-9 w-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
+      <svg class="w-9 h-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
       <span hidden>{% trans 'Buy with Crypto' %}</span>
     </a>
     {% include 'carts/snippets/checkbtn.html' %}

@@ -4,27 +4,25 @@
 {% block content %}
 {% if object %}
 <div class="wxs">
-  <div class="text-center bord mb-5">
+  <div class="text-center bordb pb-2">
     <h1 class="h1">{% trans 'Order' %} ID: {{ object.order_id }}</h1>
-    <a href="{{ object.get_invoice_url }}" class="inline-flex items-center hover:text-yellow-500 cr px-2 py-1 mt-1" target="_blank" rel="noopener">
-      {% trans 'Invoice' %} <svg class="fill-current w-5 h-6 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+    <a href="{{ object.get_invoice_url }}" class="inline-flex items-center tabitem px-2 py-1" target="_blank" rel="noopener">
+      <svg class="fill-current w-5 h-6 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg> {% trans 'Download Invoice' %}
     </a>
   </div>
-  <div class="mx-auto space-y-2">
-    <p>Item{% if object.cart.products.all|length > 1 %}s{% endif %}:
+  <div class="space-y-2 mt-5 mb-6">
+    <p><span class="font-semibold">Item{% if object.cart.products.all|length > 1 %}s{% endif %}</span>:
       {% for p in object.cart.products.all %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-    <p>{% trans 'Billing Address' %}:<br/>{{ object.billing_address.get_address }}</p>
+    <p><span class="font-semibold">{% trans 'Billing Address' %}</span>:<br/>{{ object.billing_address.get_address }}</p>
     {% if object.shipping_address.get_address and object.shipping_total %}
-    <p>{% trans 'Shipping Address' %}:<br/>{{ object.shipping_address.get_address }}</p>
-    <p>{% trans 'Subtotal' %}: {{ user.currency }} {{ object.cart.total }}</p>
-    <p>{% trans 'Shipping Total' %}: {{ user.currency }} {{ object.shipping_total }}</p>
+    <p><span class="font-semibold">{% trans 'Shipping Address' %}</span>:<br/>{{ object.shipping_address.get_address }}</p>
+    <p><span class="font-semibold">{% trans 'Subtotal' %}</span>: {{ user.currency }} {{ object.cart.total }}</p>
+    <p><span class="font-semibold">{% trans 'Shipping Total' %}</span>: {{ user.currency }} {{ object.shipping_total }}</p>
     {% endif %}
-    <p>{% trans 'Order Total' %}: {{ user.currency }} {{ object.total }}</p>
-    <p>{% trans 'Order Status' %}: {{ object.get_status }}</p>
+    <p><span class="font-semibold">{% trans 'Order Total' %}</span>: {{ user.currency }} {{ object.total }}</p>
+    <p><span class="font-semibold">{% trans 'Order Status' %}</span>: {{ object.get_status }}</p>
   </div>
-</div>
-<div class="text-center mt-8">
-  {% include 'base/snippets/backbtn.html' with url=order_url %}
+  <div class="text-center">{% include 'base/snippets/backbtn.html' with url=order_url %}</div>
 </div>
 {% endif %}
-{% endblock %}{#<!--  % url 'order-pdf' order.order_id % -->#}
+{% endblock %}{#<!--  % url 'order-pdf' order.order_id % hover:text-yellow-500 cr2-->#}

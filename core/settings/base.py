@@ -13,6 +13,7 @@ import dj_database_url
 import psycopg2.extensions
 from decouple import config
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ImproperlyConfigured
 
 # import lz4
 # ABSOLUTE_PATH = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
@@ -29,7 +30,10 @@ BASE_URL = "www.clavem.co:8000"
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 PROJECT_DIR = Path(__file__).resolve(strict=True)
 
-SECRET_KEY = config("SECRET_KEY")
+try:
+    SECRET_KEY = config("SECRET_KEY")
+except KeyError:
+    raise ImproperlyConfigured("SECRET_KEY environment variable is missing!")
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
@@ -69,7 +73,7 @@ INSTALLED_APPS = [
     # "gdpr",  # https://github.com/druids/django-GDPR
     "meta",  # https://pypi.org/project/django-meta
     # # "defender",  # https://django-defender.readthedocs.io/en/latest # downgrade django
-    # "corsheaders",  # https://pypi.org/project/django-cors-headers
+    "corsheaders",  # https://pypi.org/project/django-cors-headers
     "compressor",
     "captcha",  # https://pypi.org/project/django-simple-captcha
     "mptt",  # https://django-mptt.readthedocs.io/en/latest/install.html
@@ -185,7 +189,7 @@ MIDDLEWARE = [
     # 'tracking.middleware.VisitorCleanUpMiddleware',# 'tracking.middleware.VisitorTrackingMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",  # between sessions and common
-    # "corsheaders.middleware.CorsMiddleware",  # https://pypi.org/project/django-cors-headers/
+    "corsheaders.middleware.CorsMiddleware",  # https://pypi.org/project/django-cors-headers/
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -547,6 +551,14 @@ TINYMCE_DEFAULT_CONFIG = {
 
 
 # django-cors-headers https://django-csp.readthedocs.io/en/latest/configuration.html
+CORS_ALLOWED_ORIGINS = [
+    "https://js.stripe.com",
+    "https://polyfill.io"
+]
+# CORS_ALLOWED_ORIGIN_REGEXES = [
+#     #r"^https://\w+\.stripe\.com$",
+# ]
+
 
 # tracking2
 # TRACK_AJAX_REQUESTS = True

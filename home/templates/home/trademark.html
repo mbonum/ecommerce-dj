@@ -2,21 +2,21 @@
 {% load i18n static %}
 {% block title %}{% if page_obj.title %}{{ page_obj.title|safe }}{% else %}{% trans 'Trademark' %}{% endif %}{% endblock %}
 {% block content %}
-<div class="font-c-sans max-w- mx-auto">
-  <h1 class="text-3xl mb-2">{% if page_obj.title %}{{ page_obj.title|safe }}{% else %}{% trans 'Trademark' %}{% endif %}</h1>
+<div class="font-c-sans max-w-lg mx-auto">
+  <h1 class="h1">{% if page_obj.title %}{{ page_obj.title|safe }}{% else %}{% trans 'Trademark' %}{% endif %}</h1>
   {% if text.updated_at %}<p class="pb-2">Effective date: {{ text.updated_at|date:'Y-m-d' }}</p>{% endif %}
   <h2 class="text-xl pb-6">{% trans 'Assets and usage guidelines' %}</h2>
   <div class="space-y-6 text-center mb-4">
-    <div class="space-y-6 border-b border-gray-300 pb-6">
-      <p class="text-2xl">{% trans 'Mark' %}</p>
+    <div class="space-y-6 bordb pb-6">
+      <h3 class="h1">{% trans 'Mark' %}</h3>
       <svg class="fill-current w-40 h-40 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     </div>
     <div class="space-y-6">
-      <p class="text-2xl">{% trans 'Logotype' %}</p>
-      <svg class="fill-current w-full h-24 w-24 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
+      <h3 class="h1">{% trans 'Logotype' %}</h3>
+      <svg class="fill-current w-full mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
     </div>
   </div>
-  <div class="text-lg text-justify hyphens">
+  <div class="text-lg">
     {% if page_obj.text %}
     {{ page_obj.title|safe }}
     {{ page_obj.subtitle|safe }}
@@ -29,7 +29,6 @@
     {% endif %}
   </div>
 </div>
-{% endblock %}
-{% comment %}<!-- like "Clavem Themes" or "Clavem Studio", as well as in domain names like "Clavemkits.com".
+{% endblock %}{% comment %}<!-- like "Clavem Themes" or "Clavem Studio", as well as in domain names like "Clavemkits.com".
 Examples that are permitted include "ComponentStudio for Clavem" or "UtilityThemes: Templates for Clavem".
 https://www.kali.org/docs/policy/trademark/ https://writings.stephenwolfram.com/2018/12/the-story-of-spikey/ -->{% endcomment %}

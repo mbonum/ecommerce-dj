@@ -40,7 +40,7 @@
         {% if object.is_digital %}
         <p>{% trans 'Digital' %}</p>
         {% else %}
-        <label for="qty" class="mr-2">{% trans 'Quantity' %}:</label>
+        <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
         <select id="id_qty" @change="qty = $event.target.value" name="qty">
           {% for q in object.rangeqty %}
           <option value="{{ q }}" x-bind:value="{{ q }}">{{ q }}</option>
@@ -60,23 +60,12 @@
   </div>
 </div>
 {% endblock %}
-{% block js %}
-<script>
-$(document).ready(function () {
-  var qty = $('#qty option:selected').text(),
-    qtySel = $('#qty_sel');
-  qtySel.value = qty;
-  console.log(qtySel);
-})
- </script>
-{% endblock %}
-{% comment %}<!--{ % block js %}&times;
-  productqty: $('#qty option:selected').text(),
-{ % endblock %}
+{% comment %}<!--$(document).ready(function() {$('#id_qty option:selected').text();})
+&times;
 custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag.
  2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
 { % block css %}<style>
-/* #pic{
+#pic{
   /* max-width: 500px;
   max-height: 600px; */
   /* border: 2px solid black; */
@@ -115,8 +104,7 @@ Add 360 gif or slideshow { % if not object.is_digital %}<div id="zum" class="hid
       error: function (xhr, errmsg, err) { }
     });
   })
-</script>-->
-<!--{ % block js %}{ % endblock %}
+</script>
 <script type="text/javascript" src="{ % static 'js/zum.js' %}"></script>url: "{ % url 'cart:cart_add' %}", 
 <script>
 $(document).on('click', '#buybtn', function(e) {

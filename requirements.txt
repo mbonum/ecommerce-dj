@@ -136,15 +136,15 @@ block-disposable-email==2.0.0 \
     # via
     #   -r requirements.in
     #   django-disposable-email-checker
-boto3==1.18.7 \
-    --hash=sha256:a012570d3535ec6c4db97e60ef51c2f39f38246429e1455cecc26c633ed81c10 \
-    --hash=sha256:c7f45b0417395d3020c98cdc10f942939883018210e29dbfe6fbfc0a74e503ec
+boto3==1.18.10 \
+    --hash=sha256:831b279c4395d5f3b360b260131e30d418ffe620ed3705a5146a90ffdd5775ab \
+    --hash=sha256:eec96aa90506b5e3736707d53b1f91dbaa4bf6728ddd60660fc34935b7e55f12
     # via
     #   -r requirements.in
     #   kappa
-botocore==1.21.7 \
-    --hash=sha256:34c8b151a25616ed7791218f6d7780c3a97725fe3ceeaa28085b345a8513af6e \
-    --hash=sha256:dcf399d21170bb899e00d2a693bddcc79e61471fbfead8500a65578700a3190a
+botocore==1.21.10 \
+    --hash=sha256:81f1bffbd2276c5360a59db1358e793d2ba3e3a378ae2bb4bc780756945fdb2b \
+    --hash=sha256:af5baac459c9fde0eb7dda39808e7dd1e61d758c3c0a734436ec377e0dabe319
     # via
     #   -r requirements.in
     #   boto3
@@ -769,9 +769,9 @@ incremental==21.3.0 \
     # via
     #   -r requirements.in
     #   twisted
-isort==5.9.2 \
-    --hash=sha256:eed17b53c3e7912425579853d078a0832820f023191561fcee9d7cae424e0813 \
-    --hash=sha256:f65ce5bd4cbc6abdfbe29afc2f0245538ab358c14590912df638033f157d555e
+isort==5.9.3 \
+    --hash=sha256:9c2ea1e62d871267b78307fe511c0838ba0da28698c5732d54e2790bf3ba9899 \
+    --hash=sha256:e17d6e2b81095c9db0a03a8025a957f334d6ea30b26f9ec70805411e5c7c81f2
     # via -r requirements.in
 jinja2==3.0.1 \
     --hash=sha256:1f06f2da51e7b56b8f238affdd6b4e2c61e39598a378cc49345bc1bd42a978a4 \
@@ -1538,9 +1538,9 @@ toml==0.10.2 \
     # via
     #   -r requirements.in
     #   black
-tomli==1.1.0 \
-    --hash=sha256:33d7984738f8bb699c9b0a816eb646a8178a69eaa792d258486776a5d21b8ca5 \
-    --hash=sha256:f4a182048010e89cbec0ae4686b21f550a7f2903f665e34a6de58ec15424f919
+tomli==1.2.0 \
+    --hash=sha256:056f0376bf5a6b182c513f9582c1e5b0487265eb6c48842b69aa9ca1cd5f640a \
+    --hash=sha256:d60e681734099207a6add7a10326bc2ddd1fdc36c1b0f547d00ef73ac63739c2
     # via
     #   -r requirements.in
     #   pep517
@@ -1595,9 +1595,9 @@ troposphere==3.0.2 \
     --hash=sha256:a8492656bcf917b45b253dc3623cb9c81e45e5c7aaa524647650547d505016e1 \
     --hash=sha256:acde51e47294bdb2bce4f0be4320ac12dbd3c6a2783895779ddb94cfdc0badaf
     # via -r requirements.in
-twisted[tls]==21.2.0 \
-    --hash=sha256:77544a8945cf69b98d2946689bbe0c75de7d145cdf11f391dd487eae8fc95a12 \
-    --hash=sha256:aab38085ea6cda5b378b519a0ec99986874921ee8881318626b0a3414bb2631e
+twisted[tls]==21.7.0 \
+    --hash=sha256:13c1d1d2421ae556d91e81e66cf0d4f4e4e1e4a36a0486933bee4305c6a4fb9b \
+    --hash=sha256:2cd652542463277378b0d349f47c62f20d9306e57d1247baabd6d1d38a109006
     # via
     #   -r requirements.in
     #   daphne
@@ -1648,6 +1648,7 @@ typing-extensions==3.10.0.0 \
     # via
     #   -r requirements.in
     #   black
+    #   twisted
 unicodecsv==0.14.1 \
     --hash=sha256:018c08037d48649a0412063ff4eda26eaa81eff1546dbffa51fa5293276ff7fc
     # via

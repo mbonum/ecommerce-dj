@@ -18,18 +18,18 @@
     <nav x-show="!open" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
     {% if essays_url in request.path or edu_url in request.path %}
       <a href="{{ edu_url }}" class="ni{% if edu_url in request.path %} nisel{% endif %}">{% trans 'Learn' %}</a>
-    {% endif %}{#<!-- data-tippy-content="{% trans 'Inspirations' %}" {% trans 'Writings' %}{% trans 'Offerings' %}-->#}
+    {% endif %}{#<!--data-tippy-content="{% trans 'Inspirations' %}" {% trans 'Writings' %}{% trans 'Offerings' %}-->#}
       <a href="{{ essays_url }}" class="ni{% if essays_url in request.path %} nisel{% endif %}">
-        <svg class="hidden lg:inline-flex items-center fill-current h-5 w-5 mr-3 md:mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg>{% trans 'Read' %}
+        <svg class="hidden lg:inline-flex items-center fill-current w-5 h-5 mr-3 md:mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg>{% trans 'Read' %}
       </a>
       <a href="{{ shop_url }}" class="ni{% if shop_url in request.path %} nisel{% endif %}">{% trans 'Shop' %}</a>
       {% if request.session.cart_items %}
       <a href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart" {% endif %}class="cartbtn{% if cart_url in request.path %} nisel{% endif %}">
       <div class="relative inline-flex text-gray-300 hover:text-white items-center pt-1">
         <span class="md:hidden mr-3 md:mr-0">{% trans 'Cart' %}</span>
-        <svg class="fill-current h-5 w-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
-        <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart rounded-full h-4 w-4 inline-flex opacity-50 top-0 -right-2"></span>
-        <span class="absolute text-black text-sm bg-cart hover:bg-cart rounded-full h-4 w-4 top-0 -right-2 flex justify-center items-center">{{ request.session.cart_items }}</span>
+        <svg class="fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+        <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart rounded-full w-4 h-4 inline-flex opacity-50 top-0 -right-2"></span>
+        <span class="absolute text-black text-sm bg-cart hover:bg-cart rounded-full w-4 h-4 top-0 -right-2 flex justify-center items-center">{{ request.session.cart_items }}</span>
       </div></a>
       <div id="cart-tip" class="hidden">
       {% for p in cart.products.all %}
@@ -47,7 +47,7 @@
       {% endif %}
       <div class="md:space-x-4 border-t border-gray-600 md:border-none pt-2 md:pt-0 my-1 md:my-0 flex items-center justify-between">
       {% if request.user.is_authenticated %}
-        <a href="{{ logout_url }}" class="logbtn">{% trans 'Log Out' %}</a>{#<!--<svg class="ml-2 w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#out"></use></svg>-->#}
+        <a href="{{ logout_url }}" class="logbtn">{% trans 'Log Out' %}</a>
         <a href="{{ account_url }}" class="usrbtn"{% if request.user.first_name %} data-tippy-content="{% trans 'Account of' %} {{ request.user.first_name }}"{% endif %}>
           <svg class="fill-current w-5 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#set"></use></svg>
           <span>{% trans 'Account' %}</span>
@@ -55,12 +55,12 @@
         {% elif request.path != checkout_url %}
         <a href="{{ login_url }}" class="logbtn">{% trans 'Log In' %}</a>
         <a href="{{ register_url }}" class="usrbtn">{% trans 'Sign Vp' %}</a>
-{#<!--<svg class="w-4 h-4 text-gray-200 fill-current hidden xl:inline-block ml-2"> <use xlink:href="{% static 'img/svg-defs.svg' %}#signup"></use></svg>-->#}
       {% endif %}
       </div>
     </nav>
   </div>
-</header>{% comment %}<!--<script>
+</header>{% comment %}<!--<svg class="ml-2 w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#out"></use></svg><svg class="w-4 h-4 text-gray-200 fill-current hidden xl:inline-block ml-2"> <use xlink:href="{% static 'img/svg-defs.svg' %}#signup"></use></svg>
+<script>
   var pathname = window.location.pathname;
   if (pathname.indexOf('/read/') > -1) {
     document.getElementById('#edu').classList.remove('hidden')

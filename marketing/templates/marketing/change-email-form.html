@@ -9,7 +9,7 @@
   </div>
   <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     {% if next %}
-    <input type='hidden' name='next' value='{{ next_url }}'>
+    <input type="hidden" name="next" value="{{ next_url }}">
     {% endif %}
     <div class="flex items-center my-6">
       <label for="id_subscribed">{{ form.subscribed.label }}</label>
