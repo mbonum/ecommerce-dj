@@ -1,21 +1,21 @@
 {% load i18n static %}
 <header :class="{ 'max-h-full': open === 'false' }" class="md:sticky top-0 z-40 bg-gray-a font-c-sans shadow-md">
-  <div x-data="{ open: false }" class="cw text-lg md:flex items-center justify-between text-gray-300 my-2">
-    <div :class="{ 'pb-2': open == 'true' }" class="flex justify-between mx-auto md:pb-0 md:mx-0">
-      <button @click="open=!open" class="hover:text-white md:hidden cr p-1" type="button">
+  <div @click.away="open = false" x-data="{ open: false }" class="cw text-lg md:flex items-center justify-between text-gray-300 my-2">
+    <div :class="{ 'pb-2': open == 'true' }" class="flex justify-between mx-auto md:pb-0 md:mx-0 px-1">
+      <button @click="open = !open" class="hover:text-white md:hidden cr p-1" type="button">
         <svg class="fill-current mx-auto w-4 h-4">
           <use x-show="open" xlink:href="{% static 'img/svg-defs.svg' %}#o"></use>
           <use x-show="!open" xlink:href="{% static 'img/svg-defs.svg' %}#x"></use>
         </svg>
         <span hidden>{% trans 'Menu' %}</span>
       </button>
-      <a oncontextmenu="mark();" class="hover:text-white inline-flex items-center cr mx-auto" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
+      <a oncontextmenu="mark();" class="hover:text-white inline-flex items-center cr mx-auto px-1" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
         <svg class="fill-current w-32 h-10"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
         <span hidden>{{ com }}</span>
       </a>
       {% include 'base/snippets/brandredirect.html' with url=request.url brand_url=brand_url %}
     </div>
-    <nav x-show="!open" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
+    <nav x-show="!open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
     {% if essays_url in request.path or edu_url in request.path %}
       <a href="{{ edu_url }}" class="ni{% if edu_url in request.path %} nisel{% endif %}">{% trans 'Learn' %}</a>
     {% endif %}{#<!--data-tippy-content="{% trans 'Inspirations' %}" {% trans 'Writings' %}{% trans 'Offerings' %}-->#}

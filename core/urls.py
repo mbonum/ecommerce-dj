@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from .schema import schema
 from accounts.views import LoginView, RegisterView
 from carts.views import cart_detail_api_view
+from carts.api import api_add_to_cart
 from core.views import robots_txt
 from essays.sitemaps import EssaySitemap  #  ,
 
@@ -25,6 +26,7 @@ from essays.sitemaps import EssaySitemap  #  ,
 # from marketing import urls as mktg_urls
 from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
+
 # from shorturl.views import ShortURLView, URLRedirectView
 
 # # from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
@@ -55,6 +57,7 @@ urlpatterns = [
     path(_("team/"), include("team.urls", namespace="team")),
     path(_("shop/"), include("products.urls", namespace="products")),
     path(_("search/"), include("search.urls", namespace="search")),
+    path("api/add_to_cart", api_add_to_cart, name="api_add_to_cart"),
     path(_("cart/"), include("carts.urls", namespace="cart")),
     path("api/cart/", cart_detail_api_view, name="api-cart"),  # YXBpL2NhcnQv/
     path(_("signup/"), RegisterView.as_view(), name="register"),
@@ -105,7 +108,6 @@ urlpatterns = [
     # #     path('cm9ib3QueG1s0/', include('robots.urls')),
     # #     # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
-
     # fake admin
     path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
 ]

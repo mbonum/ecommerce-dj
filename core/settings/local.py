@@ -21,11 +21,13 @@ INSTALLED_APPS += [
     "billing",
     "orders",
     "analytics",
-    "shorturl",
-    # "graphene_django",
+    "shorturl",# "graphene_django",
 ]
 
 AUTH_USER_MODEL = "accounts.CUser"
+
+SESSION_COOKIE_CART = 86400
+CART_SESSION_ID = "cart"
 
 # GRAPHENE = {"SCHEMA": "core.schema.schema"}
 

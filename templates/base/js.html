@@ -27,6 +27,12 @@
 <script type="text/javascript" src="{% static 'js/cdev.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cdev.sales.js' %}"></script>
 {% endcompress %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script>
+  if (typeof Vue == 'undefined') {
+    document.write(unescape("%3Cscript src='{% static '/js/vue.min.js' %} type='text/javascript'%3E%3C/script%3E"));
+  }
+</script>
 {% comment %}<!--<link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ recaptchav3 }}"></script>
 nonce="lrEwC5VX0M"<script rel="preload" type="text/javascript" src="{ % static 'js/fittext.js' % }"></script>
@@ -49,5 +55,4 @@ Markdown https://cdnjs.com/libraries/marked https://cdnjs.cloudflare.com/ajax/li
 Vue for prod <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script rel="preload" type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js" integrity="sha384-bF2gXog8EbftpjuWQY8G0T7aeq+FvNU9YWvxSRHybqv2F/lvV5msKMHvRgoukeQP" crossorigin="anonymous"></script>
 <script rel="preload" type="text/javascript" src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
-Icons <script src="https://kit.fontawesome.com/6db89c4710.js" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script src='{ % static 'js/bootstrap.min.js' % }'><\/script>")}</script>
--->{% endcomment %}
+Icons <script src="https://kit.fontawesome.com/6db89c4710.js" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script src='{ % static 'js/bootstrap.min.js' % }'><\/script>")}</script>-->{% endcomment %}

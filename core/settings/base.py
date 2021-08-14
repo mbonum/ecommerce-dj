@@ -247,6 +247,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.from_settings",
+                "products.context_processors.menu_categories",
             ],
             # 'loaders': [
             #     'django.template.loaders.app_directories.Loader',
@@ -551,10 +552,7 @@ TINYMCE_DEFAULT_CONFIG = {
 
 
 # django-cors-headers https://django-csp.readthedocs.io/en/latest/configuration.html
-CORS_ALLOWED_ORIGINS = [
-    "https://js.stripe.com",
-    "https://polyfill.io"
-]
+CORS_ALLOWED_ORIGINS = ["https://js.stripe.com", "https://polyfill.io"]
 # CORS_ALLOWED_ORIGIN_REGEXES = [
 #     #r"^https://\w+\.stripe\.com$",
 # ]

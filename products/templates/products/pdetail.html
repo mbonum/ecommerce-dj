@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 {% block title %}{% trans 'Buy' %} {{ object.name_product }}{% endblock %}
+{% comment %}<!--<source src="{{ object.video.url }}" type="video/ogg"> Fallback if the browser doesn't support video tagmuted width="560" height="315"{ % for img in object.img.all %}
+{ % if img.is_feature %}<img src="{{ img.url }}" alt="{{ img.alt_text }}">
+{% endif %}{% endfor %} x-bind:value="{{ q }}"-->{% endcomment %}
 {% block content %}
-<div class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-2 xl:space-x-8 mx-auto">
+<div class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-2 xl:space-x-8 mx-auto" id="productapp">
   <div class="lg:w-1/3">
     {% if object.video %}
     <video loading="lazy" class="rounded-lg bord shadow" controls>
       <source src="{{ object.video.url }}" type="video/mp4">
-{#<!--<source src="{{ object.video.url }}" type="video/ogg"> Fallback if the browser doesn't support video tag -->#}
       <embed src="{flash_swf_file}.swf" type="application/x-shockwave-flash"></embed>
     </video>
     {% elif object.video_link %}
@@ -21,12 +23,6 @@
       <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
     </svg>
     {% endif %}
-{% comment %}<!--muted width="560" height="315"{ % for img in object.img.all %}
-{ % if img.is_feature %}
-<img src="{{ img.url }}" alt="{{ img.alt_text }}" class="">
-{% endif %}
-{% endfor %}
-{% endif %}-->{% endcomment %}
   </div>
   <div class="lg:w-1/3">
     <h1 class="text-2xl">{{ object.name_product }}</h1>
@@ -43,7 +39,7 @@
         <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
         <select id="id_qty" @change="qty = $event.target.value" name="qty">
           {% for q in object.rangeqty %}
-          <option value="{{ q }}" x-bind:value="{{ q }}">{{ q }}</option>
+          <option value="{{ q }}">{{ q }}</option>
           {% endfor %}
         </select>
         {% endif %}
@@ -55,15 +51,71 @@
     </div>
     <div class="w-full inline-flex items-center justify-between">
       {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}
+
+      <button @click="addToCart({{ object.id }})" class="cbtn">Buy</button>
+
       {% include 'products/snippets/update-cart.html' with product=object cart=cart %}
     </div>
   </div>
 </div>
 {% endblock %}
-{% comment %}<!--$(document).ready(function() {$('#id_qty option:selected').text();})
+{% block js %}
+<script>
+  var productapp = new Vue({
+    el: '#productapp',
+    delimeters: ['[[', ']]'],
+    // store: store,
+    data () {
+      return {
+        showMessage: false,
+        mainImage: '{{ object.img.url }}',
+        images: ['{{ imagesstring|safe }}']
+      }
+    },
+    mounted () {
+      console.log('Mounted');
+    },
+    methods: {
+      changeMainImage(img) {
+        this.mainImg = img;
+      },
+      addToCart(productId) {
+        console.log('Product ID: ', productId)
+        var data = {
+          'product_id': productId, 
+          'update': false,
+          'quantity': 1
+        };
+
+        fetch('/api/add_to_cart/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(data)
+        })
+        .then((response) => {
+          console.log(response)
+
+          this.showMessage = true
+
+          // store.commit('increment', 1);
+
+          setTimeout(() => {this.showMessage = false}, 2000)
+        })
+        .catch(function (error) {
+          console.log('Error 2');
+          console.log(error);
+        })
+      }
+    }
+  })
+</script>
+{% endblock %}{% comment %}<!--$(document).ready(function() {$('#id_qty option:selected').text();})
 &times;
-custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag.
- 2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
+custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag. 2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
 { % block css %}<style>
 #pic{
   /* max-width: 500px;
@@ -123,5 +175,4 @@ $(document).on('click', '#buybtn', function(e) {
     error: function(xhr, errmsg, err) {
     }
   })
-})
-</script>-->{% endcomment %}
+})</script>-->{% endcomment %}

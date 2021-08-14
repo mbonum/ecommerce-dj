@@ -4,15 +4,7 @@
 @layer components {
   .font-c-sans {font-family: "PT", "Open", sans;}
   .un {display: inline-block;}
-  .un::after {
-    content: "";
-    width: 0px;
-    height: 1px;
-    display: block;
-    background: rgba(0, 0, 0, .9);
-    background: -webkit-linear-gradient(to left, rgba(0, 0, 0, .1), rgba(0, 0, 0, .9));
-    background: linear-gradient(to left, rgba(0, 0, 0, .1), rgba(0, 0, 0, .9));
-    transition: 300ms;
+  .un::after {content: "";width: 0px;height: 1px;display: block;background: rgba(0, 0, 0, .9); background: -webkit-linear-gradient(to left, rgba(0, 0, 0, .1), rgba(0, 0, 0, .9)); background: linear-gradient(to left, rgba(0, 0, 0, .1), rgba(0, 0, 0, .9)); transition: 300ms;
   }
   .un:hover::after {width: 100%;}
   .cb {@apply antialiased overflow-x-hidden;}
@@ -29,7 +21,7 @@
   .fbtn {@apply block un overflow-hidden items-center hover:text-black focus:outline-none cr py-3 md:py-1 md:px-1;}
   .fsp {@apply md:w-1/3 text-center md:space-y-4;}
   .lf {@apply text-gray-800 m-1;}
-  .polbtn {@apply font-semibold focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-1 pt-1;}
+  .polbtn {@apply font-semibold rounded-lg cr2 px-1 pt-1;}
   .poli{@apply hover:text-black un md:rounded-xl px-2 py-1;}
   .ermsg{@apply text-2xl text-center my-5;}
   .carditem{@apply block rounded-lg bg-white bord shadow-md hover:border-yellow-400 hover:shadow-lg cr2;}
@@ -55,10 +47,12 @@
   .bord{@apply border border-gray-300;}
   .cartab{@apply bord text-center;}
   .bt{@apply text-blue-600 hover:text-blue-700 hover:underline cr2;}
+  #id_qty{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}
   #serc{@apply w-full bg-transparent rounded-xl border-none ring-0 ring-white focus:outline-none py-1 px-0;}
   #id_captcha_1{@apply border-none ring-0 rounded-xl focus:outline-none px-0 py-0;}
-  #id_qty{@apply block cr2 bg-white bord text-gray-700 rounded-lg shadow focus:border-yellow-500;}
+  #currency{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}
   #chat_text{@apply flex w-full border border-gray-400 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow hover:shadow-md cr2 px-2 py-1;}
   #id_note{@apply w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 px-2 py-1 mt-2;}
-  #id_currency{@apply block cr2 bg-white bord text-gray-700 rounded-lg shadow focus:border-yellow-500;}
+  .addr{@apply bord break-words bg-white shadow rounded-xl p-2 mt-1;}
+  .qr{@apply addr w-64 h-64 mx-auto my-4;}
 }

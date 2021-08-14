@@ -5,32 +5,34 @@
 {% block content %}
 <div class="wxs">
   <div class="mr-6">
-  <div class="bordb">
-    <h1 class="h1">
-    {% if object_list and query %}{% trans 'Results for' %} {{ query }}
-    {% else %}{% trans 'Nothing found' %}{% endif %}
-    </h1>
-  </div>
-  <div class="my-4">
-    {% include 'search/search-form.html' %}
-  </div>
-  <div class="space-y-4">
-  {% for o in object_list %}
-    {% with o|class_name as klass %}
-    {% if klass == 'Book' and o.active %}
-    <div>
-      {% include 'education/bcard.html' with object=o %}
+    <div class="bordb">
+      <h1 class="h1">
+      {% if object_list and query %}{% trans 'Results for' %} {{ query }}
+      {% else %}{% trans 'Nothing found' %}{% endif %}
+      </h1>
     </div>
-    {% elif klass == 'Essay' and o.publish %}
-    <div>
-      {% include 'essays/wcard.html' with object=o %}
+    <div class="my-4">
+      {% include 'search/search-form.html' %}
     </div>
-    {% elif klass == 'Product' and o.active %}
-    {% include 'products/snippets/pcard.html' with object=o %}
+    {% if object_list and query %}
+    <div class="space-y-4">
+    {% for o in object_list %}
+      {% with o|class_name as klass %}
+      {% if klass == 'Book' and o.active %}
+      <div>
+        {% include 'education/bcard.html' with object=o %}
+      </div>
+      {% elif klass == 'Essay' and o.publish %}
+      <div>
+        {% include 'essays/wcard.html' with object=o %}
+      </div>
+      {% elif klass == 'Product' and o.active %}
+      {% include 'products/snippets/pcard.html' with object=o %}
+      {% endif %}
+      {% endwith %}
+    {% endfor %}
+    </div>
     {% endif %}
-    {% endwith %}
-  {% endfor %}
-  </div>
   </div>
 </div>
 {% endblock %}

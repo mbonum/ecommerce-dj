@@ -65,7 +65,7 @@ $(document).ready(function () {
   })
   function displaySearching() {
     searchBtn.addClass('disabled');
-    searchBtn.html('<svg class="animate-spin hover:text-black fill-current h-5 w-5" viewBox="0 0 80 80" xml:space="preserve"><path d="M40,72C22.4,72,8,57.6,8,40C8,22.4, 22.4,8,40,8c17.6,0,32,14.4,32,32c0,1.1-0.9,2-2,2 s-2-0.9-2-2c0-15.4-12.6-28-28-28S12,24.6,12,40s12.6, 28,28,28c1.1,0,2,0.9,2,2S41.1,72,40,72z"/></svg>');
+    searchBtn.html('<svg class="w-5 h-5 hover:text-black fill-current animate-spin" viewBox="0 0 80 80" xml:space="preserve"><path d="M40,72C22.4,72,8,57.6,8,40C8,22.4, 22.4,8,40,8c17.6,0,32,14.4,32,32c0,1.1-0.9,2-2,2 s-2-0.9-2-2c0-15.4-12.6-28-28-28S12,24.6,12,40s12.6, 28,28,28c1.1,0,2,0.9,2,2S41.1,72,40,72z"/></svg>');
   }
   function performSearch() {
     displaySearching();
@@ -173,7 +173,7 @@ $(document).ready(function () {
           if (currency == 'USD') { currency = '$' } else { currency = '€' }
           $.each(data.products, function(index, item) {
             var newCartItemRemove = hiddenCartItemRemoveForm.clone();
-            newCartItemRemove.css('display', 'block');//.removeClass('hidden-class')cart-product
+            newCartItemRemove.css('display', 'block');
             newCartItemRemove.find('.cart-item-product-id').val(item.id);
             cartBody.prepend('<tr class="bordb">\
             <td scope="row" colspan="1"></td><td class="p-4"><a class="tabitem px-2 py-1" href="' + item.url + '" id="product-cart">'
@@ -188,8 +188,7 @@ $(document).ready(function () {
           //   cartBody.prepend(cartBody.find('.cart-total').text(data.total) + ' ' + currency)
           // }
         } else {
-          window.location.href = currentUrl;// bug $(location).attr('href', currentUrl);//location.reload();
-          // refreshCart();
+          window.location.href = currentUrl;
         }
       },
       error: function(errorData) {
@@ -202,7 +201,7 @@ $(document).ready(function () {
     })
   }
 })
-/* console.log(item) cart.views cart_detail_api_view<td scope="row" class="text-sm">' + i + '</td>
+/* cart.views cart_detail_api_view
 <img class="w-20 h-20" src="{ { object.image.url }}">
 + if (item.is_digital) {'1 (Digital)'} target="_blank" + value.qty + '<select class="appearance-none border border-gray-400 text-black p-1 rounded-lg focus:outline-none focus:ring ring-yellow-100 ring-offset-transparent ring-offset-1 bg-white hover:border-gray-600 shadow" name="qty" id="id_qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600"><svg class="r-180 fill-current h-4 w-4" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg><td class="px-4 py-2">'
 if (currency === "$" || currency === "£") { qty *

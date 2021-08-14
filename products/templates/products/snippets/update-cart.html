@@ -16,8 +16,7 @@
   </span>
 </form>
 {% endspaceless %}{% comment %}<!-- id="buybtn"{% if in_cart %}
-    <button type="submit" class="flex text-gray-500 hover:text-red-500 rounded-full focus:outline-none cr2" data-tippy-content="{% trans 'Remove' %}">
-      <svg class="fill-current w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
-      <span hidden>{% trans 'Remove' %}</span>
-    </button>
-    {% else %} id="cart" id="product_id" % include 'snippets/remove_product.html' %-->{% endcomment %}
+<button type="submit" class="flex text-gray-500 hover:text-red-500 rounded-full focus:outline-none cr2" data-tippy-content="{% trans 'Remove' %}">
+  <svg class="fill-current w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+  <span hidden>{% trans 'Remove' %}</span>
+</button>{% else %} id="cart" id="product_id" % include 'snippets/remove_product.html' %-->{% endcomment %}

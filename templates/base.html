@@ -78,9 +78,8 @@ request.path # /some/content/
 </html>
 {% endautoescape %}
 {% endspaceless %}
-{% endwith %}
-{% comment %}<!--<img srcset="elva-fairy-480w.jpg 480w, elva-fairy-800w.jpg 800w" sizes="(max-width: 600px) 480px, 800px"src="elva-fairy-800w.jpg" elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x" alt="Elva dressed as a fairy"> https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
+{% endwith %}{% comment %}<!--https://vuejs.org/v2/guide/installation.html<img srcset="img-480w.jpg 480w, img-800w.jpg 800w" sizes="(max-width: 600px) 480px, 800px"src="elva-fairy-800w.jpg" elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x" alt="Elva dressed as a fairy"> https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
  % if cart_url in request.path %}oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"{ % endif %}% analytical_head_bottom % ondblclick="focusMode(document.documentElement);" ondblclick="exitFullscreen();"
 { % cache 600 footer %}{ % endcache %}{ % analytical_body_bottom %}Hey, we're still opening up but anyone can join with an invite from an existing user! setTimeout(function() { location.href="https://www.duckduckgo.com/"; }, 500); GDPR-banner <div x-data="{ show: !localStorage.getItem('hide-banner') }"><div x-show="show"><button @click="localStorage.setItem('hide-banner', true); show = false">close</button></div></div>
-<script>export default { data() { return { theme: 'light', } }</script>
+<script>export default { data() { return { theme: 'light', }}</script>
 { % render_bundle 'app' %}Vue production src/frontend/dist/bundle.js <script type="text/javascript" src="{ % static 'bundle.js' %}"></script>-->{% endcomment %}
