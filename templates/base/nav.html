@@ -37,18 +37,18 @@
       {% endfor %}
       </div>
       {% endif %}
-      {% if not 'search' in request.path %}
+      {% if not search_url in request.path %}
       <div class="overflow-hidden py-2 md:py-1 md:px-1 xl:px-0 my-1 md:my-0">
         <div class="block md:hidden xl:flex">{% include 'search/search-form.html' %}</div>
-        <a href="{% url 'search:query' %}" class="searchbtn">
+        <a href="{{ search_url }}" class="searchbtn">
           <svg class="fill-current h-5 w-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#search"></use></svg><span hidden>{% trans 'Search' %}</span>
         </a>
       </div>
       {% endif %}
-      <div class="md:space-x-4 border-t border-gray-600 md:border-none pt-2 md:pt-0 my-1 md:my-0 flex items-center justify-between">
+      <div class="md:space-x-4 {% if not search_url in request.path %}border-t border-gray-600 md:border-none {% endif %}pt-2 md:pt-0 my-1 md:my-0 flex items-center justify-between">
       {% if request.user.is_authenticated %}
         <a href="{{ logout_url }}" class="logbtn">{% trans 'Log Out' %}</a>
-        <a href="{{ account_url }}" class="usrbtn"{% if request.user.first_name %} data-tippy-content="{% trans 'Account of' %} {{ request.user.first_name }}"{% endif %}>
+        <a href="{{ account_url }}" class="usrbtn{% if account_url in request.path %} nisel{% endif %}"{% if request.user.first_name %} data-tippy-content="{% trans 'Account of' %} {{ request.user.first_name }}"{% endif %}>
           <svg class="fill-current w-5 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#set"></use></svg>
           <span>{% trans 'Account' %}</span>
         </a>

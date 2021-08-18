@@ -6,21 +6,21 @@
 <div class="wxs">
   <div class="text-center bordb pb-2">
     <h1 class="h1">{% trans 'Order' %} ID: {{ object.order_id }}</h1>
-    <a href="{{ object.get_invoice_url }}" class="inline-flex items-center tabitem px-2 py-1" target="_blank" rel="noopener">
+    <a href="{{ object.get_invoice_url }}" class="inline-flex items-center bt" target="_blank" rel="noopener">
       <svg class="fill-current w-5 h-6 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg> {% trans 'Download Invoice' %}
     </a>
   </div>
   <div class="space-y-2 mt-5 mb-6">
-    <p><span class="font-semibold">Item{% if object.cart.products.all|length > 1 %}s{% endif %}</span>:
+    <p><b>Item{% if object.cart.products.all|length > 1 %}s{% endif %}</b>:
       {% for p in object.cart.products.all %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-    <p><span class="font-semibold">{% trans 'Billing Address' %}</span>:<br/>{{ object.billing_address.get_address }}</p>
+    <p><b>{% trans 'Billing Address' %}</b>:<br/>{{ object.billing_address.get_address }}</p>
     {% if object.shipping_address.get_address and object.shipping_total %}
-    <p><span class="font-semibold">{% trans 'Shipping Address' %}</span>:<br/>{{ object.shipping_address.get_address }}</p>
-    <p><span class="font-semibold">{% trans 'Subtotal' %}</span>: {{ user.currency }} {{ object.cart.total }}</p>
-    <p><span class="font-semibold">{% trans 'Shipping Total' %}</span>: {{ user.currency }} {{ object.shipping_total }}</p>
+    <p><b>{% trans 'Shipping Address' %}</b>:<br/>{{ object.shipping_address.get_address }}</p>
+    <p><b>{% trans 'Subtotal' %}</b>: {{ user.currency }}{{ object.cart.total }}</p>
+    <p><b>{% trans 'Shipping Total' %}</b>: {{ user.currency }}{{ object.shipping_total }}</p>
     {% endif %}
-    <p><span class="font-semibold">{% trans 'Order Total' %}</span>: {{ user.currency }} {{ object.total }}</p>
-    <p><span class="font-semibold">{% trans 'Order Status' %}</span>: {{ object.get_status }}</p>
+    <p><b>{% trans 'Order Total' %}</b>: {{ user.currency }}{{ object.total }}</p>
+    <p><b>{% trans 'Order Status' %}</b>: {{ object.get_status }}</p>
   </div>
   <div class="text-center">{% include 'base/snippets/backbtn.html' with url=order_url %}</div>
 </div>

@@ -16,7 +16,7 @@ from core.utils import render_to_pdf
 
 from orders.utils import checkout
 
-from products.models import Product
+from shop.models import Product
 from orders.models import Order
 # from coupon.models import Coupon
 

@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from education.models import Book
 from essays.models import Essay, Section
-from products.models import Product
+from shop.models import Product
 
 
 class SearchView(ListView):

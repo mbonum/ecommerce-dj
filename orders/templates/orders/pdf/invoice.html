@@ -63,15 +63,15 @@
     <div class="content">
       <p style="padding-top:18px;"><b>{% trans 'Billed to' %}</b>: {{ customer }}, {{ customer_email|safe }}</p>
       <p><b>Item{% if cart.all|length > 1 %}s{% endif %}</b>:
-        {% for p in cart %}{{ p.name }} ({{ p.type }}) {{ currency }} {{ p.price }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        {% for p in cart %}{{ p.name }} ({{ p.type }}){{ currency }}{{ p.price }}{% if not forloop.last %}, {% endif %}{% endfor %}
       </p>
       <p><b>{% trans 'Billing address' %}</b>: {{ billing_address }}</p>
       {% if shipping_address %}
       <p><b>{% trans 'Shipping address' %}</b>: {{ shipping_address }}</p>
-      <p><b>{% trans 'Shipping cost' %}</b>: {{ currency }} {{ shipping_total }}</p>
+      <p><b>{% trans 'Shipping cost' %}</b>: {{ currency }}{{ shipping_total }}</p>
       {% endif %}
-      <p><b>{% trans 'Amount paid' %}</b>: {{ currency }} {{ total }}</p>
-  {#<!-- https://publications.europa.eu/code/en/en-370303.htm { % if currency == '€' %}EUR{% elif currency == '£' %}GBP{% else %}USD{ % endif %}-->#}
+      <p><b>{% trans 'Amount paid' %}</b>: {{ currency }}{{ total }}</p>
+{#<!-- https://publications.europa.eu/code/en/en-370303.htm { % if currency == '€' %}EUR{% elif currency == '£' %}GBP{% else %}USD{ % endif %}-->#}
       <p><b>{% trans 'Purchase date' %}</b>: {{ date|date:'Y-m-d' }}</p>
     </div>
     <div style="font-size:9pt">

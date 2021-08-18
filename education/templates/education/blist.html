@@ -2,9 +2,9 @@
 {% load i18n %}
 {% block title %}{% trans 'Learn' %}{% endblock %}
 {% block content %}
-<div class="font-c-sans max-w-sm mx-auto">
 {% if object_list %}
-  <div class="font-c-serif bg-white bord0 shadow rounded-xl p-5">
+<div class="max-w-sm mx-auto">
+  <div class="font-c-serif bg-white bord shadow rounded-xl p-5">
     <blockquote class="relative px-4 text-xl">
       <div class="italic">
         <div style="font-size: 5rem;" class="-ml-10 text-yellow-200 opacity-75 absolute -top-3 leading-none" aria-hidden="true">
@@ -31,13 +31,13 @@
   {% for o in object_list %}
   {% include 'education/bcard.html' with obj=o %}
   {% endfor %}
+</div>
 {% else %}
-<div class="text-gray-900 wxs">
-  <h1 class="text-2xl text-black my-5">{% trans 'Studying in progress' %}</h1>
+<div class="wxs">
+  <h1 class="h1">{% trans 'Studying in progress' %}</h1>
   <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank You' %}</p>
 </div>
 {% endif %}
-</div>
 {% endblock %}
 <!--{% comment %}{ % trans 'Well, we needed more than one evening to answer that. The following is our thoughtful selection. We recommend you to bring with you at least one motivated companion to make your learning journey more consistent, and to review' %} <a href="https://openlibrary.org/books/OL8673330M/How_to_Read_a_Book" class="tooltip" title="Something to be aware of" target="_blank" rel="noopener">this only prerequisite</a>.</p>
 <p>{ % trans 'P.S. Get used to one-hour daily writing habit, if you want to further elaborate on the important ideas you are going to encounter along your journer. Sooner you get used to write the better is for yourself, for your community you live in, and potentially, for the whole society' % }.</p>{% endcomment %}--><!--{# Why this section? In this time of <a class="hover:underline" href="https://en.wikipedia.org/wiki/Information_overload" target="_blank" rel="noopener">information overload</a> having a clear content selection is essential. The 21st-century human is who knows of knowing nothing but at least they know key concepts. This is both for personal clarity and public benefit. You were not made to live as brutes, but to follow virtue and knowledge.#}-->

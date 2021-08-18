@@ -93,13 +93,13 @@
         {% if s.img %}
         <div class="my-2"><img loading="lazy" src="{{ s.img.url }}" alt="{{ s.title }} {% trans 'Picture' %}" class="rounded-lg mx-auto"></div>
         {% endif %}
-{% comment %}<!-- <svg class="border border-gray-300 bg-gray-900 text-gray-100 w-4 h-4 fill-current inline-block absolute -mt-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+{% comment %}<!-- <svg class="bord bg-gray-900 text-gray-100 w-4 h-4 fill-current inline-block absolute -mt-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
 </div> -->{% endcomment %}
       </div>
     </div>
   {% if edu_url in request.path or essays_url in request.path %}
   <div class="text-center text-gray-700 my-4">
-    <div class="inline-flex overflow-hidden border border-gray-300 bg-white shadow rounded-lg">
+    <div class="inline-flex overflow-hidden bord bg-white shadow rounded-lg">
       {% if edu_url in request.path %}
       {% include 'base/snippets/backbtn.html' with url=edu_url id=object.slug %}
       {% elif essays_url in request.path %}
@@ -108,7 +108,7 @@
       {% if request.user.email and essays_url in request.path %}
       <div class="btntxt">
         <a href="{% url 'essays:pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none px-2 py-1" target="_blank" rel="noopener">
-        <svg class="fill-current w-3 h-3 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
+        <svg class="fill-current w-4 h-4 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
         </a>
       </div>
       {% endif %}
@@ -121,7 +121,7 @@
     </div>
   </div>
   {% else %}
-  {% include 'home/snippets/cmds.html' %}
+  {% include 'base/snippets/btns.html' %}
   {% endif %}
   {% if essays_url in request.path %}
   {% include 'base/snippets/cc.html' %}
@@ -151,12 +151,12 @@
         <h1>{{ com }} {% trans 'Community Contributions' %}</h1>
       </div>
       {% recursetree notes %}
-      <div id="{{ node.id }}" class="border border-gray-300 rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
+      <div id="{{ node.id }}" class="bord rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
         {{ node.body|linebreaks }}
         <div class="font-c-serif text-base space-x-3 inline-flex items-center border-t border-gray-300 pt-2 mt-2">
           <span class="inline-flex italic items-center">
           {% if node.user.img %}
-          <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="h-11 w-11 border border-gray-300 rounded-full mr-2">
+          <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="w-11 h-11 bord rounded-full mr-2">
           {% else %}
           —
           {% endif %}
@@ -169,24 +169,24 @@
           <span class="sep">·</span>
           <span>20{{ node.created_at|date:'Y-m-d' }}</span>
           <form method="post" action="{% url 'read:like' object.slug node.id %}"> {% csrf_token %}
-            <button class="font-c-sans inline-flex items-center rounded-xl cr2 px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
+            <button class="font-c-sans inline-flex items-center cr2 px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
               <svg class="fill-current hover:text-yellow-500 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
             </button>
           </form>
           {% if node.level < 2 %}
-          <button class="font-c-sans border border-gray-300 hover:border-yellow-500 rounded-xl shadow hover:shadow-md cr2 px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
+          <button class="font-c-sans bord hover:border-yellow-500 shadow hover:shadow-md cr2 px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
           {% endif %}
         </div>
         {% if not node.is_leaf_node %}
         <div class="items-center overflow-hidden pt-3">
-          <div class="absolute text-gray-500 mt-3"><svg class="fill-current h-5 w-4" style="transform: scale(-1,-1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#reply"></use></svg></div>
+          <div class="absolute text-gray-500 mt-3"><svg class="fill-current w-4 h-5" style="transform: scale(-1,-1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#reply"></use></svg></div>
           <div class="kid ml-6">{{ children }}</div>
         </div>
         {% endif %}
       </div>
       {% endrecursetree %}
       {% comment %}<!-- if node.private %} Anonym <div class="font-c-sans text-center text-gray-800 py-4">
-        <div class="inline-flex bg-white rounded-lg overflow-hidden border border-gray-300" aria-label="Note pages">
+        <div class="inline-flex bg-white rounded-lg overflow-hidden bord" aria-label="Note pages">
         {% if pages.has_other_pages %}
           {% if pages.has_previous %}
           <a class="hover:bg-gray-hover px-2 py-1 rounded-l-lg hover:text-black" href="?page={{ pages.previous_page_number }}">{% trans 'Previous' %}</a>
@@ -219,7 +219,7 @@
       <button class="cbtn px-2 py-1 mt-3" type="submit">
         <div class="text-center text-lg inline-flex items-center space-x-1">
           <span>{% trans 'Share' %}</span>
-          <svg class="fill-current scale-1 h-6 w-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
+          <svg class="fill-current scale-1 w-6 h-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
         </div>
       </button>
     </form>
@@ -263,7 +263,7 @@ function replyBtn(id) {
       <label for="id_reply" hidden>{% trans "Reply" %}</label>\
       <form id="id_note_reply" method="post"> {% csrf_token %}\
         <div class="text-right">\
-          <button type="button" class="rounded-full focus:outline-none cr" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
+          <button type="button" class="rounded-full cr2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
         </div>\
         <select name="parent" id="id_parentt" class="hidden"><option value="' + id + '" selected="' + id + '"></option></select>\
         <textarea name="body" cols="30" rows="3" id="id_reply" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg shadow hover:shadow-md cr2 py-1 px-2" spellcheck="true" type="text" required></textarea>\

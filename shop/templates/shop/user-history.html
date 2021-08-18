@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'History' %}{% endblock %}
+{% block content %}
+{% if object_list %}
+<div class="wxs md:max-w-3xl xl:max-w-5xl">
+  <div class="text-center bordb">
+    <h1 class="h1">{% trans 'Products Viewed' %}</h1>
+  </div>
+  <div class="md:flex items-stretch">
+  {% for o in object_list %}
+  {% if o.active %}
+    {% include 'shop/snippets/pcard.html' with object=o %}
+  {% endif %}
+  {% endfor %}
+  </div>
+</div>
+{% else %}
+<div class="wxs">
+  <h1 class="h1" data-tippy-content="({% trans 'or you deleted your cookies)' %}">{% trans 'No product viewed' %} ._.</h1>
+</div>
+{% endif %}
+{% endblock %}

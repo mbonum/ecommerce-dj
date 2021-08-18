@@ -2,15 +2,15 @@
 {% load i18n static %}
 {% block title %}{% if title %}{{ title }}{% else %}{% trans 'URL Shortner' %}{% endif %}{% endblock %}
 {% block content %}
-<div class="font-c-sans text-lg max-w-xs mx-auto">
+<div class="wxs">
 {% if request.user.is_authenticated and request.user.is_admin or request.user.is_staff %}
-  <div class="border-b border-gray-300 pb-3 mb-4">
-    <h1 class="text-2xl font-semibold">{% if title %}{{ title }}{% else %}{% trans 'URL Shortner' %}{% endif %}</h1>
+  <div class="bordb mb-4">
+    <h1 class="h1">{% if title %}{{ title }}{% else %}{% trans 'URL Shortner' %}{% endif %}</h1>
   </div>
   <form method="post"{% if action_url %} action="{{ action_url }}"{% endif %}> {% csrf_token %}
     <label for="id_url" class="text-gray-700 m-1">{{ form.url.label }}</label>
     {{ form.url }}
-    <input type="submit" value="{% trans 'Shorthen' %}" class="w-full cursor-pointer bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1 mt-6">
+    <input type="submit" value="{% trans 'Shorthen' %}" class="w-full cursor-pointer bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 cr2 px-2 py-1 mt-6">
   </form>
 {% else %}
   <div>

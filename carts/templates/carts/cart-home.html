@@ -23,10 +23,10 @@
       <tr class="cart-product bordb">
         <td scope="row" colspan="1"></td>{#<!--{ forloop.counter }}add thumbnail<img class="w-20 h-20" src="{ { object.image.url }}">appearance-none border border-gray-400 px-2 pr-5 py-1 rounded-lg focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 bg-white hover:border-gray-600 shadow {% if object.img %}{% endif %}-->#}
         <td class="p-4">
-          <a href="{{ object.get_absolute_url }}" class="tabitem px-2 py-1" id="product-cart">{{ object.name_product }}</a>
+          <a href="{{ object.get_absolute_url }}" class="bt" id="product-cart">{{ object.name_product }}</a>
         </td>
         <div id="product-cart-tip" class="hidden">
-          <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name_product }} {% trans 'Image' %}" class="h-64 w-64">
+          <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name_product }} {% trans 'Image' %}" class="w-64 h-64">
         </div>
         <td class="px-4">
           {% if object.is_digital %}
@@ -40,13 +40,13 @@
           {% endif %}
         </td>
         <td class="px-4">
-          <p class="price-item">{% include 'base/snippets/currency.html' %} {{ object.price }}</p>
+          <p class="price-item">{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
         </td>
         <td class="cart-item-remove-form pl-4">
           {% include 'carts/snippets/remove-product.html' with id=object.id cart=cart in_cart=True %}
         </td>
       </tr>
-      {% endfor %}{#<!--carts/snippets/remove-product.html id=object.id Subtotal <p class="cart-subtotal">{ { cart.subtotal }}</p></td></tr>{ { object.tax }}-->#}
+      {% endfor %}{#<!--carts/snippets/remove-product.html id=object.id Subtotal <p class="cart-subtotal">{ { cart.subtotal }}</p></td></tr>{ { object.tax }}{% include 'base/snippets/currency.html' %}-->#}
       <tr>
         <td colspan="3"></td>
         <th scope="col" class="border-b border-gray-500 py-2">{% trans 'Total' %}</th>
@@ -54,7 +54,7 @@
       <tr>
         <td colspan="3"></td>
         <td class="text-center py-2">
-          <p class="cart-total">{% include 'base/snippets/currency.html' %}{{ cart.total }}</p>
+          <p class="cart-total">{% if user.currency == "USD" %}${% else %}€{% endif %}{{ cart.total }}</p>
         </td>
       </tr>
     </tbody>
@@ -62,11 +62,11 @@
   <div class="flex items-center justify-around text-lg mt-6">
     {% include 'base/snippets/backbtn.html' with url=shop_url %}
     <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full cr2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡">
-      <svg class="w-9 h-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
+      <svg class="h-9 w-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
       <span hidden>{% trans 'Buy with Crypto' %}</span>
     </a>
     {% include 'carts/snippets/checkbtn.html' %}
-</div>
+  </div>
   {% else %}
   <div class="text-center">
     <h1 class="h1 my-6">{% trans 'Your cart is empty' %}</h1>

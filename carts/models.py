@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator  # MaxValueValidator
 from django.db import models
 from django.db.models.signals import m2m_changed, pre_save  # post_save
 from django.utils.translation import gettext_lazy as _
-from products.models import Product
+from shop.models import Product
 
 USER = settings.AUTH_USER_MODEL
 

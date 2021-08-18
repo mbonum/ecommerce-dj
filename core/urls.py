@@ -19,8 +19,7 @@ from accounts.views import LoginView, RegisterView
 from carts.views import cart_detail_api_view
 from carts.api import api_add_to_cart
 from core.views import robots_txt
-from essays.sitemaps import EssaySitemap  #  ,
-
+from essays.sitemaps import EssaySitemap
 # from essays.admin import essays_admin# add separate CMS for authors
 
 # from marketing import urls as mktg_urls
@@ -49,15 +48,15 @@ urlpatterns = [
     path("captcha/", include("captcha.urls")),
     # channels
     path(_("contact/"), include("chat.urls", namespace="chat")),
-    # # create a separate CMS that only authors can access, schema=schema
-    # # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
+    # create a separate CMS that only authors can access, schema=schema
+    # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
     path(_("read/"), include("essays.urls", namespace="read")),
     # path("hitcount/", include("hitcount.urls", namespace="hitcount")),
     path(_("learn/"), include("education.urls", namespace="learn")),
     path(_("team/"), include("team.urls", namespace="team")),
-    path(_("shop/"), include("products.urls", namespace="products")),
+    path(_("shop/"), include("shop.urls", namespace="shop")),
     path(_("search/"), include("search.urls", namespace="search")),
-    path("api/add_to_cart", api_add_to_cart, name="api_add_to_cart"),
+    path("api/add-to-cart", api_add_to_cart, name="api_add_to_cart"),
     path(_("cart/"), include("carts.urls", namespace="cart")),
     path("api/cart/", cart_detail_api_view, name="api-cart"),  # YXBpL2NhcnQv/
     path(_("signup/"), RegisterView.as_view(), name="register"),
@@ -115,7 +114,7 @@ urlpatterns = [
 # urlpatterns += i18n_patterns()
 
 if "rosetta" in settings.INSTALLED_APPS:
-    urlpatterns.append(path("rosetta/", include("rosetta.urls")))  # += []
+    urlpatterns.append(path("rosetta/", include("rosetta.urls")))
 
 try:
     urlpatterns.append(

@@ -4,7 +4,6 @@
 {% block title %}{% trans 'Search results' %}{% endblock %}
 {% block content %}
 <div class="wxs">
-  <div class="mr-6">
     <div class="bordb">
       <h1 class="h1">
       {% if object_list and query %}{% trans 'Results for' %} {{ query }}
@@ -27,12 +26,11 @@
         {% include 'essays/wcard.html' with object=o %}
       </div>
       {% elif klass == 'Product' and o.active %}
-      {% include 'products/snippets/pcard.html' with object=o %}
+      {% include 'shop/snippets/pcard.html' with object=o %}
       {% endif %}
       {% endwith %}
     {% endfor %}
     </div>
     {% endif %}
   </div>
-</div>
 {% endblock %}

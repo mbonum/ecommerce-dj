@@ -26,19 +26,16 @@
 {#<!-- Fallback if the browser doesn't support video tag -->#}
     <embed src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.swf' %}{% endif %}" type="application/x-shockwave-flash"></embed>
   </video>
-  {% if object.video_link %}
-  {#<!-- Link to external video src  data-aos-easing="ease" data-aos-delay="800"-->#}
+  {% if object.video_link %}{#<!-- Link to external video src  data-aos-easing="ease" data-aos-delay="800"-->#}
   <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
   {% elif object.img %}
   <div id="img-div">
     <img loading="lazy" id="pic" src="{{ object.img.url }}" alt="{% trans 'Product detail' %}" class="border border-gray-300 rounded-xl shadow-md mx-auto">
   </div>
   {% endif %}
-  <svg loading="lazy" class="text-gray-200 animate-pulse s fill-current mx-auto">
-    <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
-  </svg>
+  <svg loading="lazy" class="text-gray-200 animate-pulse s fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
   <div>
-    <svg class="h-7 w-7 text-gray-400 transition duration-500 ease-in-out animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
+    <svg class="w-7 h-7 text-gray-400 transition duration-500 ease-in-out animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
   </div>
 </div>
 {% endblock %}
@@ -122,5 +119,4 @@ $(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
     </button>
   </div>id="haid"
 if (document.body.scrollTop >= 200 || document.documentElement.scrollTop >= 200 ){
-  window.onscroll = scrollFunction;
-} -->{% endcomment %}
+  window.onscroll = scrollFunction;} -->{% endcomment %}

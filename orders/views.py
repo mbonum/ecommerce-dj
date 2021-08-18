@@ -115,7 +115,7 @@ class GenerateOrderPDF(View):
                 "id": p.id,
                 "url": p.get_absolute_url(),
                 "name": p.name,
-                "type": p.get_product_type_display,
+                "type": p.category,
                 "price": p.price,
             }
             for p in order.cart.products.all()

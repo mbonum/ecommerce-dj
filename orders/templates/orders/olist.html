@@ -19,9 +19,9 @@
     <tbody>
       {% for object in object_list %}
       <tr class="bordb text-center">
-        <td class="py-2"><a class="tabitem cr px-1" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
+        <td class="py-2"><a class="bt px-2 py-1" href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
         <td class="px-4">{{ object.get_status }}</td>
-        <td>{% include 'base/snippets/currency.html' %} {{ object.total }}</td>
+        <td>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.total }}</td>
       </tr>
       {% endfor %}
     </tbody>

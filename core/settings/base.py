@@ -247,7 +247,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.from_settings",
-                "products.context_processors.menu_categories",
+                "shop.context_processors.menu_categories",
             ],
             # 'loaders': [
             #     'django.template.loaders.app_directories.Loader',

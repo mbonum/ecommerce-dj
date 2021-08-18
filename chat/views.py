@@ -120,16 +120,3 @@ def room(request, room):
 #         "form": form_class,
 #     }
 #     return render(request, "home/contact.html", content)
-
-# class Success(TemplateView):
-#     template_name = "chat/success.html"
-
-
-# class Checkpage(TemplateView):
-#     template_name = "chat/check.html"
-
-#     def get_context_data(self, **kwargs):
-#         # product = Product.objects.get(name="test")
-#         context = super(Checkpage, self).get_context_data(**kwargs)
-#         context.update({"STRIPE_PUB_KEY": settings.STRIPE_PUB_KEY})
-#         return context

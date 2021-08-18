@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Shop' %} {{ category.name }}{% endblock %}
+{% block content %}
+<div class="font-c-sans lg:max-w-3x xl:max-w-5x mx-auto">
+  <div class="text-center md:bordb">
+    <h1 class="h1">{{ category.name }}</h1>
+  </div>
+  <div class="md:inline-flex items-stretch">
+    {% for o in products %}
+    {% if o.active %}{% include 'shop/snippets/pcard.html' with object=o %}{% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

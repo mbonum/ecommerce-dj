@@ -3,18 +3,16 @@
 {% block title %}{% if title %}{{ title }}{% else %}{% trans 'URL Shortner' %}{% endif %}{% endblock %}
 {% block content %}
 {% if request.user.is_authenticated %}
-<div class="max-w-xs mx-auto">
-  <div class="font-c-sans mr-6">
-    <div class="border-b border-gray-300 pb-2 mb-4">
-      <h1 class="text-2xl">{% if title %}{{ title }}{% else %}{% trans 'Short URL Exists' %}{% endif %}</h1>
-    </div>
-    {% if object.clickevent %}<p>Clicks: {{ object.clickevent.count }}</p>{% endif %}
-    <a href="{{ object.get_short_url }}" class="block text-blue-600 hover:text-blue-700 hover:underline rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 my-4">{{ object.get_short_url }}</a>
-    <a href="{{ short_url }}" class="bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 text-center text-lg inline-flex items-center">
-      <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
-      {% trans 'Add new' %} URL
-    </a>
+<div class="wxs">
+  <div class="bordb mb-4 mr-6">
+    <h1 class="h1">{% if title %}{{ title }}{% else %}{% trans 'Short URL Exists' %}{% endif %}</h1>
   </div>
+  {% if object.clickevent %}<p>Clicks: {{ object.clickevent.count }}</p>{% endif %}
+  <a href="{{ object.get_short_url }}" class="block bt cr2 my-4">{{ object.get_short_url }}</a>
+  <a href="{{ short_url }}" class="text-lg text-center inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 cr2 py-1 px-2">
+    <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+    {% trans 'Add new' %} URL
+  </a>
 </div>
 {% endif %}
 {% endblock %}

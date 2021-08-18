@@ -11,30 +11,29 @@
   .cw {@apply max-w-xs sm:max-w-sm md:max-w-2xl lg:max-w-3xl xl:max-w-6xl mx-auto;}
   .cr {@apply md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2;}
   .cr2 {@apply rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2;}
-  .ni {@apply block hover:text-white md:rounded-xl focus:outline-none overflow-hidden cr border-b border-gray-600 md:border-none py-3 md:py-1 px-1 my-1;}
+  .ni {@apply block hover:text-white md:rounded-xl overflow-hidden cr border-b border-gray-600 md:border-none py-3 md:py-1 px-1 my-1;}
   .nisel {@apply text-white font-semibold;}
-  .cartbtn {@apply block hover:text-white focus:outline-none overflow-hidden cr border-b border-gray-600 md:border-none py-3 md:py-0 md:pt-1 px-1 my-1 md:pr-3;}
+  .cartbtn {@apply block hover:text-white overflow-hidden cr border-b border-gray-600 md:border-none py-3 md:py-0 md:pt-1 px-1 my-1 md:pr-3;}
   .upcart{@apply inline-flex items-center ybtn cr2 py-1 px-2;}
-  .searchbtn {@apply hidden md:block xl:hidden rounded-xl border-2 items-center focus:outline-none overflow-hidden border-gray-400 hover:border-white hover:text-white cr py-1 pl-1 pr-2;}
-  .logbtn {@apply md:rounded-xl overflow-hidden hover:text-white focus:outline-none cr px-1 md:py-1;}
-  .usrbtn {@apply inline-flex md:rounded-xl border-2 border-gray-300 hover:border-white items-center hover:text-white focus:outline-none overflow-hidden cr px-2 py-1;}
-  .fbtn {@apply block un overflow-hidden items-center hover:text-black focus:outline-none cr py-3 md:py-1 md:px-1;}
+  .searchbtn {@apply hidden md:block xl:hidden rounded-xl border-2 items-center overflow-hidden border-gray-400 hover:border-white hover:text-white cr py-1 pl-1 pr-2;}
+  .logbtn {@apply md:rounded-xl overflow-hidden hover:text-white cr px-1 md:py-1;}
+  .usrbtn {@apply inline-flex border-2 border-gray-300 hover:border-white items-center hover:text-white overflow-hidden cr px-2 py-1;}
+  .fbtn {@apply block un items-center overflow-hidden hover:text-black cr py-3 md:py-1 md:px-1;}
   .fsp {@apply md:w-1/3 text-center md:space-y-4;}
   .lf {@apply text-gray-800 m-1;}
-  .polbtn {@apply font-semibold rounded-lg cr2 px-1 pt-1;}
-  .poli{@apply hover:text-black un md:rounded-xl px-2 py-1;}
+  .polbtn {@apply font-semibold cr2 px-1 pt-1;}
+  .poli{@apply un md:rounded-xl hover:text-black px-2 py-1;}
   .ermsg{@apply text-2xl text-center my-5;}
-  .carditem{@apply block rounded-lg bg-white bord shadow-md hover:border-yellow-400 hover:shadow-lg cr2;}
+  .carditem{@apply block bg-white bord shadow-md hover:border-yellow-400 hover:shadow-lg cr2;}
   .incard{@apply cursor-pointer inline-flex bg-white;}
   .h1{@apply text-2xl font-semibold pb-4;}
-  .h1b{@apply border-b border-gray-300;}
   .wxs{@apply font-c-sans text-lg max-w-xs mx-auto;}
   .ybtn{@apply bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400;}
-  .cbtn{@apply w-full ybtn rounded-xl overflow-hidden cr2 px-2 py-1;}
+  .cbtn{@apply w-full ybtn overflow-hidden cr2 px-2 py-1;}
   .pswsp{@apply space-y-2 mt-5;}
   .pswbtn{@apply text-center mt-7;}
   .tabcol{@apply text-center py-1;}
-  .authtxt{@apply un rounded-xl cr px-1 pt-1;}
+  .authtxt{@apply un cr px-1 pt-1;}
   .authimg{@apply flex rounded-full cr px-1 pt-1;}
   .sectxt{@apply flex items-center justify-between pb-1 pt-3;}
   .h2txt{@apply text-2xl font-semibold;}
@@ -46,13 +45,19 @@
   .bordt{@apply border-t border-gray-300;}
   .bord{@apply border border-gray-300;}
   .cartab{@apply bord text-center;}
-  .bt{@apply text-blue-600 hover:text-blue-700 hover:underline cr2;}
+  .bt{@apply text-blue-600 hover:text-blue-700 hover:underline cr2 px-2 py-1;}
+  .addr{@apply bord break-words bg-white shadow rounded-xl p-2 mt-1;}
+  .qr{@apply addr w-64 h-64 mx-auto my-4;}
+  .usra{@apply border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black cr2 px-1;}
+  .usrt{@apply md:inline-block align-top bord bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-6 md:mr-6;}
+  .form{@apply w-full bord focus:border-yellow-500 shadow placeholder-gray-600 cr2 px-2 py-1;}
   #id_qty{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}
   #serc{@apply w-full bg-transparent rounded-xl border-none ring-0 ring-white focus:outline-none py-1 px-0;}
   #id_captcha_1{@apply border-none ring-0 rounded-xl focus:outline-none px-0 py-0;}
   #currency{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}
-  #chat_text{@apply flex w-full border border-gray-400 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow hover:shadow-md cr2 px-2 py-1;}
-  #id_note{@apply w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 px-2 py-1 mt-2;}
-  .addr{@apply bord break-words bg-white shadow rounded-xl p-2 mt-1;}
-  .qr{@apply addr w-64 h-64 mx-auto my-4;}
+  #chat_text{@apply flex w-full border border-gray-400 focus:border-yellow-500 hover:border-yellow-500 shadow hover:shadow-md cr2 px-2 py-1;}
+  #id_note{@apply w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 placeholder-gray-800 shadow hover:shadow-md cr2 px-2 py-1 mt-2;}
+  #id_old_password{@apply form;}
+  #id_new_password1{@apply form;}
+  #id_new_password2{@apply form;}
 }

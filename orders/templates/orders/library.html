@@ -21,19 +21,18 @@
           <a href="{{ object.get_absolute_url }}" class="block un cr2 py-1 px-2" target="_blank" rel="noopener"{% if object.img %} id="product-cart"{% endif %}>{{ object.name_product }}</a>
           {% if object.img %}
           <div id="product-cart-tip" class="hidden">
-            <img src="{{ object.img.url }}" alt="{% trans 'Product Thumbnail' %}" class="w-64 h-64">
+            <img src="{{ object.img.url }}" alt="{{ object.slug }} {% trans 'Image' %}" class="w-64 h-64">
           </div>
           {% endif %}
         </td>
         <td class="justify-around px-4 py-2">
-          {% for download in object.get_downloads %}
-          <a href="{{ download.get_download_url }}" class="block text-blue-600 hover:text-blue-700 hover:underline cr2 py-1 px-2">
-            {% if 'A' in download.product_type %}
-            <svg class="inline-flex fill-current w-8 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
-            {% elif 'E' in object.product_type %}
-            <span class="mr-1">🕮</span>
-            {% endif %}
-            {{ download.name }}</a>
+          {% for d in object.get_downloads %}
+          <a href="{{ d.get_download_url }}" class="block bt">
+            <span class="mr-1">{% if 'Audiobook' in d.category.name or 'Audiobooks' in d.category.name %}
+            <svg class="inline-flex w-8 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#mic"></use></svg>
+            {% elif 'Ebook' in d.category.name or 'Ebooks' in d.category.name %}
+            🕮
+            {% endif %}</span>{{ d.name_product }}</a>
           {% endfor %}
         </td>
       </tr>
@@ -46,12 +45,11 @@
     {% include 'base/snippets/sad.html' %}
   </div>
   {% endif %}
-  <div class="text-center mt-8">
+  <div class="text-center mt-10">
   {% include 'base/snippets/backbtn.html' with url=account_url %}
   </div>
 </div>
-{% endblock %}
-{% comment %}<!--<svg class="inline-flex items-center fill-current w-5 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg><svg class="inline-flex w-5 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
+{% endblock %}{% comment %}<!--<svg class="inline-flex items-center fill-current w-5 h-5 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg><svg class="inline-flex w-5 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg>
 <input type="button" value="🎙️" data-tippy-content="Audio" class="cursor-pointer inline-flex">
 <input type="button" value="🕮" data-tippy-content="Ebook" class="cursor-pointer inline-flex">{ % else %}
 <input type="button" value="⛟" data-tippy-content="{% trans 'Delivery' %}" class="cursor-pointer inline-flex">

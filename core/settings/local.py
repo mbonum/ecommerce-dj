@@ -13,7 +13,7 @@ INSTALLED_APPS += [
     "education",
     "team",
     "marketing",
-    "products",
+    "shop",
     "search",
     "tags",
     "carts",

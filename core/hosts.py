@@ -12,7 +12,7 @@ host_patterns = patterns(
     # .*
     # host(r"docs", "docs.urls", name="docs"),  # global docs
     host(r"read", "apps.essays.urls", name="read"),
-    host(r"shop", "apps.products.urls", name="shop"),
+    host(r"shop", "apps.shop.urls", name="shop"),
     # host(r"dome", "apps.dome.urls", name="dome"),  # clvm house
     # host(r"dose", "apps.dose.urls", name="dose"),  # clvm dosing
     # host(r"learn", "apps.education.urls", name="learn"),

@@ -12,7 +12,7 @@ from addresses.models import Address
 from core.utils import unique_order_id_generator
 from billing.models import BillingProfile
 from carts.models import Cart
-from products.models import Product
+from shop.models import Product
 
 
 # ORDER_STATUS_CHOICES = [

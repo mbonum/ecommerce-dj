@@ -9,30 +9,30 @@
   <div class="bordb pb-4 mb-5">
     {% if text.btc_desc %}{{ text.btc_desc|safe }}
     {% else %}
-    <p>Please scan the QR code to send BTC</p>
+    <p>{% trans 'Please scan the QR code to send' %} BTC</p>
     {% endif %}
     <img class="qr" src="{% static '/img/crypto/coinbase-commerce-qrcode-btc.png' %}" alt="Scan BTC QR code">
     <div id="btc">
-      Bitcoin address {% if btc %}{{ btc }}{% else %}<p class="addr">3AMb6NfYHxvzivhtKf3racXNdVegYLzSE9</p>{% endif %}</div>
+      <b>Bitcoin {% trans 'address' %}</b>: {% if btc %}{{ btc }}{% else %}<p class="addr">3AMb6NfYHxvzivhtKf3racXNdVegYLzSE9</p>{% endif %}</div>
   </div>
   <div class="bordb pb-4 mb-5">
     {% if text.eth_desc %}{{ text.eth_desc|safe }}
     {% else %}
-    <p>This to send ETH</p>
+    <p>{% trans 'This to send' %} ETH</p>
     {% endif %}
     <img class="qr" src="{% static '/img/crypto/coinbase-commerce-qrcode-eth.png' %}" alt="Scan ETH QR code">
     <div id="eth">
-      Ethereum address: {% if eth %}{{ eth }}{% else %}<p class="addr">0x611e6cf021c451eed48d5758290481c0a6cc69f2</p>{% endif %}</div>
+      <b>Ethereum {% trans 'address' %}</b>: {% if eth %}{{ eth }}
+      {% else %}<p class="addr">0x611e6cf021c451eed48d5758290481c0a6cc69f2</p>{% endif %}</div>
   </div>
   <div>
-    <p>This to send LTC</p>
+    <p>{% trans 'This to send' %} LTC</p>
     <img class="qr" src="{% static '/img/crypto/coinbase-commerce-qrcode-ltc.png' %}" alt="Scan LTC QR code">
     <div id="ltc">
-      Litecoin address: <p class="addr">MDgyGjEFh4g22b8umJmnCJzJCMfvJxxKTU</p></div>
+      <b>Litecoin {% trans 'address' %}</b>: <p class="addr">MDgyGjEFh4g22b8umJmnCJzJCMfvJxxKTU</p></div>
   </div>
 </div>
 {% endblock %}{% comment %}<!--<a class="items-center bg-gradient-to-tr to-yellow-300 from-yellow-300 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 hover:text-white border-2 border-yellow-300 hover:border-yellow-300 rounded focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2" href="https://commerce.coinbase.com/checkout/69943558-7b1b-4c5f-9f31-6c1cf19df2ae">Donate with Crypto</a> href="bitcoin:{% if btc %}{{ btc }}{% else %}3AMb6NfYHxvzivhtKf3racXNdVegYLzSE9{% endif %}"
-
 Ethereum ETH
 0x611e6cf021c451eed48d5758290481c0a6cc69f2
 

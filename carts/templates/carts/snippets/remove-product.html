@@ -2,7 +2,7 @@
 {% spaceless %}
 <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-ajax"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
   <input class="cart-item-product-id" type="hidden" name="product_id" value="{{ id }}">
-  <button type="submit" class="flex text-gray-500 hover:text-red-500 rounded-full focus:outline-none cr2" data-tippy-content="{% trans 'Remove' %}">
+  <button type="submit" class="flex text-gray-500 hover:text-red-500 rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
     <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
     <span hidden>{% trans 'Remove' %}</span>
   </button>

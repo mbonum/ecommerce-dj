@@ -2,24 +2,23 @@
 {% load static %}
 {% block title %}{{ member.name }}{% endblock %}
 {% block content %}
-<div class="max-w-lg md:max-w-sm lg:max-w-4xl xl:max-w-5xl mx-auto md:flex font-c-sans md:space-x-8">
-  <div class="md:w-1/2 m-auto">
-    <h1 class="text-center text-3xl my-5">{{ member.name }}</h1>
-    <div class="bg-white rounded-lg border border-gray-300 p-5 hyphens">
+<div class="font-c-sans md:flex md:space-x-6 space-y-8 md:space-y-0">
+  <div class="md:w-1/2">
+    <h1 class="text-center text-3xl mb-5">{{ member.name }}</h1>
+    <div class="bg-white bord rounded-xl px-5 py-4">
       {{ member.bio|safe }}
     </div>
   </div>
-  <div class="md:w-1/2 m-auto">
-    {% if member.img %}<img loading="lazy" src="{{ member.img.url }}" alt="{{ member.name }}" class="rounded-lg lg:w- lg:h- mx-auto">
-      {% else %}
-      <svg class="lg:w- lg:h- transition duration-500 ease-in-out text-gray-600 fill-current mx-auto">
-        <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
-      </svg>
-      {% endif %}
+  <div class="md:w-1/2">
+    {% if member.img %}
+    <img loading="lazy" src="{{ member.img.url }}" alt="{{ member.name }}" class="rounded-lg lg:w-64 lg:h-64 mx-auto">
+    {% else %}
+    <svg class="lg:w-64 lg:h-64 text-gray-600 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
-{% comment %}<!--t-img via-red-700 from-blue-400
+{% comment %}<!--t-img via-red-700 from-blue-400 transition duration-500 ease-in-out
 Mirko Bonomi is the founder of Clavem.
 Before founding Clavem in June 2021, Mirko earned a Master's Degree in Entrepreneurship and Innovation from the University of Gothenburg, Sweden, and a Bachelor Degree in Information and Business Organization from the University of Trento, Italy.
 -->{% endcomment %}

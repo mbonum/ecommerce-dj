@@ -33,7 +33,7 @@ class ReactivationEmailForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 # "placeholder": "Email",
-                "class": "mx-auto flex border border-gray-300 hover:border-gray-500 py-1 px-2 my-3 rounded-lg shadow placeholder-gray-600 focus:outline-none",
+                "class": "mx-auto flex border border-gray-300 hover:border-gray-500 rounded-lg shadow placeholder-gray-600 focus:outline-none px-2 py-1 my-3",
             }
         ),
     )
@@ -67,7 +67,7 @@ class UserAdminCreationForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 # "placeholder": "",
-                "class": "border border-gray-500 py-1 px-1 rounded-lg shadow placeholder-gray-800",
+                "class": "border border-gray-500 rounded-lg shadow placeholder-gray-800 px-1 py-1",
                 "autocomplete": "current-password",
                 "autofocus": True,
             }
@@ -165,7 +165,7 @@ class UserDetailUpdateForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 # "placeholder": _("First name"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 shadow placeholder-gray-600 cr2 p-2",
             }
         ),
     )
@@ -176,7 +176,7 @@ class UserDetailUpdateForm(forms.ModelForm):
             attrs={
                 # "id": "l"
                 # "placeholder": _("Last name"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-2",
+                "class": "w-full flex border border-gray-300 focus:border-yellow-500 shadow placeholder-gray-600 cr2 p-2",
             }
         ),
     )
@@ -229,7 +229,7 @@ class RegisterForm(forms.ModelForm):
                 "id": "id_email",
                 # "placeholder": "Email",
                 "autofocus": True,
-                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
             }
         ),
     )
@@ -241,7 +241,7 @@ class RegisterForm(forms.ModelForm):
                 "id": "id_password",
                 # "placeholder": _("Password"),
                 "autocomplete": "current-password",
-                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
             }
         ),
         help_text=password_validation.password_validators_help_text_html(),
@@ -306,7 +306,7 @@ class LoginForm(forms.Form):
             attrs={
                 "id": "id_email",
                 # "placeholder": "Email",
-                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
                 "autofocus": True,
             }
         ),
@@ -318,7 +318,7 @@ class LoginForm(forms.Form):
             attrs={
                 "id": "id_password",
                 # "placeholder": _("Password"),
-                "class": "w-full border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
                 "autocomplete": "current-password",
             }
         ),

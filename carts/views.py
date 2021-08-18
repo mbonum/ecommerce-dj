@@ -8,7 +8,7 @@ from addresses.forms import AddressForm
 from addresses.models import Address
 from billing.models import BillingProfile
 from orders.models import Order
-from products.models import Product
+from shop.models import Product
 from django.utils.translation import gettext_lazy as _
 
 from .models import Cart

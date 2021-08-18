@@ -3,14 +3,14 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import Address, AddressType
 
-# border border-gray-300 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mb-3 rounded-lg shadow placeholder-gray-900
+
 class AddressForm(forms.ModelForm):
     address_type = forms.ChoiceField(
         choices=AddressType.choices,
         widget=forms.Select(
             attrs={
                 "id": "id_address_type",
-                "class": "rounded-lg shadow appearance-none w-full border border-gray-300 focus:border-yellow-500 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 px-2 py-1",
+                "class": "appearance-none bg-white form",
             }
         ),
     )
@@ -19,8 +19,8 @@ class AddressForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "id": "id_street",
-                # "placeholder": "3 Main St.", placeholder-gray-600
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                # "placeholder": "3 Main St.",
+                "class": "form",
             }
         ),
     )
@@ -30,7 +30,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_city",
                 # "placeholder": _("City"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
             }
         ),
     )
@@ -41,7 +41,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_state",
                 # "placeholder": _("State"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
             }
         ),
     )
@@ -51,7 +51,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_country",
                 # "placeholder": _("Country"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
             }
         ),
     )
@@ -61,7 +61,7 @@ class AddressForm(forms.ModelForm):
             attrs={
                 "id": "id_zip",
                 # "placeholder": _("Postal code"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 py-1 px-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "form",
             }
         ),
     )
