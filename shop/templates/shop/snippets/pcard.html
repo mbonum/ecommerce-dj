@@ -2,7 +2,7 @@
 <div class="self-start mt-6{% if not search_url in request.path %} md:mr-6{% endif %}">
   <a href="{{ object.get_absolute_url }}" class="carditem">
     {% if object.img %}
-    <img src="{{ object.img.url }}" alt="{{ object.slug }} {% trans 'Image' %}" class="w-64 h-64 md:rounded-t-xl mx-auto">
+    <img src="{{ object.thumbnail.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="w-64 h-64 md:rounded-t-xl mx-auto">
     {% else %}
     <svg class="w-64 h-64 text-gray-400 fill-current mx-auto">
       <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
@@ -10,7 +10,7 @@
     {% endif %}
     <div class="space-y-2 m-4">
       <div class="flex justify-between">
-        <h1 class="text-lg">{{ object.name_product }}</h1>
+        <h1 class="text-lg">{{ object.name }}</h1>
         <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
         {% if 'Audiobook' in object.category.name or 'Audiobooks' in object.category.name %}
         <input type="button" value="🎙️" data-tippy-content="Audiobook" class="incard">

@@ -78,12 +78,11 @@ $(document).ready(function () {
   var productForm = $('.form-product-ajax');
   function getOwnedProduct(productId, submitSpan) {
     var actionEndpoint = '/orders/endpoint/verify/ownership/',
-      // qty = $('#qty option:selected').text(),
       httpMethod = 'GET',
       data = {product_id: productId},
       isOwner;
-      qty = document.getElementById('id_qty').value,
-      console.log(qty);
+      // qty = document.getElementById('id_qty').value,// qty = $('#qty option:selected').text(),
+      // console.log(qty);
     $.ajax({
       url: actionEndpoint,
       method: httpMethod,
@@ -155,7 +154,7 @@ $(document).ready(function () {
       cartBody = cartTable.find('.cart-body'),
       productRows = cartBody.find('.cart-product'),
       currentUrl = window.location.href,
-      refreshCartUrl = '/api/cart/',
+      refreshCartUrl = '/api/cart/',// cart_detail_api_view
       refreshCartMethod = 'GET',
       data = {};
     $.ajax({
@@ -167,9 +166,9 @@ $(document).ready(function () {
         if (data.products.length > 0) {
           productRows.html(' ');
           var i = data.products.length,
-            qty = $('#qty option:selected').text(),
+            // qty = $('#qty option:selected').text(),
             currency = data.currency;
-          console.log(qty);
+          // console.log(qty);
           if (currency == 'USD') { currency = '$' } else { currency = '€' }
           $.each(data.products, function(index, item) {
             var newCartItemRemove = hiddenCartItemRemoveForm.clone();
@@ -178,7 +177,7 @@ $(document).ready(function () {
             cartBody.prepend('<tr class="bordb">\
             <td scope="row" colspan="1"></td><td class="p-4"><a class="tabitem px-2 py-1" href="' + item.url + '" id="product-cart">'
             + item.name + '</a></td>\
-            <td class="px-4"><select id="id_qty" name="qty"><option value="1" class="qty-item">1</option><option value="2" class="qty-item">2</option><option value="3" class="qty-item">3</option><option value="4" class="qty-item">4</option><option value="1" class="qty-item">1</option></select></td><td class="px-4"><p class="price-item">' + currency + ' ' + item.price + '</p></td><td class="cart-item-remove-form pl-4">' + newCartItemRemove.html() + '</td></tr>');
+            <td class="px-4"><select id="id_qty" name="qty"><option value="1" class="qty-item">1</option><option value="2" class="qty-item">2</option><option value="3" class="qty-item">3</option><option value="4" class="qty-item">4</option><option value="1" class="qty-item">1</option></select></td><td class="px-4"><p>' + currency + ' ' + item.price + '</p></td><td class="cart-item-remove-form pl-4">' + newCartItemRemove.html() + '</td></tr>');
             i--;
           })// cartBody.find('.cart-subtotal').text(data.subtotal) qty * // ship cost
           cartBody.find('.cart-total').text(currency + ' ' + data.total);

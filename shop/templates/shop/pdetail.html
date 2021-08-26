@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load i18n static %}
-{% block title %}{% trans 'Buy' %} {{ object.name_product }}{% endblock %}
+{% block title %}{% trans 'Buy' %} {{ object.name }}{% endblock %}
 {% comment %}<!--<source src="{{ object.video.url }}" type="video/ogg"> Fallback if the browser doesn't support video tagmuted width="560" height="315"{ % for img in object.img.all %}
 { % if img.is_feature %}<img src="{{ img.url }}" alt="{{ img.alt_text }}">
 {% endif %}{% endfor %} x-bind:value="{{ q }}"-->{% endcomment %}
 {% block content %}
-<div class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-2 xl:space-x-8 mx-auto" id="productapp">
-  <div class="lg:w-1/3">
+<div id="productapp" class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-6">
+  <div class="lg:w-2/5">
     {% if object.video %}
     <video loading="lazy" class="rounded-lg bord shadow" controls>
       <source src="{{ object.video.url }}" type="video/mp4">
@@ -16,44 +16,60 @@
     <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     {% elif object.img %}
     <div id="pic" class="hidden lg:block">
-      <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.slug }} {% trans 'Image' %}" class="bord rounded-xl shadow-md mx-auto">
+      <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="bord rounded-xl shadow mx-auto">
     </div>
-    <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.slug }} {% trans 'Image' %}" class="block lg:hidden bord rounded-xl shadow-md mx-auto">
+    <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="block lg:hidden bord rounded-xl shadow mx-auto">
     {% else %}
     <svg class="text-gray-400 fill-current lg:w-28 lg:h-28 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     {% endif %}
   </div>
-  <div class="lg:w-1/3">
-    <h1 class="text-2xl">{{ object.name_product }}</h1>
+  <div class="lg:w-2/5 w-full">
+    <h1 class="text-2xl">{{ object.name }}</h1>
     <div class="list-inside mt-2">
       {{ object.text|safe|linebreaks }}
     </div>
   </div>
-  <div class="lg:w-1/3 space-y-8 bord bg-white rounded-xl shadow p-4 xl:p-6">
-    <div x-data="{ qty: '1' }" class="w-full inline-flex lg:block xl:inline-flex justify-between items-center">
-      <div class="text-left inline-flex items-center">
-        {% if object.is_digital %}
-        <p>{% trans 'Digital' %}</p>
-        {% else %}
-        <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
-        <select id="id_qty" @change="qty = $event.target.value" name="qty">
-          {% for q in object.rangeqty %}
-          <option value="{{ q }}">{{ q }}</option>
-          {% endfor %}
-        </select>
-        {% endif %}
-      </div>
-      <div class="text-right lg:text-left xl:text-right lg:mt-4 xl:mt-0 mr-1">
-        <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
-        <p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>
-      </div>
+  <div class="lg:w-1/5 text-right items-center space-y-6 m-auto">
+{% comment %}<!-- bor d bg-whit e rounded-x l shado w p- 4 xl:p- 6<div class="w-ful l justify-between inline-fle lg:bloc k xl:inline-fle x"> x-data="{ qty: '1' }" <div class="text-left inline-flex items-center">
+  {% if object.is_digital %}
+  <p>{% trans 'Digital' %}</p>
+  {% else %}
+  <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
+  <select id="id_qty" @change="qty = $event.target.value" name="qty">
+    {% for q in object.rangeqty %}
+    <option value="{{ q }}">{{ q }}</option>
+    {% endfor %}
+  </select>
+  {% endif %}
+</div> <p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>{ % include 'shop/snippets/update-cart.html' with product=object cart=cart %} justify-between {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}-->{% endcomment %}
+    <div class="mr-1">
+      <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
     </div>
-    <div class="w-full inline-flex items-center justify-between">
-      {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}
-
-      <button @click="addToCart({{ object.id }})" class="cbtn">Buy</button>
-
-      {% include 'shop/snippets/update-cart.html' with product=object cart=cart %}
+    <div class="inline-flex items-center">
+      <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-ajax"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}" {% if  product.is_digital %}data-is-digital="true"{% endif%}>
+        <span class="submit-span">
+        {% if object in cart.products.all %}
+          <a href="{{ cart_url }}" class="upcart">
+            <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
+          </a>
+          {% else %}
+          <button type="submit" class="upcart">
+            <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Buy' %}
+          </button>
+        {% endif %}
+        </span>
+      </form>
+      {% comment %}<!-- { % if object in cart.products.all %}
+      <a href="{{ cart_url }}" class="upcart">
+        <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
+      </a>
+      {% else %}
+      <button @click="addItem({{ object.id }})" class="upcart">
+        <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+        [[ btn.text ]]
+      </button>
+      {% endif %} -->{% endcomment %}
     </div>
   </div>
 </div>
@@ -62,31 +78,32 @@
 <script>
   var productapp = new Vue({
     el: '#productapp',
-    delimeters: ['[[', ']]'],
-    // store: store,
+    delimiters: ['[[', ']]'],
+    store: store,
     data () {
       return {
         showMessage: false,
         mainImage: '{{ object.img.url }}',
+        btn: {
+          text: 'Add to cart'
+        },
         images: ['{{ imagesstring|safe }}']
       }
     },
-    mounted () {
-      console.log('Mounted');
-    },
     methods: {
+      // changeMessage() {
+        
+      // },
       changeMainImage(img) {
-        this.mainImg = img;
+        this.mainImage = img;
       },
-      addToCart(productId) {
-        console.log('Product ID: ', productId)
+      addItem(productId) {
         var data = {
-          'product_id': productId, 
+          'product_id': productId,
           'update': false,
           'quantity': 1
         };
-
-        fetch('/api/add_to_cart/', {
+        fetch('/cart/update/', {// /api/add-to-cart/
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,35 +113,34 @@
           body: JSON.stringify(data)
         })
         .then((response) => {
-          console.log(response)
+          if(response) {
+            this.showMessage = true;
+            this.btn.text = 'In Cart';
+            store.commit('increment', 1);
 
-          this.showMessage = true
-
-          // store.commit('increment', 1);
-
-          setTimeout(() => {this.showMessage = false}, 2000)
+            setTimeout(() => {
+              this.showMessage = false}, 2000)
+          }
         })
         .catch(function (error) {
-          console.log('Error 2');
           console.log(error);
         })
       }
     }
   })
-  var options1 = {
+  var opt = {
+    fillContainer: true,
+    offset: {vertical: 0, horizontal: 15}
+  };
+  new ImageZoom(document.getElementById("pic"), opt);
+</script>
+{% endblock %}{% comment %}<!--var options1 = {
     width: 400,
     zoomWidth: 500,
     offset: {vertical: 0, horizontal: 10}
   };
   // If the width and height of the image are not known or to adjust the image to the container of it
-  var options2 = {
-    // zoomWidth: 400,
-    fillContainer: true,
-    offset: {vertical: 0, horizontal: 12}
-  };
-  new ImageZoom(document.getElementById("pic"), options2);
-</script>
-{% endblock %}{% comment %}<!--$(document).ready(function() {$('#id_qty option:selected').text();})
+$(document).ready(function() {$('#id_qty option:selected').text();})
 &times;
 custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag. 2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
 { % block css %}<style>

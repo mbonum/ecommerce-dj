@@ -71,6 +71,23 @@ request.path # /some/content/
   </div>
   {% include 'base/noscript.html' %}
   {% include 'base/js.html' %}
+  <script>
+    var store = new Vuex.Store({
+      state: {
+        nrItems: '{{ request.session.cart_items }}',//{{ cart.get_total_length }}
+        totalOrder: '{{ cart.total }}'
+      },
+      mutations: {
+        increment(state, qty) {
+          state.nrItems += qty;
+        },
+        changeTotal(state, newCost) {
+          state.totalOrder = parseFloat(state.totalOrder) + parseFloat(newCost);
+          state.totalOrder = parseFloat(state.totalOrder).toFixed(2)
+        }
+      }
+    });
+  </script>
   {% include 'base/snippets/tippy.html' %}
   {% include 'base/snippets/aos.html' %}
   {% block js %}{% endblock %}

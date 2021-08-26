@@ -24,6 +24,7 @@
       </a>
       <a href="{{ shop_url }}" class="ni{% if shop_url in request.path %} nisel{% endif %}">{% trans 'Shop' %}</a>
       {% if request.session.cart_items %}
+      <div id="navbarapp">
       <a href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart" {% endif %}class="cartbtn{% if cart_url in request.path %} nisel{% endif %}">
       <div class="relative inline-flex text-gray-300 hover:text-white items-center pt-1">
         <span class="md:hidden mr-3 md:mr-0">{% trans 'Cart' %}</span>
@@ -31,9 +32,10 @@
         <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart rounded-full w-4 h-4 inline-flex opacity-50 top-0 -right-2"></span>
         <span class="absolute text-black text-sm bg-cart hover:bg-cart rounded-full w-4 h-4 top-0 -right-2 flex justify-center items-center">{{ request.session.cart_items }}</span>
       </div></a>
+      </div>
       <div id="cart-tip" class="hidden">
       {% for p in cart.products.all %}
-        <p>{{ forloop.counter }}. {{ p.name_product }}</p>{#<!--bg-red-500 hover:bg-red-600<img src="{ { p.img.url }}" class="w-10 h-12 pr-1">-->#}
+        <p>{{ forloop.counter }}. {{ p.name_product }}</p>
       {% endfor %}
       </div>
       {% endif %}
@@ -59,7 +61,33 @@
       </div>
     </nav>
   </div>
-</header>{% comment %}<!--<svg class="ml-2 w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#out"></use></svg><svg class="w-4 h-4 text-gray-200 fill-current hidden xl:inline-block ml-2"> <use xlink:href="{% static 'img/svg-defs.svg' %}#signup"></use></svg>
+</header>
+{% comment %}<!--{% block js %}
+<script>
+  var navbarapp = new Vue({
+    el: '#navbarapp',
+    delimiters: ['[[', ']]'],
+    store: store,
+    data () {
+      return {
+        menuClass: false
+      }
+    },
+    computed: {
+      numItems: function() {
+        return store.state.numItems
+      }
+    },
+    methods: {
+      toggleMenu() {
+        console.log('toggleMenu');
+        this.menuClass = !this.menuClass;
+      }
+    }
+  })
+</script>
+{% endblock %}
+<svg class="ml-2 w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#out"></use></svg><svg class="w-4 h-4 text-gray-200 fill-current hidden xl:inline-block ml-2"> <use xlink:href="{% static 'img/svg-defs.svg' %}#signup"></use></svg>
 <script>
   var pathname = window.location.pathname;
   if (pathname.indexOf('/read/') > -1) {

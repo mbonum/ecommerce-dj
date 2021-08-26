@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.forms import ModelForm
 
-from .models import Category, Product, ProductFile
+from .models import Category, Product, ProductFile, Item, ProductImage, ProductReview
 
 
 @admin.register(Category)
@@ -27,34 +27,33 @@ class ProductFileInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     # form = ProductModelForm
     list_display = (
-        "name_product",
+        "name",
         "index",
         "price",
-        "quantity",
+        "qty_instock",
         "active",
         "category",
         "is_digital",
-        "recommend",
+        # "recommend",
         "img_tag",
     )
     list_editable = (
         "index",
         "price",
-        "quantity",
+        "qty_instock",
         "active",
         "category",
         "is_digital",
-        "recommend",
+        # "recommend",
     )
-    list_filter = ("active", "is_digital", "recommend", "created_at")
-    search_fields = (
-        "name_product",
-        "slug",
-    )
-    prepopulated_fields = {"slug": ("name_product",)}
+    list_filter = ("active", "is_digital", "created_at")  # "recommend",
+    search_fields = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
     inlines = (ProductFileInline,)
-    # list_display_links = ('__str__',)
 
 
+admin.site.register(Item)
+admin.site.register(ProductImage)
+admin.site.register(ProductReview)
 # admin.site.register(Category, CategoryAdmin)
 # admin.site.register(Product, ProductAdmin)

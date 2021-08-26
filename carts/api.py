@@ -16,11 +16,42 @@ from core.utils import render_to_pdf
 
 from orders.utils import checkout
 
-from shop.models import Product
+from shop.models import Item
 from orders.models import Order
 # from coupon.models import Coupon
 
 from .utils import decrement_product_quantity, send_order_confirmation
+
+
+def api_add_to_cart(request):
+    data = json.loads(request.body)
+    jsonresponse = {"success": True}
+    product_id = data["product_id"]
+    update = data["update"]
+    quantity = data["quantity"]
+    cart = Cart(request)
+    product = get_object_or_404(Item, pk=product_id)
+    if not update:
+        cart.add(product=product, quantity=1, update_quantity=False)
+    else:
+        cart.add(product=product, quantity=quantity, update_quantity=True)
+    return JsonResponse(jsonresponse)
+
+
+def api_add_qty(request):
+    data = json.loads(request.body)
+    jsonresponse = {"success": True}
+    product_id = data["product_id"]
+    cart = Cart(request)
+
+
+def api_remove_from_cart(request):
+    data = json.loads(request.body)
+    jsonresponse = {"success": True}
+    product_id = str(data["product_id"])
+    cart = Cart(request)
+    cart.remove(product_id)
+    return JsonResponse(jsonresponse)
 
 
 # def validate_payment(request):
@@ -180,33 +211,3 @@ def create_checkout_session(request):
     #     order.save()
 
     return JsonResponse({"session": session, "order": payment_intent})
-
-
-def api_add_to_cart(request):
-    data = json.loads(request.body)
-    jsonresponse = {"success": True}
-    product_id = data["product_id"]
-    update = data["update"]
-    quantity = data["quantity"]
-
-    cart = Cart(request)
-
-    product = get_object_or_404(Product, pk=product_id)
-
-    if not update:
-        cart.add(product=product, quantity=1, update_quantity=False)
-    else:
-        cart.add(product=product, quantity=quantity, update_quantity=True)
-
-    return JsonResponse(jsonresponse)
-
-
-def api_remove_from_cart(request):
-    data = json.loads(request.body)
-    jsonresponse = {"success": True}
-    product_id = str(data["product_id"])
-
-    cart = Cart(request)
-    cart.remove(product_id)
-
-    return JsonResponse(jsonresponse)

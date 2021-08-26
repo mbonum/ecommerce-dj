@@ -1,8 +1,10 @@
 import os
 import random
-
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from core.utils import get_filename, unique_slug_generator  # random_string_generator
 from django.conf import settings
+from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import MinValueValidator  # MaxValueValidator
 from django.db import models
@@ -12,6 +14,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
+from PIL import Image
 
 # from tags.models import Tag
 
@@ -35,9 +38,9 @@ from accounts.models import CUser
 #     return f"products/{new_filename}/{final_filename}"
 
 
-def shop_img_path(self, filename):
+def shop_media_path(self, filename):
     # Save file in static-cdn/media-root/products/...
-    s = self.slug
+    s = self.slug  # add category
     return f"shop/{s}/{filename}"
 
 
@@ -62,11 +65,10 @@ class ProductQuerySet(models.query.QuerySet):
         return self.filter(lookups).distinct()
 
 
-# Remove
-class ProductType(models.TextChoices):
-    EBOOK = "E", _("Ebook")  # is_digital=True
-    AUDIO = "A", _("Audio")
-    PHYSICAL = "P", _("Physical")  # is_digital=False -> delivery
+# class ProductType(models.TextChoices):
+#     EBOOK = "E", _("Ebook")  # is_digital=True
+#     AUDIO = "A", _("Audio")
+#     PHYSICAL = "P", _("Physical")  # is_digital=False -> delivery
 
 
 class ProductManager(models.Manager):
@@ -81,13 +83,13 @@ class ProductManager(models.Manager):
         if (
             self.category.name == "Audiobooks" or self.category.name == "Ebooks"
         ):  # product_type != ProductType.PHYSICAL:
-            self.quantity = 1
+            self.qty_instock = 1
             # self.in_stock = True
             return self.get_queryset().is_digital()
 
     # def featured(self):
     #     # Product.objects.featured()
-    #     # if self.quantity >= 1:
+    #     # if self.qty_instock >= 1:
     #     #     return self.get_queryset().featured()
     #     # else:
     #     #     return self.filter(featured=False, active=False)# sold out
@@ -101,7 +103,7 @@ class ProductManager(models.Manager):
 
     def check_inventory(self):
         # Check whether there are inventory inconsistencies
-        if self.quantity > 0 and self.active == False:
+        if self.qty_instock > 0 and self.active == False:
             n = self.name
             raise ValueError(f"Check product {n} inventory")
 
@@ -138,11 +140,14 @@ class Product(models.Model):
         unique=True,
         default=1,
     )
-    name_product = models.CharField(
+    name = models.CharField(
         _("Name"), max_length=255, blank=False, null=True, db_index=True
     )
     slug = models.SlugField(blank=False, null=True, unique=True)
-    img = models.ImageField(_("Image"), upload_to=shop_img_path, blank=False, null=True)
+    img = models.ImageField(
+        _("Image/GIF"), upload_to=shop_media_path, blank=False, null=True
+    )
+    thumbnail = models.ImageField(upload_to=shop_media_path, blank=True, null=True)
     price = models.DecimalField(
         _("Price (€)"),
         blank=False,
@@ -153,7 +158,7 @@ class Product(models.Model):
         validators=[MinValueValidator(0)],
         # help_text="EUR",
     )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')# IntegerField(default=9999)#cents
-    # currency = models.ForeignKey(User.currency, related_name='currency', null=True, blank=True, on_delete=models.SET_NULL)
+    # currency = models.ForeignKey(CUser.currency, related_name='currency', null=True, blank=True, on_delete=models.SET_NULL)
     # tags = models.ManyToManyField(Tag, blank=False)
     # product_type = models.CharField(
     #     max_length=8, choices=ProductType.choices, default=ProductType.EBOOK
@@ -162,9 +167,9 @@ class Product(models.Model):
         Category,
         related_name="products",
         on_delete=models.CASCADE,
-        blank=True,
+        blank=False,
         null=True,
-    )  # TextChoices
+    )
     # created_by = models.ForeignKey(
     #     CUser,
     #     related_name="product_creator",
@@ -172,40 +177,47 @@ class Product(models.Model):
     #     null=True
     # )
     text = HTMLField(
-        _("Description"), blank=False, null=True, help_text=_("Benefits per costs")
+        _("Description"), blank=False, null=True, help_text=_("Benefits per cost")
     )
     is_digital = models.BooleanField(
-        _("Digital"), default=False, help_text=_("No shipment")
+        _("Digital"), default=True, help_text=_("No shipment")
     )
-    quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
+    order_qty = models.PositiveIntegerField(
+        default=1, validators=[MinValueValidator(1)]
+    )
+    qty_instock = models.PositiveIntegerField(
+        _("Quantity in stock"), default=1, validators=[MinValueValidator(1)]
+    )
+    total_item = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
     # meta_keywords = models.CharField(max_length=255, help_text='Comma-delimited set of SEO keywords for meta tag')
     # meta_description = models.CharField(max_length=255, help_text='Content for description meta tag')
-    # in_stock = models.BooleanField(_("In Stock"), default=False)
-    active = models.BooleanField(
-        _("Show"), default=True, help_text=_("Hide if unavailable")
+    active = models.BooleanField(  # in_stock
+        _("Show"), default=False, help_text=_("Hide if unavailable")
     )
-    recommend = models.BooleanField(default=False)
+    # recommend = models.BooleanField(default=False)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
     pdf = models.FileField(
-        _("PDF Brochure/Manual"), upload_to="shop/", blank=True, null=True
-    )
-    # Preview manual if diy
+        _("PDF Brochure/Manual"), upload_to=shop_media_path, blank=True, null=True
+    )  # 10-page preview manual if diy
 
     objects = ProductManager()
 
     class Meta:
         verbose_name_plural = _("Products")
         ordering = ["index"]
-        # index_together = [('name_product', 'slug'),]
 
     def __str__(self):
-        return self.name_product
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.thumbnail = self.make_thumbnail(self.img)
+        super().save(*args, **kwargs)
 
     def img_tag(self):
-        if self.img:
+        if self.thumbnail:
             return mark_safe(
-                f'<img src="{self.img.url}" style="width:60px; height:60px;">'
+                f'<img src="{self.thumbnail.url}" style="width:60px; height:60px;">'
             )
         else:
             return _("Please add an image")
@@ -213,30 +225,49 @@ class Product(models.Model):
     img_tag.short_description = _("Image")
 
     def get_absolute_url(self):
-        # namespace[in core/urls]:name[in app-name/urls]
         return reverse(
             "shop:detail", kwargs={"cslug": self.category.slug, "slug": self.slug}
         )
 
-    # IF price is in cents
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            if self.img:
+                self.thumbnail = self.make_thumbnail(self.img)
+                self.save()
+                return self.thumbnail.url
+            else:
+                return ""
+
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
+        img.convert("RGB")
+        img.thumbnail(size)
+        thumb_io = BytesIO()
+        img.save(thumb_io, "PNG", optimize=True, quality=80)
+        thumbnail = File(thumb_io, name=image.name)
+        return thumbnail
+
+    @property
+    def total_item(self):
+        return "{0:.2f}".format(float(self.order_qty * self.price))
+
+    # If price is in cents
     # def display_price(self):
     #     return "{0:.2f}".format(self.price / 100)
 
-    def rangeqty(self):
-        q = []
-        if not self.is_digital and self.quantity > 0:
-            q = list(range(1, self.quantity + 1))
-        return q
+    # def rangeqty(self):
+    #     q = []
+    #     if not self.is_digital and self.qty_instock > 0:
+    #         q = list(range(1, self.qty_instock + 1))
+    #     return q
 
     # Update inventory after an order has been submitted -> signal
 
     def get_downloads(self):
         qs = self.productfile_set.all()
         return qs
-
-    @property
-    def name(self):
-        return self.name_product
 
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
@@ -252,7 +283,7 @@ def upload_product_file_loc(instance, filename):
     slug = instance.product.slug
     if not slug:
         slug = unique_slug_generator(instance.product)
-    location = f"shop/{slug}/"
+    location = f"shop/{slug}/"  # shop_media_path
     return location + filename  # /static_cdn/protected_root/products/slug/file
 
 
@@ -279,3 +310,147 @@ class ProductFile(models.Model):
     @property
     def name(self):
         return get_filename(self.file.name)
+
+
+class Item(models.Model):
+    category = models.ForeignKey(
+        Category, related_name="items", on_delete=models.CASCADE
+    )
+    parent = models.ForeignKey(
+        "self", related_name="variants", on_delete=models.CASCADE, blank=True, null=True
+    )
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(
+        _("Price (€)"),
+        blank=False,
+        null=True,
+        decimal_places=2,
+        max_digits=9,
+        default=9.99,
+        validators=[MinValueValidator(0)],
+    )
+    is_featured = models.BooleanField(default=False)
+    num_available = models.IntegerField(default=1)
+    num_visits = models.IntegerField(default=0)
+    last_visit = models.DateTimeField(blank=True, null=True)
+
+    image = models.ImageField(upload_to="uploads/", blank=True, null=True)
+    thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-date_added"]
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        self.thumbnail = self.make_thumbnail(self.image)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return f"/{self.category.slug}/{self.slug}/"  # /%s/%s/" % (self.category.slug, self.slug)
+
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            if self.image:
+                self.thumbnail = self.make_thumbnail(self.image)
+                self.save()
+
+                return self.thumbnail.url
+            else:
+                return ""
+
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
+        img.convert("RGB")
+        img.thumbnail(size)
+
+        thumb_io = BytesIO()
+        img.save(thumb_io, "PNG", quality=85)  # "JPEG"
+
+        thumbnail = File(thumb_io, name=image.name)
+
+        return thumbnail
+
+    def get_rating(self):
+        total = sum(int(review["stars"]) for review in self.reviews.values())
+
+        if self.reviews.count() > 0:
+            return total / self.reviews.count()
+        else:
+            return 0
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Item, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="uploads/", blank=True, null=True)
+    thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.thumbnail = self.make_thumbnail(self.image)
+
+        super().save(*args, **kwargs)
+
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
+        img.convert("RGB")
+        img.thumbnail(size)
+
+        thumb_io = BytesIO()
+        img.save(thumb_io, "PNG", quality=85)  # "JPEG"
+
+        thumbnail = File(thumb_io, name=image.name)
+
+        return thumbnail
+
+
+class ProductReview(models.Model):
+    product = models.ForeignKey(Item, related_name="reviews", on_delete=models.CASCADE)
+    user = models.ForeignKey(CUser, related_name="reviews", on_delete=models.CASCADE)
+
+    content = models.TextField(blank=True, null=True)
+    stars = models.IntegerField()
+
+    date_added = models.DateTimeField(auto_now_add=True)
+
+
+# compare md5 to remove duplicate files
+# class MediaFileSystemStorage(FileSystemStorage):
+#     def get_available_name(self, name, max_length=None):
+#         if max_length and len(name) > max_length:
+#             raise (Exception("name's length is greater than max_length"))
+#         return name
+
+#     def _save(self, name, content):
+#         if self.exists(name):
+#             # if the file exists, do not call the superclasses _save method
+#             return name
+#         # if the file is new, DO call it
+#         return super(MediaFileSystemStorage, self)._save(name, content)
+
+
+# def media_file_name(instance, filename):
+#     h = instance.md5sum
+#     basename, ext = os.path.splitext(filename)
+#     return os.path.join("media", h[0:1], h[1:2], h + ext.lower())
+
+
+# class Media(models.Model):
+#     # use the custom storage class fo the FileField
+#     orig_file = models.FileField(
+#         upload_to=media_file_name, storage=MediaFileSystemStorage()
+#     )
+#     md5sum = models.CharField(max_length=36)
+
+#     def save(self, *args, **kwargs):
+#         if not self.pk:  # file is new
+#             md5 = hashlib.md5()
+#             for chunk in self.orig_file.chunks():
+#                 md5.update(chunk)
+#             self.md5sum = md5.hexdigest()
+#         super(Media, self).save(*args, **kwargs)

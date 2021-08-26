@@ -51,7 +51,7 @@
   .usra{@apply border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black cr2 px-1;}
   .usrt{@apply md:inline-block align-top bord bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-6 md:mr-6;}
   .form{@apply w-full bord focus:border-yellow-500 shadow placeholder-gray-600 cr2 px-2 py-1;}
-  #id_qty{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}
+  #id_qty{@apply block cr2 bg-white bord shadow focus:border-yellow-500;}
   #serc{@apply w-full bg-transparent rounded-xl border-none ring-0 ring-white focus:outline-none py-1 px-0;}
   #id_captcha_1{@apply border-none ring-0 rounded-xl focus:outline-none px-0 py-0;}
   #currency{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}

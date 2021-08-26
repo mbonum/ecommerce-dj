@@ -31,8 +31,8 @@ class ProductListView(ListView):
     def get_context_data(self, *args, **kwargs):
         # Every class-based view has this method
         context = super(ProductListView, self).get_context_data(*args, **kwargs)
-        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        context["cart"] = cart_obj
+        cart, new_obj = Cart.objects.new_or_get(self.request)
+        context["cart"] = cart
         return context
 
     def get_queryset(self, *args, **kwargs):  # quantity at least >= 1
@@ -55,8 +55,8 @@ class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     def get_context_data(self, *args, **kwargs):
         # form_class = QtyForm(self.request.POST or None)
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
-        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        context["cart"] = cart_obj
+        cart, new_obj = Cart.objects.new_or_get(self.request)
+        context["cart"] = cart
         return context
 
     def get_object(self, *args, **kwargs):
@@ -71,14 +71,13 @@ class UserProductHistoryView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(UserProductHistoryView, self).get_context_data(*args, **kwargs)
-        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        context["cart"] = cart_obj
+        cart, new_obj = Cart.objects.new_or_get(self.request)
+        context["cart"] = cart
         return context
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        views = request.user.objectviewed_set.by_model(Product, model_queryset=True)
-        # [:3] show specific number
+        views = request.user.objectviewed_set.by_model(Product, model_queryset=True)# [:3] show specific number
         return views
 
 
@@ -117,7 +116,7 @@ class ProductDownloadView(View):
         final_filepath = os.path.join(fileroot, filepath)  # where the file is stored
         with open(final_filepath, "rb") as _f:
             wrapper = FileWrapper(_f)
-            # content = 'some'
+            # content = 'X'
             mimetype = "application/force-download"  # 'text/plain' for a txt file
             # look the extension of the first [0] file
             guessed_mimetype = guess_type(filepath)[0]

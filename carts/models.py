@@ -35,9 +35,10 @@ class CartManager(models.Manager):
 class Cart(models.Model):
     user = models.ForeignKey(USER, null=True, on_delete=models.SET_NULL)
     products = models.ManyToManyField(Product, blank=False)
-    order_qty = models.PositiveIntegerField(
-        default=1, validators=[MinValueValidator(1)]
-    )
+    # order_qty = models.PositiveIntegerField(
+    #     default=1, validators=[MinValueValidator(1)]
+    # )
+    # item_total = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
     # for discount and shipping
     subtotal = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
@@ -58,21 +59,25 @@ class Cart(models.Model):
             return False
         return True
 
-    def calc_tot(self, save=False):
-        if not self.products:
-            return {}
-        subtot = self.products.price * self.order_qty # cents
-        tax_rate = 0.12  # get tax rate country
-        tax_tot = subtot * tax_rate
-        tax_tot = float("%.2f" % (tax_tot))  # round(eur_usd, 2)
-        tot = subtot + tax_tot
-        tot = float("%.2f" % (tax_tot))  # format(eur_usd, ".2f")
-        totals = {"subtotal": subtot, "tax": tax_tot, "total": tot}
-        for k, v in totals.items():
-            setattr(self, k, v)
-            if save == True:
-                self.save()
-        return totals
+    @property
+    def get_item_total(self):
+        return sum(float(p['price']) * self.order_qty for p in self.products.all())
+
+    # def calc_tot(self, save=False):
+    #     if not self.products:
+    #         return {}
+    #     subtot = self.products.price * self.order_qty # cents
+    #     tax_rate = 0.12  # get tax rate country
+    #     tax_tot = subtot * tax_rate
+    #     tax_tot = float("%.2f" % (tax_tot))  # round(eur_usd, 2)
+    #     tot = subtot + tax_tot
+    #     tot = float("%.2f" % (tax_tot))  # format(eur_usd, ".2f")
+    #     totals = {"subtotal": subtot, "tax": tax_tot, "total": tot}
+    #     for k, v in totals.items():
+    #         setattr(self, k, v)
+    #         if save == True:
+    #             self.save()
+    #     return totals
 
 
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):

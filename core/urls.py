@@ -14,28 +14,21 @@ from django.views.decorators.csrf import csrf_exempt
 # # from filebrowser.sites import site
 # from graphene_django.views import GraphQLView
 
-# from .schema import schema
+# from .schema import schema $ graphene
 from accounts.views import LoginView, RegisterView
 from carts.views import cart_detail_api_view
-from carts.api import api_add_to_cart
+from carts.api import api_add_to_cart, api_remove_from_cart  # api_add_qty,
 from core.views import robots_txt
 from essays.sitemaps import EssaySitemap
-# from essays.admin import essays_admin# add separate CMS for authors
 
-# from marketing import urls as mktg_urls
+# from essays.admin import essays_admin # add separate CMS for authors
+
 from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
-
-# from shorturl.views import ShortURLView, URLRedirectView
 
 # # from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 # # from two_factor.urls import urlpatterns as tf_urls
 
-
-# vue
-# router = routers.DefaultRouter()
-# router.register(r'notes', NotesViewSet)
-# path('', include(router.urls)),
 
 sitemaps = {
     "essays": EssaySitemap,  # static
@@ -46,9 +39,8 @@ urlpatterns = [
     path("", include("drfpasswordless.urls")),
     path("", include("home.urls", namespace="home")),
     path("captcha/", include("captcha.urls")),
-    # channels
-    path(_("contact/"), include("chat.urls", namespace="chat")),
-    # create a separate CMS that only authors can access, schema=schema
+    path(_("contact/"), include("chat.urls", namespace="chat")),  # channels
+    # separate CMS only authors can access , schema=schema graphene
     # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
     path(_("read/"), include("essays.urls", namespace="read")),
     # path("hitcount/", include("hitcount.urls", namespace="hitcount")),
@@ -56,7 +48,8 @@ urlpatterns = [
     path(_("team/"), include("team.urls", namespace="team")),
     path(_("shop/"), include("shop.urls", namespace="shop")),
     path(_("search/"), include("search.urls", namespace="search")),
-    path("api/add-to-cart", api_add_to_cart, name="api_add_to_cart"),
+    path("api/add-to-cart/", api_add_to_cart, name="api-add-to-cart"),
+    path("api/remove-from-cart/", api_remove_from_cart, name="api-remove-from-cart"),
     path(_("cart/"), include("carts.urls", namespace="cart")),
     path("api/cart/", cart_detail_api_view, name="api-cart"),  # YXBpL2NhcnQv/
     path(_("signup/"), RegisterView.as_view(), name="register"),
@@ -65,8 +58,6 @@ urlpatterns = [
     path(_("address/"), RedirectView.as_view(url="/addresses")),
     path(_("addresses/"), include("addresses.urls", namespace="address")),
     path(_("billing/"), include("billing.urls", namespace="billing")),
-    # path(_("billing/payment-method/"), payment_method_view, name="billing-payment-method"),
-    # path(_("billing/payment-method/create/"), payment_method_createview, name="billing-payment-method-end"),
     path(_("orders/"), include("orders.urls", namespace="orders")),
     path(_("invoice/<slug:_id>/"), GenerateOrderPDF.as_view(), name="invoice"),
     path(_("library/"), LibraryView.as_view(), name="library"),
@@ -91,23 +82,20 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
-    path("robots.txt", robots_txt),
-    # Creating template/robots.txt
+    path("robots.txt", robots_txt),  # or create template/robots.txt
     # TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots-txt",
-    # path('', Subscribe.as_view(), name='subscribe'),
-    # path('subscribe-api/', include(mktg_urls)),
-    # #     # DL model
-    # #     # path('classify/', views.call_model.as_view()),
-    # #     # path('note/', include('todolists.api.urls', namespace='note')),
-    # #     # path('ebook/', include('ebooks.api.urls', namespace='ebook')),
-    # #     # path('profile/', include('profiles.api.urls', namespace='profile')),
+
+    # # DL model
+    # # path('classify/', views.call_model.as_view()),
+    # # path('note/', include('todolists.api.urls', namespace='note')),
+    # # path('ebook/', include('ebooks.api.urls', namespace='ebook')),
+    # # path('profile/', include('profiles.api.urls', namespace='profile')),
     # path("tinymce/", include("tinymce.urls")),
-    # #     # path('c2l0ZW1hcHMudHh/', sitemap, {'sitemaps': SITEMAPS}, name='django.contrib.sitemaps.views'),
-    # #     # 64encode sitemaps.txt robot.xml
-    # #     path('cm9ib3QueG1s0/', include('robots.urls')),
-    # #     # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
+    # # path('c2l0ZW1hcHMudHh/', sitemap, {'sitemaps': SITEMAPS}, name='django.contrib.sitemaps.views'),
+    # # 64encode sitemaps.txt robot.xml
+    # path('cm9ib3QueG1s0/', include('robots.urls')),
+    # # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
-    # fake admin
     path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
 ]
 
@@ -139,78 +127,8 @@ if settings.DEBUG:
     #         "graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))
     #     ),
     # )
-    # path('s/', include('shortener.urls')),
 
 
 admin.site.site_header = getattr(settings, "ENV_NAME", "Clavem") + " admin"
 admin.site.index_title = "Home"
 admin.site.site_title = admin.site.site_header
-
-# re_path(r'^', include('allauth_2fa.urls')),
-# re_path(r'^', include('allauth.urls')),
-# path('otpadmin/', admin_site.urls),
-# path('read/', include('django.contrib.flatpages.urls')),
-# path('', include(tf_urls)),
-# path('', include(tf_twilio_urls)),
-# path('', TemplateView.as_view(template_name='index.html'), name='index'), # vue
-# re_path(r'^.*$', IndexTemplateView.as_view(), name='entry-point'),
-# path('bmltZGEtbWdiLTI1Cg/filebrowser/', site.urls),
-# path('grappelli/', include('grappelli.urls')),
-# path('.well-known/', include('letsencrypt.urls')),
-# path('', include('pwa.urls')),
-# path('xicon/', include('xicon.urls')),
-# https://base64encode.org nimda-mgb-25
-# urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
-
-
-# from dl import views
-# from subscribe.views import Subscribe
-# from core.views import IndexTemplateView
-# from rest_auth.views import LoginView
-
-# https://django-registration.readthedocs.io/en/3.1/activation-workflow.html
-# from django_registration.backends.one_step.views import RegistrationView# two_step
-
-# from two_factor.admin import AdminSiteOTPRequired, AdminSiteOTPRequiredMixin
-
-
-# class AdminSiteOTPRequiredMixinRedirSetup(AdminSiteOTPRequired):
-#     def login(self, request, extra_context=None):
-#         redirect_to = request.POST.get(
-#             REDIRECT_FIELD_NAME, request.GET.get(REDIRECT_FIELD_NAME)
-#         )
-#         # For users not yet verified the AdminSiteOTPRequired.has_permission
-#         # will fail. So use the standard admin has_permission check:
-#         # (is_active and is_staff) and then check for verification.
-#         # Go to index if they pass, otherwise make them setup OTP device.
-#         if request.method == 'GET' and super(
-#             AdminSiteOTPRequiredMixin, self
-#         ).has_permission(request):
-#             # Already logged-in and verified by OTP
-#             if request.user.is_verified():
-#                 # User has permission
-#                 index_path = reverse('admin:index', current_app=self.name)
-#             else:
-#                 # User has permission but no OTP set:
-#                 index_path = reverse('two_factor:setup', current_app=self.name)
-#             return HttpResponseRedirect(index_path)
-
-#         if not redirect_to or not is_safe_url(
-#             url=redirect_to, allowed_hosts=[request.get_host()]
-#         ):
-#             redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
-#         return redirect_to_login(redirect_to)
-
-
-# Enforce two factor authentication in the admin and use the default admin site
-# admin.site.__class__ = AdminSiteOTPRequired
-
-# admin_site = OTPAdmin(name='OTPAdmin')
-
-# from django_otp.admin import OTPAdminSite
-# class OTPAdmin(OTPAdminSite):
-#     pass
-# from django_otp.plugins.otp_totp.models import TOTPDevice
-# admin_site = OTPAdmin(name='OTPAdmin')
-# admin_site.register(User)
-# admin_site.register(TOTPDevice)

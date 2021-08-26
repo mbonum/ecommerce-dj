@@ -591,6 +591,10 @@ META_SITE_DOMAIN = BASE_URL
 META_SITE_TYPE = ""
 META_SITE_NAME = ENV_NAME
 
+# Items will stay in the cart for 24 hours
+SESSION_COOKIE_AGE = 86400
+CART_SESSION_ID = "cart"
+
 # django_heroku.settings(locals(), staticfiles=False)
 
 # https://docs.djangoproject.com/en/3.2/topics/i18n/# Add Chinese, Espanol

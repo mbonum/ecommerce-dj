@@ -5,8 +5,7 @@
   <span class="submit-span">
   {% if product in cart.products.all %}
     <a href="{{ cart_url }}" class="upcart">
-      <svg class='fill-current w-4 h-4 mr-2'><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
-      {% trans 'In Cart' %}
+      <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
     </a>
     {% else %}
     <button type="submit" class="upcart">

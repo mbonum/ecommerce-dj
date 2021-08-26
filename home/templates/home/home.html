@@ -29,13 +29,15 @@
   {% if object.video_link %}{#<!-- Link to external video src  data-aos-easing="ease" data-aos-delay="800"-->#}
   <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
   {% elif object.img %}
-  <div id="img-div">
-    <img loading="lazy" id="pic" src="{{ object.img.url }}" alt="{% trans 'Product detail' %}" class="border border-gray-300 rounded-xl shadow-md mx-auto">
+  <div>
+    <img loading="lazy" src="{{ object.img.url }}" alt="{% trans 'Home' %}" class="bord rounded-xl shadow mx-auto">
   </div>
   {% endif %}
-  <svg loading="lazy" class="text-gray-200 animate-pulse s fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
   <div>
-    <svg class="w-7 h-7 text-gray-400 transition duration-500 ease-in-out animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
+    <svg class="text-gray-200 animate-pulse s fill-current mx-auto pb-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+  </div>
+  <div>
+    <svg class="w-7 h-7 text-gray-300 fill-current animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
   </div>
 </div>
 {% endblock %}

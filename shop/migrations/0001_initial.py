@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('index', models.PositiveSmallIntegerField(default=1, null=True, unique=True, validators=[django.core.validators.MinValueValidator(1)])),
                 ('name_product', models.CharField(blank=True, db_index=True, max_length=255, null=True, verbose_name='Name')),
                 ('slug', models.SlugField(blank=True, null=True, unique=True)),
-                ('img', models.ImageField(blank=True, null=True, upload_to=shop.models.shop_img_path, verbose_name='Image')),
+                ('img', models.ImageField(blank=True, null=True, upload_to=shop.models.shop_media_path, verbose_name='Image')),
                 ('price', models.DecimalField(decimal_places=2, default=9.99, max_digits=9, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Price (€)')),
                 ('product_type', models.CharField(choices=[('E', 'Ebook'), ('A', 'Audio'), ('P', 'Physical')], default='E', max_length=8)),
                 ('text', tinymce.models.HTMLField(blank=True, help_text='Benefits per costs', null=True, verbose_name='Description')),

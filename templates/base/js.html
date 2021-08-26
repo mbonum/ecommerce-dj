@@ -29,12 +29,13 @@
 <script type="application/javascript" src="{% static 'js/cdev.sales.js' %}"></script>
 {% endcompress %}
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script>
 <script>
   if (typeof Vue == 'undefined') {
     document.write(unescape("%3Cscript src='{% static '/js/vue.min.js' %} type='application/javascript'%3E%3C/script%3E"));
   }
 </script>
-{% comment %}<!--<link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
+{% comment %}<!--<script type="application/javascript" src="{% static 'js/vue.min.js' %}"><script type="application/javascript" src="{% static 'js/vuex.min.js' %}"></script><link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ recaptchav3 }}"></script>
 nonce="lrEwC5VX0M"<script rel="preload" type="text/javascript" src="{ % static 'js/fittext.js' % }"></script>
 <script rel="preload" type="text/javascript" src="{ % static 'js/fitvids.js' % }"></script><script rel="preload" type="text/javascript" src="{ % static 'js/letterings.min.js' % }"></script><script rel="preload" type="text/javascript" src="{ % static 'js/darkmode.min.js' % }"></script><script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@2.5.0/dist/alpine.js" integrity="sha384-MOdHkwpJ6Vkz2uUWS4XyU6nVUKonbGM1UHBS3//P+E7omEPPA0Qo7pDo4VdLzhGu" crossorigin="anonymous"></script>
