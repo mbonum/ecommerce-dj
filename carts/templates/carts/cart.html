@@ -1,75 +1,68 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 {% block title %}{% trans 'Cart' %}{% endblock %}
-{#<!-- if edit user currency qty update cdev.js 184 https://html.spec.whatwg.org/multipage/tables.html#the-th-element-->#}
+{#<!--if edited user currency qty, update cdev.js 184 https://html.spec.whatwg.org/multipage/tables.html#the-th-element-->#}
 {% block content %}
 <div id="cartapp" class="font-c-sans max-w-sm mx-auto">
   <div v-if="products.length > 0">
-    <div class="text-center">
-      <h1 class="h1">{% trans 'Cart' %}</h1>
-    </div>
-    <table class="text-lg mx-auto">
+    <h1 class="h1 text-center">{% trans 'Cart' %}</h1>
+    <table class="cart-tabl e text-lg mx-auto">
       <thead class="border-b border-gray-500">
         <tr>
           <th scope="col" colspan="1"><span hidden>Index</span></th>
           <th scope="col" class="tabcol">{% trans 'Product' %}</th>
-          <th scope="col" class="tabcol">{% trans 'Quantity' %}</th>
+          <th scope="col" class="tabcol"><label for="id_qty">{% trans 'Quantity' %}</label></th>
           <th scope="col" class="tabcol">{% trans 'Price' %}</th>
           <th scope="col" colspan="1"><span hidden>Pad</span></th>
         </tr>
       </thead>
-      <tbody class="items-center">
-        <tr v-for="p in products" class="bordb">
-          <td colspan="1">
-            <!-- <figure v-if="p.thumbnail.url" class="w-48 h-48">
-              <img :src="p.thumbnail.url">
-            </figure> -->
+      <tbody class="cart-bod y items-center">
+        <tr v-for="p in products" class="cart-produc t bordb">
+          <td scope="row" colspan="1"></td>
+          <td class="pr-4 py-4">
+            <a :href="p.url" class="bt inline-flex" target="_blank" rel="noopener">[[ p.name ]]</a>
           </td>
-          <td class="p-3">
-            <a :href="p.url" class="bt">[[ p.title ]]</a>
-          </td>
-          <!-- <div id="product-cart-tip" class="hidden">
-            <img loading="lazy" :src="p.thumbnail" alt="p.title {% trans 'Image' %}" class="w-64 h-64">
-          </div>-->
-          <td class="px-3">
+{% comment %}<!-- class="items-center bt" id="product-cart" <div id="product-cart-tip" class="hidden">
+  <img loading="lazy" :src="p.img" alt="p.name {% trans 'Image' %}" class="w-64 h-64">
+</div>  || p.quantity <= p.qty_instock-->{% endcomment %}
+          <td class="px-4">
             <div class="flex items-center bg-white bord rounded-xl shadow space-x-2 px-2 py-1">
-              <button v-if="p.quantity > 1" @click="decrementQty(p.id, p.quantity, p.price)" class="rounded-full cr2">
-                <svg class="w-5 h-5 text-gray-400 hover:text-red-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
-              </button>
-              <button v-if="p.quantity < 2" @click="removeItem(p.id)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
+              <button v-if="p.quantity < 2" @click="removeItem(p.id, p.item_total)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
                 <svg class="w-5 h-5 text-gray-400 hover:text-red-500 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
               </button>
+              <button v-if="p.quantity > 1" @click="decrementQty(p.id, p.quantity, p.qty_instock, p.price)" class="rounded-full cr2">
+                <svg class="w-5 h-5 text-gray-400 hover:text-red-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+              </button>
               <span>[[ p.quantity ]]</span>
-              <button @click="incrementQty(p.id, p.quantity, p.price)" class="rounded-full cr2">
+              <button v-if="p.quantity < p.qty_instock" @click="incrementQty(p.id, p.quantity, p.qty_instock, p.price)" class="rounded-full cr2">
                 <svg class="w-5 h-5 text-yellow-400 hover:text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
               </button>
+              <span v-if="p.quantity >= p.qty_instock" class="text-xs">
+                {% trans 'Max' %}
+              </span>
             </div>
           </td>
-          <td class="px-3">
-            <p>{% if user.currency == "USD" %}${% else %}€{% endif %}[[ p.total_price ]]</p>
+          <td class="px-4">
+            <span>{% if user.currency == "USD" %}${% else %}€{% endif %}[[ p.item_total ]]</span>
           </td>
-          <td class="pl-4">
-            <button @click="removeItem(p.id)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
+          <td class="cart-item-remove-for m pl-4">{#<!-- % include 'carts/snippets/remove-product.html' with id=object.id cart=cart in_cart=True % -->#}
+            <button @click="removeItem(p.id, p.item_total, p.quantity)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
               <svg class="w-5 h-5 text-gray-400 hover:text-red-500 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
             </button>
           </td>
         </tr>
-        <tfoot>
-          <tr>
-            <th colspan="3"></th>
-            <th scope="col" class="border-b border-gray-500 py-2">{% trans 'Total' %}</th>
-          </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"></td>{#<!-- if shipment cost + tax <th>Subtotal <p class="cart-subtotal">{{ cart.subtotal }}</p></td></tr>{ { object.tax }}% include 'base/snippets/currency.html' %}-->#}
+          <th scope="col" class="border-b border-gray-500 py-2">{% trans 'Total' %}</th>
+        </tr>
         <tr>
           <td colspan="3"></td>
-          <!-- <td>[[ numItems ]]</td> -->
           <td class="tabcol">
-            <p>{% if user.currency == "USD" %}${% else %}€{% endif %}[[ totalCost ]]</p>
+            <p class="cart-total">{% if user.currency == "USD" %}${% else %}€{% endif %}[[ totalOrder ]]</p>
           </td>
         </tr>
-        <!-- <tr v-if="coupon_value">
-          <td colspan="3">Total cost with coupon:</td>
-          <td>[[ totalCostWithCoupon ]]</td>
-        </tr> -->
       </tfoot>
     </table>
     <div class="flex items-center justify-around text-lg mt-6">
@@ -86,10 +79,7 @@
     {% include 'base/snippets/sad.html' %}
   </div>
 </div>
-{{ products|safe }}
-{% endblock %}<!-- <script type="application/javascript" src="https://js.stripe.com/v3/"></script>
-<script type="application/javascript" src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script type="application/javascript" src="https://www.paypal.com/sdk/js?client-id={{ pub_key_paypal }}"></script> -->
+{% endblock %}
 {% block js %}
 <script>
   var cartapp = new Vue({
@@ -107,39 +97,36 @@
         // place: '{{ place }}',
         // phone: '{{ phone }}',
         products: [{{ products|safe }}]
-        // coupon_value: 0,
-        // coupon_code: '',
-        // showCouponCodeError: false
       }
     },
     computed: {
-      numItems: function() {
-        return store.state.numItems
+      nrItems: function() {
+        return store.state.nrItems;
       },
-      totalCost: function() {
-        return store.state.totalCost
-      },
-      totalCostWithCoupon: function() {
-        if (this.coupon_value > 0) {
-            return store.state.totalCost * (parseInt(this.coupon_value) / 100);
-        } else {
-            return store.state.totalCost;
-        }
+      totalOrder: function() {
+        return store.state.totalOrder;
       }
+    //,   totalCostWithCoupon: function() {
+    //     if (this.coupon_value > 0) {
+    //         return store.state.total * (parseInt(this.coupon_value) / 100);
+    //     } else {
+    //         return store.state.total;
+    //     }
+    //   }
     },
     methods: {
-      decrementQty(productId, quantity, price) {
+      decrementQty(productId, qty, qty_instock, price) {
         var data = {
           'product_id': productId, 
-          'update': true,
-          'quantity': parseInt(quantity) - 1
+          'quantity': parseInt(qty) - 1,
+          'update': true
         };
-        if (parseInt(quantity) - 1 === 0) {
+        if (parseInt(qty) - 1 === 0) {
           this.removeItem(productId);
         } else {
-          store.commit('increment', -1);
-          store.commit('changeTotalCost', -parseFloat(price));
-          fetch('/api/add-to-cart/', {
+          store.commit('updateNrItems', -1);
+          store.commit('changeTotal', -parseFloat(price));
+          fetch('/cart/add-to-cart/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -150,34 +137,31 @@
           })
           .then((response) => {
             for (var i = 0; i < this.products.length; i++) {
-              var product = this.products[i];
-              if (product.id === productId) {
-                this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
-                this.products[i].total_price = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
+              var p = this.products[i];
+              if (p.id === productId && qty <= qty_instock) {
+                p.quantity = parseInt(data.quantity);
+                p.item_total = parseInt(p.quantity) * parseFloat(p.price);
               }
             }
           })
           .catch(function (error) {
-            console.log('Error 2');
             console.log(error);
           })
         }
       },
-      incrementQty(productId, qty, price) {
+      incrementQty(productId, qty, qty_instock, price) {
         // for (var i = 0; i < this.products.length; i++) {
-        //   var product = this.products[i];
-
-        //   if (product.id === productId) {
-        //     if (quantity < product.num_available) {
+        //   var p = this.products[i];
+        //   if (p.id === productId) {
+        //     if (qty < p.qty_instock) {
               var data = {
                 'product_id': productId,
                 'quantity': parseInt(qty) + 1,
                 'update': true
               };
-              store.commit('increment', 1);
-              store.commit('changeTotalCost', +parseFloat(price));
-
-              fetch('/api/add-to-cart/', {
+              store.commit('updateNrItems', 1);
+              store.commit('changeTotal', parseFloat(price));
+              fetch('/cart/add-to-cart/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -188,30 +172,30 @@
               })
               .then((response) => {
                 for (var i = 0; i < this.products.length; i++) {
-                  var product = this.products[i];
-
-                  if (product.id === productId) {
-                    this.products[i].quantity = parseInt(this.products[i].quantity) + 1;
-                    this.products[i].total_price = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
+                  var p = this.products[i];
+                  if (p.id === productId && qty < qty_instock) {
+                    p.quantity = parseInt(data.quantity);
+                    p.item_total = parseInt(p.quantity) * parseFloat(p.price);
                   }
                 }
               })
               .catch(function (error) {
-                console.log('Error 2');
                 console.log(error);
               })
           //   } else {
-          //     alert('No more available in stock!');
+          //     alert('Out of stock. Contact us to be notified when the product is available.');
           //   }
           // }
         // }
       },
-      removeItem(productId) {
-        console.log('Product ID: ', productId);
+      removeItem(productId, price, qty) {
         var data = {
           'product_id': productId,
+          'update': true
         };
-        fetch('/api/remove-from-cart/', {
+        store.commit('updateNrItems', -parseInt(qty));
+        store.commit('changeTotal', -parseFloat(price));
+        fetch('/cart/remove-from-cart/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -220,21 +204,16 @@
           credentials: 'same-origin',
           body: JSON.stringify(data)
         })
-        .then((result) => {
-          console.log(result)
-          if(result.error) {
-            console.log('Error 1');
-            throw result;
-          }
-        })
-        .then((result) => {
-          if(result) {
-            console.log('Removed from cart');
-          }
-          this.products = this.products.filter(product => product.id !== productId)
+        // .then((result) => {
+        //   console.log(result)
+        //   if(result.error) {
+        //     throw result;
+        //   }
+        // })
+        .then((response) => {
+          this.products = this.products.filter(product => product.id !== productId);
         })
         .catch(function (error) {
-          console.log('Error 2');
           console.log(error);
         })
       }
@@ -242,3 +221,4 @@
   })
 </script>
 {% endblock %}
+{% comment %}<!--._. currency update total Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->{% endcomment %}

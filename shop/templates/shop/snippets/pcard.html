@@ -2,11 +2,9 @@
 <div class="self-start mt-6{% if not search_url in request.path %} md:mr-6{% endif %}">
   <a href="{{ object.get_absolute_url }}" class="carditem">
     {% if object.img %}
-    <img src="{{ object.thumbnail.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="w-64 h-64 md:rounded-t-xl mx-auto">
+    <img src="{{ object.thumbnail.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="{% if search_url in request.path %}w-full{% else %}md:w-64{% endif %} w-full h-64 rounded-t-xl mx-auto">
     {% else %}
-    <svg class="w-64 h-64 text-gray-400 fill-current mx-auto">
-      <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
-    </svg>
+    <svg class="w-64 h-64 text-gray-400 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     {% endif %}
     <div class="space-y-2 m-4">
       <div class="flex justify-between">
@@ -24,5 +22,5 @@
     </div>
   </a>
 </div>{% comment %}<!--{% if 'A' in object.product_type %} TODO machine learning recommendation model
-{ % if instance.recommended %}<span class="uppercase text-xs text-gray-700 hover:text-gray-900 inline-block ml-3">Recommended</span>{ % endif %}☯
+{ % if instance.recommended %}<span class="uppercase text-xs text-gray-700 hover:text-gray-900 inline-block ml-3">Recommended</span>{ % endif %}
 transform="rotate(180)" add gif instead of imgs or video % include 'shop/snippets/update-cart.html' with product=instance cart=cart %}-->{% endcomment %}

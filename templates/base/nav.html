@@ -1,48 +1,48 @@
 {% load i18n static %}
-<header :class="{ 'max-h-full': open === 'false' }" class="md:sticky top-0 z-40 bg-gray-a font-c-sans shadow-md">
-  <div @click.away="open = false" x-data="{ open: false }" class="cw text-lg md:flex items-center justify-between text-gray-300 my-2">
-    <div :class="{ 'pb-2': open == 'true' }" class="flex justify-between mx-auto md:pb-0 md:mx-0 px-1">
-      <button @click="open = !open" class="hover:text-white md:hidden cr p-1" type="button">
+<header id="navapp" class="md:sticky top-0 z-40 bg-gray-a font-c-sans shadow-md">
+  <div class="cw text-lg md:flex items-center justify-between text-gray-300 my-2">
+    <div class="flex justify-between mx-auto md:pb-0 md:mx-0 px-1">
+      <button @click="menu()" class="hover:text-white md:hidden cr p-1">
         <svg class="fill-current mx-auto w-4 h-4">
-          <use x-show="open" xlink:href="{% static 'img/svg-defs.svg' %}#o"></use>
-          <use x-show="!open" xlink:href="{% static 'img/svg-defs.svg' %}#x"></use>
+          <use v-if="open" xlink:href="{% static 'img/svg-defs.svg' %}#o"></use>
+          <use v-if="!open" xlink:href="{% static 'img/svg-defs.svg' %}#x"></use>
         </svg>
         <span hidden>{% trans 'Menu' %}</span>
       </button>
-      <a oncontextmenu="mark();" class="hover:text-white inline-flex items-center cr mx-auto px-1" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
+      <a oncontextmenu="mark()" class="hover:text-white inline-flex items-center cr mx-auto px-1" href="{{ home_url }}" id="{{ com }}" alt="{{ com }}">
         <svg class="fill-current w-32 h-10"><use xlink:href="{% static 'img/svg-defs.svg' %}#clavem"></use></svg>
         <span hidden>{{ com }}</span>
       </a>
       {% include 'base/snippets/brandredirect.html' with url=request.url brand_url=brand_url %}
     </div>
-    <nav x-show="!open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
+    <nav v-if="!open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
     {% if essays_url in request.path or edu_url in request.path %}
       <a href="{{ edu_url }}" class="ni{% if edu_url in request.path %} nisel{% endif %}">{% trans 'Learn' %}</a>
-    {% endif %}{#<!--data-tippy-content="{% trans 'Inspirations' %}" {% trans 'Writings' %}{% trans 'Offerings' %}-->#}
+    {% endif %}{#<!--data-tippy-content="{ % trans 'Inspirations' %}" { % trans 'Writings' %}{ % trans 'Offering' %}-->#}
       <a href="{{ essays_url }}" class="ni{% if essays_url in request.path %} nisel{% endif %}">
-        <svg class="hidden lg:inline-flex items-center fill-current w-5 h-5 mr-3 md:mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg>{% trans 'Read' %}
+        <svg class="w-5 h-5 fill-current hidden lg:inline-flex items-center mr-3 md:mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg>{% trans 'Read' %}
       </a>
       <a href="{{ shop_url }}" class="ni{% if shop_url in request.path %} nisel{% endif %}">{% trans 'Shop' %}</a>
-      {% if request.session.cart_items %}
-      <div id="navbarapp">
-      <a href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart" {% endif %}class="cartbtn{% if cart_url in request.path %} nisel{% endif %}">
-      <div class="relative inline-flex text-gray-300 hover:text-white items-center pt-1">
-        <span class="md:hidden mr-3 md:mr-0">{% trans 'Cart' %}</span>
-        <svg class="fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
-        <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart rounded-full w-4 h-4 inline-flex opacity-50 top-0 -right-2"></span>
-        <span class="absolute text-black text-sm bg-cart hover:bg-cart rounded-full w-4 h-4 top-0 -right-2 flex justify-center items-center">{{ request.session.cart_items }}</span>
-      </div></a>
-      </div>
+
+      {#<!--  % if request.session.cart_items %}{{ request.session.cart_items }}{% endif % -->#}
+      <a v-if="nrItems" href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart" {% endif %}class="cartbtn{% if cart_url in request.path %} nisel{% endif %}">
+        <div class="relative inline-flex text-gray-300 hover:text-white items-center pt-1">
+          <span class="md:hidden mr-3 md:mr-0">{% trans 'Cart' %}</span>
+          <svg class="w-5 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+          <span class="{% if not cart_url in request.path %}animate-ping {% endif %}absolute bg-cart rounded-full w-4 h-4 inline-flex opacity-50 top-0 -right-2"></span>
+          <span class="absolute text-black text-sm bg-cart hover:bg-cart rounded-full w-4 h-4 top-0 -right-2 flex justify-center items-center">[[ nrItems ]]</span>
+        </div>
+      </a>
       <div id="cart-tip" class="hidden">
       {% for p in cart.products.all %}
-        <p>{{ forloop.counter }}. {{ p.name_product }}</p>
+        <p>{{ forloop.counter }}. {{ p.name }}</p>
       {% endfor %}
       </div>
-      {% endif %}
+
       {% if not search_url in request.path %}
       <div class="overflow-hidden py-2 md:py-1 md:px-1 xl:px-0 my-1 md:my-0">
         <div class="block md:hidden xl:flex">{% include 'search/search-form.html' %}</div>
-        <a href="{{ search_url }}" class="searchbtn">
+        <a href="{{ search_url }}" class="serchbtn">
           <svg class="fill-current h-5 w-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#search"></use></svg><span hidden>{% trans 'Search' %}</span>
         </a>
       </div>
@@ -62,39 +62,28 @@
     </nav>
   </div>
 </header>
-{% comment %}<!--{% block js %}
+{% block js %}
 <script>
-  var navbarapp = new Vue({
-    el: '#navbarapp',
+  var navapp = new Vue({
+    el: '#navapp',
     delimiters: ['[[', ']]'],
     store: store,
     data () {
       return {
-        menuClass: false
+        open: false
       }
     },
     computed: {
-      numItems: function() {
-        return store.state.numItems
+      nrItems: function() {
+        return store.state.nrItems;
       }
     },
     methods: {
-      toggleMenu() {
-        console.log('toggleMenu');
-        this.menuClass = !this.menuClass;
+      menu() {
+        console.log('menu');
+        this.open = !this.open;
       }
     }
   })
 </script>
 {% endblock %}
-<svg class="ml-2 w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#out"></use></svg><svg class="w-4 h-4 text-gray-200 fill-current hidden xl:inline-block ml-2"> <use xlink:href="{% static 'img/svg-defs.svg' %}#signup"></use></svg>
-<script>
-  var pathname = window.location.pathname;
-  if (pathname.indexOf('/read/') > -1) {
-    document.getElementById('#edu').classList.remove('hidden')
-  }//edu.style.display = "block" else { edu.style.display = "none"}
-</script>
-title="Latin for key" <svg class="sm:mr-3 w-8 h-8 fill-current"><use xlink:href="{ % static 'img/svg-defs.svg' %}#clogo"></use><span x-show="!open" class="hidden sm:block">{ { com }}</span>
-<svg x-show="open" class="fill-current w-8 h-8"><use xlink:href="{ % static 'img/svg-defs.svg' %}#menu"></use></svg> class="fill-current w-4 h-4" <span style="font-size: .7rem;">Menu</span>{ % if request.path == edu_url %}nav-el nav-link dot{ % endif %} {% include 'base/snippets/brandredirect.html' with c=url brandurl=brand_url %}
-bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-500 from-brilliant-rose-500 to-danube-500 text-gradient bg-gradient-to-r 
-var c = document.getElementById("c").value;-->{% endcomment %}

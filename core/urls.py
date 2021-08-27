@@ -16,8 +16,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 # from .schema import schema $ graphene
 from accounts.views import LoginView, RegisterView
-from carts.views import cart_detail_api_view
-from carts.api import api_add_to_cart, api_remove_from_cart  # api_add_qty,
 from core.views import robots_txt
 from essays.sitemaps import EssaySitemap
 
@@ -42,16 +40,12 @@ urlpatterns = [
     path(_("contact/"), include("chat.urls", namespace="chat")),  # channels
     # separate CMS only authors can access , schema=schema graphene
     # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
-    path(_("read/"), include("essays.urls", namespace="read")),
-    # path("hitcount/", include("hitcount.urls", namespace="hitcount")),
+    path(_("read/"), include("essays.urls", namespace="read")),# path("hitcount/", include("hitcount.urls", namespace="hitcount")),
     path(_("learn/"), include("education.urls", namespace="learn")),
     path(_("team/"), include("team.urls", namespace="team")),
     path(_("shop/"), include("shop.urls", namespace="shop")),
     path(_("search/"), include("search.urls", namespace="search")),
-    path("api/add-to-cart/", api_add_to_cart, name="api-add-to-cart"),
-    path("api/remove-from-cart/", api_remove_from_cart, name="api-remove-from-cart"),
     path(_("cart/"), include("carts.urls", namespace="cart")),
-    path("api/cart/", cart_detail_api_view, name="api-cart"),  # YXBpL2NhcnQv/
     path(_("signup/"), RegisterView.as_view(), name="register"),
     path(_("login/"), LoginView.as_view(), name="login"),
     path(_("logout/"), LogoutView.as_view(), name="logout"),
@@ -67,14 +61,8 @@ urlpatterns = [
     path(_("accounts/"), include("accounts.passwords.urls")),  # templates/registration
     path(_("analytics/"), include("analytics.urls", namespace="analytics")),
     path(_("newsletter/"), include("newsletter.urls")),  # , namespace='newsletter'
-    path(
-        _("settings/email/"),
-        MarketingPreferenceUpdateView.as_view(),
-        name="email-marketing-pref",
-    ),
-    path(
-        "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"
-    ),
+    path(_("settings/email/"), MarketingPreferenceUpdateView.as_view(), name="email-marketing-pref",),
+    path("webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"),
     path("clvm/", include("shorturl.urls", namespace="clvm")),
     path(
         "sitemap.xml",
@@ -84,7 +72,6 @@ urlpatterns = [
     ),
     path("robots.txt", robots_txt),  # or create template/robots.txt
     # TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots-txt",
-
     # # DL model
     # # path('classify/', views.call_model.as_view()),
     # # path('note/', include('todolists.api.urls', namespace='note')),

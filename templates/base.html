@@ -52,10 +52,26 @@ request.path # /some/content/
   {% include 'base/snippets/meta.html' %}
   {% if not request.user.email %}{% include 'base/snippets/cookieconsent.html' %}{% endif %}{#<!-- user.cookie -->#}
   {% block css %}{% endblock %}
+  <script>
+    var store = new Vuex.Store({
+      state: {
+        nrItems: {{ request.session.cart_items }},
+        totalOrder: {{ cart.total }}
+      },
+      mutations: {
+        updateNrItems(state, qty) {
+          state.nrItems += qty;
+        },
+        changeTotal(state, newCost) {
+          state.totalOrder = parseFloat(state.totalOrder) + parseFloat(newCost);
+          state.totalOrder = parseFloat(state.totalOrder).toFixed(2)
+        }
+      }
+    })
+  </script>
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
-<body class="bg-primary cb">
-{#<!-- % analytical_body_top % {% block sidebar %}-->#}
+<body class="bg-primary cb">{#<!-- % analytical_body_top % {% block sidebar %}-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     {% include 'base/nav.html' %}
     <main class="mb-auto">
@@ -68,28 +84,10 @@ request.path # /some/content/
     <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
     </main>
     {% include 'base/footer.html' %}
+
   </div>
   {% include 'base/noscript.html' %}
   {% include 'base/js.html' %}
-  <script>
-    var store = new Vuex.Store({
-      state: {
-        nrItems: '{{ request.session.cart_items }}',//{{ cart.get_total_length }}
-        totalOrder: '{{ cart.total }}'
-      },
-      mutations: {
-        increment(state, qty) {
-          state.nrItems += qty;
-        },
-        changeTotal(state, newCost) {
-          state.totalOrder = parseFloat(state.totalOrder) + parseFloat(newCost);
-          state.totalOrder = parseFloat(state.totalOrder).toFixed(2)
-        }
-      }
-    });
-  </script>
-  {% include 'base/snippets/tippy.html' %}
-  {% include 'base/snippets/aos.html' %}
   {% block js %}{% endblock %}
 </body>
 </html>

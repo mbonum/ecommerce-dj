@@ -2,6 +2,13 @@
 {% tailwind_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/c-custom.min.css' %}" media="screen,projection">
 <link rel="stylesheet" type="text/css" href="{% static 'aos/aos.css' %}" media="screen,projection">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script>
+<script>
+  if (typeof Vue == 'undefined') {
+    document.write(unescape("%3Cscript src='{% static '/js/vue.min.js' %} type='application/javascript'%3E%3C/script%3E"));
+  }
+</script>
 <link rel="stylesheet" type="text/css" href="{% static 'modal-video/modal-video.min.css' %}" media="screen,projection">
 {% compress css %}
 <link rel="stylesheet" type="text/css" href="{% static 'cookieconsent/cookieconsent.min.css' %}" media="screen,projection">

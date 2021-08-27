@@ -154,7 +154,7 @@ $(document).ready(function () {
       cartBody = cartTable.find('.cart-body'),
       productRows = cartBody.find('.cart-product'),
       currentUrl = window.location.href,
-      refreshCartUrl = '/api/cart/',// cart_detail_api_view
+      refreshCartUrl = '/cart/api/',// cart/urls cart_detail_api_view
       refreshCartMethod = 'GET',
       data = {};
     $.ajax({

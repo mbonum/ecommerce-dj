@@ -15,7 +15,7 @@
   .nisel {@apply text-white font-semibold;}
   .cartbtn {@apply block hover:text-white overflow-hidden cr border-b border-gray-600 md:border-none py-3 md:py-0 md:pt-1 px-1 my-1 md:pr-3;}
   .upcart{@apply inline-flex items-center ybtn cr2 py-1 px-2;}
-  .searchbtn {@apply hidden md:block xl:hidden rounded-xl border-2 items-center overflow-hidden border-gray-400 hover:border-white hover:text-white cr py-1 pl-1 pr-2;}
+  .serchbtn {@apply hidden md:block xl:hidden rounded-xl border-2 items-center overflow-hidden border-gray-400 hover:border-white hover:text-white cr py-1 pl-1 pr-2;}
   .logbtn {@apply md:rounded-xl overflow-hidden hover:text-white cr px-1 md:py-1;}
   .usrbtn {@apply inline-flex border-2 border-gray-300 hover:border-white items-center hover:text-white overflow-hidden cr px-2 py-1;}
   .fbtn {@apply block un items-center overflow-hidden hover:text-black cr py-3 md:py-1 md:px-1;}
