@@ -220,7 +220,7 @@ class Product(models.Model):
                 f'<img src="{self.thumbnail.url}" style="width:60px; height:60px;">'
             )
         else:
-            return _("Please add an image")
+            return _("Image missing")
 
     img_tag.short_description = _("Image")
 
@@ -240,12 +240,12 @@ class Product(models.Model):
             else:
                 return ""
 
-    def make_thumbnail(self, image, size=(300, 200)):
+    def make_thumbnail(self, image, size=(256, 300)):
         img = Image.open(image)
         img.convert("RGB")
         img.thumbnail(size)
         thumb_io = BytesIO()
-        img.save(thumb_io, "PNG", optimize=True, quality=80)
+        img.save(thumb_io, "PNG", optimize=True, quality=99)
         thumbnail = File(thumb_io, name=image.name)
         return thumbnail
 

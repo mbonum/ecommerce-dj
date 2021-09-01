@@ -74,7 +74,7 @@
       {% include 'carts/snippets/checkbtn.html' %}
     </div>
   </div>
-  <div v-if="products.length === 0" class="text-center">
+  <div v-else class="text-center">
     <h1 class="h1 my-6">{% trans 'Your cart is empty' %}</h1>
     {% include 'base/snippets/sad.html' %}
   </div>
