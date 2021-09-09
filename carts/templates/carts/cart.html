@@ -125,8 +125,8 @@
           this.removeItem(productId);
         } else {
           store.commit('updateNrItems', -1);
-          store.commit('changeTotal', -parseFloat(price));
-          fetch('/cart/add-to-cart/', {
+          store.commit('updateTotal', -parseFloat(price));
+          fetch('/cart/update/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -160,8 +160,8 @@
                 'update': true
               };
               store.commit('updateNrItems', 1);
-              store.commit('changeTotal', parseFloat(price));
-              fetch('/cart/add-to-cart/', {
+              store.commit('updateTotal', parseFloat(price));
+              fetch('/cart/update/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -171,11 +171,12 @@
                 body: JSON.stringify(data)
               })
               .then((response) => {
+                // setTimeout(this.fetchHole, 1000); if added or removed too fast the total is updated faster than item_price
                 for (var i = 0; i < this.products.length; i++) {
                   var p = this.products[i];
                   if (p.id === productId && qty < qty_instock) {
                     p.quantity = parseInt(data.quantity);
-                    p.item_total = parseInt(p.quantity) * parseFloat(p.price);
+                    p.item_total = p.quantity * parseFloat(p.price);
                   }
                 }
               })
@@ -194,7 +195,7 @@
           'update': true
         };
         store.commit('updateNrItems', -parseInt(qty));
-        store.commit('changeTotal', -parseFloat(price));
+        store.commit('updateTotal', -parseFloat(price));
         fetch('/cart/remove-from-cart/', {
           method: 'POST',
           headers: {
@@ -204,12 +205,6 @@
           credentials: 'same-origin',
           body: JSON.stringify(data)
         })
-        // .then((result) => {
-        //   console.log(result)
-        //   if(result.error) {
-        //     throw result;
-        //   }
-        // })
         .then((response) => {
           this.products = this.products.filter(product => product.id !== productId);
         })
@@ -220,5 +215,4 @@
     }
   })
 </script>
-{% endblock %}
-{% comment %}<!--._. currency update total Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->{% endcomment %}
+{% endblock %}{% comment %}<!--._. currency update total Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->{% endcomment %}

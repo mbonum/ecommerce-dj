@@ -61,7 +61,11 @@ class Cart(models.Model):
 
     @property
     def get_item_total(self):
-        return sum(float(p['price']) * self.order_qty for p in self.products.all())
+        return sum(float(p.price) * self.order_qty for p in self.products.all())
+
+    @property
+    def nr_items(self):
+        return sum(int(p.order_qty) for p in self.products.all())
 
     # def calc_tot(self, save=False):
     #     if not self.products:

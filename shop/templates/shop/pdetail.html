@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="lg:w-1/5 text-right items-center space-y-6 m-auto">
-{% comment %}<!-- bor d bg-whit e rounded-x l shado w p- 4 xl:p- 6<div class="w-ful l justify-between inline-fle lg:bloc k xl:inline-fle x"> x-data="{ qty: '1' }" <div class="text-left inline-flex items-center">
+{% comment %}<!-- x-data="{ qty: '1' }" <div class="text-left inline-flex items-center">
   {% if object.is_digital %}
   <p>{% trans 'Digital' %}</p>
   {% else %}
@@ -46,20 +46,20 @@
       <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
     </div>
     <div class="inline-flex items-center">
-      <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-ajax"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
-        <input type="hidden" name="product_id" value="{{ product.id }}" {% if  product.is_digital %}data-is-digital="true"{% endif%}>
-        <span class="submit-span">
-        {% if object in cart.products.all %}
-          <a href="{{ cart_url }}" class="upcart">
+      <!-- <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-aja x"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> { % csrf_token %} -->
+        <!-- <input type="hidden" name="product_id" value="{{ object.id }}"{% if  product.is_digital %} data-is-digital="true"{% endif%}> -->
+        <!-- <span class="submit-span"> -->
+        <!-- { % if object in cart.products.all %} -->
+          <a v-if="added" href="{{ cart_url }}" class="upcart">
             <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
           </a>
-          {% else %}
-          <button type="submit" class="upcart">
-            <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Buy' %}
+          <!-- { % else %} -->
+          <button v-else @click="addItem({{ object.id }})" class="upcart">
+            <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Add to Cart' %}
           </button>
-        {% endif %}
-        </span>
-      </form>
+        <!-- { % endif %} -->
+        <!-- </span> -->
+      <!-- </form> -->
       {% comment %}<!-- { % if object in cart.products.all %}
       <a href="{{ cart_url }}" class="upcart">
         <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
@@ -82,28 +82,20 @@
     store: store,
     data () {
       return {
-        showMessage: false,
-        mainImage: '{{ object.img.url }}',
-        btn: {
-          text: 'Add to cart'
-        },
-        images: ['{{ imagesstring|safe }}']
+        added: false,
+        // showMessage: false,
+        // mainImage: '{{ object.img.url }}',
+        images: ['{{ imagesstring|safe }}']// add slideshow or just add one 360 slow gif.video
       }
     },
     methods: {
-      // changeMessage() {
-        
-      // },
-      changeMainImage(img) {
-        this.mainImage = img;
-      },
       addItem(productId) {
         var data = {
           'product_id': productId,
           'update': false,
-          'quantity': 1
+          'quantity': 1// add qty btn
         };
-        fetch('/cart/update/', {// /api/add-to-cart/
+        fetch('/cart/update/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -113,21 +105,23 @@
           body: JSON.stringify(data)
         })
         .then((response) => {
-          if(response) {
-            this.showMessage = true;
-            this.btn.text = 'In Cart';
-            store.commit('increment', 1);
-
-            setTimeout(() => {
-              this.showMessage = false}, 2000)
-          }
+          // this.showMessage = true;
+          // console.log("Added");
+          this.added = true;
+          store.commit('updateNrItems', 1);
+          // setTimeout(() => {this.showMessage = false}, 2000)
         })
         .catch(function (error) {
           console.log(error);
         })
       }
+      //, changeMessage() {
+      // },
+      // changeMainImage(img) {
+      //   this.mainImage = img;
+      // },
     }
-  })
+  });
   var opt = {
     fillContainer: true,
     offset: {vertical: 0, horizontal: 15}

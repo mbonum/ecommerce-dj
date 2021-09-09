@@ -53,15 +53,35 @@ request.path # /some/content/
   <title>{% block title %}{% endblock %} · {{ com }}</title>
   {% if not request.user.email %}{% include 'base/snippets/cookieconsent.html' %}{% endif %}{#<!-- user.cookie -->#}
   {% block css %}{% endblock %}
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-  <!-- <script>
-    if (typeof Vue == 'undefined') {
-      document.write(unescape("%3Cscript src='{% static '/js/vue.min.js' %} type='application/javascript'%3E%3C/script%3E"));
-    }
-  </script> -->
 </head>
 <body class="bg-primary cb">{#<!-- % analytical_body_top % {% block sidebar %}-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
+    <script src="https://unpkg.com/vuex@3.6.1/dist/vuex.js"></script>
+    <script>
+      var i = {{ cart.nr_items }},
+        t = {{ cart.total }};
+      if (i == null || i == "") {
+        i = 0;
+      }
+      if (t == null || t == "") {
+        t = 0.00;
+      }
+      var store = new Vuex.Store({
+        state: {
+          nrItems: i,
+          totalOrder: t
+        },
+        mutations: {
+          updateNrItems(state, qty) {
+            state.nrItems += qty;
+          },
+          updateTotal(state, newItem) {
+            state.totalOrder = parseFloat(state.totalOrder) + parseFloat(newItem);
+            state.totalOrder = parseFloat(state.totalOrder).toFixed(2)
+          }
+        }
+      })
+    </script>
     {% include 'base/nav.html' %}
     <main class="mb-auto">
       {% block media %}{% endblock %}
@@ -81,7 +101,7 @@ request.path # /some/content/
 </html>
 {% endautoescape %}
 {% endspaceless %}
-{% endwith %}{% comment %}<!--https://vuejs.org/v2/guide/installation.html<img srcset="img-480w.jpg 480w, img-800w.jpg 800w" sizes="(max-width: 600px) 480px, 800px"src="elva-fairy-800w.jpg" elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x" alt="Elva dressed as a fairy"> https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
+{% endwith %}{% comment %}<!--<img srcset="img-480w.jpg 480w, img-800w.jpg 800w" sizes="(max-width: 600px) 480px, 800px"src="elva-fairy-800w.jpg" elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x" alt="Elva dressed as a fairy"> https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
  % if cart_url in request.path %}oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"{ % endif %}% analytical_head_bottom % ondblclick="focusMode(document.documentElement);" ondblclick="exitFullscreen();"
 { % cache 600 footer %}{ % endcache %}{ % analytical_body_bottom %}Hey, we're still opening up but anyone can join with an invite from an existing user! setTimeout(function() { location.href="https://www.duckduckgo.com/"; }, 500); GDPR-banner <div x-data="{ show: !localStorage.getItem('hide-banner') }"><div x-show="show"><button @click="localStorage.setItem('hide-banner', true); show = false">close</button></div></div>
 <script>export default { data() { return { theme: 'light', }}</script>

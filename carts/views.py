@@ -1,9 +1,9 @@
-# import json
+import json
 import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from accounts.forms import LoginForm, RegisterForm
 from addresses.forms import AddressForm
 from addresses.models import Address
@@ -20,47 +20,54 @@ STRIPE_PUB_KEY = getattr(
 stripe.api_key = getattr(settings, "STRIPE_SECRET_KEY", None)
 
 
-def cart_detail_api_view(request):
-    cart, new_obj = Cart.objects.new_or_get(request)
-    if cart.user:
-        currency = cart.user.currency
-    else:
-        currency = "EUR"
-    products = [
-        {"id": x.id, "url": x.get_absolute_url(), "name": x.name, "price": x.price}
-        for x in cart.products.all()
-    ]
-    # if shipping add subtotal + shipment cost
-    cart_data = {
-        "products": products,
-        "currency": currency,
-        "subtotal": cart.subtotal,
-        "total": cart.total,
-    }
-    return JsonResponse(cart_data)
+# def cart_detail_api_view(request):
+#     cart, new_obj = Cart.objects.new_or_get(request)
+#     if cart.user:
+#         currency = cart.user.currency
+#     else:
+#         currency = "EUR"
+#     products = [
+#         {"id": x.id, "url": x.get_absolute_url(), "name": x.name, "price": x.price}
+#         for x in cart.products.all()
+#     ]
+#     # if shipping add subtotal + shipment cost
+#     cart_data = {
+#         "products": products,
+#         "currency": currency,
+#         "subtotal": cart.subtotal,
+#         "total": cart.total
+#     }
+#     return JsonResponse(cart_data)
 
 
 def cart_home(request):
     cart, new_obj = Cart.objects.new_or_get(request)
-    products = ""
-    for i in cart.products.all():
-        p = "{'id': '%s', 'name': '%s', 'price': '%s', 'quantity': '%s', 'qty_instock': '%s', 'item_total': '%s', 'img': '%s', 'url': '%s'}," % (i.id, i.name, i.price, i.order_qty, i.qty_instock, i.total_item, i.get_thumbnail(), i.get_absolute_url())#f'{{"id": "{i.id}", "name": "{i.name}", "price": "{i.price}", "quantity": "{i.qty_instock}", "url": "{i.get_absolute_url()}", "img": "{i.thumbnail.url}"}},}}'
-        products += p
-    context = {"cart": cart, "products": products}
+    items = ""
+    for p in cart.products.all():
+        i = "{'id': '%s', 'name': '%s', 'price': '%s', 'quantity': '%s', 'qty_instock': '%s', 'item_total': '%s', 'img': '%s', 'url': '%s'}," % (p.id, p.name, p.price, p.order_qty, p.qty_instock, p.total_item, p.get_thumbnail(), p.get_absolute_url())
+        items += i
+    context = {"cart": cart, "products": items}
     return render(request, "carts/cart.html", context)
 
 
-def cart_update(request):#def api_add_to_cart(request):
-    product_id = request.POST.get("product_id")  # update-cart.html
-    product = None
+def cart_update(request):
+    data = json.loads(request.body)
+    product_id = data['product_id']#request.POST.get("product_id")  # update-cart.html
+    update = data['update']
+    quantity = data['quantity']
+
+    # product = get_object_or_404(Product, pk=product_id)
+
+    # product = None
     if product_id is not None:
+        product = get_object_or_404(Product, id=product_id, active=True)
         # try:
-        product = Product.objects.get(id=product_id)
-        #from django.core.exceptions import ObjectDoesNotExist try: except ObjectDoesNotExist: messages.error(request, "No product")return redirect("")#raise
+        #     product = Product.objects.get(id=product_id)
         # except Product.DoesNotExist:
-        messages.info(request, _(
-            "Sorry, the product is not available now. Contact us to know when the product will be available."
-        ))
+        #     messages.info(request, _(
+        #         "Sorry, the product is not available now. Contact us to know when the product will be available."
+        #     ))
+    else:
         return redirect("shop:list")#cart:home
 
         # product_qty = int(request.POST.get("productqty")) or None input hidden
@@ -68,8 +75,12 @@ def cart_update(request):#def api_add_to_cart(request):
         #     product_qty = 1
         # print("### ", product_qty)
         cart, new_obj = Cart.objects.new_or_get(request)
-        if product in cart.products.all():
-            cart.products.remove(product)
+        # if not update:
+        #     cart.add(product=product, quantity=1, update_quantity=False)
+        # else:
+        #     cart.add(product=product, quantity=quantity, update_quantity=True)
+        if p in cart.products.all():
+            # cart.products.remove(p)
             added = False
         else:
             cart.products.add(product)
@@ -80,7 +91,7 @@ def cart_update(request):#def api_add_to_cart(request):
         if request.is_ajax():  # Asynchronous js & XML/JSON
             json_data = {
                 "added": added,
-                "removed": not added,
+                # "removed": not added,'success': True
                 "cartItemCount": cart.products.count(),
             }
             return JsonResponse(json_data, status=200)
@@ -173,4 +184,6 @@ def checkout_home(request):
 
 
 def checkout_done_view(request):
+    # cart = Cart.objects.get(request)#new_or_get
+    # cart.clear()
     return render(request, "carts/checkout-done.html", {})
