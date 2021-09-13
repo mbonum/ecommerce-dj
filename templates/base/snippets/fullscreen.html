@@ -1,6 +1,6 @@
 <script>
   var p = window.location.pathname;
-  if (p.indexOf('/read/') > -1 || p.indexOf('/learn/') > -1 || p.indexOf('/privacy/') > -1 || p.indexOf('/terms/') > -1 || p.indexOf('/cookie/') > -1) {
+  if (p.indexOf('{{ essays_url }}') > -1 || p.indexOf('{{ edu_url }}') > -1 || p.indexOf('{{ privacy_url }}') > -1 || p.indexOf('{{ terms_url }}') > -1 || p.indexOf('{{ cookie_url }}') > -1) {
     function focusMode(e) {
       if (e.requestFullscreen) {
         e.requestFullscreen();
@@ -12,18 +12,25 @@
         e.msRequestFullscreen();
       }
     }
-    function exitFullscreen() {
-      if (document.exitFullscreen) {
+    function exitFocusMode() {
+      if (document.fullscreenElement) {
         document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
+      } else if (document.fullscreenElement) {
         document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
+      } else if (document.fullscreenElement) {
         document.webkitExitFullscreen();
       }
     }
   }
 </script>
-{% comment %}<!--document.addEventListener('keydown', element.requestFullscreen()); document.fullscreen //$("a").css("pointer-events","none");
+{% comment %}<!--fullscreen() {
+  if (document.fullscreenElement === null) {
+    this._fullscreen.openFullscreen();
+  } else {
+    this._fullscreen.closeFullscreen();
+  }
+}
+  document.addEventListener('keydown', element.requestFullscreen()); document.fullscreen //$("a").css("pointer-events","none");
 // $('a').contents().unwrap();GetStyleClass('a').pointerEvents = "none"//$('a')//.style.pointerEvents = "none"
 //$('a').replaceWith(function() { return $(this).contents();})
 //location+=''; $('a').classList.remove('disabled') $('a').className += " enabled"//.classList.add('enabled')

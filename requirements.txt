@@ -131,15 +131,15 @@ block-disposable-email==2.0.0 \
     # via
     #   -r requirements.in
     #   django-disposable-email-checker
-boto3==1.18.38 \
-    --hash=sha256:0d576a1b1288825a8ecac62e4eec0c4f6679c117e05575e7e0f66eb2f010450d \
-    --hash=sha256:a7d831c65e0216ca5f1b06dbb6d8441e8f3926a7a535677bd257fed481cd2f7a
+boto3==1.18.40 \
+    --hash=sha256:5c4ba83223465e25b4e0262b286c306920dde8fe0634566f8251b609125ab837 \
+    --hash=sha256:f04a2d07b2c25135f302a40819be02ef74599829fab0f16126da4f2ff7df91f9
     # via
     #   -r requirements.in
     #   kappa
-botocore==1.21.38 \
-    --hash=sha256:5171b7db1c3346dd687ac0a195f69538c05ee0c2c26510de2019d0a0949297bf \
-    --hash=sha256:beefe7dee5020e1f7cda84685131533324742529d8a5686ce959047e1b3e3928
+botocore==1.21.40 \
+    --hash=sha256:95efb127e9149f7a6b12b116cb1e65c11e36bf6d588ac877b2b51a3c9bbcf22a \
+    --hash=sha256:b31aa5060d54097b519a62ced4b8a69439ceecccc65cac089130cb5bae810b83
     # via
     #   -r requirements.in
     #   boto3
@@ -1591,9 +1591,9 @@ sqlalchemy==1.4.23 \
     # via
     #   -r requirements.in
     #   django-postgrespool2
-sqlparse==0.4.1 \
-    --hash=sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0 \
-    --hash=sha256:0f91fd2e829c44362cbcfab3e9ae12e22badaa8a29ad5ff599f9ec109f0454e8
+sqlparse==0.4.2 \
+    --hash=sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae \
+    --hash=sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d
     # via
     #   -r requirements.in
     #   django

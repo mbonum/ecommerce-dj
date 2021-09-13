@@ -2,7 +2,7 @@
 {% spaceless %}
 {% if obj.summary %}
 <div class="m-4">
-  <details class="space-y-1" open>
+  <details class="space-y-1 cursor-pointer" open>
     <summary class="h2txt">{% trans 'Summary' %}</summary>
     <p>{{ obj.summary|safe }}</p>
   </details>

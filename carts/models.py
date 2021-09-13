@@ -90,7 +90,7 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
         total = 0
         for p in products:
             # if p.quantity:
-            total += p.price * instance.order_qty
+            total += p.price * p.order_qty# instance is cart
             # else:
             # total += p.price
         instance.subtotal = total

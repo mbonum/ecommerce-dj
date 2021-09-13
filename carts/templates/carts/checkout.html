@@ -65,11 +65,11 @@
     <div class="space-y-1 py-6">
       <p><b>Product{% if object.cart.products.all|length > 1 %}s{% endif %}</b>:
         {% for p in object.cart.products.all %}
-        <a href="{{ p.get_absolute_url }}" class="bt">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+        <a href="{{ p.get_absolute_url }}" class="bt" target="_blank" rel="noopener">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
       </p>
       <p><b>{% trans 'Billing Address' %}</b>: {{ object.billing_address.get_address }}</p>
       <p><b>{% trans 'Payment Method' %}</b>: {{ billing_profile.default_card }}**
-        (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" class="bt">{% trans 'Update' %}</a>)
+        <a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" class="bt" target="_blank" rel="noopener">{% trans 'Update Card' %}</a>
       </p>
       {% if shipping_address_required %}
       <p><b>{% trans 'Shipping Address' %}</b>: {{ object.shipping_address.get_address }}</p>

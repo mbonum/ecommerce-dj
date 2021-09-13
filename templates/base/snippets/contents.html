@@ -2,7 +2,7 @@
 {% if obj.section_set.count > 1 %}
 <div class="text-lg border border-gray-400 rounded-xl shadow px-4 py-2 mb-4">
 <details class="space-y-1">
-  <summary class="h2txt inline-flex items-center">
+  <summary class="h2txt flex items-center cursor-pointer">
     <svg class="w-5 h-5 fill-current mr-2" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#content"></use></svg>
     {% trans 'Contents' %}</summary>
   <ul class="list-inside">

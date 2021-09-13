@@ -93,7 +93,7 @@ class ProductDownloadView(View):
         # product_obj.get_downloads().filter(pk=_pk)
         downloads_qs = ProductFile.objects.filter(pk=pk, product__slug=slug)
         if downloads_qs.count() != 1:
-            raise Http404(_("Apologies, product not found."))
+            raise Http404(_("Apologies, product not found. Contact us if you bought the item."))
         download_obj = downloads_qs.first()
         can_download = False
         user_ready = True

@@ -55,7 +55,7 @@ def cart_update(request):
     product_id = data['product_id']#request.POST.get("product_id")  # update-cart.html
     update = data['update']
     quantity = data['quantity']
-
+    print(product_id)
     # product = get_object_or_404(Product, pk=product_id)
 
     # product = None
@@ -70,31 +70,33 @@ def cart_update(request):
     else:
         return redirect("shop:list")#cart:home
 
-        # product_qty = int(request.POST.get("productqty")) or None input hidden
-        # if product_qty is None:
-        #     product_qty = 1
-        # print("### ", product_qty)
-        cart, new_obj = Cart.objects.new_or_get(request)
-        # if not update:
-        #     cart.add(product=product, quantity=1, update_quantity=False)
-        # else:
-        #     cart.add(product=product, quantity=quantity, update_quantity=True)
-        if p in cart.products.all():
-            # cart.products.remove(p)
-            added = False
-        else:
-            cart.products.add(product)
-            added = True
-        cart.save()
-        request.session["cart_items"] = cart.products.count()
-        # return redirect(product.get_absolute_url())
-        if request.is_ajax():  # Asynchronous js & XML/JSON
-            json_data = {
-                "added": added,
-                # "removed": not added,'success': True
-                "cartItemCount": cart.products.count(),
-            }
-            return JsonResponse(json_data, status=200)
+    # product_qty = int(request.POST.get("productqty")) or None input hidden
+    # if product_qty is None:
+    #     product_qty = 1
+    # print("### ", product_qty)
+
+    cart, new_obj = Cart.objects.new_or_get(request)
+    # if not update:
+    #     cart.add(product=product, quantity=1, update_quantity=False)
+    # else:
+    #     cart.add(product=product, quantity=quantity, update_quantity=True)
+    if product in cart.products.all():
+        # cart.products.remove(p)
+        added = False
+    else:
+        cart.products.add(product)
+        added = True
+    cart.save()
+    request.session["cart_items"] = cart.products.count()
+    # return redirect(product.get_absolute_url())
+    if request.is_ajax():  # Asynchronous js & XML/JSON
+        json_data = {
+            "added": added,
+            # "removed": not added,
+            # "success": True
+            "cartItemCount": cart.products.count(),
+        }
+        return JsonResponse(json_data, status=200)
     # return JsonResponse({"message": "Error 400"}, status=400) # Django Rest Framework
     return redirect("shop:list")#cart:home
 

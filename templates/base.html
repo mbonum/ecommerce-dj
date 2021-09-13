@@ -54,17 +54,17 @@ request.path # /some/content/
   {% if not request.user.email %}{% include 'base/snippets/cookieconsent.html' %}{% endif %}{#<!-- user.cookie -->#}
   {% block css %}{% endblock %}
 </head>
-<body class="bg-primary cb">{#<!-- % analytical_body_top % {% block sidebar %}-->#}
+<body class="bg-primary cb">{#<!--% analytical_body_top %-->#}
   <div id="nojs" class="flex-col w-screen h-screen">
     <script src="https://unpkg.com/vuex@3.6.1/dist/vuex.js"></script>
     <script>
-      var i = {{ cart.nr_items }},
-        t = {{ cart.total }};
-      if (i == null || i == "") {
-        i = 0;
-      }
-      if (t == null || t == "") {
+      var i = 0,
         t = 0.00;
+      if ('{{ request.session.cart_items }}') {
+        i = parseInt('{{ request.session.cart_items }}');
+      }
+      if ('{{ cart.total }}') {
+        t = parseFloat('{{ cart.total }}').toFixed(2);
       }
       var store = new Vuex.Store({
         state: {

@@ -18,14 +18,14 @@
     <nav v-if="!open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="overflow-hidden items-center block md:flex md:space-x-4 px-1">
     {% if essays_url in request.path or edu_url in request.path %}
       <a href="{{ edu_url }}" class="ni{% if edu_url in request.path %} nisel{% endif %}">{% trans 'Learn' %}</a>
-    {% endif %}{#<!--data-tippy-content="{ % trans 'Inspirations' %}" { % trans 'Writings' %}{ % trans 'Offering' %}-->#}
+    {% endif %}{#<!-- v-if="incart" data-tippy-content="{ % trans 'Inspirations' %}" { % trans 'Writings' %}{ % trans 'Offering' %}-->#}
       <a href="{{ essays_url }}" class="ni{% if essays_url in request.path %} nisel{% endif %}">
         <svg class="w-5 h-5 fill-current hidden lg:inline-flex items-center mr-3 md:mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#read"></use></svg>{% trans 'Read' %}
       </a>
       <a href="{{ shop_url }}" class="ni{% if shop_url in request.path %} nisel{% endif %}">{% trans 'Shop' %}</a>
 
-      {#<!--  % if request.session.cart_items %}{{ request.session.cart_items }}{% endif % -->#}
-      <a v-if="nrItems" href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart" {% endif %}class="cartbtn{% if cart_url in request.path %} nisel{% endif %}">
+      {% if request.session.cart_items %}
+      <a v-if="nrItems > 0" href="{{ cart_url }}" {% if not cart_url in request.path and cart.products %}id="cart" {% endif %}class="cartbtn{% if cart_url in request.path %} nisel{% endif %}">
         <div class="relative inline-flex text-gray-300 hover:text-white items-center pt-1">
           <span class="md:hidden mr-3 md:mr-0">{% trans 'Cart' %}</span>
           <svg class="w-5 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
@@ -38,7 +38,7 @@
         <p>{{ forloop.counter }}. {{ p.name }}</p>
       {% endfor %}
       </div>
-
+{% endif %}
       {% if not search_url in request.path %}
       <div class="overflow-hidden py-2 md:py-1 md:px-1 xl:px-0 my-1 md:my-0">
         <div class="block md:hidden xl:flex">{% include 'search/search-form.html' %}</div>
@@ -70,12 +70,17 @@
     store: store,
     data () {
       return {
-        open: false
+        open: false,
+        incart: false
       }
     },
     computed: {
       nrItems: function() {
-        return store.state.nrItems;
+        i = store.state.nrItems;
+        if (i > 0 || i != null || i != '') {
+          incart = true;
+        }
+        return i;
       }
     },
     methods: {
