@@ -41,35 +41,34 @@
     {% endfor %}
   </select>
   {% endif %}
-</div> <p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>{ % include 'shop/snippets/update-cart.html' with product=object cart=cart %} justify-between {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}-->{% endcomment %}
+</div><p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>{ % include 'shop/snippets/update-cart.html' with product=object cart=cart %} justify-between {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}-->{% endcomment %}
     <div class="mr-1">
       <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
     </div>
     <div class="inline-flex items-center">
-      <!-- <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-aja x"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> { % csrf_token %} -->
-        <!-- <input type="hidden" name="product_id" value="{{ object.id }}"{% if  product.is_digital %} data-is-digital="true"{% endif%}> -->
-        <!-- <span class="submit-span"> -->
-        <!-- { % if object in cart.products.all %} -->
-          <a v-if="added" href="{{ cart_url }}" class="upcart">
-            <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
-          </a>
-          <!-- { % else %} -->
-          <button v-else @click="addItem({{ object.id }})" class="upcart">
-            <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Add to Cart' %}
-          </button>
-        <!-- { % endif %} -->
-        <!-- </span> -->
-      <!-- </form> -->
-      {% comment %}<!-- { % if object in cart.products.all %}
-      <a href="{{ cart_url }}" class="upcart">
+{% comment %}<!-- <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-aja x"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> { % csrf_token %}
+<input type="hidden" name="product_id" value="{{ object.id }}"{% if  product.is_digital %} data-is-digital="true"{% endif%}>
+<span class="submit-span">
+{ % if object in cart.products.all %}-->{% endcomment %}
+      <a v-if="added" href="{{ cart_url }}" class="upcart">
         <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
       </a>
-      {% else %}
-      <button @click="addItem({{ object.id }})" class="upcart">
-        <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
-        [[ btn.text ]]
+      <button v-else @click="addItem({{ object.id }})" class="upcart">
+        <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Add to Cart' %}
       </button>
-      {% endif %} -->{% endcomment %}
+{% comment %}<!-- { % endif %}
+</span>
+</form>
+{ % if object in cart.products.all %}
+<a href="{{ cart_url }}" class="upcart">
+<svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
+</a>
+{% else %}
+<button @click="addItem({{ object.id }})" class="upcart">
+<svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+[[ btn.text ]]
+</button>
+{% endif %} -->{% endcomment %}
     </div>
   </div>
 </div>
@@ -83,7 +82,6 @@
     data () {
       return {
         added: false,
-        // showMessage: false,
         // mainImage: '{{ object.img.url }}',
         images: ['{{ imagesstring|safe }}']// add slideshow or just add one 360 slow gif.video
       }
@@ -93,7 +91,7 @@
         var data = {
           'product_id': productId,
           'update': false,
-          'quantity': 1// add qty btn
+          'quantity': 1
         };
         fetch('/cart/update/', {
           method: 'POST',
@@ -105,8 +103,6 @@
           body: JSON.stringify(data)
         })
         .then((response) => {
-          // this.showMessage = true;
-          // console.log("Added");
           this.added = true;
           store.commit('updateNrItems', 1);
           // setTimeout(() => {this.showMessage = false}, 2000)
@@ -115,11 +111,6 @@
           console.log(error);
         })
       }
-      //, changeMessage() {
-      // },
-      // changeMainImage(img) {
-      //   this.mainImage = img;
-      // },
     }
   });
   var opt = {

@@ -553,7 +553,7 @@ TINYMCE_DEFAULT_CONFIG = {
 
 # django-cors-headers https://django-csp.readthedocs.io/en/latest/configuration.html
 CORS_ALLOWED_ORIGINS = ["https://js.stripe.com", "https://polyfill.io"]
-# CORS_ALLOWED_ORIGIN_REGEXES = [
+#, "https://commerce.coinbase.com" CORS_ALLOWED_ORIGIN_REGEXES = [
 #     #r"^https://\w+\.stripe\.com$",
 # ]
 SECURE_BROWSER_XSS_FILTER = True

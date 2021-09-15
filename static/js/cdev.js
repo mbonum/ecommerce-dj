@@ -60,12 +60,12 @@ $(document).ready(function () {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(performSearch, typingInterval);
   })
-  searchInput.keydown(function(e) {// key pressed xml:space="preserve"
+  searchInput.keydown(function(e) {// key pressed xml:space="preserve"<svg class="w-5 h-5 hover:text-black fill-current animate-spin" viewBox="0 0 80 80"><path d="M40,72C22.4,72,8,57.6,8,40C8,22.4, 22.4,8,40,8c17.6,0,32,14.4,32,32c0,1.1-0.9,2-2,2 s-2-0.9-2-2c0-15.4-12.6-28-28-28S12,24.6,12,40s12.6, 28,28,28c1.1,0,2,0.9,2,2S41.1,72,40,72z"/></svg>
     clearTimeout(typingTimer);
   })
   function displaySearching() {
     searchBtn.addClass('disabled');
-    searchBtn.html('<svg class="w-5 h-5 hover:text-black fill-current animate-spin" viewBox="0 0 80 80"><path d="M40,72C22.4,72,8,57.6,8,40C8,22.4, 22.4,8,40,8c17.6,0,32,14.4,32,32c0,1.1-0.9,2-2,2 s-2-0.9-2-2c0-15.4-12.6-28-28-28S12,24.6,12,40s12.6, 28,28,28c1.1,0,2,0.9,2,2S41.1,72,40,72z"/></svg>');
+    searchBtn.html('<div style="border-top-color:transparent" class="border-solid animate-spin rounded-full border-gray-500 border-2 h-5 w-5"></div>');
   }
   function performSearch() {
     displaySearching();
