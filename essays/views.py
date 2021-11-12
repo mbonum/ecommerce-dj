@@ -1,24 +1,24 @@
 # from urllib.parse import quote_plus
 # from datetime import datetime
 # # from io import BytesIO
+# from bs4 import BeautifulSoup
 import filecmp
 import os
 from pathlib import Path
-
-from bs4 import BeautifulSoup
 from core.utils import render_to_pdf
 from django.conf import settings
+from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import HttpResponse, HttpResponseRedirect  # JsonResponse Http404
-from django.shortcuts import get_object_or_404, render  # redirect
-from django.urls.base import reverse  # reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls.base import reverse
 from django.utils.translation import gettext as _
 from django.views.generic import View
 from gtts import gTTS
+from .models import Author, Essay
 from notes.forms import NoteForm
 from notes.models import Note
-
-from .models import Author, Essay
+from notes.forms import NoteForm
 
 # CreateViewDetailView, ListView, RedirectView
 # from django.contrib.auth import get_user
@@ -31,7 +31,6 @@ from .models import Author, Essay
 # from rest_framework.response import Response
 # from analytics.mixins import ObjectViewedMixin
 # from django.core.files.base import ContentFile
-from notes.forms import NoteForm
 
 
 def index(request):
@@ -43,12 +42,20 @@ def index(request):
     return render(request, "essays/wlist.html", context)
 
 
-def details(request, slug: str):
+def detail(request, slug: str):
     """
     Show essay
     generate audio
     """
-    essay = get_object_or_404(Essay, slug=slug, publish=True)
+    try:
+        essay = Essay.objects.get(slug=slug, publish=True)
+    except Essay.DoesNotExist:
+        messages.info(
+            request,
+            _(
+                "Sorry, the text is private for now. Contact us to know when the product will be published."
+            ),
+        )
     p = f"media/essays/{slug}/"
     # str(settings.MEDIA_ROOT) + f"/{slug}/" essay_media_path
     os.makedirs(p, exist_ok=True)
@@ -91,7 +98,9 @@ def details(request, slug: str):
     else:
         note_form = NoteForm()
 
-    all_notes = essay.notes.filter(active=True).order_by("created_at")
+    all_notes = essay.notes.filter(active=True).order_by("created")
+
+    # Show slider if the notes are more than 3
     paginator = Paginator(all_notes, 3)
     page = request.GET.get("page", 1)
     try:
@@ -118,30 +127,32 @@ def details(request, slug: str):
 
 
 def like_view(request, slug: str, pk: int):
-    # Add like
-    post = get_object_or_404(Note, id=pk)  # request.POST.get['post_id']
+    # Add Bravo (clap) button
+    post = get_object_or_404(Note, id=pk)
     post.like.add(request.user)
     return HttpResponseRedirect(reverse("read:detail", args=[str(slug)]))
 
 
 class GenerateEssayPDF(View):
+    # Read Essay's fields in the database and generate pdf
     def get(self, request, *args, **kwargs):
         if request.user.email:
             if request.user.first_name:
                 n = request.user.first_name
             else:
                 e = request.user.email
-                n = e[: e.index("@")]  # slice out username
+                # Remove email domain
+                n = e[: e.index("@")]
         else:
             n = request.user
         # email = input("what is your email address? ").strip()
         # slice out the domain name
         # domain = email[email.index("@")+1:]
-        # email = f'Your username is {user} and your domain name is {domain}'
+        # email = f"Your username is {user} and your domain name is {domain}""
 
         slug = kwargs.get("slug")
         # pk = kwargs.get("pk")# edit urls.py and wtxt.html PDF
-        essay = Essay.objects.get(slug=slug)  # id=pk
+        essay = Essay.objects.get(slug=slug)
         e = ""
         # s = ""
         for s in essay.section_set.all():
@@ -181,7 +192,7 @@ class GenerateEssayPDF(View):
 
 
 def author_view(request, slug: str):
-    # Open independent author's bio page
+    # Link to the author's bio
     author = Author.objects.get(slug=slug)
     context = {
         "member": author,

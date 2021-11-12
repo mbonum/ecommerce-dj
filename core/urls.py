@@ -1,4 +1,7 @@
 # import debug_toolbar
+from ariadne.contrib.django.views import (
+    GraphQLView,
+)  # from graphene_django.views import GraphQLView
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -11,13 +14,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import RedirectView, TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
-# # from filebrowser.sites import site
-# from graphene_django.views import GraphQLView
-
-# from .schema import schema $ graphene
+# from filebrowser.sites import site
+from .schema import schema
 from accounts.views import LoginView, RegisterView
 from core.views import robots_txt
-from essays.sitemaps import EssaySitemap
+from .sitemaps import StaticViewSitemap, BookSitemap, CategorySitemap, EssaySitemap, ProductSitemap, TeamSitemap
 
 # from essays.admin import essays_admin # add separate CMS for authors
 
@@ -29,8 +30,15 @@ from orders.views import GenerateOrderPDF, LibraryView
 
 
 sitemaps = {
-    "essays": EssaySitemap,  # static
+    "static": StaticViewSitemap,
+    "book": BookSitemap,
+    "essay": EssaySitemap,
+    "category": CategorySitemap,
+    "product": ProductSitemap,
+    "team": TeamSitemap,
 }
+
+from .schema import schema
 
 urlpatterns = [
     # https://pypi.org/project/drfpasswordless/
@@ -40,7 +48,9 @@ urlpatterns = [
     path(_("contact/"), include("chat.urls", namespace="chat")),  # channels
     # separate CMS only authors can access , schema=schema graphene
     # path(_('write/bmltZGEtbWdiLTI1Cg'), essays_admin.urls),
-    path(_("read/"), include("essays.urls", namespace="read")),# path("hitcount/", include("hitcount.urls", namespace="hitcount")),
+    path(
+        _("read/"), include("essays.urls", namespace="read")
+    ),  # path("hitcount/", include("hitcount.urls", namespace="hitcount")),
     path(_("learn/"), include("education.urls", namespace="learn")),
     path(_("team/"), include("team.urls", namespace="team")),
     path(_("shop/"), include("shop.urls", namespace="shop")),
@@ -61,8 +71,14 @@ urlpatterns = [
     path(_("accounts/"), include("accounts.passwords.urls")),  # templates/registration
     path(_("analytics/"), include("analytics.urls", namespace="analytics")),
     path(_("newsletter/"), include("newsletter.urls")),  # , namespace='newsletter'
-    path(_("settings/email/"), MarketingPreferenceUpdateView.as_view(), name="email-marketing-pref",),
-    path("webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"),
+    path(
+        _("settings/email/"),
+        MarketingPreferenceUpdateView.as_view(),
+        name="email-marketing-pref",
+    ),
+    path(
+        "webhooks/mailchimp/", MailchimpWebhookView.as_view(), name="webhooks-mailchimp"
+    ),
     path("clvm/", include("shorturl.urls", namespace="clvm")),
     path(
         "sitemap.xml",
@@ -84,6 +100,7 @@ urlpatterns = [
     # # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
     path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
+    path("graphql/", GraphQLView.as_view(schema=schema), name="graphql"),
 ]
 
 # urlpatterns += i18n_patterns()

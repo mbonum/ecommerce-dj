@@ -1,18 +1,21 @@
 {% extends 'newsletter/common.html' %}
-{% load i18n %}
+{% load i18n widget_tweaks %}
 {% block title %}{% trans 'Newsletter subscribe' %}{% endblock %}
 {% block body %}
 <div>
-  <h1 class="text-xl font-semibold text-center mb-3">{{ newsletter.title }}</h1>
+  <h1 class="h1 text-center">{{ newsletter.title }}</h1>
   {% if error %}
   <p>{% trans "Due to a technical error we were not able to submit your confirmation email. The team has been notified and will update you as soon as humanly possible. Thank you" %}</p>
-  <p>{% trans "If the error persists, please don't hesitate to contact us at:" %} <a class="un" href="mailto:support@clavem.co" target="_blank" rel="noopener">support@clavem.co</a></p>
+  <p>{% trans "If the error persists, please don't hesitate to contact us at:" %} <a class="cr2 text-blue-600 hover:text-blue-700 hover:underline" href="mailto:support@clavem.co" target="_blank" rel="noopener">support@clavem.co</a></p>
   <p class="text-center">{% trans 'Thank you' %}</p>
   {% else %}
-  <form enctype="multipart/form-data" class="text-center" method="post" action="."> {% csrf_token %}
-    {{ form.as_p }}
-    <p class="mt-4"><input class="border-4 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-lg focus:outline-none py-1 px-2" id="id_submit" name="submit" value="{% trans 'Subscribe' %}" type="submit"></p>
+  <form enctype="multipart/form-data" class="text-center space-y-5" method="post" action="."> {% csrf_token %}
+    {{ form }}
+    <div class="inline-flex">
+      <input class="cbtn text-xl" id="id_submit" name="submit" value="{% trans 'Subscribe' %}" type="submit">
+    </div>
   </form>
   {% endif %}
 </div>
 {% endblock %}
+{#<!-- venv/lib -->#}

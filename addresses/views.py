@@ -17,7 +17,7 @@ def checkout_address_create_view(request):
     next_post = request.POST.get("next", None)
     redirect_path = next_ or next_post or None
 
-    # logger.debug(f'Check redirect {next}.')
+    # logger.debug(f"Check redirect {next}")
 
     if form.is_valid():
         instance = form.save(commit=False)
@@ -27,8 +27,8 @@ def checkout_address_create_view(request):
         if billing_profile is not None:
             address_type = request.POST.get(
                 "address_type", "billing"
-            )  # digital default # shipping
-            instance.billing_profile = billing_profile or "billing"  #
+            )
+            instance.billing_profile = billing_profile or "billing"
             instance.address_type = address_type
             instance.save()
             request.session[address_type + "_address_id"] = instance.id
@@ -47,10 +47,7 @@ def checkout_address_reuse_view(request):
         if request.method == "POST":
             shipping_address = request.POST.get("shipping_address", None)
             address_type = request.POST.get("address_type", "shipping")
-            (
-                billing_profile,
-                billing_profile_created,
-            ) = BillingProfile.objects.new_or_get(request)
+            billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
             if shipping_address is not None:
                 qs = Address.objects.filter(
                     billing_profile=billing_profile, id=shipping_address
@@ -78,7 +75,6 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
     success_url = "/addresses/"
 
     def get_queryset(self):
-        print("**", self.request)
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(
             self.request
         )

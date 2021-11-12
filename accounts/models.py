@@ -137,8 +137,7 @@ class CUser(AbstractBaseUser, PermissionsMixin):
     )  # default=timezone.now
     currency = models.CharField(max_length=3, choices=CURRENCIES, default="$")
     # CurrencyType.choices, default=CurrencyType.EUR
-    # confirm = models.BooleanField(default=False)blank=True, null=True,
-    # confirmed_date = models.DateTimeField(auto_now_add=False)
+    # registered_at = models.DateTimeField(auto_now_add=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name"]  # , "last_name"
@@ -215,8 +214,8 @@ class EmailActivationQuerySet(models.query.QuerySet):
         # activated = False
         # forced_expired = False
         return self.filter(activated=False, forced_expired=False).filter(
-            timestamp__gt=start_range,  # greater
-            timestamp__lte=end_range,  # less or equal
+            created__gt=start_range,  # greater
+            created__lte=end_range,  # less or equal
         )
 
 
@@ -245,8 +244,8 @@ class EmailActivation(models.Model):
     activated = models.BooleanField(default=False)
     forced_expired = models.BooleanField(default=False)
     expires = models.IntegerField(default=7)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     objects = EmailActivationManager()
 

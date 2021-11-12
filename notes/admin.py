@@ -18,8 +18,8 @@ from .models import Note
 
 # @admin.register(models.Essay)
 # class NoteAdmin(admin.ModelAdmin):
-#     list_display = ['user', 'body', 'created_at',]
+#     list_display = ['user', 'body', 'created',]
 #     form = NoteModelForm
-#     list_filter = ['created_at']
+#     list_filter = ['created']
 
 admin.site.register(Note, MPTTModelAdmin)

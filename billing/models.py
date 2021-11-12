@@ -7,13 +7,11 @@ from django.utils.translation import gettext_lazy as _
 
 USER = settings.AUTH_USER_MODEL
 
-# STRIPE_SECRET_KEY = getattr(
-#     settings, "STRIPE_SECRET_KEY", None
+STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", None)
+# STRIPE_PUB_KEY = getattr(
+#     settings, "STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
 # )
-# # STRIPE_PUB_KEY = getattr(
-# #     settings, "STRIPE_PUB_KEY", "pk_test_8PXFWtkSVafJL52j4wfAqP2T00v1Ffpqcr"
-# # )
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 class BillingProfileManager(models.Manager):
@@ -33,11 +31,12 @@ class BillingProfileManager(models.Manager):
 
 class BillingProfile(models.Model):
     user = models.OneToOneField(USER, null=True, blank=True, on_delete=models.CASCADE)
-    email = models.EmailField()  # it's already in user
+    # Email is redundant. It's already in user
+    email = models.EmailField()
     active = models.BooleanField(default=True)
     update = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
-    customer_id = models.CharField(max_length=120, null=True, blank=True)  # in Stripe
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
+    customer_id = models.CharField(max_length=120, null=True, blank=True)
 
     def __str__(self):
         return self.email
@@ -120,7 +119,7 @@ class Card(models.Model):
     last4 = models.CharField(max_length=4, null=True, blank=True)
     default = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
 
     objects = CardManager()
 

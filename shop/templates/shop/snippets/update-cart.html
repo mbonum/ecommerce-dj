@@ -1,20 +1,19 @@
 {% load i18n static %}
-{% spaceless %}
 <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-ajax"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> {% csrf_token %}
-  <input type="hidden" name="product_id" value="{{ product.id }}" {% if  product.is_digital %}data-is-digital="true"{% endif%}>
+  <input type="hidden" name="product_id" value="{{ product.id }}"{% if product.is_digital %} data-is-digital="true"{% endif%}>
   <span class="submit-span">
   {% if product in cart.products.all %}
     <a href="{{ cart_url }}" class="upcart">
-      <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
+      <svg class="w-5 h-5 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
     </a>
     {% else %}
     <button type="submit" class="upcart">
-      <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Buy' %}
+      <svg class="w-5 h-5 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Buy' %}
     </button>
   {% endif %}
   </span>
 </form>
-{% endspaceless %}{% comment %}<!-- id="buybtn"{% if in_cart %}
+{% comment %}<!-- id="buybtn"{% if in_cart %}
 <button type="submit" class="flex text-gray-500 hover:text-red-500 rounded-full focus:outline-none cr2" data-tippy-content="{% trans 'Remove' %}">
   <svg class="fill-current w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
   <span hidden>{% trans 'Remove' %}</span>

@@ -2,13 +2,13 @@
 {% tailwind_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/c-custom.min.css' %}" media="screen,projection">
 <link rel="stylesheet" type="text/css" href="{% static 'aos/aos.css' %}" media="screen,projection">
-<link rel="stylesheet" type="text/css" href="{% static 'modal-video/modal-video.min.css' %}" media="screen,projection">
 {% compress css %}
 <link rel="stylesheet" type="text/css" href="{% static 'cookieconsent/cookieconsent.min.css' %}" media="screen,projection">
 <link rel="stylesheet" type="text/css" href="{% static 'css/stripe-custom-style.css' %}" media="screen,projection">
 <link rel="stylesheet" type="text/css" href="{% static 'jq-confirm/jquery-confirm.min.css' %}" media="screen,projection">
 {% endcompress %}
-{% comment %}<!--<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="screen,projection">
+{% comment %}<!--<link rel="stylesheet" type="text/css" href="{% static 'modal-video/modal-video.min.css' %}" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="screen,projection">
 { % url 'analytics:sales-analytics' as sales %}
 {% if sales in request.path %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">

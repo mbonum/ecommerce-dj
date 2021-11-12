@@ -223,7 +223,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
 class RegisterForm(forms.ModelForm):
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         widget=forms.EmailInput(
             attrs={
                 "id": "id_email",
@@ -246,7 +246,9 @@ class RegisterForm(forms.ModelForm):
         ),
         help_text=password_validation.password_validators_help_text_html(),
     )  # 'data-toggle': 'password,'
-    captcha = CaptchaField(widget=CustomCaptchaTextInput)
+    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
+                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
+            }))
     # Removed to smooth UX
     # password2 = forms.CharField(label='', strip=False, widget=forms.PasswordInput(
     #     attrs={'placeholder': 'Confirm Password'
@@ -324,7 +326,9 @@ class LoginForm(forms.Form):
         ),
         help_text=password_validation.password_validators_help_text_html(),
     )  # 'data-toggle': 'password'
-    captcha = CaptchaField(widget=CustomCaptchaTextInput)
+    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
+                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
+            }))
     # ReCaptchaField(label='', widget=ReCaptchaV3)
 
     def __init__(self, request, *args, **kwargs):

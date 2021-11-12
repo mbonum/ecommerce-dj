@@ -2,20 +2,19 @@
 {% load i18n static %}
 {% block title %}{% trans 'Checkout' %}{% endblock %}
 {% block content %}
-<div class="font-c-sans md:max-w-lg mx-auto">
-  {% if not billing_profile %}
-  <div class="md:flex justify-between text-xl text-center m-auto mt-12">
-    <div>
-      <h1 class="h1 mb-2">{% trans 'Have an account?' %}</h1>
-      <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="bg-white border-4 border-yellow-400 hover:border-yellow-500 overflow-hidden cr2 py-2 px-3">{% trans 'Log In' %}</a>
+<div class="font-c-sans md:max-w-xl mx-auto">
+{% if not billing_profile %}
+  <div class="text-xl text-center items-center justify-between space-y-8 md:space-y-0 md:flex h-screen">
+    <div class="space-y-3 md:pb-64">
+      <h1 class="h1">{% trans 'Have an account?' %}</h1>
+      <a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="block bg-white border-4 border-yellow-400 hover:border-yellow-500 hover:bg-gray-100 overflow-hidden rounded-full cr2 px-3 py-2">{% trans 'Log In' %}</a>
     </div>
-
-    <div class="bordt sm:border-none pt-4 sm:pt-0 mt-6 sm:mt-0">
-      <h1 class="h1 mb-2">{% trans 'First time?' %}</h1>
-      <a href="{{ register_url }}?next={{ request.get_full_path|urlencode }}" class="bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 overflow-hidden cr2 py-2 px-3">{% trans 'Sign Vp' %}</a>
+    <div class="space-y-3 bordt md:border-none pt-6 md:pt-0 md:pb-64">
+      <h1 class="h1">{% trans 'Need new account?' %}</h1>
+      <a href="{{ register_url }}?next={{ request.get_full_path|urlencode }}" class="block cbtn rounded-full px-3 py-2">{% trans 'Sign Vp' %}</a>
     </div>
   </div>
-  {% else %}
+{% else %}
 
   {% if not object.shipping_address and shipping_address_required %}
   <div class="text-center bordb mb-4{% if not address_qs %} wxs{% endif %}">
@@ -58,45 +57,82 @@
   {% endif %}
   {% else %}
   {% if has_card %}
-  <div class="wxs">
+  <div class="space-y-6 md:wxs">
     <div class="bordb text-center">
       <h1 class="h1">{% trans 'Review' %}</h1>
     </div>
-    <div class="space-y-1 py-6">
-      <p><b>Product{% if object.cart.products.all|length > 1 %}s{% endif %}</b>:
-        {% for p in object.cart.products.all %}
-        <a href="{{ p.get_absolute_url }}" class="bt" target="_blank" rel="noopener">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
-      </p>
-      <p><b>{% trans 'Billing Address' %}</b>: {{ object.billing_address.get_address }}</p>
-      <p><b>{% trans 'Payment Method' %}</b>: {{ billing_profile.default_card }}**
-        <a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" class="bt" target="_blank" rel="noopener">{% trans 'Update Card' %}</a>
-      </p>
-      {% if shipping_address_required %}
-      <p><b>{% trans 'Shipping Address' %}</b>: {{ object.shipping_address.get_address }}</p>
-      <p><b>{% trans 'Shipping Total' %}</b>: {% include 'base/snippets/currency.html' %}{{ object.shipping_total }}</p>
-      <p><b>{% trans 'Cart Total' %}</b>: {% include 'base/snippets/currency.html' %}{{ object.cart.total }}</p>
-      {% endif %}
-      <p><b>{% trans 'Order Total' %}</b>: {% include 'base/snippets/currency.html' %}{{ object.total }}</p>
+    <div class="space-y-1">
+      <p class="ml-1"><b>{% trans 'Cart' %}</b>:</p>{#<!--Product{% if object.cart.products.all|length > 1 %}s{% endif %}-->#}
+      {% for p in object.cart.products.all %}
+      <a href="{{ p.get_absolute_url }}" class="bt flex items-center space-x-3 pb-2 -ml-1" target="_blank" rel="noopener">
+        <img src="{{ p.thumbnail.url }}" alt="{{ p.name }}" class="w-20 h-20 rounded">
+        <p class="hover:underline">{{ p.name }}</p>
+        <p class="text-black">{% trans 'Quantity' %}: {{ p.order_qty }}</p>
+      </a>
+      {% endfor %}
+      <div class="ml-1">
+        <div><b>{% trans 'Billing Address' %}</b>: 
+          <div class="inline-flex">{{ object.billing_address.get_address|linebreaks }}</div>
+        </div>
+        <div class="space-x-2">
+          <b>{% trans 'Payment Card' %}</b>: 
+          <div class="inline-flex">
+            <p>{{ billing_profile.default_card }}**<br>
+              <a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" class="cr2 text-blue-600 hover:text-blue-700 hover:underline" target="_blank" rel="noopener">{% trans 'Change Card' %}</a>
+            </p>
+          </div>
+        </div>
+        {% if shipping_address_required %}
+        <div><b>{% trans 'Shipping Address' %}</b>: 
+          <div class="inline-flex">{{ object.shipping_address.get_address|linebreaks }}</div>
+        </div>
+        {% endif %}
+        <table class="text-right">
+          <tbody>
+            {% if shipping_address_required %}
+            <tr>
+              <th class="text-left">{% trans 'Shipping Total' %}:</th>
+              <td>{% include 'base/snippets/currency.html' %}{{ object.shipping_total }}</td>
+            </tr>
+            <tr>
+              <th class="text-left">{% trans 'Cart Total' %}:</th>
+              <td>{% include 'base/snippets/currency.html' %}{{ object.cart.total }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <th class="text-left">{% trans 'Order Total' %}:</th>
+              <td><span class="text-2xl ml-2">{% include 'base/snippets/currency.html' %}{{ object.total }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <form method="post" class="text-center text-lg"> {% csrf_token %}
-      <button type="submit" class="cbtn">
-        <span class="inline-flex items-center">
-          <svg class="w-4 h-4 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
-          {% trans 'Complete' %}
-        </span>
-      </button>
-    </form>
-  </div>
+      <div>
+      <form method="post" class="text-center text-xl"> {% csrf_token %}
+        <button type="submit" class="cbtn">
+          <span class="inline-flex items-center">
+            <svg class="w-5 h-5 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
+            {% trans 'Complete' %}
+          </span>
+        </button>
+      </form>
+      </div>
+    </div>
   {% else %}
   {% include 'billing/payment-method.html' with publish_key=publish_key next_url=request.build_absolute_uri %}
   {% endif %}
   {% endif %}
-  {% endif %}
+{% endif %}
 </div>
 {% endblock %}{% comment %}<!--action="" { { billing_url }} include 'accounts/register.html' %}
+<div><b>{% trans 'Shipping Total' %}</b>: {% include 'base/snippets/currency.html' %}{{ object.shipping_total }}
+</div>
+<div><b>{% trans 'Cart Total' %}</b>: {% include 'base/snippets/currency.html' %}{{ object.cart.total }}</div>
+{% endif %}
+<div><b>{% trans 'Order Total' %}</b>: <span class="bg-white border-2 border-yellow-300 rounded-xl px-2 py-1 ml-1">{% include 'base/snippets/currency.html' %}{{ object.total }}</span></div>
 <p>Continue as Guest</p>{ % url "guest_register" as guest_register_url form=guest_form action_url=guest_register_url %}
 <a class="inline-block rounded bg-yellow-300 hover:bg-yellow-400 border-b-4 border-yellow-400 hover:border-yellow-300 p-2 pb-1" href="{{ register_url }}">Sign Up</a>
 <a class="inline-block text-center mx-auto rounded bg-yellow-400 hover:bg-yellow-300 border-b-4 border-yellow-300 hover:border-yellow-400 p-2 pb-1" href="{{ login_url }}">Enter</a>
 { % include 'accounts/snippets/form.html' with form=register_form next_url=request.build_absolute_uri action_url=register_url %}
 { % include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
-?next={ { cart_url }} check_done bug { % include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri % uppercase border-2 bg-yellow-400 border-yellow-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-white rounded text-sm py-1 px-2 -->{% endcomment %}
+?next={ { cart_url }} check_done bug { % include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri -->{% endcomment %}

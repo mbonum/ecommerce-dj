@@ -1,0 +1,82 @@
+{% load i18n static %}
+{% now 'Y' as current_year %}
+{% url 'home:home' as home_url %}
+{% with com='Clavem' %}
+{% comment %}<!--https://www.w3.org/Style/Examples/007/units.en.html#units |date:'Y-m-d' size: landscape letter or width x height 150mm 50mm--> {% endcomment %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  {% include 'base/snippets/meta.html' %}
+  <title>{{ com }} PDF: {% if title %}{{ title }}{% else %}{% trans 'Untitled' %}{% endif %}</title>
+  <style type="text/css" media="print">
+    @page {
+      margin: 1.8cm 2cm;
+      size: a4;
+    }
+    .document {
+      font-family: "Gotham", "Lora", "Times", serif;
+      font-size: 1.3em;
+      color: #000;
+      font-weight: normal;
+      font-style: normal;
+    }
+    .header {
+      border-top: 0.16em solid #E1CAAF;/*3px*/
+      text-align: center;
+      font-size: 1.8em;/*18pt*/
+      padding-top: .8em;/*20px*/
+      /* padding-bottom: 1.2em; */
+    }
+    .info {
+      padding-bottom: .5em;
+      margin-bottom: 1.5em;
+      text-align: center;
+      border-bottom: 0.14em solid #ECDDCC;/*2px*/
+    }
+    h2 {
+      padding-bottom: -1.2em;
+    }
+    .text {
+      padding: 0em;
+      text-align: left;
+      font-stretch: semi-condensed;
+      font-size: 1em;/*12pt*/
+      text-align: justify;
+      hyphens: auto;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hyphens: auto;
+      text-justify: distribute;
+      -ms-text-justify: distribute;
+      -moz-text-justify: distribute;
+      -webkit-text-justify: distribute;
+    }
+    a.cr {
+      text-decoration: none;
+    }
+    .cr {
+      color: #000;
+      position: absolute;
+      bottom: 0;
+      padding-top: 2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="document">
+    <svg viewBox="0 0 132 132"><path d="M66.143 132.3L58.323 122 23.105 99.16 5.943 18.874-.002 8.078l18.69 95.796z" opacity=".56"/><path d="M-.002 8.074l5.945 10.797L39.347 42.51 58.32 122l7.821 10.297-18.986-94.714z"/><path d="M66.143 132.3L73.964 122l35.217-22.842 17.163-80.285 5.946-10.796-18.691 95.796z" opacity=".56"/><path d="M132.29 8.081l-5.945 10.797-33.407 23.638-18.973 79.488-7.82 10.298L85.13 37.587zM66.143.01a15.875 15.874 0 00-15.875 15.875 15.875 15.874 0 0015.875 15.873 15.875 15.874 0 0015.875-15.873A15.875 15.874 0 0066.143.01zm0 6.614a9.26 9.26 0 019.26 9.26 9.26 9.26 0 01-9.26 9.26 9.26 9.26 0 01-9.26-9.26 9.26 9.26 0 019.26-9.26z"/></svg>
+    {% if image %}<img alt="image" width="200" height="150" src="{{ image }}" alt="{{ title }} image">{% endif %}
+    <div class="header">
+      <h2>{{ title }}</h2>
+    </div>
+    <p class="info">by {{ author }} · Effective date: {{ date }}</p>
+    <div class="text">
+      {{ text|safe }}
+    </div>
+    <div class="cr">
+      <small>© {{ current_year }} <a class="cr" href="{{ home_url }}">{{ com }}</a>. All rights reserved.</small>
+    </div>
+  </div>
+</body>
+</html>
+{% endwith %}

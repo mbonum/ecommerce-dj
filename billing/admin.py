@@ -19,7 +19,7 @@ class CardAdmin(admin.ModelAdmin):
         "last4",
         "default",
         "active",
-        "created_at",
+        "created",
     )
     list_filter = ("active",)
 

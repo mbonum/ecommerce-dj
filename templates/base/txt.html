@@ -79,7 +79,7 @@
           {% endif %}
           <div>{{ s.text|safe }}</div>
           {% endfor %}
-{#<!-- Terms -->#}
+        {#<!-- Terms -->#}
         {% elif object.tsection_set %}
           {% for s in object.tsection_set.all %}
           {% if not forloop.first %}
@@ -107,7 +107,7 @@
       {% endif %}
       {% if request.user.email and essays_url in request.path %}
       <div class="btntxt">
-        <a href="{% url 'essays:pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none px-2 py-1" target="_blank" rel="noopener">
+        <a href="{% url 'read:pdf' slug=object.slug %}" class="flex items-center rounded-lg focus:outline-none px-2 py-1" target="_blank" rel="noopener">
         <svg class="fill-current w-4 h-4 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use></svg> PDF
         </a>
       </div>
@@ -134,21 +134,21 @@
   { % endif %} @click.away="open = false" x-data="{ open: false }"-->{% endcomment %}
   {% if notes.all %}
   <div id="noteapp">
-    <div class="text-center text-lg font-c-sans my-4">
+    <div class="font-c-sans text-center text-lg my-4">
       <button @click="show()" class="border-2 border-yellow-300 shadow rounded-full cr2 px-3 py-1" type="button">
         <p v-if="!open" class="inline-flex items-center space-x-2">
-          <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
           <span>{% blocktranslate %}Show {{ com }} Community Contributions{% endblocktranslate %}</span>
+          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
         </p>
         <p v-if="open" class="inline-flex items-center space-x-2">
-          <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
           <span>{% trans 'Hide' %}</span>
+          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
         </p>
       </button>
     </div>
-    <div v-if="open" class="text-lg font-c-sans bordt my-5">
-      <div class="text-center text-xl my-4">
-        <h1>{{ com }} {% trans 'Community Contributions' %}</h1>
+    <div v-if="open" class="bordt font-c-sans text-lg my-5">
+      <div class="text-center text-xl mt-4">
+        <h1 class="h1">{{ com }} {% trans 'Community Contributions' %}</h1>
       </div>
       {% recursetree notes %}
       <div id="{{ node.id }}" class="bord rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
@@ -167,10 +167,10 @@
           {% endif %}
           </span>
           <span class="sep">·</span>
-          <span>20{{ node.created_at|date:'Y-m-d' }}</span>
+          <span>20{{ node.created|date:'Y-m-d' }}</span>
           <form method="post" action="{% url 'read:like' object.slug node.id %}"> {% csrf_token %}
             <button class="font-c-sans inline-flex items-center cr2 px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
-              <svg class="fill-current hover:text-yellow-500 h-5 w-5 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
+              <svg class="w-5 h-5 fill-current hover:text-yellow-500 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
             </button>
           </form>
           {% if node.level < 2 %}
@@ -227,7 +227,7 @@
   {% else %}
   <div class="font-c-sans text-center">
     <p>{% trans 'Eager to share your thoughts?' %}</p>
-    <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="un font-semibold cr2 px-2 py-1">{% trans 'Log in' %}</a> or <a href="{{ register_url }}" class="regbtn">{% trans 'Sign Vp' %}</a></p>
+    <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="un font-semibold cr2 px-2 py-1">{% trans 'Log in' %}</a> or <a href="{{ register_url }}?next={{ request.get_full_path|urlencode }}" class="regbtn">{% trans 'Sign Vp' %}</a></p>
   </div>
   {% endif %}
   {% endif %}
@@ -274,7 +274,7 @@ function replyBtn(id) {
   }
   var e = document.getElementById(id);
   e.insertAdjacentHTML('afterend', 
-   '<div class="font-c-sans ml-10 mb-6 mr-1">\
+    '<div class="font-c-sans ml-10 mb-6 mr-1">\
       <label for="id_reply" hidden>{% trans "Reply" %}</label>\
       <form id="id_note_reply" method="post"> {% csrf_token %}\
         <div class="text-right">\

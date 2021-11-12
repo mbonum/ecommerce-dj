@@ -1,8 +1,36 @@
 from .base import *
 
+DEBUG = config("DEBUG", default=False, cast=bool)
+
+try:
+    SECRET_KEY = config("SECRET_KEY")
+except KeyError:
+    raise ImproperlyConfigured("SECRET_KEY environment variable is missing!")
+
+ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
+
 # ALLOWED_HOSTS += [
 #     'subdomain.localhost',# add subdomains in hosts.py and on porkbun
 # ]
+
+# /home/mgb/.local/share/virtualenvs/a1-dVYVCYMC/lib/python3.9/site-packages/newsletter/ model
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    # "django.core.mail.backends.filebased.EmailBackend"
+    # EMAIL_FILE_PATH = BASE_DIR / "emails"
+else:
+    EMAIL_BACKEND = config(
+        "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+    )
+
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")  # protonmail
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="support@clavem.co")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)  # 1025
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+# EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=True, cast=bool)
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # (,) #support@clavem.co ENV_NAME + ' <support@' + BASE_URL + '>'# Customer Care
+
 
 INSTALLED_APPS += [
     "home",
@@ -21,7 +49,8 @@ INSTALLED_APPS += [
     "billing",
     "orders",
     "analytics",
-    "shorturl",# "graphene_django",
+    "shorturl",
+    "ariadne.contrib.django",# "graphene_django",
 ]
 
 AUTH_USER_MODEL = "accounts.CUser"
@@ -168,25 +197,6 @@ SECURE_HSTS_PRELOAD = False
 # Requires Authentication: Yes
 # Port for SSL: 465
 # Port for TLS/STARTTLS: 587
-
-# /home/mgb/.local/share/virtualenvs/a1-dVYVCYMC/lib/python3.9/site-packages/newsletter/ model
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-    # "django.core.mail.backends.filebased.EmailBackend"
-    # EMAIL_FILE_PATH = BASE_DIR / "emails"
-else:
-    EMAIL_BACKEND = config(
-        "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
-    )
-
-EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")  # protonmail
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="support@clavem.co")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)  # 1025
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
-# EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=True, cast=bool)
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # (,) #support@clavem.co ENV_NAME + ' <support@' + BASE_URL + '>'# Customer Care
-
 
 # CELERY_BROKER_URL = "amqp://localhost"  # URI from Heroku redis app
 # # CELERY_TIMEZONE = "Australia/Tasmania"

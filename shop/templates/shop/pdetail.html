@@ -1,78 +1,169 @@
 {% extends 'base.html' %}
-{% load i18n static %}
+{% load i18n mptt_tags static %}
 {% block title %}{% trans 'Buy' %} {{ object.name }}{% endblock %}
 {% comment %}<!--<source src="{{ object.video.url }}" type="video/ogg"> Fallback if the browser doesn't support video tagmuted width="560" height="315"{ % for img in object.img.all %}
 { % if img.is_feature %}<img src="{{ img.url }}" alt="{{ img.alt_text }}">
 {% endif %}{% endfor %} x-bind:value="{{ q }}"-->{% endcomment %}
 {% block content %}
-<div id="productapp" class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-6">
-  <div class="lg:w-2/5">
-    {% if object.video %}
-    <video loading="lazy" class="rounded-lg bord shadow" controls>
-      <source src="{{ object.video.url }}" type="video/mp4">
-      <embed src="{flash_swf_file}.swf" type="application/x-shockwave-flash"></embed>
-    </video>
-    {% elif object.video_link %}
-    <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-    {% elif object.img %}
-    <div id="pic" class="hidden lg:block">
-      <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="bord rounded-xl shadow mx-auto">
+<div id="productapp" class="space-y-8">
+  <div class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-6 m-auto">
+    <div class="lg:w-2/5">
+      {% if object.video %}
+      <video loading="lazy" class="rounded-lg bord shadow" controls>
+        <source src="{{ object.video.url }}" type="video/mp4">{#<!--<embed src="{flash_swf_file}.swf" type="application/x-shockwave-flash"></embed>-->#}
+      </video>
+      {% elif object.video_link %}
+      <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      {% elif object.img %}
+      <div id="pic" class="hidden lg:block">
+        <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="bord rounded-xl shadow mx-auto">
+      </div>
+      <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="block lg:hidden bord rounded-xl shadow mx-auto">
+      {% else %}
+      <svg class="text-gray-400 fill-current lg:w-28 lg:h-28 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+      {% endif %}
     </div>
-    <img loading="lazy" src="{{ object.img.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="block lg:hidden bord rounded-xl shadow mx-auto">
+    <div class="lg:w-2/5">
+      <h1 class="text-2xl">{{ object.name }}</h1>
+      <div class="list-inside mt-2">
+        {{ object.text|safe|linebreaks }}
+      </div>
+    </div>
+    <div class="lg:w-1/5 space-y-6">
+  {% comment %}<!-- x-data="{ qty: '1' }" <div class="text-left inline-flex items-center">
+    {% if object.is_digital %}
+    <p>{% trans 'Digital' %}</p>
     {% else %}
-    <svg class="text-gray-400 fill-current lg:w-28 lg:h-28 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
+    <select id="id_qty" @change="qty = $event.target.value" name="qty">
+      {% for q in object.rangeqty %}
+      <option value="{{ q }}">{{ q }}</option>
+      {% endfor %}
+    </select>
     {% endif %}
-  </div>
-  <div class="lg:w-2/5 w-full">
-    <h1 class="text-2xl">{{ object.name }}</h1>
-    <div class="list-inside mt-2">
-      {{ object.text|safe|linebreaks }}
-    </div>
-  </div>
-  <div class="lg:w-1/5 text-right items-center space-y-6 m-auto">
-{% comment %}<!-- x-data="{ qty: '1' }" <div class="text-left inline-flex items-center">
-  {% if object.is_digital %}
-  <p>{% trans 'Digital' %}</p>
-  {% else %}
-  <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
-  <select id="id_qty" @change="qty = $event.target.value" name="qty">
-    {% for q in object.rangeqty %}
-    <option value="{{ q }}">{{ q }}</option>
-    {% endfor %}
-  </select>
-  {% endif %}
-</div><p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>{ % include 'shop/snippets/update-cart.html' with product=object cart=cart %} justify-between {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}-->{% endcomment %}
-    <div class="mr-1">
-      <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
-    </div>
-    <div class="inline-flex items-center">
-{% comment %}<!-- <form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-aja x"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> { % csrf_token %}
-<input type="hidden" name="product_id" value="{{ object.id }}"{% if  product.is_digital %} data-is-digital="true"{% endif%}>
-<span class="submit-span">
-{ % if object in cart.products.all %}-->{% endcomment %}
-      <a v-if="added" href="{{ cart_url }}" class="upcart">
-        <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
+  </div><p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>{ % include 'shop/snippets/update-cart.html' with product=object cart=cart %} justify-between {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}<div v-if="p.digital === 'False'" class="space-x-2">
+        <span>{% trans 'Quantity' %}</span>
+        <div class="inline-flex items-center text-center space-x-2 bg-white bord rounded-xl shadow p-4">
+          <button id="removeBtn" v-if="p.quantity < 2" @click="remove(p.id, p.item_total)" class="qtybtn" data-tippy-content="{% trans 'Remove' %}">
+            <svg class="rembtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
+          </button>
+          <button id="lessQty" v-if="p.quantity > 1" @click="decreaseQty(p.id, p.quantity, p.qty_instock, p.price)" class="qtybtn">
+            <svg class="rembtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+          </button>
+          <span>[[ p.quantity ]]</span>
+          <button id="moreQty" v-if="p.quantity < p.qty_instock" @click="addQty(p.id, p.quantity, p.qty_instock, p.price)" class="qtybtn">
+            <svg class="addbtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+          </button>
+          <span v-if="p.quantity >= p.qty_instock" class="text-sm">
+            {% trans 'Max' %}
+          </span>
+        </div>
+      </div>-->{% endcomment %}
+      <div class="text-xl ml-1">
+        <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
+      </div>
+  {% comment %}<!--<div class=""><form method="post" action="{{ update_cart_url }}" data-endpoint="{{ update_cart_url }}" enctype="multipart/form-data" class="form-product-aja x"{% if request.user.is_authenticated %} data-user="abc"{% endif %}> { % csrf_token %}
+  <input type="hidden" name="product_id" value="{{ object.id }}"{% if  product.is_digital %} data-is-digital="true"{% endif%}>
+  <span class="submit-span">
+  { % if object in cart.products.all %}-->{% endcomment %}
+      <a v-if="added" href="{{ cart_url }}" class="upcart block rounded-full">
+        <div class="inline-flex items-center space-x-2">
+          <span>{% trans 'In Cart' %}</span>
+          <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+        </div>
       </a>
-      <button v-else @click="addItem({{ object.id }})" class="upcart">
-        <svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'Add to Cart' %}
+      <button v-else @click="addItem(p.id, p.quantity, p.price)" class="upcart rounded-full">
+        <div class="inline-flex items-center space-x-2">
+          <span>{% trans 'Add to Cart' %}</span>
+          <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+        </div>
       </button>
-{% comment %}<!-- { % endif %}
-</span>
-</form>
-{ % if object in cart.products.all %}
-<a href="{{ cart_url }}" class="upcart">
-<svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}
-</a>
-{% else %}
-<button @click="addItem({{ object.id }})" class="upcart">
-<svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
-[[ btn.text ]]
-</button>
-{% endif %} -->{% endcomment %}
+      <a href="{{ shop_url }}" class="block bg-white border-4 border-yellow-400 text-center hover:border-yellow-500 overflow-hidden cr2 rounded-full px-2 py-1">
+        {% trans 'Continue shopping' %}
+      </a>
     </div>
   </div>
+  {% if request.user.email and reviews %}
+  <div>
+    <div class="font-c-sans text-center text-lg my-4">
+      <button @click="show()" class="bg-white border-2 border-yellow-300 shadow rounded-full cr2 px-3 py-1" type="button">
+        <p v-if="!open" class="inline-flex items-center space-x-2">
+          <span>{% trans 'Show Reviews' %}</span>
+          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+        </p>
+        <p v-if="open" class="inline-flex items-center space-x-2">
+          <span>{% trans 'Hide' %}</span>
+          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+        </p>
+      </button>
+    </div>
+    <div v-if="open" class="bordt font-c-sans text-lg my-5">
+      <div class="text-center text-xl mt-4"><h1 class="h1">{% trans 'Reviews' %}</h1></div>
+      {% recursetree reviews %}
+      <div id="{{ node.id }}" class="bord rounded-lg shadow hover:shadow-md px-4 pt-3 pb-2 mb-4">
+        {{ node.body|linebreaks }}
+        <div class="font-c-serif text-base space-x-3 inline-flex items-center bordt pt-2 mt-2">
+          <p class="inline-flex italic items-center">
+          {% if node.user.img %}
+          <img src="{{ node.user.img.url }}" alt="{% if node.user.first_name %}{{ node.user.first_name }}{% else %}{{ node.user.get_usrname }}{% endif %} {% trans 'Image' %}" class="w-11 h-11 bord rounded-full mr-2">
+          {% else %}
+          —
+          {% endif %}
+          {% if node.user.first_name %}
+          {{ node.user.first_name }}
+          {% else %}
+          {{ node.user.get_usrname }}
+          {% endif %}
+          </p>
+          <span class="sep">·</span>
+          <span>20{{ node.created|date:'Y-m-d' }}</span>
+{% comment %}<!--<form method="post" action="{% url 'read:like' object.slug node.id %}"> {% csrf_token %}
+  <button class="font-c-sans inline-flex items-center cr2 px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
+    <svg class="w-5 h-5 fill-current hover:text-yellow-500 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
+  </button></form> -->{% endcomment %}
+          {% if node.level < 2 %}
+          <button class="font-c-sans bord hover:border-yellow-500 shadow hover:shadow-md cr2 px-2 py-1" onclick="replyBtn('{{ node.id }}')">{% trans 'Reply' %}</button>
+          {% endif %}
+        </div>
+        {% if not node.is_leaf_node %}
+        <div class="items-center overflow-hidden pt-3">
+          <div class="absolute text-gray-500 mt-3"><svg class="w-4 h-5 fill-current" style="transform: scale(-1,-1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#reply"></use></svg></div>
+          <div class="kid ml-6">{{ children }}</div>
+        </div>
+        {% endif %}
+      </div>
+      {% endrecursetree %}
+      <div class="font-c-sans pt-1 mt-2">
+        <label for="id_rev" hidden>{% trans 'Review' %}</label>
+        <form id="id_rev_form" method="post"> {% csrf_token %}
+          {{ form.body }}
+{% comment %}<!--<div class="text-right items-center space-x-1 mt-3 mr-1">
+<label for="id_private" class="text-sm" data-tippy-content="Anonym">{% trans 'Check to hide your name' %}</label>
+{{ form.private }}</div> data-tippy-content="{% trans 'Are you adding value to the conversation?' %}"-->{% endcomment %}
+          <button class="cbtn px-2 py-1 mt-3" type="submit">
+            <div class="text-center text-lg inline-flex items-center space-x-1">
+              <span>{% trans 'Share' %}</span>
+              <svg class="fill-current scale-1 w-6 h-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#post"></use></svg>
+            </div>
+          </button>
+        </form>
+      </div>
+      {% else %}
+      <div class="font-c-sans text-center text-lg">
+        <p class="bordt inline-flex items-center pt-2">{% trans 'Did you buy the product?' %}</p>
+        <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="regbtn">{% trans 'Log in' %}</a> to give your feedback</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
-{% endblock %}
+{% endblock %}{% comment %}<!--{{ request.session.cart_items }} { % endif %}</span></form>
+{ % if object in cart.products.all %}
+<a href="{{ cart_url }}" class="upcart"><svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg> {% trans 'In Cart' %}</a>
+{% else %}
+<button @click="addItem({{ object.id }})" class="upcart"><svg class="fill-current w-4 h-4 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
+[[ btn.text ]]</button>
+{% endif %} -->{% endcomment %}
 {% block js %}
 <script>
   var productapp = new Vue({
@@ -82,16 +173,21 @@
     data () {
       return {
         added: false,
+        open: false,
+        p: {{ itemstr|safe }}
         // mainImage: '{{ object.img.url }}',
-        images: ['{{ imagesstring|safe }}']// add slideshow or just add one 360 slow gif.video
+        // imgs: ['{{ imgstr|safe }}']// add slideshow or just add one 360 slow gif.video
       }
     },
     methods: {
-      addItem(productId) {
+      show() {
+        this.open = !this.open;
+      },
+      addItem(productId, qty, price) {
         var data = {
           'product_id': productId,
           'update': false,
-          'quantity': 1
+          'qty': parseInt(qty)
         };
         fetch('/cart/update/', {
           method: 'POST',
@@ -104,20 +200,141 @@
         })
         .then((response) => {
           this.added = true;
-          store.commit('updateNrItems', 1);
+          // localStorage.setItem(this.added, true);
+          // store.commit('addedItem', true);
+          store.commit('updateNrItems', parseInt(qty));
+          store.commit('updateTotal', parseFloat(price));
           // setTimeout(() => {this.showMessage = false}, 2000)
         })
         .catch(function (error) {
           console.log(error);
         })
       }
-    }
+      // decreaseQty(productId, qty, qty_instock, price) {
+      //   var data = {
+      //     'product_id': productId, 
+      //     'quantity': parseInt(qty) - 1,
+      //     'update': true
+      //   };
+      //   if (parseInt(qty) - 1 === 0) {
+      //     this.remove(productId);
+      //   } else {
+      //     fetch('/cart/update/', {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //         'X-CSRFToken': '{{ csrf_token }}'
+      //       },
+      //       credentials: 'same-origin',
+      //       body: JSON.stringify(data)
+      //     })
+      //     .then((response) => {
+      //       var p = this.p;
+      //       if (p.id === productId && qty <= qty_instock) {
+      //         p.quantity = parseInt(p.quantity) - 1;
+      //         p.item_total = parseInt(p.quantity) * parseFloat(p.price);
+      //       }
+      //     store.commit('updateNrItems', -1);
+      //     store.commit('updateTotal', -parseFloat(price));
+      //     })
+      //     .catch(function (error) {
+      //       console.log(error);
+      //     })
+      //   }
+      // },
+      // addQty(productId, qty, qty_instock, price) {
+      //   var data = {
+      //     'product_id': productId,
+      //     'quantity': parseInt(qty) + 1,
+      //     'update': true
+      //   };
+      //   fetch('/cart/update/', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'X-CSRFToken': '{{ csrf_token }}'
+      //     },
+      //     credentials: 'same-origin',
+      //     body: JSON.stringify(data)
+      //   })
+      //   .then((response) => {
+      //     var p = this.p;
+      //     if (p.id === productId && qty < qty_instock) {
+      //       p.quantity = parseInt(p.quantity) + 1;
+      //       p.item_total = p.quantity * parseFloat(p.price);
+      //     }
+      //     store.commit('updateNrItems', 1);
+      //     store.commit('updateTotal', parseFloat(price));
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   })
+      // },
+      // remove(productId, price, qty) {
+      //   var data = {
+      //     'product_id': productId,
+      //     'update': true
+      //   };
+      //   fetch('/cart/remove-from-cart/', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'X-CSRFToken': '{{ csrf_token }}'
+      //     },
+      //     credentials: 'same-origin',
+      //     body: JSON.stringify(data)
+      //   })
+      //   .then((response) => {
+      //     this.p = this.p.filter(product => product.id !== productId);
+      //     store.commit('updateNrItems', -parseInt(qty));
+      //     store.commit('updateTotal', -parseFloat(price));
+      //     localStorage.removeItem(this.added, true);
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   })
+      // },
+    },
+    computed: {
+      added: function() {
+        console.log(store.state.added);
+        return store.state.added;
+      }
+    },
   });
   var opt = {
     fillContainer: true,
     offset: {vertical: 0, horizontal: 15}
   };
   new ImageZoom(document.getElementById("pic"), opt);
+
+  function formClose() {
+  document.getElementById('id_rev_reply').remove();
+}
+function replyBtn(id) {
+  if (document.contains(document.getElementById('id_rev_reply'))) {
+    formClose();
+  }
+  var e = document.getElementById(id);
+  e.insertAdjacentHTML('afterend', 
+   '<div class="font-c-sans ml-10 mb-6 mr-1">\
+      <label for="id_reply" hidden>{% trans "Reply" %}</label>\
+      <form id="id_rev_reply" method="post"> {% csrf_token %}\
+        <div class="text-right">\
+          <button type="button" class="rounded-full cr2" onclick="formClose()"><svg class="w-5 h-5" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd"><circle stroke="currentColor" stroke-width="2" cx="10" cy="10" r="9"/><path fill="currentColor" fill-rule="nonzero" d="m14.982 8.913.035 2-9.999.174-.035-2z"/></g></svg></button>\
+        </div>\
+        <select name="parent" id="id_parentt" class="hidden"><option value="' + id + '" selected="' + id + '"></option></select>\
+        <textarea name="body" cols="30" rows="3" id="id_reply" class="w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 rounded-lg shadow hover:shadow-md cr2 py-1 px-2" spellcheck="true" type="text" required></textarea>\
+        <button class="cbtn mt-3" type="submit">\
+          <p class="text-center inline-flex items-center">{% trans "Reply" %}\
+          <svg class="fill-current scale-1 w-6 h-6 ml-1"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>\
+          </p>\
+        </button>\
+      </form>\
+    </div>'
+  );
+}
+$('#id_rev_form').trigger('reset');
 </script>
 {% endblock %}{% comment %}<!--var options1 = {
     width: 400,

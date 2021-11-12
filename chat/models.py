@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import EmailValidator
 from django.utils.translation import gettext_lazy as _
-
 # from tinymce.models import HTMLField
 
 
@@ -14,9 +13,10 @@ class MsgType(models.TextChoices):
 
 
 class Contact(models.Model):
+    # For email routing system
     message_type = models.CharField(
         max_length=255, choices=MsgType.choices, default=MsgType.COLLABORATION
-    )  # tag msg for support team
+    )
     first_name = models.CharField(max_length=60, blank=True, null=True)
     last_name = models.CharField(max_length=60, blank=True, null=True)
     email = models.EmailField(
@@ -29,12 +29,13 @@ class Contact(models.Model):
         ],
     )
     topic = models.CharField(max_length=99)
-    text = models.TextField(blank=True, null=True)  # HTMLField
+    # HTMLField
+    text = models.TextField(blank=True, null=True)
     # postal_code = models.CharField(max_length=19, blank=True, null=True)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
     # confirm = models.BooleanField(default=False)
-
-    REQUIRED_FIELDS = ["first_name", "email", "topic", "text"]  # , "postal_code"
+    # , "postal_code"
+    REQUIRED_FIELDS = ["first_name", "email", "topic", "text"]
 
     def __str__(self):
         return self.email
@@ -43,7 +44,8 @@ class Contact(models.Model):
         verbose_name_plural = _("Contacts")
 
 
-# class MessageManager(models.Manager):get_or_create
+# class MessageManager(models.Manager):
+# get_or_create
 #     def new_or_get(self, request):
 #         room = request.session.get("room", None)
 #         qs = self.get_queryset().filter(room=room)
@@ -71,7 +73,8 @@ class Contact(models.Model):
 class Message(models.Model):
     username = models.CharField(max_length=255)
     room = models.CharField(max_length=255)
-    text = models.TextField(blank=True, null=True)  # HTMLField()
+    # HTMLField()
+    text = models.TextField(blank=True, null=True)
     sent = models.DateTimeField(auto_now_add=True)
 
     # objects = MessageManager()

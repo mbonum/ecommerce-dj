@@ -1,7 +1,7 @@
 from django.conf import settings
-from django.core.validators import MinValueValidator  # MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models.signals import m2m_changed, pre_save  # post_save
+from django.db.models.signals import m2m_changed, pre_save
 from django.utils.translation import gettext_lazy as _
 from shop.models import Product
 
@@ -13,8 +13,8 @@ class CartManager(models.Manager):
         cart_id = request.session.get("cart_id", None)
         qs = self.get_queryset().filter(id=cart_id)
         if qs.count() == 1:
-            new_obj = False
             cart_obj = qs.first()
+            new_obj = False
             if request.user.is_authenticated and cart_obj.user is None:
                 cart_obj.user = request.user
                 cart_obj.save()
@@ -35,6 +35,7 @@ class CartManager(models.Manager):
 class Cart(models.Model):
     user = models.ForeignKey(USER, null=True, on_delete=models.SET_NULL)
     products = models.ManyToManyField(Product, blank=False)
+    # Moved in Product model.
     # order_qty = models.PositiveIntegerField(
     #     default=1, validators=[MinValueValidator(1)]
     # )
@@ -42,8 +43,8 @@ class Cart(models.Model):
     # for discount and shipping
     subtotal = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     objects = CartManager()
 
@@ -52,7 +53,7 @@ class Cart(models.Model):
 
     @property
     def is_digital(self):
-        # Filter digital products to skip ship address form
+        # Filter digital products to skip shipping address form.
         qs = self.products.all()
         new_qs = qs.filter(is_digital=False)
         if new_qs.exists():
@@ -63,10 +64,16 @@ class Cart(models.Model):
     def get_item_total(self):
         return sum(float(p.price) * self.order_qty for p in self.products.all())
 
-    @property
+    def update_order_qty(self, product_id, qty: int):
+        item = self.products.get(id=product_id)
+        item.order_qty = qty
+        item.save()
+        # return True
+
     def nr_items(self):
         return sum(int(p.order_qty) for p in self.products.all())
 
+    # The total is calculated in Vue.
     # def calc_tot(self, save=False):
     #     if not self.products:
     #         return {}
@@ -89,10 +96,8 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
         products = instance.products.all()
         total = 0
         for p in products:
-            # if p.quantity:
-            total += p.price * p.order_qty# instance is cart
-            # else:
-            # total += p.price
+            # if p.active:
+            total += p.price * p.order_qty
         instance.subtotal = total
         instance.save()
 
@@ -101,6 +106,7 @@ m2m_changed.connect(m2m_changed_cart_receiver, sender=Cart.products.through)
 
 
 def pre_save_cart_receiver(sender, instance, *args, **kwargs):
+    # Add subtotal if the user has to pay the shipment.
     if instance.subtotal > 0:
         instance.total = instance.subtotal
     else:

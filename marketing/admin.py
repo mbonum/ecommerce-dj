@@ -5,12 +5,12 @@ from .models import MarketingPreference
 
 class MarketingPreferenceAdmin(admin.ModelAdmin):
 
-    list_display = ("user", "subscribed", "updated_at")  # __str__
+    list_display = ("user", "subscribed", "updated")
     readonly_fields = (
         "mailchimp_msg",
         "mailchimp_subscribed",
-        "timestamp",
-        "updated_at",
+        "created",
+        "updated",
     )
 
     class Meta:
@@ -20,8 +20,8 @@ class MarketingPreferenceAdmin(admin.ModelAdmin):
             "subscribed",
             "mailchimp_msg",
             "mailchimp_subscribed",
-            "timestamp",
-            "updated_at",
+            "created",
+            "updated",
         )
 
 

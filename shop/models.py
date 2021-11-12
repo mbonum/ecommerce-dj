@@ -15,13 +15,15 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 from PIL import Image
+from mptt.models import MPTTModel, TreeForeignKey
 
 # from tags.models import Tag
 
 # from djmoney.models.fields import MoneyField
 
-from accounts.models import CUser
+# from accounts.models import CUser
 
+USER = settings.AUTH_USER_MODEL
 
 # def get_filename_ext(filepath):
 #     # Get the extension of a file
@@ -131,6 +133,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("shop:category", kwargs={"slug": self.slug})
+
 
 class Product(models.Model):
     index = models.PositiveSmallIntegerField(
@@ -148,7 +153,8 @@ class Product(models.Model):
         _("Image/GIF"), upload_to=shop_media_path, blank=False, null=True
     )
     thumbnail = models.ImageField(upload_to=shop_media_path, blank=True, null=True)
-    price = models.DecimalField(
+    # stock_price
+    price = models.DecimalField(  # retail_price
         _("Price (€)"),
         blank=False,
         null=True,
@@ -170,6 +176,8 @@ class Product(models.Model):
         blank=False,
         null=True,
     )
+    # sku # stock keeping unit warehouse
+    # brand
     # created_by = models.ForeignKey(
     #     CUser,
     #     related_name="product_creator",
@@ -188,15 +196,17 @@ class Product(models.Model):
     qty_instock = models.PositiveIntegerField(
         _("Quantity in stock"), default=1, validators=[MinValueValidator(1)]
     )
-    total_item = models.DecimalField(default=0.00, max_digits=19, decimal_places=2)
+    total_item = models.DecimalField(
+        default=0.00, max_digits=19, decimal_places=2
+    )  # order_qty*retail_price
     # meta_keywords = models.CharField(max_length=255, help_text='Comma-delimited set of SEO keywords for meta tag')
     # meta_description = models.CharField(max_length=255, help_text='Content for description meta tag')
     active = models.BooleanField(  # in_stock
         _("Show"), default=False, help_text=_("Hide if unavailable")
     )
     # recommend = models.BooleanField(default=False)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
     pdf = models.FileField(
         _("PDF Brochure/Manual"), upload_to=shop_media_path, blank=True, null=True
     )  # 10-page preview manual if diy
@@ -312,112 +322,138 @@ class ProductFile(models.Model):
         return get_filename(self.file.name)
 
 
-class Item(models.Model):
-    category = models.ForeignKey(
-        Category, related_name="items", on_delete=models.CASCADE
-    )
-    parent = models.ForeignKey(
-        "self", related_name="variants", on_delete=models.CASCADE, blank=True, null=True
-    )
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(
-        _("Price (€)"),
+# class Item(models.Model):
+#     category = models.ForeignKey(
+#         Category, related_name="items", on_delete=models.CASCADE
+#     )
+#     parent = models.ForeignKey(
+#         "self", related_name="variants", on_delete=models.CASCADE, blank=True, null=True
+#     )
+#     title = models.CharField(max_length=255)
+#     slug = models.SlugField(max_length=255)
+#     description = models.TextField(blank=True, null=True)
+#     price = models.DecimalField(
+#         _("Price (€)"),
+#         blank=False,
+#         null=True,
+#         decimal_places=2,
+#         max_digits=9,
+#         default=9.99,
+#         validators=[MinValueValidator(0)],
+#     )
+#     is_featured = models.BooleanField(default=False)
+#     num_available = models.IntegerField(default=1)
+#     num_visits = models.IntegerField(default=0)
+#     last_visit = models.DateTimeField(blank=True, null=True)
+
+#     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
+#     thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
+#     date_added = models.DateTimeField(auto_now_add=True)
+
+#     class Meta:
+#         ordering = ["-date_added"]
+
+#     def __str__(self):
+#         return self.title
+
+#     def save(self, *args, **kwargs):
+#         self.thumbnail = self.make_thumbnail(self.image)
+#         super().save(*args, **kwargs)
+
+#     def get_absolute_url(self):
+#         return f"/{self.category.slug}/{self.slug}/"  # /%s/%s/" % (self.category.slug, self.slug)
+
+#     def get_thumbnail(self):
+#         if self.thumbnail:
+#             return self.thumbnail.url
+#         else:
+#             if self.image:
+#                 self.thumbnail = self.make_thumbnail(self.image)
+#                 self.save()
+
+#                 return self.thumbnail.url
+#             else:
+#                 return ""
+
+#     def make_thumbnail(self, image, size=(300, 200)):
+#         img = Image.open(image)
+#         img.convert("RGB")
+#         img.thumbnail(size)
+
+#         thumb_io = BytesIO()
+#         img.save(thumb_io, "PNG", quality=85)  # "JPEG"
+
+#         thumbnail = File(thumb_io, name=image.name)
+
+#         return thumbnail
+
+#     def get_rating(self):
+#         total = sum(int(review["stars"]) for review in self.reviews.values())
+
+#         if self.reviews.count() > 0:
+#             return total / self.reviews.count()
+#         else:
+#             return 0
+
+
+# class ProductImage(models.Model):
+#     product = models.ForeignKey(Item, related_name="images", on_delete=models.CASCADE)
+#     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
+#     thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
+
+#     def save(self, *args, **kwargs):
+#         self.thumbnail = self.make_thumbnail(self.image)
+
+#         super().save(*args, **kwargs)
+
+#     def make_thumbnail(self, image, size=(300, 200)):
+#         img = Image.open(image)
+#         img.convert("RGB")
+#         img.thumbnail(size)
+
+#         thumb_io = BytesIO()
+#         img.save(thumb_io, "PNG", quality=85)  # "JPEG"
+
+#         thumbnail = File(thumb_io, name=image.name)
+
+#         return thumbnail
+
+
+class Review(MPTTModel):
+    user = models.ForeignKey(
+        USER, blank=False, null=True, on_delete=models.CASCADE
+    )  # related_name="reviews"
+    item = models.ForeignKey(
+        Product,
         blank=False,
         null=True,
-        decimal_places=2,
-        max_digits=9,
-        default=9.99,
-        validators=[MinValueValidator(0)],
+        on_delete=models.CASCADE,
+        related_name="reviews",
     )
-    is_featured = models.BooleanField(default=False)
-    num_available = models.IntegerField(default=1)
-    num_visits = models.IntegerField(default=0)
-    last_visit = models.DateTimeField(blank=True, null=True)
+    parent = TreeForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
+    )
+    body = HTMLField(_("Review"), blank=False, null=True)
+    stars = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    created = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
+    active = models.BooleanField(
+        _("Show"), default=True, help_text=_("Hide useless ones")
+    )
+    like = models.ManyToManyField(USER, blank=True, related_name="like")
 
-    image = models.ImageField(upload_to="uploads/", blank=True, null=True)
-    thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
-    date_added = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-date_added"]
+    class MPTTMeta:
+        verbose_name_plural = _("Reviews")
+        order_insertion_by = ["created"]
 
     def __str__(self):
-        return self.title
-
-    def save(self, *args, **kwargs):
-        self.thumbnail = self.make_thumbnail(self.image)
-        super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return f"/{self.category.slug}/{self.slug}/"  # /%s/%s/" % (self.category.slug, self.slug)
-
-    def get_thumbnail(self):
-        if self.thumbnail:
-            return self.thumbnail.url
+        if self.user.first_name:
+            n = self.user.first_name
         else:
-            if self.image:
-                self.thumbnail = self.make_thumbnail(self.image)
-                self.save()
+            n = self.user.email
+        return f"Review #{self.id} about {self.item} by {n}"
 
-                return self.thumbnail.url
-            else:
-                return ""
-
-    def make_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(image)
-        img.convert("RGB")
-        img.thumbnail(size)
-
-        thumb_io = BytesIO()
-        img.save(thumb_io, "PNG", quality=85)  # "JPEG"
-
-        thumbnail = File(thumb_io, name=image.name)
-
-        return thumbnail
-
-    def get_rating(self):
-        total = sum(int(review["stars"]) for review in self.reviews.values())
-
-        if self.reviews.count() > 0:
-            return total / self.reviews.count()
-        else:
-            return 0
-
-
-class ProductImage(models.Model):
-    product = models.ForeignKey(Item, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="uploads/", blank=True, null=True)
-    thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        self.thumbnail = self.make_thumbnail(self.image)
-
-        super().save(*args, **kwargs)
-
-    def make_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(image)
-        img.convert("RGB")
-        img.thumbnail(size)
-
-        thumb_io = BytesIO()
-        img.save(thumb_io, "PNG", quality=85)  # "JPEG"
-
-        thumbnail = File(thumb_io, name=image.name)
-
-        return thumbnail
-
-
-class ProductReview(models.Model):
-    product = models.ForeignKey(Item, related_name="reviews", on_delete=models.CASCADE)
-    user = models.ForeignKey(CUser, related_name="reviews", on_delete=models.CASCADE)
-
-    content = models.TextField(blank=True, null=True)
-    stars = models.IntegerField()
-
-    date_added = models.DateTimeField(auto_now_add=True)
-
+    def tot_likes(self):
+        return self.like.count()
 
 # compare md5 to remove duplicate files
 # class MediaFileSystemStorage(FileSystemStorage):

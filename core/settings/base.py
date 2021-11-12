@@ -30,16 +30,6 @@ BASE_URL = "www.clavem.co:8000"
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 PROJECT_DIR = Path(__file__).resolve(strict=True)
 
-try:
-    SECRET_KEY = config("SECRET_KEY")
-except KeyError:
-    raise ImproperlyConfigured("SECRET_KEY environment variable is missing!")
-
-DEBUG = config("DEBUG", default=False, cast=bool)
-
-ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
-# cast=Csv())#, cast=lambda v: [s.strip() for s in v.split(',')]
-
 MANAGERS = [
     ("clvm", "mgb@clavem.co"),
     ("mgb", "mgbonum@protonmail.com"),
@@ -143,7 +133,7 @@ REST_FRAMEWORK = {
 PASSWORDLESS_AUTH = {
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # , "MOBILE"
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@clavem.co",
-    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "mytemplate.html",
+    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "newsletter/common.html",
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -229,7 +219,7 @@ DEFAULT_HOST = "www"
 DEFAULT_REDIRECT_URL = BASE_URL  # https
 PARENT_HOST = BASE_URL  # "www.clavem.co:8000"
 APPEND_SLASH = True
-
+SITE_ID = 2  # django.contrib.sites
 TEMPLATES_DIR = BASE_DIR / "templates"  # os.path.join(BASE_DIR, 'templates')
 # FRONTEND_DIR = BASE_DIR / 'frontend'# vuejs
 
@@ -279,8 +269,8 @@ if "test" in sys.argv:
     DATABASES["default"] = {"ENGINE": "django.db.backends.sqlite3"}
     # SOUTH_TESTS_MIGRATE = False https://south.readthedocs.io/en/latest/installation.html#installation
 
-
 DATABASE_ROUTERS = ["gdpr_assist.routers.EventLogRouter"]
+
 # docker-compose https://docs.docker.com/compose/django/
 # DATABASES = {
 #     'default': {
@@ -506,9 +496,6 @@ STRIPE_PUB_KEY = config("STRIPE_PUB_KEY")
 # ACCOUNT_ADAPTER = 'allauth_2fa.adapter.OTPAdapter'
 # ACCOUNT_TEMPLATE_EXTENSION = 'html'
 # ALLAUTH_2FA_ALWAYS_REVEAL_BACKUP_TOKENS = True
-
-
-SITE_ID = 1  # django.contrib.sites
 
 TINYMCE_DEFAULT_CONFIG = {
     "height": 500,

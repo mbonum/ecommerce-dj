@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 # from django.forms import ModelForm
 # from django_toggle_switch_widget.widgets import DjangoToggleSwitchWidget
 
@@ -20,9 +19,9 @@ class CartAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "total",
-        "created_at",
+        "created",
     )
-    list_filter = ("created_at",)
+    list_filter = ("created",)
 
 
 admin.site.register(Cart, CartAdmin)

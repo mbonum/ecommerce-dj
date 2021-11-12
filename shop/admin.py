@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.forms import ModelForm
-
-from .models import Category, Product, ProductFile, Item, ProductImage, ProductReview
+from mptt.admin import MPTTModelAdmin
+from .models import Category, Product, ProductFile, Review
 
 
 @admin.register(Category)
@@ -46,14 +46,10 @@ class ProductAdmin(admin.ModelAdmin):
         "is_digital",
         # "recommend",
     )
-    list_filter = ("active", "is_digital", "created_at")  # "recommend",
+    list_filter = ("active", "is_digital", "created")  # "recommend",
     search_fields = ("name", "slug")
     prepopulated_fields = {"slug": ("name",)}
     inlines = (ProductFileInline,)
 
 
-admin.site.register(Item)
-admin.site.register(ProductImage)
-admin.site.register(ProductReview)
-# admin.site.register(Category, CategoryAdmin)
-# admin.site.register(Product, ProductAdmin)
+admin.site.register(Review, MPTTModelAdmin)

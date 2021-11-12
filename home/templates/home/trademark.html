@@ -4,7 +4,7 @@
 {% block content %}
 <div class="font-c-sans max-w-lg mx-auto">
   <h1 class="h1">{% if page_obj.title %}{{ page_obj.title|safe }}{% else %}{% trans 'Trademark' %}{% endif %}</h1>
-  {% if text.updated_at %}<p class="pb-2">Effective date: {{ text.updated_at|date:'Y-m-d' }}</p>{% endif %}
+  {% if text.updated_at %}<p class="pb-2">Effective date: {{ text.updated|date:'Y-m-d' }}</p>{% endif %}
   <h2 class="text-xl pb-6">{% trans 'Assets and usage guidelines' %}</h2>
   <div class="space-y-6 text-center mb-4">
     <div class="space-y-6 bordb pb-6">

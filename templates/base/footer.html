@@ -23,11 +23,11 @@
       </div>
       <div class="border-b border-yellow-100 md:border-none overflow-hidden py-3 md:py-1">
       {% if not request.user.email %}
-        <form enctype="multipart/form-data" method="post" action="{{ newsletter }}" class="text-right text-base mx-1 md:mx-0 lg:mx-1"> {% csrf_token %}
+        <form enctype="multipart/form-data" method="post" action="{{ newsletter }}" class="text-right text-base mx-1 md:mx-0 lg:mr-1"> {% csrf_token %}
           <label for="id_email_field" hidden>{% trans 'Email' %}</label>
-          <input id="id_email_field" type="email" name="email_field" required="false" class="md:w-auto md:inline-flex border xl:rounded-l-lg border-gray-300 focus:border-yellow-500 hover:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Email' %}">
-          <button id="id_submit" name="submit" type="submit" value="Get Vpdates" class="inline-flex items-center bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 xl:rounded-r-lg border border-yellow-400 hover:border-yellow-500 focus:outline-none py-1 px-3" data-tippy-content="{% trans 'Frugal in words, rich in meaning' %}">{% trans 'Get Vpdates' %}
-            <svg class="fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#dm"></use></svg>
+          <input id="id_email_field" type="email" name="email_field" required="false" class="bord focus:border-yellow-500 hover:border-yellow-500 xl:rounded-l-lg  focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" placeholder="{% trans 'Email' %}">
+          <button id="id_submit" name="submit" type="submit" value="{% trans 'Get Vpdates' %}" class="ybtn inline-flex items-center xl:rounded-r-lg focus:ring-2 focus:ring-yellow-100 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-3" data-tippy-content="{% trans 'Frugal in words, rich in meaning' %}">{% trans 'Get Vpdates' %}
+            <svg class="w-4 h-4 fill-current ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#dm"></use></svg>
           </button>
         </form>
         {% else %}
@@ -53,8 +53,8 @@
       {% endif %}
       </div>
       <div class="inline-flex space-x-9 mx-auto py-4 md:py-1">
-        <a href="{{ gitlab_url }}" class="text-gray-700 hover:text-black rounded-full cr" target="_blank" rel="noopener" data-tippy-content="{{ com }} open source projects">
-        <svg class="h-6 w-6 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#gl"></use></svg><span hidden>{{ com }} {% trans 'open source projects' %}</span></a>
+        <a href="{{ gitlab_url }}" class="text-gray-700 hover:text-black rounded-full cr p-1" target="_blank" rel="noopener" data-tippy-content="{{ com }} open source projects">
+        <svg class="w-6 h-6 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#gl"></use></svg><span hidden>{{ com }} {% trans 'open source projects' %}</span></a>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
     <div class="inline-flex items-center">
       {% if request.path != home_url %}
       <a href="{{ essays_url }}" class="hidden md:block hover:text-black rounded cr">
-        <svg class="h-5 w-6 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg><span hidden>{{ com }}</span>
+        <svg class="w-6 h-5 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg><span hidden>{{ com }}</span>
       </a>
       {% endif %}
       <p class="ml-1">

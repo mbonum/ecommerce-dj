@@ -1,9 +1,9 @@
 {% load i18n static %}
 <div class="block">
-  <a href="{{ checkout_url }}" id="checkbtn" class="cbtn inline-flex items-center">
+  <a href="{{ checkout_url }}" id="checkbtn" class="cbtn inline-flex items-center rounded-full text-xl px-3 py-2">
     <svg class="w-5 h-5 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg> {% trans 'Checkout' %}
   </a>
-  <div id="checkbtn-tip" class="hidden">
+{% comment %}<!-- <div id="checkbtn-tip" class="hidden">
     <img src="{% static 'img/cc.png' %}" alt="{% trans 'Payment methods' %}" class="w-40 md:w-44 h-6 mx-auto">
-  </div>
+  </div> -->{% endcomment %}
 </div>

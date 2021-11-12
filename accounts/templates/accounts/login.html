@@ -22,9 +22,9 @@
       <span x-show="show">{% trans 'Show' %}</span>
       <span x-show="!show">{% trans 'Hide' %}</span>
       </button>
-    </div> -->{% endcomment %}
+    </div>-->{% endcomment %}
     <div class="m-1">
-      <a class="text-sm un text-gray-800 hover:text-black focus:outline-none rounded-lg focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2" href="{{ psw_reset_url }}" target="_blank" rel="noopener">{% trans 'Forgot password?' %}</a>
+      <a class="text-sm un text-gray-800 hover:text-black cr2 p-1" href="{{ psw_reset_url }}" target="_blank" rel="noopener">{% trans 'Forgot password?' %}</a>
     </div>
     {{ form.captcha }}
     <button id="log" class="cbtn mt-4" type="submit">{% trans 'Continue' %}</button>
@@ -36,13 +36,7 @@
   </div>
 </div>
 {% endblock%}
-{% comment %}<!-- <form class="max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10">
-<h2 class="text-2xl font-bold text-center">Login</h2>
-<div class="outline relative border-2 focus-within:border-blue-500">
-  <input type="text" name="username" placeholder=" " class="block p-4 w-full text-lg appearance-none focus:outline-none bg-transparent" />
-  <label for="username" class="absolute top-0 text-lg bg-white p-4 -z-1 duration-300 origin-0">Username</label>
-</div>
-</form>{ % include 'accounts/snippets/anti-bot.html' % } if not next_url %}<h1 class="sc text-center font-tex font-bol">Welcome back to {{ com }}</h1>{% endif %}
+{% comment %}<!--{ % include 'accounts/snippets/anti-bot.html' % } if not next_url %}<h1 class="sc text-center font-tex font-bol">Welcome back to {{ com }}</h1>{% endif %}
 action="{% if next_url %}{{ next_url }}{% else %}{{ login_url }}{% endif %}"{% if next_url %}
 <input type='hidden' name='next' value='{{ next_url }}'> {% csrf_token %}
 {% endif % { % blocktranslate % }<p class="text-sm pt-4 ml-1">{% trans 'New?' %} <a href="{{ register_url }}" class="text-yellow-500 hover:text-yellow-400 font-semibold focus:outline-none">Sign up</a></p>{ % block js %}{ % endblock %}

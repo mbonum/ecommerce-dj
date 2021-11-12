@@ -4,10 +4,10 @@
 {#<!-- x-bind:value="{{ forloop.counter }}"-->#}
 {% block content %}
 <div @click.away="show = false" x-data="{ cur: '1', show: false }" class="font-c-sans text-lg max-w-lg mx-auto">
-  <div class="flex justify-between">
-    <h1 class="h1">📈 {% trans 'Revenue' %}</h1>
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-semibold">📈 {% trans 'Revenue' %}</h1>
     <div class="inline-flex items-center space-x-2">
-      <label for="currency">{% trans 'Currency' %}</label>
+      <label for="currency text-base">{% trans 'Currency' %}</label>
       <div class="relative">
         <select id="currency" @change="cur = $event.target.value" name="currency">
           {% for c in currencies %}
@@ -19,7 +19,7 @@
   </div>
   <div class="space-y-6">
     {% if this_week.recent %}
-    <div class="bordt pt-3 mt-3 ml-2">
+    <div class="bordt pt-4 mt-4 ml-2">
       <h2 class="text-xl">{% trans 'Current week revenue' %}:
         <span class="bg-white border-2 border-yellow-300 rounded-xl px-2 py-1 ml-1">
           {% if this_week.recent_data.total__sum %}
@@ -32,11 +32,11 @@
         <div class="text-center font-c-sans my-6">
           <button @click="show=!show" class="bg-white border-2 border-yellow-300 shadow rounded-full cr2 px-3 py-1" type="button">
             <p x-show="show" class="inline-flex items-center space-x-2">
-              <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+              <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
               <span>{% trans 'Hide' %}</span>
             </p>
             <p x-show="!show" class="inline-flex items-center space-x-2">
-              <svg class="text-yellow-500 w-4 h-4"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+              <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
               <span>{% trans 'Show details' %}</span>
             </p>
           </button>
@@ -57,7 +57,7 @@
                 <span x-show="cur == 1">€{{ o.total }}</span>
                 <span x-show="cur == 2">${{ o.total|usd }}</span>
               </td>
-              <td>{{ o.updated_at|date:'Y-m-d, G:i' }}</td>
+              <td>{{ o.updated|date:'Y-m-d, G:i' }}</td>
             </tr>
           {% endfor %}
           </tbody>
@@ -123,7 +123,7 @@
         <tr class="{% if not forloop.last %}bordb{% endif %}">
           <td>{{ o.order_id }}</td>
           <td class="px-4">{% include 'base/snippets/currency.html' %}{{ o.total }}</td>
-          <td>{{ o.updated_at|time:'Y-m-d, G:i' }}</td>
+          <td>{{ o.updated|time:'Y-m-d, G:i' }}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -136,5 +136,5 @@
   <li>
     <p>{% trans 'Order' %} ID: {{ order.order_id }}
     {% include 'base/snippets/currency.html' %}{{ order.total }}
-    {{ order.updated_at|timesince }} {% trans 'ago' %}</p>
+    {{ order.updated|timesince }} {% trans 'ago' %}</p>
 &#x24; &#36; $ &#x20AC; &#8364;-->{% endcomment %}

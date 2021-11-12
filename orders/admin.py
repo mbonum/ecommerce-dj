@@ -17,8 +17,8 @@ from .models import Order, ProductPurchase
 
 class OrderAdmin(admin.ModelAdmin):
     # form = OrderModelForm
-    list_display = ("order_id", "billing_profile", "created_at")
-    list_filter = ("created_at",)
+    list_display = ("order_id", "billing_profile", "created")
+    list_filter = ("created",)
 
 
 admin.site.register(Order, OrderAdmin)

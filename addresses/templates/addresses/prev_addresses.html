@@ -8,16 +8,16 @@
   <input type="hidden" name="address_type" value="{{ address_type }}">
   {% endif %}
   {% for address in address_qs %}
-  <div class="flex items-center border border-gray-300 bg-white rounded-lg shadow p-2 {% if forloop.first %}mt-1{% else %}mt-3{% endif %}">
+  <div class="flex items-center bord bg-white rounded-lg shadow p-2 {% if forloop.first %}mt-1{% else %}mt-3{% endif %}">
     <input id="address-{{ address.id }}" type="radio" name="shipping_address" value="{{ address.id }}" class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-white focus:ring-offset-2">
-    <label for="address-{{ address.id }}" class="ml-3">
+    <label for="address-{{ address.id }}" class="w-full ml-3">
       <p>{{ address.street }}</p>
       <p>{{ address.city }}, {{ address.state }}</p>
       <p>{{ address.country }}, {{ address.postal_code }}</p>
     </label>
   </div>
   {% endfor %}
-  <button type="submit" class="text-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2 mt-7">
+  <button type="submit" class="text-lg w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 border-2 border-yellow-300 hover:border-yellow-400 cr2 py-1 px-2 mt-7">
     <span class="text-center inline-flex items-center">
       {% trans 'Next' %}
       <svg class="fill-current w-4 h-4 ml-2" style="transform: scale(-1,1)"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg></span>

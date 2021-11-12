@@ -30,7 +30,7 @@ class OrderStatus(models.TextChoices):
 
 class OrderManagerQueryset(models.query.QuerySet):
     def recent(self):
-        return self.order_by("-updated_at", "-created_at")  # The oldest updates last
+        return self.order_by("-updated", "-created")  # The oldest updates last
 
     def get_sales_breakdown(self):
         recent = self.recent().not_refunded()
@@ -62,13 +62,13 @@ class OrderManagerQueryset(models.query.QuerySet):
 
     def by_range(self, start_date, end_date=None):
         if end_date is None:
-            return self.filter(updated_at__gte=start_date)
-        return self.filter(updated_at__gte=start_date).filter(updated_at__lte=end_date)
+            return self.filter(updated__gte=start_date)
+        return self.filter(updated__gte=start_date).filter(updated__lte=end_date)
 
     def by_date(self):
         # Sales in the last 15 days
         now = timezone.now() - datetime.timedelta(days=15)
-        return self.filter(update_at__day__gte=now.day)  # month__gte=now.month
+        return self.filter(update__day__gte=now.day)  # month__gte=now.month
 
     def totals_data(self):
         return self.aggregate(Sum("total"), Avg("total"))
@@ -154,14 +154,14 @@ class Order(models.Model):
         default=0.00, max_digits=19, decimal_places=2
     )  # subtotal + shipping
     active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     objects = OrderManager()
 
     class Meta:
         verbose_name_plural = _("Orders")
-        ordering = ["-created_at", "-updated_at"]
+        ordering = ["-created", "-updated"]
 
     def __str__(self):
         return self.order_id
@@ -181,7 +181,6 @@ class Order(models.Model):
         return _("Shipping Soon")
 
     def update_total(self):
-        # Add quantity
         cart_total = self.cart.total
         shipping_total = self.shipping_total
         new_total = fsum([cart_total, shipping_total])
@@ -237,7 +236,7 @@ pre_save.connect(pre_save_create_order_id, sender=Order)
 
 
 def post_save_cart_total(sender, instance, created, *args, **kwargs):
-    # The post signal is activated once the user clicks on save
+    # The post signal is activated once the user clicks on the btn
     if not created:
         # cart_total = instance.total
         qs = Order.objects.filter(cart__id=instance.id)
@@ -300,7 +299,7 @@ class ProductPurchase(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     # product.productpurchase_set.count()
     refunded = models.BooleanField(default=False)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = ProductPurchaseManager()

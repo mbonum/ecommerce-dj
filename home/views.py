@@ -2,32 +2,32 @@
 # from mimetypes import guess_type
 # from wsgiref.util import FileWrapper
 # from core.utils import unique_slug_generator
-# from django.conf import settings
-
+# # from django.contrib.auth import authenticate, get_user_model, login, logout
 from io import BytesIO
-
-# from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import EmailMessage, send_mail
-from django.http import FileResponse, HttpResponse  # , JsonResponse#Http404
-from django.shortcuts import render  # redirect,
+from django.http import FileResponse, HttpResponse
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView  # FormView
-from django.views.generic.edit import FormView  # get_language, activate
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4, landscape, letter
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfgen import canvas
-
+from django.views.generic import CreateView, View
+from django.views.generic.edit import FormView
+# from reportlab.lib import colors
+# from reportlab.lib.pagesizes import A4, landscape, letter
+# from reportlab.pdfbase import pdfmetrics
+# from reportlab.pdfbase.ttfonts import TTFont
+# from reportlab.pdfgen import canvas
+from core.utils import render_to_pdf
 from .models import Cookie, Donate, Page, Privacy, Terms, Trademark
-
-# from core.utils import render_to_pdf
 # from subscribe.forms import JoinForm
+
+Clvm = getattr(settings, "ENV_NAME", "Clavem")
 
 
 class HomeView(SuccessMessageMixin, CreateView):
+    # Show homepage
     template_name = "home/home.html"
     model = Page
     fields = "__all__"
@@ -71,7 +71,8 @@ class DonateView(CreateView):
 
 
 class CookieView(CreateView):
-    template_name = "base/txt.html"  # home/policy.html"  #'policies/cookie.html'
+    # Show cookie page
+    template_name = "base/txt.html"
     success_url = "/cookie/"
     model = Cookie
     fields = "__all__"
@@ -115,7 +116,8 @@ class CookieView(CreateView):
 
 
 class PrivacyView(CreateView):
-    template_name = "base/txt.html"  #'policies/privacy.html'
+    # Show privacy page
+    template_name = "base/txt.html"  
     success_url = "/privacy/"
     model = Privacy
     fields = "__all__"
@@ -130,6 +132,7 @@ class PrivacyView(CreateView):
 
 
 class TermsView(CreateView):
+    # Show terms page
     template_name = "base/txt.html"
     success_url = "/terms/"
     model = Terms
@@ -145,6 +148,7 @@ class TermsView(CreateView):
 
 
 class TrademarkView(CreateView):
+    # Show trademark page
     template_name = "home/trademark.html"
     success_url = "/trademark/"
     model = Trademark
@@ -159,80 +163,130 @@ class TrademarkView(CreateView):
         return context
 
 
-def policy_pdf(request):
-    buffer = BytesIO()
+class GeneratePolicyPDF(View):
+    # If there is no pdf in the database, read policy's fields and generate pdf
+    def get(self, request, *args, **kwargs):
+        slug = kwargs.get("slug")
+        try:
+            pol = Privacy.objects.get(slug=slug)
+            if pol is not None:
+                sec = pol.psection_set.all()
+        except Privacy.DoesNotExist:
+            try:
+                pol = Cookie.objects.get(slug=slug)
+                if pol is not None:
+                    sec = pol.csection_set.all()
+            except Cookie.DoesNotExist:
+                try:
+                    pol = Terms.objects.get(slug=slug)
+                    if pol:
+                        sec = pol.tsection_set.all()
+                except Terms.DoesNotExist:
+                    pol, sec = None
+        if sec:
+            p = ""
+            for s in sec:
+                if s.title:
+                    p += "<h2>" + s.title + "</h2>"
+                p += s.text
+            date = pol.updated.strftime("%Y-%m-%d")
+            context = {
+                "title": pol.title,
+                "author": "Clavem Legal Team",
+                "date": date,
+                "text": p,
+            }
+            pdf = render_to_pdf("home/policy-pdf.html", context)
+            if pdf:
+                response = HttpResponse(pdf, content_type="application/pdf")
+                filename = f"{Clvm}_{slug}_{date}.pdf"
+                content = f"inline; filename={filename}"
+                download = request.GET.get("download")
+                if download:
+                    content = f"attachment; filename={filename}"
+                response["Content-Disposition"] = content
+                return response
+            return HttpResponse(_("Document not found."))
+        return messages.info(
+            request,
+            _(
+                "Sorry, the text is private for now. Contact us to know when the product will be published."
+            ),
+        )
 
-    p = canvas.Canvas(buffer)
 
-    p.drawString(100, 100, "Hello world.")
+# def policy_pdf(request):
+# reportlab
+#     print(request)
+#     doc = request.title
+#     buffer = BytesIO()
+#     p = canvas.Canvas(buffer)
+#     p.drawString(100, 100, doc)
+#     p.showPage()
+#     p.save()
+#     buffer.seek(0)
+#     return FileResponse(buffer, as_attachment=True, filename=f"{doc}.pdf")
+# download pop up
 
-    p.showPage()
-    p.save()
+# fileName = "sample.pdf"
+# documentTitle = "sample"
+# title = "Technology"
+# subTitle = "The largest thing now!!"
+# textLines = [
+#     "Technology makes us aware of",
+#     "the world around us.",
+# ]
+# image = "image.jpg"
 
-    buffer.seek(0)
-    return FileResponse(
-        buffer, as_attachment=True, filename="hello.pdf"
-    )  # download pop up
+# pdf = canvas.Canvas(fileName)
+# pdf.setTitle(documentTitle)
+# pdfmetrics.registerFont(TTFont("clvm", "PT-Root-UI_Regular.ttf"))
 
-    # fileName = "sample.pdf"
-    # documentTitle = "sample"
-    # title = "Technology"
-    # subTitle = "The largest thing now!!"
-    # textLines = [
-    #     "Technology makes us aware of",
-    #     "the world around us.",
-    # ]
-    # image = "image.jpg"
+# pdf.setFont("clvm", 36)
+# pdf.drawCentredString(300, 770, title)
 
-    # pdf = canvas.Canvas(fileName)
-    # pdf.setTitle(documentTitle)
-    # pdfmetrics.registerFont(TTFont("clvm", "PT-Root-UI_Regular.ttf"))
+# pdf.setFillColorRGB(0, 0, 255)
+# pdf.setFont("Courier-Bold", 24)
+# pdf.drawCentredString(290, 720, subTitle)
 
-    # pdf.setFont("clvm", 36)
-    # pdf.drawCentredString(300, 770, title)
+# # drawing a line
+# pdf.line(30, 710, 550, 710)
 
-    # pdf.setFillColorRGB(0, 0, 255)
-    # pdf.setFont("Courier-Bold", 24)
-    # pdf.drawCentredString(290, 720, subTitle)
+# # creating a multiline text using
+# # textline and for loop
+# text = pdf.beginText(40, 680)
+# text.setFont("Courier", 18)
+# text.setFillColor(colors.red)
 
-    # # drawing a line
-    # pdf.line(30, 710, 550, 710)
+# for line in textLines:
+#     text.textLine(line)
 
-    # # creating a multiline text using
-    # # textline and for loop
-    # text = pdf.beginText(40, 680)
-    # text.setFont("Courier", 18)
-    # text.setFillColor(colors.red)
+# pdf.drawText(text)
 
-    # for line in textLines:
-    #     text.textLine(line)
+# pdf.drawInlineImage(image, 130, 400)
 
-    # pdf.drawText(text)
+# # saving the pdf
+# pdf.save()
 
-    # pdf.drawInlineImage(image, 130, 400)
-
-    # # saving the pdf
-    # pdf.save()
-
-    # response = HttpResponse(content_type="application/pdf")
-    # d = datetime.today().strftime("%Y-%m-%d")
-    # response["Content-Disposition"] = f"inline; filename={d}.pdf"
-    # buffer = BytesIO()
-    # p = canvas.Canvas(buffer, pagesize=A4)
-    # data = {}
-    # p.setFont("", 12, leading=None)
-    # p.setFillColorRGB()
-    # p.drawString(260,800, "Clavem")
-    # p.line()
-    # x1 =
-    # y1 =
-    # p.setTitle(f"Policy {d}")
-    # p.showPage()
-    # p.save()))
-    # pdf.buffer.getvalue()
-    # buffer.close()
-    # response.write(pdf)
-    # return response
+# response = HttpResponse(content_type="application/pdf")
+# d = datetime.today().strftime("%Y-%m-%d")
+# response["Content-Disposition"] = f"inline; filename={d}.pdf"
+# buffer = BytesIO()
+# p = canvas.Canvas(buffer, pagesize=A4)
+# data = {}
+# p.setFont("", 12, leading=None)
+# p.setFillColorRGB()
+# p.drawString(260,800, "Clavem")
+# p.line()
+# x1 =
+# y1 =
+# p.setTitle(f"Policy {d}")
+# p.showPage()
+# p.save()))
+# pdf.buffer.getvalue()
+# buffer.close()
+# response.write(pdf)
+# return response
 
 
 # def donate_page(request):

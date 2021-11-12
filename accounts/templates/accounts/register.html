@@ -19,7 +19,7 @@
       </button>
     </div> -->{% endcomment %}
     {% if form.password %}
-    <div class="border border-gray-300 bg-white shadow hover:shadow-md rounded-lg mt-5 mb-3">
+    <div class="border border-gray-300 bg-white shadow hover:shadow-md rounded-xl mt-5 mb-3">
       <div class="text-sm text-gray-900 py-3 px-2">
       {% comment %}<!-- <details class="space-y-1">
         <summary class="text-lg font-semibold inline-flex items-center">
@@ -44,7 +44,6 @@
       </div>
     </div>
     {% endif %}
-    <label for="id_captcha_1" hidden>Captcha</label>
     {{ form.captcha }}
     <p class="text-sm m-1 mt-3">{% trans 'Please read the' %}
       <a href="{{ privacy_url }}" class="polbtn un" target="_blank" rel="noopener" data-tippy-content="Your rights">Privacy</a> {% trans 'and' %}

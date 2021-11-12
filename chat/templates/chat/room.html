@@ -9,7 +9,7 @@
       {% if t.username == "Clvm" or t.username == "Clavem" or t.username == "clvm" or t.username == "clavem" %}
       <p class="flex items-center">
         <svg class="h-8 w-10 mt-1 -ml-1 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
-      {#<!-- <img src="{{ user.img.url }}" alt="{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.get_usrname }}{% endif %} {% trans 'Image' %}" class="h-11 w-11 border border-gray-300 rounded-full mr-2"> -->#}
+{#<!-- <img src="{{ user.img.url }}" alt="{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.get_usrname }}{% endif %} {% trans 'Image' %}" class="h-11 w-11 border border-gray-300 rounded-full mr-2"> -->#}
       {% else %}
       <p>
       {% endif %}
@@ -36,9 +36,14 @@
 {% block js %}
 <script>
 $(document).ready(function () {
-  const user = JSON.parse(document.getElementById('user').textContent);
-  const room = JSON.parse(document.getElementById('room').textContent);
-  const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/contact/' + room + '/');
+  const user = JSON.parse(document.getElementById('user').textContent),
+    room = JSON.parse(document.getElementById('room').textContent);
+  if (location.protocol == 'https:') {
+    ws = 'wss://';
+  } else {
+    ws = 'ws://';
+  }
+  const chatSocket = new WebSocket(ws + 'clavem.co:8001' + '/ws/contact/' + room + '/');// window.location.host if runserver 
   chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     if (data.text) {

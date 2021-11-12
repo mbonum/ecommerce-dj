@@ -7,8 +7,6 @@
 <script type="application/javascript" src="{% static 'js/popper-2.9.1.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'cookieconsent/cookieconsent.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'aos/aos.js' %}"></script>
-<script type="application/javascript" src="{% static 'modal-video/jquery-modal-video.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'modal-video/modal-video.min.js' %}"></script>
 {% include 'base/snippets/tippy.html' %}
 {% include 'base/snippets/aos.html' %}
 {% if sales_url in request.path %}
@@ -30,7 +28,9 @@
 <script type="application/javascript" src="{% static 'js/zum.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/cdev.sales.js' %}"></script>
 {% endcompress %}
-{% comment %}<!--<script type="application/javascript" src="{% static 'js/vue.min.js' %}"><script type="application/javascript" src="{% static 'js/vuex.min.js' %}"></script><link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
+{% comment %}<!--<script type="application/javascript" src="{% static 'modal-video/jquery-modal-video.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'modal-video/modal-video.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'js/vue.min.js' %}"><script type="application/javascript" src="{% static 'js/vuex.min.js' %}"></script><link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ recaptchav3 }}"></script>
 nonce="lrEwC5VX0M"<script rel="preload" type="text/javascript" src="{ % static 'js/fittext.js' % }"></script>
 <script rel="preload" type="text/javascript" src="{ % static 'js/fitvids.js' % }"></script><script rel="preload" type="text/javascript" src="{ % static 'js/letterings.min.js' % }"></script><script rel="preload" type="text/javascript" src="{ % static 'js/darkmode.min.js' % }"></script><script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@2.5.0/dist/alpine.js" integrity="sha384-MOdHkwpJ6Vkz2uUWS4XyU6nVUKonbGM1UHBS3//P+E7omEPPA0Qo7pDo4VdLzhGu" crossorigin="anonymous"></script>

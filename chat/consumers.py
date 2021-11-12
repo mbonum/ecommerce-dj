@@ -1,33 +1,13 @@
 import json
-
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-
 # from channels.consumer import SyncConsumer
 from django.utils.translation import gettext_lazy as _
-
 from .models import Message
 
 
-# class OpenConsumer(SyncConsumer):
-#     # Send message when a user connects
-#     def websocket_connect(self, event):
-#         self.send(
-#             {
-#                 "type": "websocket.accept",
-#                 "text": _(
-#                     "Hi, please keep open or save this page in bookmarks. We will answer you as soon as possible."
-#                 ),  # You will receive an email.
-#             }
-#         )
-
-#     def websocket_receive(self, event):
-#         self.send(
-#             {"type": "websocket.send", "text": event["text"], "user": "Clavem team"}
-#         )
-
-
 class ChatConsumer(AsyncWebsocketConsumer):
+    # https://channels.readthedocs.io/en/latest/topics/consumers.html
     async def connect(self):
         self.room = self.scope["url_route"]["kwargs"]["room"]
         self.room_group = f"chat_{self.room}"
@@ -36,7 +16,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # self.channel_name points to the channel layer instance and the channel name that will reach the consumer
         await self.accept()
 
-        # # Send message when a user connects
+        # Send message when a user connects
         # await self.channel_layer.group_send(
         #     self.room_group,
         #     {
@@ -77,3 +57,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def save_message(self, usr, room, msg):
         Message.objects.create(username=usr, room=room, text=msg)
+
+
+# class OpenConsumer(SyncConsumer):
+#     # Send message when a user connects
+#     def websocket_connect(self, event):
+#         self.send(
+#             {
+#                 "type": "websocket.accept",
+#                 "text": _(
+#                     "Hi, please keep open or save this page in bookmarks. We will answer you as soon as possible."
+#                 ),  # You will receive an email.
+#             }
+#         )
+
+#     def websocket_receive(self, event):
+#         self.send(
+#             {"type": "websocket.send", "text": event["text"], "user": "Clavem team"}
+#         )

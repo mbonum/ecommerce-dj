@@ -6,61 +6,61 @@
 <div id="cartapp" class="font-c-sans max-w-sm mx-auto">
   <div v-if="products.length > 0">
     <h1 class="h1 text-center">{% trans 'Cart' %}</h1>
-    <table class="cart-tabl e text-lg mx-auto">
+    <table class="text-lg mx-auto">
       <thead class="border-b border-gray-500">
         <tr>
-          <th scope="col" colspan="1"><span hidden>Index</span></th>
-          <th scope="col" class="tabcol">{% trans 'Product' %}</th>
-          <th scope="col" class="tabcol"><label for="id_qty">{% trans 'Quantity' %}</label></th>
-          <th scope="col" class="tabcol">{% trans 'Price' %}</th>
-          <th scope="col" colspan="1"><span hidden>Pad</span></th>
+          <th colspan="2" class="tabcol">{% trans 'Product' %}</th>
+          <th colspan="1" class="tabcol"><label for="id_qty">{% trans 'Quantity' %}</label></th>
+          <th colspan="1"><span hidden>Pad</span></th>
+          <th colspan="1" class="tabcol">{% trans 'Price' %}</th>
+          <th colspan="2"><span hidden>Pad</span></th>
         </tr>
       </thead>
-      <tbody class="cart-bod y items-center">
-        <tr v-for="p in products" class="cart-produc t bordb">
-          <td scope="row" colspan="1"></td>
-          <td class="pr-4 py-4">
-            <a :href="p.url" class="bt inline-flex" target="_blank" rel="noopener">[[ p.name ]]</a>
+      <tbody class="items-center">
+        <tr v-for="p in products" class="bordb">
+          <td colspan="2" class="tabcol pr-2 py-3">
+            <a :href="p.url" class="bt hover:underline flex items-center space-x-3" target="_blank" rel="noopener">
+              <img :src="p.img" alt="p.name" class="w-12 h-12 rounded"><span>[[ p.name ]]</span>
+            </a>
           </td>
-{% comment %}<!-- class="items-center bt" id="product-cart" <div id="product-cart-tip" class="hidden">
-  <img loading="lazy" :src="p.img" alt="p.name {% trans 'Image' %}" class="w-64 h-64">
-</div>  || p.quantity <= p.qty_instock-->{% endcomment %}
-          <td class="px-4">
-            <div class="flex items-center bg-white bord rounded-xl shadow space-x-2 px-2 py-1">
-              <button id="removeBtn" v-if="p.quantity < 2" @click="remove(p.id, p.item_total)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
-                <svg class="w-5 h-5 text-gray-400 hover:text-red-500 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
+          <td colspan="1" class="tabcol">
+            <div class="inline-flex items-center bg-white bord rounded-xl shadow space-x-2 px-2 py-1">
+              <button id="removeBtn" v-if="p.qty < 2" @click="remove(p.id, p.item_total)" class="qtybtn" data-tippy-content="{% trans 'Remove' %}">
+                <svg class="rembtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
               </button>
-              <button id="lessQty" v-if="p.quantity > 1" @click="decreaseQty(p.id, p.quantity, p.qty_instock, p.price)" class="rounded-full cr2">
-                <svg class="w-5 h-5 text-gray-400 hover:text-red-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+              <button id="lessQty" v-if="p.qty > 1" @click="decreaseQty(p.id, p.qty, p.qty_instock, p.price)" class="qtybtn">
+                <svg class="rembtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
               </button>
-              <span>[[ p.quantity ]]</span>
-              <button id="moreQty" v-if="p.quantity < p.qty_instock" @click="addQty(p.id, p.quantity, p.qty_instock, p.price)" class="rounded-full cr2">
-                <svg class="w-5 h-5 text-yellow-400 hover:text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+              <span>[[ p.qty ]]</span>
+              <button id="moreQty" v-if="p.qty < p.qty_instock" @click="addQty(p.id, p.qty, p.qty_instock, p.price)" class="qtybtn">
+                <svg class="addbtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
               </button>
-              <span v-if="p.quantity >= p.qty_instock" class="text-xs">
+              <span v-if="p.qty >= p.qty_instock" class="text-xs">
                 {% trans 'Max' %}
               </span>
             </div>
           </td>
-          <td class="px-4">
-            <span>{% if user.currency == "USD" %}${% else %}€{% endif %}[[ p.item_total ]]</span>
+          <th colspan="1" class="px-2"><span hidden>Pad</span></th>
+          <td colspan="1" class="tabcol">
+            {% if user.currency == "USD" %}${% else %}€{% endif %}[[ p.item_total ]]
           </td>
-          <td class="cart-item-remove-for m pl-4">{#<!-- % include 'carts/snippets/remove-product.html' with id=object.id cart=cart in_cart=True % -->#}
-            <button @click="removeItem(p.id, p.item_total, p.quantity)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
-              <svg class="w-5 h-5 text-gray-400 hover:text-red-500 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
+          <td colspan="1"><span hidden>Pad</span></td>
+          <td colspan="1" class="pl-4">{#<!--cart-item-remove-form  % include 'carts/snippets/remove-product.html' with id=object.id cart=cart in_cart=True % -->#}
+            <button @click="remove(p.id, p.item_total, p.qty)" class="qtybtn" data-tippy-content="{% trans 'Remove' %}">
+              <svg class="rembtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
             </button>
           </td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3"></td>{#<!-- if shipment cost + tax <th>Subtotal <p class="cart-subtotal">{{ cart.subtotal }}</p></td></tr>{ { object.tax }}% include 'base/snippets/currency.html' %}-->#}
-          <th scope="col" class="border-b border-gray-500 py-2">{% trans 'Total' %}</th>
+          <td colspan="4"><span hidden>Pad</span></td>{#<!-- if shipment cost + tax <th>Subtotal <p class="cart-subtotal">{{ cart.subtotal }}</p></td></tr>{ { object.tax }}% include 'base/snippets/currency.html' %}-->#}
+          <th colspan="2" class="tabcol border-b border-gray-500 py-2">{% trans 'Total' %}</th>
         </tr>
         <tr>
-          <td colspan="3"></td>
-          <td class="tabcol">
-            <p class="cart-total">{% if user.currency == "USD" %}${% else %}€{% endif %}[[ totalOrder ]]</p>
+          <td colspan="4"><span hidden>Pad</span></td>
+          <td colspan="2" class="tabcol py-2">
+            {% if user.currency == "USD" %}${% else %}€{% endif %}[[ totalOrder ]]
           </td>
         </tr>
       </tfoot>
@@ -68,7 +68,7 @@
     <div class="flex items-center justify-around text-lg mt-6">
       {% include 'base/snippets/backbtn.html' with url=shop_url %}
       <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full cr2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡">
-        <svg class="h-9 w-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
+        <svg class="w-9 h-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
         <span hidden>{% trans 'Buy with Crypto' %}</span>
       </a>
       {% include 'carts/snippets/checkbtn.html' %}
@@ -104,11 +104,11 @@
       decreaseQty(productId, qty, qty_instock, price) {
         var data = {
           'product_id': productId, 
-          'quantity': parseInt(qty) - 1,
+          'qty': parseInt(qty) - 1,
           'update': true
         };
         if (parseInt(qty) - 1 === 0) {
-          this.removeItem(productId);
+          this.remove(productId);
         } else {
           fetch('/cart/update/', {
             method: 'POST',
@@ -123,8 +123,8 @@
             for (var i = 0; i < this.products.length; i++) {
               var p = this.products[i];
               if (p.id === productId && qty <= qty_instock) {
-                p.quantity = parseInt(p.quantity) - 1;
-                p.item_total = parseInt(p.quantity) * parseFloat(p.price);
+                p.qty = parseInt(p.qty) - 1;
+                p.item_total = parseInt(p.qty) * parseFloat(p.price);
               }
             }
             store.commit('updateNrItems', -1);
@@ -138,7 +138,7 @@
       addQty(productId, qty, qty_instock, price) {
         var data = {
           'product_id': productId,
-          'quantity': parseInt(qty) + 1,
+          'qty': parseInt(qty) + 1,
           'update': true
         };
         fetch('/cart/update/', {
@@ -154,8 +154,8 @@
           for (var i = 0; i < this.products.length; i++) {
             var p = this.products[i];
             if (p.id === productId && qty < qty_instock) {
-              p.quantity = parseInt(p.quantity) + 1;
-              p.item_total = p.quantity * parseFloat(p.price);
+              p.qty = parseInt(p.qty) + 1;
+              p.item_total = p.qty * parseFloat(p.price);
             }
           }
           store.commit('updateNrItems', 1);
@@ -165,13 +165,11 @@
           console.log(error);
         })
       },
-      removeItem(productId, price, qty) {
+      remove(productId, price, qty) {
         var data = {
           'product_id': productId,
           'update': true
         };
-        store.commit('updateNrItems', -parseInt(qty));
-        store.commit('updateTotal', -parseFloat(price));
         fetch('/cart/remove-from-cart/', {
           method: 'POST',
           headers: {
@@ -183,6 +181,8 @@
         })
         .then((response) => {
           this.products = this.products.filter(product => product.id !== productId);
+          store.commit('updateNrItems', -parseInt(qty));
+          store.commit('updateTotal', -parseFloat(price));
         })
         .catch(function (error) {
           console.log(error);

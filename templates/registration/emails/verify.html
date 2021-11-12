@@ -7,15 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="{% static 'css/c-custom.min.css' %}" media="screen,projection">
   {% tailwind_css %}
-{% comment %}<!--  <link rel="stylesheet" type="text/css" href="{ % static 'css/main.css' %}" media="screen,projection">
+{% comment %}<!-- <link rel="stylesheet" type="text/css" href="{ % static 'css/main.css' %}" media="screen,projection">
  Once you activate, you can login {% include 'base/snippets/meta.html' %} -->{% endcomment %}
-  <title>{% trans 'Activare Clavem Account' %}</title>
+  <title>Clavem {% trans 'Activate Account' %}</title>
 </head>
 <body>
   <div class="wxs">
-    <svg class="animate-pulse s fill-current w-24 h-24 my-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    <svg class="animate-pulse s w-24 h-24 fill-current my-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     <p>{% trans 'Hi' %}{% if first_name %} {{ first_name }}{% endif %},</p>
-    <p>{% trans 'Please activate your Clavem account by clicking' %} <a href="{{ path }}" class="border border-gray-300 rounded-lg p-2">{% trans 'here' %}</a>.</p>
+    <p>{% trans 'Please activate your Clavem account by clicking' %} <a href="{{ path }}" class="bord rounded-xl p-2">{% trans 'here' %}</a>.</p>
     <p>{% trans 'Thank you' %},</p>
     <p>The Clavem Team</p>
   </div>

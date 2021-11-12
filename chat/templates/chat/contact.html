@@ -13,7 +13,6 @@
         </label>
         <div class="text-base lg:text-lg relative md:w-1/2 mx-auto">
           {{ form.message_type }}
-          
         </div>
         {% endif %}
       </div>
@@ -54,8 +53,7 @@
     </form>
   </div>
 </div>
-{% endblock %}
-{% comment %}<!--{ % block js %}
+{% endblock %}{% comment %}<!--{ % block js %}
 <script>
   if (document.querySelector("#chat_fn").value) {
     document.querySelector("#sendbtn").onclick = function (e) {

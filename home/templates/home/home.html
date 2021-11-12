@@ -1,43 +1,30 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 {% block title %}Home{% endblock %}
-{% block css %}
-<style>
-  .ddd {
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    outline-offset: 4px;
-  }
-  .front {
-    display: block;
-    transform: translateY(-6px);
-  }
-  .ddd:active .front {
-    transform: translateY(-2px);
-  }
-</style>
-{% endblock %}
 {% block media %}
 <div class="bg-black block h-screen space-y-8 shadow-xl">
-  <video loading="lazy" class="md:w-1/2 mx-auto" autoplay loop muted onerror="failed(e)">
-    <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.mp4' %}{% endif %}" type="video/mp4">
-    <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.ogg' %}{% endif %}" type="video/ogg">
-{#<!-- Fallback if the browser doesn't support video tag -->#}
-    <embed src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.swf' %}{% endif %}" type="application/x-shockwave-flash"></embed>
-  </video>
-  {% if object.video_link %}{#<!-- Link to external video src  data-aos-easing="ease" data-aos-delay="800"-->#}
-  <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-  {% elif object.img %}
   <div>
-    <img loading="lazy" src="{{ object.img.url }}" alt="{% trans 'Home' %}" class="bord rounded-xl shadow mx-auto">
-  </div>
-  {% endif %}
-  <div>
-    <svg class="text-gray-200 animate-pulse s fill-current mx-auto pb-6"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
-  </div>
-  <div>
+    <video loading="lazy" class="md:w-1/2 mx-auto" autoplay loop muted onerror="failed(e)">
+      <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.mp4' %}{% endif %}" type="video/mp4">
+      <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.ogg' %}{% endif %}" type="video/ogg">
+      {#<!-- Fallback if the browser doesn't support video tag -->#}
+      <embed src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.swf' %}{% endif %}" type="application/x-shockwave-flash"></embed>
+    </video>
+    {% if object.video_link %}
+    {% comment %}<!-- Link to external video src data-aos-easing="ease" data-aos-delay="800"<div>
     <svg class="w-7 h-7 text-gray-300 fill-current animate-bounce mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#scrol"></use></svg>
+  </div>-->{% endcomment %}
+    <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    {% elif object.img %}
+    <div>
+      <img loading="lazy" src="{{ object.img.url }}" alt="{% trans 'Home' %}" class="bord rounded-xl shadow mx-auto">
+    </div>
+    {% endif %}
+  </div>
+  <style>@keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px);} }
+  .logo { animation: bounce 0.8s; animation-direction: alternate; animation-iteration-count: infinite;}</style>
+  <div>
+    <svg class="text-gray-200 animate-pulse logo s fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
   </div>
 </div>
 {% endblock %}
@@ -61,28 +48,10 @@
     {{ object.text|safe }}
     {% endif %}
   </div>
-<div class="font-c-sans space-x-12">
-<button class="ddd bg-gray-600 rounded-lg shadow hover:-translate-y-0.5 transform transition focus:outline-none" data-aos="fade-in">
-  <a class="front text-xl bg-gray-300 rounded-lg px-6 py-3" href="{{ essays_url }}">
-    {% trans 'Read' %}
-  </a>
-</button>
-{% comment %}<!-- <button class="ddd bg-yellow-500 rounded-lg focus:outline-none">
-  <a class="front text-xl bg-yellow-300 rounded-lg px-6 py-3" href="{{ dose_url }}">
-    {% trans 'App' %}
-  </a>
-</button> -->{% endcomment %}
-<button class="ddd bg-yellow-500 rounded-lg shadow focus:outline-none" data-aos="fade-in">
-  <a class="front text-xl bg-yellow-300 rounded-lg px-6 py-3" href="{{ shop_url }}">
-    {% trans 'Shop' %}
-  </a>
-</button>
-</div>
 </div>
 {% endblock %}
 {% block js %}
 <script>
-$(".js-modal-btn").modalVideo();
 function failed(e) {
   switch (e.target.error.code) {
     case e.target.error.MEDIA_ERR_ABORTED:
@@ -105,7 +74,31 @@ function scrollFunction() {
   document.getElementById("haid").style.display = 'none';
 }
 </script>
-{% endblock %}{% comment %}<!--style="transform: scale(-1,1)"<p style="-webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8));" class="opacity-1 text-center animate-pulse uppercase text-gray-30 text-7xl font-c font-semibold text-transparent bg-gradient-to-tr bg-clip-text from-gray-200 to-yellow-300 pt-1">{ { com } }</p> border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300
+{% endblock %}{% comment %}<!--
+{% block css %}{% endblock %}
+<style>
+  .ddd { border: none; padding: 0; cursor: pointer; outline-offset: 4px;}
+  .front { display: block; transform: translateY(-6px);}
+  .ddd:active .front { transform: translateY(-2px);}
+</style>
+<div class="font-c-sans space-x-12">
+<button class="ddd bg-gray-600 rounded-lg shadow hover:-translate-y-0.5 transform transition focus:outline-none" data-aos="fade-in">
+  <a class="front text-xl bg-gray-300 rounded-lg px-6 py-3" href="{{ essays_url }}">
+    {% trans 'Read' %}
+  </a>
+</button>
+<button class="ddd bg-yellow-500 rounded-lg focus:outline-none">
+  <a class="front text-xl bg-yellow-300 rounded-lg px-6 py-3" href="{{ dose_url }}">
+    {% trans 'App' %}
+  </a>
+</button>
+<button class="ddd bg-yellow-500 rounded-lg shadow focus:outline-none" data-aos="fade-in">
+  <a class="front text-xl bg-yellow-300 rounded-lg px-6 py-3" href="{{ shop_url }}">
+    {% trans 'Shop' %}
+  </a>
+</button>
+</div>
+$(".js-modal-btn").modalVideo(); style="transform: scale(-1,1)"<p style="-webkit-filter: drop-shadow(5px 8px 6px rgba(122, 122, 122, .8)); filter: drop-shadow(5px 8px 3px rgba(214, 189, 174, 0.8));" class="opacity-1 text-center animate-pulse uppercase text-gray-30 text-7xl font-c font-semibold text-transparent bg-gradient-to-tr bg-clip-text from-gray-200 to-yellow-300 pt-1">{ { com } }</p> border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300
 background: hsl(340deg 100% 32%);
 border-radius: 12px;
 padding: 12px 42px;
@@ -116,9 +109,8 @@ color: white; <span class="hero__scroll aos-init aos-animate" data-aos="fade-up"
 https://appleple.github.io/modal-video/
 <button class="js-modal-btn" data-video-id="202177974">Open Vimeo</button>
 $(".js-modal-btn").modalVideo({channel:'vimeo'});<div class="text-center">
-    <button class="js-modal-btn text-gray-200 focus:outline-none" data-video-id="mdqjHwhv47w">{#<!-id youtube video->#}
-      <svg class="w-20 h-20 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#play"></use></svg>
-    </button>
-  </div>id="haid"
-if (document.body.scrollTop >= 200 || document.documentElement.scrollTop >= 200 ){
-  window.onscroll = scrollFunction;} -->{% endcomment %}
+<button class="js-modal-btn text-gray-200 focus:outline-none" data-video-id="mdqjHwhv47w">{#<!-id youtube video->#}
+  <svg class="w-20 h-20 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#play"></use></svg>
+</button>
+</div>id="haid"
+if (document.body.scrollTop >= 200 || document.documentElement.scrollTop >= 200 ){window.onscroll = scrollFunction;} -->{% endcomment %}

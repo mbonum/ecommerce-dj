@@ -1,16 +1,15 @@
 {% load i18n %}
 {% spaceless %}
 <div class="my-2">
-  <div class="inline-flex w-full text-sm space-x-1 bg-white border border-gray-300 rounded-lg shadow">
+  <div class="inline-flex w-full text-sm space-x-1 bg-white border border-gray-300 rounded-xl shadow">
     {% if audio %}
     <a data-tippy-content="{% trans 'Play CAPTCHA as audio file' %}" href="{{audio}}">
     {% else %}
-    <img src="{{image}}" alt="captcha" class="captcha rounded-lg">
-    <p>{% trans 'A little test to ensure you are human' %}.</p>
+    <img src="{{image}}" alt="captcha" class="captcha rounded-xl">
+    <p>{% trans 'A little test to let humans in and bots out' %}.</p>
     {% endif %}
   </div>
   <label for="id_captcha_1" class="text-gray-700 m-1">{% trans 'Result' %}</label>
-  <div class="bg-white border border-gray-300 hover:border-yellow-500 py-1 px-2 rounded-lg shadow" aria-label="Captcha">
-    {% include "django/forms/widgets/multiwidget.html" %}</div>
+  {% include "django/forms/widgets/multiwidget.html" %}
 </div>
 {% endspaceless %}

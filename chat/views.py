@@ -12,16 +12,18 @@ from .models import Message
 
 def contact(request):
     if request.user.is_authenticated:
-        form = ChatForm(request.POST or None)  # remove email
+        form = ChatForm(request.POST or None)
     else:
         form = ContactForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             if request.user.is_authenticated:
+                # The form doesn't ask the name
                 e = request.user.email
-                name = e[: e.index("@")]  # remove email domain
+                # Remove email domain
+                name = e[: e.index("@")]
             else:
-                name = request.POST.get("first_name")  # , "Anonym"
+                name = request.POST.get("first_name")
             room = name + "-" + random_string_generator(8)
             msg = str(request.POST.get("topic") + "\n" + request.POST.get("text"))
             # form Meta fields
@@ -93,7 +95,7 @@ def room(request, room):
 
 
 # def contact_page(request):
-#     """docs.djangoproject.com/en/3.2/topics/email/"""
+#     # docs.djangoproject.com/en/3.2/topics/email
 #     form_class = ContactForm(request.POST or None)
 
 #     if form_class.is_valid():

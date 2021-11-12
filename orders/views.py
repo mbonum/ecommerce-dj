@@ -123,7 +123,7 @@ class GenerateOrderPDF(View):
         # qty = order.cart.user_qty#products.quantity
         currency = order.cart.user.currency
         total = order.total
-        date = order.updated_at
+        date = order.updated
         context = {
             "order_id": order_id,
             "customer": customer,

@@ -9,9 +9,7 @@ class RequestFormAttachMixin(object):
 
 
 class NextUrlMixin(object):
-    """
-    Redirect to checkout
-    """
+    # Redirect to checkout
 
     default_next = "/"
 

@@ -4,8 +4,9 @@ Make all apps searchable
 """
 from itertools import chain
 
-from django.http import Http404
-from django.shortcuts import render  # redirect from django.db.models import Q
+# from django.http import Http404
+from django.shortcuts import render  # redirect
+# from django.db.models import Q
 from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView

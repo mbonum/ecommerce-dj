@@ -1,16 +1,11 @@
-"""
-Education models (add other contents such as films)
-from django.db.models.signals import pre_save, post_save
-"""
+# Education models (Future: add other contents such as films)
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
 from django.utils.safestring import mark_safe
-
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
-
 from tags.models import Tag
 
 

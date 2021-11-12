@@ -15,7 +15,9 @@
       },
     "content": {
     "message": "{{ com }}'s services may collect data while you're using them to continuously improve your experience.",
-    "allow": "Ok, thanks for letting me know.",
+    "allow": "Ok, I agree",
+    "deny": "Opt out",
+    "dismiss": "Close",
     "link": "<div class='inline-flex items-center'>Transparency: Please, read about the data we may collect. <svg class='w-5 h-5 inline-flex ml-2'><use xlink:href=\"{% static 'img/svg-defs.svg' %}#eu\"></use></svg></div>",
     "href": "{{ cookie_url }}",
     "target": "_blank",
@@ -24,21 +26,15 @@
     onStatusChange: function (status) { console.log(this.hasConsented() ? 'enable cookies' : 'disable cookies'); },
     })
   });
-</script>
-{% comment %}<!-- #F8F8F8 ECC24C F59E0B agree using cookie See your data add data graph in home/<username>-data transparency https://www.osano.com/cookieconsent/documentation/javascript-api/
+</script>{% comment %}<!-- #F8F8F8 ECC24C F59E0B agree using cookie See your data add data graph in home/<username> data transparency https://www.osano.com/cookieconsent/documentation/javascript-api/
 Privacy Reminder: the sharing system used for this video implies that some technical information about your system (such as a public IP address) can be sent to other peers. More information
   elements: {
   message: '<span id="cookieconsent:desc" class="cc-message">To improve your experience, {{ com }}\'s services may collect data about you using cookie.</span>',
   messagelink: '<span id="cookieconsent:desc" class="cc-message"><a aria-label="Learn more" tabindex="0" class="cc-link" href="{{ cookie_url }}" target="_blank">Learn more</a></span>',
   allow: '<a aria-label="allow cookies" tabindex="0" class="cc-btn cc-allow"></a></div>',
 },
-#171717 313131 313A45
-EBE4E5 84BD00 88B04B 5AFFDF 2BE8C2
-B8B1B2 ECDDCC
+#171717 313131 313A45 EBE4E5 84BD00 88B04B 5AFFDF 2BE8C2 B8B1B2
 "theme": "edgeless",
 https://www.cookiesandyou.com
-"allow": 'I agree',
-"deny": 'No',
-"link": "Learn more",
 "close": '&#x274c;',
 "policy": 'Cookie Policy'-->{% endcomment %}

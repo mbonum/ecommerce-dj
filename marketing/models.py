@@ -14,8 +14,8 @@ class MarketingPreference(models.Model):
     subscribed = models.BooleanField(default=True)
     mailchimp_subscribed = models.BooleanField(blank=True, null=True)
     mailchimp_msg = HTMLField(blank=True, null=True)
-    timestamp = models.DateTimeField(_("Timestamp"), auto_now_add=True)  # created_at
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True)  # timestamp
+    updated = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
         return self.user.email

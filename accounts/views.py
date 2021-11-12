@@ -50,7 +50,7 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 
 class AccountEmailActivateView(FormMixin, View):
     # Send email when user creates an account SuccessMessageMixin
-    success_url = reverse_lazy("login")  # "/login/"
+    success_url = reverse_lazy("login")
     form_class = ReactivationEmailForm
     key = None
 
@@ -62,7 +62,7 @@ class AccountEmailActivateView(FormMixin, View):
             if confirm_qs.count() == 1:
                 obj = confirm_qs.first()
                 obj.activate()
-                messages.success(#info
+                messages.success(
                     request, _("Your email has been confirmed. Please login.")
                 )
                 return redirect("login")
@@ -133,17 +133,19 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         context["title"] = _("Edit Profile")  # Personilize Account Details
         context["img"] =  self.request.user.img
         if self.request.user.first_name:
-            context["fn"] =  self.request.user.first_name
+            context["fn"] = self.request.user.first_name
         else:
-            context["usr"] =  self.request.user.get_usrname
+            context["usr"] = self.request.user.get_usrname
         return context
 
     def form_valid(self, form):
-        messages.success(#info
+        messages.success(
             self.request, _("Account Updated")
         )
-        img = self.request.FILES#form.cleaned_data.get("img")
-        first_name = form.cleaned_data.get("first_name")# None
+        img = self.request.FILES
+        # form.cleaned_data.get("img")
+        first_name = form.cleaned_data.get("first_name")
+        # None
         last_name = form.cleaned_data.get("last_name")
         usr = CUser.objects.get(email=self.request.user)
         usr.img = img
@@ -194,16 +196,16 @@ class RegisterView(SuccessMessageMixin, CreateView):
     # send_mail(subject, msg, from_email, to_list, fail_silently=True)
 
     # if form.is_valid():
-    ##hCaptcha validation
+    ## hCaptcha validation
     # token = requests.POST.get['h-captcha-response']
 
-    # # Build payload with secret key and token.
+    ## Build payload with secret key and token.
     # data = { 'secret': settings.HCAPTCHA_SECRET_KEY, 'response': token }
 
-    # # Make POST request with data payload to hCaptcha API endpoint.
+    ## Make POST request with data payload to hCaptcha API endpoint.
     # response = requests.post(url=settings.VERIFY_URL, data=data)
 
-    # # Parse JSON from response. Check for success or error codes.
+    ## Parse JSON from response. Check for success or error codes.
     # response_json = json.parse(response.content)
     # success = response_json['success']
     # your_captcha_response = requests.POST.get('h-captcha-response')

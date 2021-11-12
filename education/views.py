@@ -1,33 +1,35 @@
 import filecmp
 import os
+from bs4 import BeautifulSoup
 from pathlib import Path
-
 from django.conf import settings
-
-# from core.utils import render_to_pdf
-from bs4 import BeautifulSoup  # pip install beautifulsoup4
-
-# from django.http import HttpResponse# Http404
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView  # DetailView, View
-from gtts import gTTS  # pip install gTTS
-
-from .models import Book  # , book_media_path
+from django.views.generic import ListView
+from gtts import gTTS
+from .models import Book
 
 
 class ReadListView(ListView):
+    # Show list of books
     template_name = "education/blist.html"
 
     def get_queryset(self, *args, **kwargs):
         return Book.objects.all().filter(active=True).order_by("index")
 
 
-def details(request, slug):
+def detail(request, slug):
+    """
+    Filter database and book that matches the slug in the url.
+    Generate audio from the text field.
+    If there is a successive instance, return it to get the link for the next button.
+    """
     book = get_object_or_404(Book, slug=slug)
     p = "media/edu/{slug}/"
-    # str(settings.MEDIA_ROOT) + f"{slug}" str(settings.MEDIA_ROOT + book_media_path(f"{slug}", f"{slug}") + ".mp3")
+    # str(settings.MEDIA_ROOT) + f"{slug}"
+    # str(settings.MEDIA_ROOT + book_media_path(f"{slug}", f"{slug}") + ".mp3")
     os.makedirs(p, exist_ok=True)
     f = f"{p}{slug}.mp3"
+    # Check if the file already exist before generating the audio file
     if not book.audio and not Path(f).is_file():
         b = ""
         for s in book.section_set.all():
@@ -50,7 +52,6 @@ def details(request, slug):
 
 
 # class ReadDetailSlugView(DetailView):
-
 #     queryset = Book.objects.all()
 #     template_name = 'education/bnotes.html'
 

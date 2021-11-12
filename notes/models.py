@@ -26,7 +26,7 @@ USER = settings.AUTH_USER_MODEL
 # def filter_by_instance(self, instance):
 #     c_type = ContentType.objects.get_for_model(instance.__class__)
 #     _id = instance.id
-#     qs = super(NoteManager, self).filter(content_type=c_type, obj_id=_id).filter(parent=None)#.order_by('-created_at')
+#     qs = super(NoteManager, self).filter(content_type=c_type, obj_id=_id).filter(parent=None)#.order_by('-created')
 #     return qs
 
 
@@ -43,7 +43,7 @@ class Note(MPTTModel):
     #     blank=True, null=True, default=False, help_text=_("Hide name/email")
     # )
     # reply = models.BooleanField('Activate reply + email notification', blank=True, null=True, default=True)
-    created_at = models.DateTimeField(
+    created = models.DateTimeField(
         _("Created at"), auto_now_add=True, editable=False
     )
     active = models.BooleanField(
@@ -54,11 +54,11 @@ class Note(MPTTModel):
     # objects = NoteManager()
 
     # class Meta:
-    #     ordering = ["-created_at"]  # higher likes # put the most interesting at the top
+    #     ordering = ["-created"]  # higher likes # put the most interesting at the top
 
     class MPTTMeta:
         verbose_name_plural = _("Notes")
-        order_insertion_by = ["created_at"]
+        order_insertion_by = ["created"]
 
     def __str__(self):
         if self.user.first_name:

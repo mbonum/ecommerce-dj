@@ -1,5 +1,5 @@
 {% load i18n static %}
 <div class="block">
-  <a href="{% if url %}{{ url }}{% elif id %}#{{ id }}{% else %}../{% endif %}" class="inline-flex hover:text-black hover:bg-gray-hover{% if not edu_url in request.path and not essays_url in request.path %} bord bg-white cr2 hover:border-yellow-500 shadow{% endif %} items-center px-2 py-1">
+  <a href="{% if url %}{{ url }}{% elif id %}#{{ id }}{% else %}../{% endif %}" class="inline-flex hover:text-black hover:bg-gray-hover{% if not edu_url in request.path and not essays_url in request.path %} bord bg-white cr2 rounded-xl hover:border-yellow-500 shadow{% endif %} items-center px-2 py-1">
   <svg class="h-4 w-3 fill-current mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg> {% trans 'Back' %}</a>
 </div>

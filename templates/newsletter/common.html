@@ -1,24 +1,23 @@
 {% load i18n %}
 {% load static %}
-{% url 'home' as home_url %}
+{% url 'home:home' as home_url %}
 {% with com='Clavem' %}
 <!DOCTYPE html>
 <html>
 <head>
-  {% include 'base/snippets/meta.html' %}
-  {% comment %}<!-- <meta charset="utf-8">
+  {% include 'base/snippets/head.html' %}
+{% comment %}<!-- <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="{% static 'img/favicon/c-32.ico' %}" rel="icon"> -->{% endcomment %}
+  <link href="{% static 'img/favicon/c-32.ico' %}" rel="icon">{% include 'base/css.html' %}-->{% endcomment %}
   <title>{% block title %}{% trans 'Newsletter' %}{% endblock %} · {{ com }}</title>
-  {% include 'base/css.html' %}
   {% block header %}{% endblock %}
 </head>
-<body>
-  <div class="w-full h-full absolute bg-gray-al flex flex-col">
-    <div class="justify-around items-center mx-auto my-40 text-black">
+<body class="bg-primary cb">
+  <div class="flex-col w-screen h-screen">
+    <div class="font-c-sans text-black text-lg mx-auto my-24">
       <a href="{{ home_url }}" title="{{ com }}" alt="{{ com }} Logo" target="_blank">
-        <svg class="inline fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#c"></use></svg>
+        <svg class="animate-pulse s fill-current mb-12 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
       </a>
       {% block body %}{% endblock %}
     </div>

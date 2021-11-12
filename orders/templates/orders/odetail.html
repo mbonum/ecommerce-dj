@@ -6,7 +6,7 @@
 <div class="wxs">
   <div class="text-center bordb pb-2">
     <h1 class="h1">{% trans 'Order' %} ID: {{ object.order_id }}</h1>
-    <a href="{{ object.get_invoice_url }}" class="bt inline-flex items-center" target="_blank" rel="noopener">
+    <a href="{{ object.get_invoice_url }}" class="bt hover:underline inline-flex items-center" target="_blank" rel="noopener">
       <svg class="fill-current w-5 h-6 mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#pdf"></use></svg> {% trans 'Download Invoice' %}
     </a>
   </div>

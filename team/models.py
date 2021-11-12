@@ -32,7 +32,7 @@ class Member(models.Model):
         null=True,
         help_text=_("Consistent style"),
     )  # only faces, mask effect, transparent bg
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True)
+    created = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True)
     show = models.BooleanField(default=False)
 
     class Meta:

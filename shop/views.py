@@ -15,7 +15,8 @@ from django.utils.translation import gettext_lazy as _
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from orders.models import ProductPurchase
-from .models import Category, Product, ProductFile
+from .models import Category, Product, ProductFile, Review
+from .forms import ReviewForm
 
 
 def category_detail(request, slug):
@@ -57,12 +58,54 @@ class ProductDetailSlugView(ObjectViewedMixin, DetailView):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
         cart, new_obj = Cart.objects.new_or_get(self.request)
         context["cart"] = cart
+        slug = self.kwargs.get("slug")
+        # p = get_object_or_404(Product, slug=slug, active=True)
+        try:
+            p = Product.objects.get(slug=slug)
+        except Product.DoesNotExist:
+            messages.info(self.request, _(
+                "Sorry, the product is not available now. Contact us to know when the product will be available."
+            ))
+        context["itemstr"] = "{'id': '%s', 'name': '%s', 'price': '%s', 'digital': '%s', 'quantity': '%s', 'qty_instock': '%s', 'item_total': '%s', 'img': '%s'}" % (p.id, p.name, p.price, p.is_digital, p.order_qty, p.qty_instock, p.total_item, p.thumbnail)#img
+        # context["added"] = False
+
+        usr_review = None
+        if self.request.method == "POST":
+            review_form = ReviewForm(self.request.POST)
+            if review_form.is_valid():
+                usr_review = review_form.save(commit=False)
+                usr_review.item = p
+                usr_review.user = request.user
+                usr_review.save()
+                return HttpResponseRedirect(p.get_absolute_url())
+        else:
+            review_form = ReviewForm()
+
+        reviews = p.reviews.filter(active=True).order_by("created")
+
+        context["form"] = review_form
+        context["reviews"] = reviews
+        # Show slider if the notes are more than 3
+    # paginator = Paginator(reviews, 3)
+    # page = request.GET.get("page", 1)
+    # try:
+    #     revs = paginator.page(page)
+    # except PageNotAnInteger:
+    #     revs = paginator.page(1)
+    # except EmptyPage:
+    #     revs = paginator.page(paginator.num_pages)
+
         return context
 
     def get_object(self, *args, **kwargs):
         slug = self.kwargs.get("slug")
-        instance = get_object_or_404(Product, slug=slug, active=True)#in_stock
-        return instance
+        try:
+            p = Product.objects.get(slug=slug, active=True)
+        except Product.DoesNotExist:
+            messages.info(request, _(
+                "Sorry, the product is not available now. Contact us to know when the product will be available."
+            ))
+        return p
 
 
 class UserProductHistoryView(LoginRequiredMixin, ListView):
@@ -77,7 +120,8 @@ class UserProductHistoryView(LoginRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        views = request.user.objectviewed_set.by_model(Product, model_queryset=True)# [:3] show specific number
+        views = request.user.objectviewed_set.by_model(Product, model_queryset=True)
+        # [:3] show specific number
         return views
 
 
@@ -93,7 +137,7 @@ class ProductDownloadView(View):
         # product_obj.get_downloads().filter(pk=_pk)
         downloads_qs = ProductFile.objects.filter(pk=pk, product__slug=slug)
         if downloads_qs.count() != 1:
-            raise Http404(_("Apologies, product not found. Contact us if you bought the item."))
+            raise Http404(_("Sorry, product not found. Send us the order id if you bought the item."))
         download_obj = downloads_qs.first()
         can_download = False
         user_ready = True

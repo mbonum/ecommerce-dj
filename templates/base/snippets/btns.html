@@ -13,15 +13,13 @@
       {% trans 'Privacy' %}</a>
     {% endif %}
     </div>
-    {% if object.pdf %}
     <div class="hover:text-black hover:bg-gray-hover">
-      <a href="{{ object.pdf.url }}" data-tippy-content="{% trans 'Print' %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2" target="_blank" rel="noopener">
+      <a href="{% if object.pdf %}{{ object.pdf.url }}{% else %}{% url 'home:policy-pdf' slug=object.slug %}{% endif %}" data-tippy-content="{% trans 'Print' %}" class="flex items-center rounded-lg focus:outline-none py-1 px-2" target="_blank" rel="noopener">
         <svg class="fill-current w-4 h-4 mr-1">
           <use xlink:href="{% static 'img/svg-defs.svg' %}#dl"></use>
         </svg> PDF
       </a>
     </div>
-    {% endif %}
     <div class="hover:text-black border-l border-gray-300 hover:bg-gray-hover">
     {% if request.path == cookie_url %}
     <a href="{{ privacy_url }}" class="flex items-center rounded-lg focus:outline-none py-1 px-2"  data-tippy-content="{% trans 'Your rights' %}">{% trans 'Privacy' %}

@@ -1,39 +1,15 @@
 from django.contrib import admin
 from django.forms import ModelForm
-
-# from django_toggle_switch_widget.widgets import DjangoToggleSwitchWidget
 from .models import Book, Section
 
-# TEST = ""
-# class BookModelForm(ModelForm):
-#     class Meta:
-#         model = Book
-#         exclude = ()
-#         widgets = {
-#             "active": DjangoToggleSwitchWidget(
-#                 round=True, klass="django-toggle-switch-success"
-#             ),
-#         }
-#  fieldsets = (
-# ("Section 1", {
-#    "fields": ("", ""),
-#    "description": "%s" % TEXT,
-#  }),
-# ("Section 2", {
-#    "fields": ("",),
-#    "classes": ("collapse",),
-#  }),
-# )StackedInline
 
-
-class SectionInline(admin.TabularInline):  # StackedInline
+class SectionInline(admin.TabularInline):
     model = Section
     extra = 2
     prepopulated_fields = {"slug": ("title",)}
 
 
 class BookAdmin(admin.ModelAdmin):
-    # form = BookModelForm
     list_display = ("title", "index", "created", "img_tag")
     inlines = [SectionInline]
     list_editable = ("index",)

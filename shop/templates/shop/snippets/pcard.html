@@ -7,7 +7,7 @@
     <svg class="w-64 h-64 text-gray-400 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     {% endif %}
     <div class="space-y-2 m-4">
-      <div class="flex justify-between">
+      <div class="flex items-center justify-between">
         <h1 class="text-lg">{{ object.name }}</h1>
         <p>{% if user.currency == "USD" %}${% else %}€{% endif %}{{ object.price }}</p>
         {% if 'Audiobook' in object.category.name or 'Audiobooks' in object.category.name %}

@@ -5,7 +5,10 @@ __pycache__
 docs/locale/
 node_modules/
 tests/report/
-clvm/
+.venv/
+*.lock
+poetry.toml
+pyproject.toml
 emails/
 fixtures/
 media/

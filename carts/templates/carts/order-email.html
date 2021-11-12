@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load static %}
+{% url 'home' as home_url %}
+{% with com='Clavem' %}
+<!DOCTYPE html>
+<html>
+<head>
+  {% include 'base/snippets/meta.html' %}
+  <title>{% block title %}{% trans 'Order Sent' %}{% endblock %} · {{ com }}</title>
+  {% include 'base/css.html' %}
+  {% block header %}{% endblock %}
+</head>
+<body>
+  <div class="w-full h-full absolute bg-gray-al flex flex-col">
+    <div class="justify-around items-center mx-auto my-40 text-black">
+      <a href="{{ home_url }}" title="{{ com }}" alt="{{ com }} Logo" target="_blank">
+        <svg class="inline fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#c"></use></svg>
+      </a>
+    </div>
+    <div>
+      <h1>{% trans 'Order' %} ID: {{ order_id }}</h1>
+      
+    </div>
+  </div>
+</body>
+</html>
+{% endwith %}

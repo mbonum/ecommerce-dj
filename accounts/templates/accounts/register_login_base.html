@@ -13,15 +13,15 @@
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 <head {% meta_namespaces %}>
-  {% include 'base/snippets/meta.html' %}
+  {% include 'base/snippets/head.html' %}
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
 <body class="bg-footer">
   <div id="nojs" class="max-w-xs py-16 mx-auto">
     {% include 'base/snippets/message.html' %}
     <div class="font-c-sans border border-gray-300 shadow-md bg-primary text-black text-lg rounded-xl">
-      <div class="mt-6">
-        <svg class="mx-auto animate-pulse s fill-current w-24 h-24"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+      <div class="mt-8">
+        <svg class="animate-pulse s w-24 h-24 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
       </div>
       {% block content %}{% endblock %}
     </div>
