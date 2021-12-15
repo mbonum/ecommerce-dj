@@ -24,8 +24,8 @@ DEFAULT_CHARSET = "utf-8"
 VERSION = 1
 
 ENV_NAME = "Clavem"
-BASE_URL = "www.clavem.co:8000"
-# http://www. mgbonum.com
+BASE_URL = "clavem.co:8000"
+# https://www. mgbonum.com
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 PROJECT_DIR = Path(__file__).resolve(strict=True)
@@ -214,8 +214,8 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
 # # https://docs.djangoproject.com/en/3.2/howto/error-reporting/
 
 ROOT_URLCONF = "core.urls"
-ROOT_HOSTCONF = "core.hosts"
-DEFAULT_HOST = "www"
+# ROOT_HOSTCONF = "core.hosts" # django_hosts
+# DEFAULT_HOST = "www"
 DEFAULT_REDIRECT_URL = BASE_URL  # https
 PARENT_HOST = BASE_URL  # "www.clavem.co:8000"
 APPEND_SLASH = True

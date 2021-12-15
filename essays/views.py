@@ -33,7 +33,7 @@ from notes.forms import NoteForm
 # from django.core.files.base import ContentFile
 
 
-def index(request):
+def essays(request):
     essays = Essay.objects.all().filter(publish=True).order_by("index")
     context = {
         "title": _("Writings"),

@@ -35,9 +35,9 @@
       {% else %}
         {% if edu_url in request.path or essays_url in request.path %}
         <span>Øutis</span>
-        <span class="sep">·</span>
         {% endif %}
       {% endif %}
+      <span class="sep">·</span>
       <span class="inline-flex items-center" {% if essays_url in request.path %}data-tippy-content="Publication date (years since the current form of humans evolved)"{% endif %}>{% if essays_url in request.path %}20{% endif %}{% if not edu_url in request.path and not essays_url in request.path %}Effective date: {% endif %}{{ object.updated|date:'Y-m-d' }}</span>
       </div>
       <div>
@@ -132,17 +132,17 @@
     { { readers }}</a>
   </div>
   { % endif %} @click.away="open = false" x-data="{ open: false }"-->{% endcomment %}
-  {% if notes.all %}
+  {% if notes %}
   <div id="noteapp">
     <div class="font-c-sans text-center text-lg my-4">
-      <button @click="show()" class="border-2 border-yellow-300 shadow rounded-full cr2 px-3 py-1" type="button">
+      <button @click="show()" class="showbtn rounded-full" type="button">
         <p v-if="!open" class="inline-flex items-center space-x-2">
           <span>{% blocktranslate %}Show {{ com }} Community Contributions{% endblocktranslate %}</span>
-          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+          <svg class="showsvg"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
         </p>
         <p v-if="open" class="inline-flex items-center space-x-2">
           <span>{% trans 'Hide' %}</span>
-          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+          <svg class="showsvg"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
         </p>
       </button>
     </div>

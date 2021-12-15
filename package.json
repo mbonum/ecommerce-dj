@@ -1,0 +1,13 @@
+{
+  "name": "cw",
+  "version": "1.0.0",
+  "author": "<mgbonum@protonmail.com>",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "standard-version": "^9.3.2"
+  }
+}

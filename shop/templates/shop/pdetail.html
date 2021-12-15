@@ -78,22 +78,26 @@
           <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
         </div>
       </button>
-      <a href="{{ shop_url }}" class="block bg-white border-4 border-yellow-400 text-center hover:border-yellow-500 overflow-hidden cr2 rounded-full px-2 py-1">
-        {% trans 'Continue shopping' %}
+      <a href="{{ shop_url }}" class="block text-center showbtn rounded-full">
+        <div class="inline-flex items-center space-x-2">
+          <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#arrow"></use></svg>
+          <span>{% trans 'Back to Shop' %}</span>
+        </div>
       </a>
     </div>
   </div>
-  {% if request.user.email and reviews %}
-  <div>
+  {% if request.user.email %}
+  <div class="lg:w-2/5 mx-auto">
+  {% if reviews %}
     <div class="font-c-sans text-center text-lg my-4">
-      <button @click="show()" class="bg-white border-2 border-yellow-300 shadow rounded-full cr2 px-3 py-1" type="button">
+      <button @click="show()" class="showbtn rounded-full" type="button">
         <p v-if="!open" class="inline-flex items-center space-x-2">
           <span>{% trans 'Show Reviews' %}</span>
-          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+          <svg class="showsvg"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
         </p>
         <p v-if="open" class="inline-flex items-center space-x-2">
           <span>{% trans 'Hide' %}</span>
-          <svg class="w-4 h-4 text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+          <svg class="showsvg"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
         </p>
       </button>
     </div>
@@ -116,7 +120,7 @@
           {% endif %}
           </p>
           <span class="sep">·</span>
-          <span>20{{ node.created|date:'Y-m-d' }}</span>
+          <span>{{ node.created|date:'Y-m-d' }}</span>
 {% comment %}<!--<form method="post" action="{% url 'read:like' object.slug node.id %}"> {% csrf_token %}
   <button class="font-c-sans inline-flex items-center cr2 px-2 py-1" name="note_id" value="{{ node.id }}" type="submit" data-tippy-content="Bravo">{{ node.tot_likes }}
     <svg class="w-5 h-5 fill-current hover:text-yellow-500 ml-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clap"></use></svg>
@@ -133,13 +137,12 @@
         {% endif %}
       </div>
       {% endrecursetree %}
-      <div class="font-c-sans pt-1 mt-2">
-        <label for="id_rev" hidden>{% trans 'Review' %}</label>
+      {% endif %}
+      <div class="font-c-sans space-y-2 pt-1 mt-2">
+        <label v-if="!open" for="id_rev" class="lf h1">{% trans 'Review' %}</label>
         <form id="id_rev_form" method="post"> {% csrf_token %}
           {{ form.body }}
-{% comment %}<!--<div class="text-right items-center space-x-1 mt-3 mr-1">
-<label for="id_private" class="text-sm" data-tippy-content="Anonym">{% trans 'Check to hide your name' %}</label>
-{{ form.private }}</div> data-tippy-content="{% trans 'Are you adding value to the conversation?' %}"-->{% endcomment %}
+{% comment %}<!--check order id to avoid fake data-tippy-content="{% trans 'Are you sharing valuable information to people?' %}"-->{% endcomment %}
           <button class="cbtn px-2 py-1 mt-3" type="submit">
             <div class="text-center text-lg inline-flex items-center space-x-1">
               <span>{% trans 'Share' %}</span>
@@ -148,11 +151,11 @@
           </button>
         </form>
       </div>
-      {% else %}
-      <div class="font-c-sans text-center text-lg">
-        <p class="bordt inline-flex items-center pt-2">{% trans 'Did you buy the product?' %}</p>
-        <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="regbtn">{% trans 'Log in' %}</a> to give your feedback</p>
-      </div>
+    </div>
+    {% else %}
+    <div class="font-c-sans text-center text-lg">
+      <p class="bordt inline-flex items-center pt-2">{% trans 'Did you buy the product?' %}</p>
+      <p><a href="{{ login_url }}?next={{ request.get_full_path|urlencode }}" class="regbtn">{% trans 'Log in' %}</a> to give your feedback</p>
     </div>
   </div>
   {% endif %}
