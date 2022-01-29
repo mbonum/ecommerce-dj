@@ -1,17 +1,17 @@
-from ariadne import QueryType, make_executable_schema
+# from ariadne import QueryType, make_executable_schema
 
-type_defs = """
-    type Query {
-        hello: String!
-    }
-"""
+# type_defs = """
+#     type Query {
+#         hello: String!
+#     }
+# """
 
-query = QueryType()
-
-
-@query.field("hello")
-def resolve_hello(*_):
-    return "Hello"
+# query = QueryType()
 
 
-schema = make_executable_schema(type_defs, query)
+# @query.field("hello")
+# def resolve_hello(*_):
+#     return "Hello"
+
+
+# schema = make_executable_schema(type_defs, query)

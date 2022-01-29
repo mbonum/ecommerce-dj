@@ -50,7 +50,7 @@ INSTALLED_APPS += [
     "orders",
     "analytics",
     "shorturl",
-    "ariadne.contrib.django",# "graphene_django",
+    # "ariadne.contrib.django",# "graphene_django",
 ]
 
 AUTH_USER_MODEL = "accounts.CUser"

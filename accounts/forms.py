@@ -1,4 +1,4 @@
-# from django.utils.http import is_safe_url from django_registration.forms import RegistrationForm
+# from django.utils.http import url_has_allowed_host_and_scheme from django_registration.forms import RegistrationForm
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3#, ReCaptchaV2Checkbox
 from captcha.fields import CaptchaField, CaptchaTextInput
@@ -25,6 +25,165 @@ USER = get_user_model()
 
 class CustomCaptchaTextInput(CaptchaTextInput):
     template_name = "accounts/snippets/captcha.html"
+
+
+class RegisterForm(forms.ModelForm):
+    email = forms.EmailField(
+        label=_("Email"),
+        widget=forms.EmailInput(
+            attrs={
+                "id": "id_email",
+                # "placeholder": "Email",
+                "autofocus": True,
+                "class": "form",
+            }
+        ),
+    )
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "id": "id_password",
+                # "placeholder": _("Password"),
+                "autocomplete": "current-password",
+                "class": "form",
+            }
+        ),
+        help_text=password_validation.password_validators_help_text_html(),
+    )  # 'data-toggle': 'password,'
+    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
+                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
+            }))
+    # Removed to smooth UX
+    # password2 = forms.CharField(label='', strip=False, widget=forms.PasswordInput(
+    #     attrs={'placeholder': 'Confirm Password'
+
+    # captcha = ReCaptchaField(label='', widget=ReCaptchaV3)
+    # captcha = ReCaptchaField(label='', widget=ReCaptchaV2Checkbox(
+    #     attrs={
+    #         'data-theme': 'dark',
+    #         'data-size': 'compact',
+    #     }#, api_params={'hl': 'cl', 'onload': 'onLoadFunc'}
+    #     )#, public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
+    # #private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
+    # )
+
+    # password = PasswordField()# add psw strength estimator on the frontend js
+    # password2 = PasswordConfirmationField(confirm_with='password1')
+    class Meta:
+        model = USER
+        fields = ("email", "password")  # 'password2'(RegistrationForm.Meta)
+
+    def save(self, commit=True):
+        # If email is not disposable, save the password in hashed format
+        # request = self.request
+        email = self.cleaned_data.get("email")
+        if not find_string("media/temp-emails.txt", email):
+            user = super(RegisterForm, self).save(commit=False)
+            user.set_password(self.cleaned_data["password"])
+            if commit:
+                user.save()  # [Errno 101] Network is unreachable
+            return user
+        messages.error(self.request, _("Please register with a non-disposable email"))
+        raise ValidationError(
+            self.error_messages["invalid_login"], code="invalid_login"
+        )
+
+    # def __init__(self, *args, **kwargs):
+    #     super(RegisterForm, self).__init__(*args, **kwargs)
+    #     self. helper .layout = Layout(
+    #             Div(data_sitekey=HCAPTCHA_SECRET_KEY, css_class='h-captcha')
+    #         )
+
+    # def clean_password2(self):
+    #     """Check whether the two psw entries match"""
+    #     password = self.cleaned_data.get("password")
+    #     password2 = self.cleaned_data.get("password2")
+    # #     if password2:
+    # #         score = zxcvbn(password1)['score']# score is between 0 and 4
+    #     if password and password2 and password != password2:
+    #         raise forms.ValidationError("Passwords don't match")
+    #     return password2
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(
+            attrs={
+                "id": "id_email",
+                # "placeholder": "Email",
+                "class": "form",
+                "autofocus": True,
+            }
+        ),
+    )
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "id": "id_password",
+                # "placeholder": _("Password"),
+                "class": "form",
+                "autocomplete": "current-password",
+            }
+        ),
+        help_text=password_validation.password_validators_help_text_html(),
+    )  # 'data-toggle': 'password'
+    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
+                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
+            }))
+    # ReCaptchaField(label='', widget=ReCaptchaV3)
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        request = self.request
+        data = self.cleaned_data
+        email = data.get("email")
+        password = data.get("password")
+        qs = USER.objects.filter(email=email)
+        if qs.exists():
+            # email is registered check if active
+            not_active = qs.filter(is_active=False)
+            if not_active.exists():
+                # not active, check email activation
+                link = reverse("account:resend-activation")
+                reconfirm_ms = (
+                    f'<a href="{link}">' + _("Resend confirmation email") + "</a>."
+                )
+                confirm_email = EmailActivation.objects.filter(email=email)
+                is_confirmable = confirm_email.confirmable().exists()
+                if is_confirmable:
+                    _ms = (
+                        _("Please check your email to confirm your account or ")
+                        + reconfirm_ms.lower()
+                    )
+                    raise forms.ValidationError(mark_safe(_ms))
+                email_confirm_exists = EmailActivation.objects.email_exists(
+                    email
+                ).exists()
+                if email_confirm_exists:
+                    msg2 = _("Email not confirmed. ") + reconfirm_ms
+                    raise forms.ValidationError(mark_safe(msg2))
+                if not is_confirmable and not email_confirm_exists:
+                    raise forms.ValidationError(_("This email has not been verified."))
+        user = authenticate(request, email=email, password=password)
+        if user is None:
+            raise forms.ValidationError(_("Invalid credentials"))
+        login(request, user)
+        self.user = user
+        USER_LOGGED_IN.send(user.__class__, instance=user, request=request)
+        # try:
+        #     del request.session['guest_email_id']
+        # except:# handle specific exception as _e:
+        #     # print(f'Error {_e.message} occured. Arguments {_e.args}')
+        #     pass
+        return data
 
 
 class ReactivationEmailForm(forms.Form):
@@ -219,166 +378,6 @@ class UserAdminChangeForm(forms.ModelForm):
 
 
 # birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'})) #pikaday # add if age requirements
-
-
-class RegisterForm(forms.ModelForm):
-    email = forms.EmailField(
-        label=_("Email"),
-        widget=forms.EmailInput(
-            attrs={
-                "id": "id_email",
-                # "placeholder": "Email",
-                "autofocus": True,
-                "class": "form",
-            }
-        ),
-    )
-    password = forms.CharField(
-        label=_("Password"),
-        strip=False,
-        widget=forms.PasswordInput(
-            attrs={
-                "id": "id_password",
-                # "placeholder": _("Password"),
-                "autocomplete": "current-password",
-                "class": "form",
-            }
-        ),
-        help_text=password_validation.password_validators_help_text_html(),
-    )  # 'data-toggle': 'password,'
-    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
-                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
-            }))
-    # Removed to smooth UX
-    # password2 = forms.CharField(label='', strip=False, widget=forms.PasswordInput(
-    #     attrs={'placeholder': 'Confirm Password'
-
-    # captcha = ReCaptchaField(label='', widget=ReCaptchaV3)
-    # captcha = ReCaptchaField(label='', widget=ReCaptchaV2Checkbox(
-    #     attrs={
-    #         'data-theme': 'dark',
-    #         'data-size': 'compact',
-    #     }#, api_params={'hl': 'cl', 'onload': 'onLoadFunc'}
-    #     )#, public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
-    # #private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
-    # )
-
-    # password = PasswordField()# add psw strength estimator on the frontend js
-    # password2 = PasswordConfirmationField(confirm_with='password1')
-    class Meta:
-        model = USER
-        fields = ("email", "password")  # 'password2'(RegistrationForm.Meta)
-
-    def save(self, commit=True):
-        # If email is not disposable, save the password in hashed format
-        # request = self.request
-        email = self.cleaned_data.get("email")
-        if not find_string("media/temp-emails.txt", email):
-            user = super(RegisterForm, self).save(commit=False)
-            user.set_password(self.cleaned_data["password"])
-            if commit:
-                user.save()  # [Errno 101] Network is unreachable
-            return user
-        messages.error(self.request, _("Please register with a non-disposable email"))
-        raise ValidationError(
-            self.error_messages["invalid_login"], code="invalid_login"
-        )
-
-    # def __init__(self, *args, **kwargs):
-    #     super(RegisterForm, self).__init__(*args, **kwargs)
-    #     self. helper .layout = Layout(
-    #             Div(data_sitekey=HCAPTCHA_SECRET_KEY, css_class='h-captcha')
-    #         )
-
-    # def clean_password2(self):
-    #     """Check whether the two psw entries match"""
-    #     password = self.cleaned_data.get("password")
-    #     password2 = self.cleaned_data.get("password2")
-    # #     if password2:
-    # #         score = zxcvbn(password1)['score']# score is between 0 and 4
-    #     if password and password2 and password != password2:
-    #         raise forms.ValidationError("Passwords don't match")
-    #     return password2
-
-
-class LoginForm(forms.Form):
-    email = forms.EmailField(
-        label="Email",
-        widget=forms.EmailInput(
-            attrs={
-                "id": "id_email",
-                # "placeholder": "Email",
-                "class": "form",
-                "autofocus": True,
-            }
-        ),
-    )
-    password = forms.CharField(
-        label=_("Password"),
-        strip=False,
-        widget=forms.PasswordInput(
-            attrs={
-                "id": "id_password",
-                # "placeholder": _("Password"),
-                "class": "form",
-                "autocomplete": "current-password",
-            }
-        ),
-        help_text=password_validation.password_validators_help_text_html(),
-    )  # 'data-toggle': 'password'
-    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
-                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
-            }))
-    # ReCaptchaField(label='', widget=ReCaptchaV3)
-
-    def __init__(self, request, *args, **kwargs):
-        self.request = request
-        super(LoginForm, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        request = self.request
-        data = self.cleaned_data
-        email = data.get("email")
-        password = data.get("password")
-        qs = USER.objects.filter(email=email)
-        if qs.exists():
-            # email is registered check if active
-            not_active = qs.filter(is_active=False)
-            if not_active.exists():
-                # not active, check email activation
-                link = reverse("account:resend-activation")
-                reconfirm_ms = (
-                    f'<a href="{link}">' + _("Resend confirmation email") + "</a>."
-                )
-                confirm_email = EmailActivation.objects.filter(email=email)
-                is_confirmable = confirm_email.confirmable().exists()
-                if is_confirmable:
-                    _ms = (
-                        _("Please check your email to confirm your account or ")
-                        + reconfirm_ms.lower()
-                    )
-                    raise forms.ValidationError(mark_safe(_ms))
-                email_confirm_exists = EmailActivation.objects.email_exists(
-                    email
-                ).exists()
-                if email_confirm_exists:
-                    msg2 = _("Email not confirmed. ") + reconfirm_ms
-                    raise forms.ValidationError(mark_safe(msg2))
-                if not is_confirmable and not email_confirm_exists:
-                    raise forms.ValidationError(_("This email has not been verified."))
-        user = authenticate(request, email=email, password=password)
-        if user is None:
-            raise forms.ValidationError(_("Invalid credentials"))
-        login(request, user)
-        self.user = user
-        USER_LOGGED_IN.send(user.__class__, instance=user, request=request)
-        # try:
-        #     del request.session['guest_email_id']
-        # except:# handle specific exception as _e:
-        #     # print(f'Error {_e.message} occured. Arguments {_e.args}')
-        #     pass
-        return data
-
 
 # if not find_string("media/temp-emails.txt", email):
 #     user = super(RegisterForm, self).save(commit=False)

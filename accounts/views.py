@@ -10,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 # from django.contrib.auth import authenticate, login#, get_user_model
 # from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import User
-# from django.utils.http import is_safe_url, urlsafe_base64_decode, urlsafe_base64_encode
+# from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # from django.contrib.sites.shortcuts import get_current_site
@@ -352,7 +352,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
 #         user = authenticate(request, username=username, password=password)
 #         if user is not None:
 #             login(request, user)
-#             if is_safe_url(redirect_path, request.get_host()):
+#             if url_has_allowed_host_and_scheme(redirect_path, request.get_host()):
 #                 return redirect(redirect_path)
 #             else:
 #                 return redirect('/')

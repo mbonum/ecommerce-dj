@@ -122,7 +122,7 @@ def detail(request, slug: str):
     return render(request, "base/txt.html", context)
     # if form.errors:
     #     errors = form.errors.as_json()
-    #     if request.is_ajax():
+    #     if request.accepts("application/json"):
     #         return HttpResponse(errors, status=400, content_type='application/json')
 
 

@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     "tailwind",
     "ui",
     "django_extensions",  # https://pypi.org/project/django-extensions
-    "gdpr_assist",  # https://django-gdpr-assist.readthedocs.io/en/latest/installation.html
+    # "gdpr_assist",  # https://django-gdpr-assist.readthedocs.io/en/latest/installation.html
     # "gdpr",  # https://github.com/druids/django-GDPR
     "meta",  # https://pypi.org/project/django-meta
     # # "defender",  # https://django-defender.readthedocs.io/en/latest # downgrade django
@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     # "robots",  # https://pypi.org/project/django-robots
     "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
-    "django_celery_beat",
+    # "django_celery_beat",
     "django_celery_results",
     "sslserver",
     "rest_framework",
@@ -259,17 +259,17 @@ DATABASES = {
         ssl_require=True,
         engine="django.db.backends.postgresql",
     ),
-    "gdpr_log": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "gdpr-log.sqlite3",
-    },
+    # "gdpr_log": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "gdpr-log.sqlite3",
+    # },
 }
 # https://docs.djangoproject.com/en/3.2/topics/testing/advanced/#topics-testing-advanced-multidb
 if "test" in sys.argv:
     DATABASES["default"] = {"ENGINE": "django.db.backends.sqlite3"}
     # SOUTH_TESTS_MIGRATE = False https://south.readthedocs.io/en/latest/installation.html#installation
 
-DATABASE_ROUTERS = ["gdpr_assist.routers.EventLogRouter"]
+# DATABASE_ROUTERS = ["gdpr_assist.routers.EventLogRouter"]
 
 # docker-compose https://docs.docker.com/compose/django/
 # DATABASES = {

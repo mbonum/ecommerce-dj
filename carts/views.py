@@ -75,7 +75,7 @@ def cart_update(request):
     request.session["cart_items"] = cart.nr_items()
     cart.save()
 
-    if request.is_ajax():
+    if request.accepts("application/json"):# is_ajax depreciated
         json_data = {
             "added": added,
             # "shipping": request.session["shipping"],
@@ -178,16 +178,16 @@ def checkout_home(request):
 
 
 def checkout_done_view(request):
-    print(request.id)
+    print(request)
 
-    c = get_object_or_404(Cart, slug=slug)
-    o = c.products.all()
-    context = {"order_id": order.order_id,}
-    return render(request, "shop/category.html", context)
-    # cart = Cart.objects.new_or_get(request)
-    # order = Order.objects.get(cart=cart)
-    # # cart.clear()
-    # email_body = render_to_string("order-email.html", context)
+    # c = get_object_or_404(Cart, slug=slug)
+    # o = c.products.all()
+    # context = {"order_id": order.order_id,}
+    # return render(request, "shop/category.html", context)
+    # # cart = Cart.objects.new_or_get(request)
+    # # order = Order.objects.get(cart=cart)
+    # # # cart.clear()
+    # # email_body = render_to_string("order-email.html", context)
     return render(request, "carts/checkout-done.html", {})
 
 

@@ -58,7 +58,7 @@ class LibraryView(LoginRequiredMixin, ListView):
 
 class VerifyOwnership(View):
     def get(self, request, *args, **kwargs):
-        if request.is_ajax():
+        if request.accepts("application/json"):
             data = request.GET
             product_id = data.get("product_id", None)
             if product_id is not None:

@@ -1,7 +1,7 @@
 # import debug_toolbar
-from ariadne.contrib.django.views import (
-    GraphQLView,
-)  # from graphene_django.views import GraphQLView
+# from ariadne.contrib.django.views import (
+#     GraphQLView,
+# )  # from graphene_django.views import GraphQLView
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -15,7 +15,7 @@ from django.views.generic import RedirectView, TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
 # from filebrowser.sites import site
-from .schema import schema
+# from .schema import schema
 from accounts.views import LoginView, RegisterView
 from core.views import robots_txt
 from .sitemaps import StaticViewSitemap, BookSitemap, CategorySitemap, EssaySitemap, ProductSitemap, TeamSitemap
@@ -37,8 +37,6 @@ sitemaps = {
     "product": ProductSitemap,
     "team": TeamSitemap,
 }
-
-from .schema import schema
 
 urlpatterns = [
     # https://pypi.org/project/drfpasswordless/
@@ -100,7 +98,7 @@ urlpatterns = [
     # # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
     # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
     path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
-    path("graphql/", GraphQLView.as_view(schema=schema), name="graphql"),
+    # path("graphql/", GraphQLView.as_view(schema=schema), name="graphql"),
 ]
 
 # urlpatterns += i18n_patterns()

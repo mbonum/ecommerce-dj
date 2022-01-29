@@ -10,7 +10,7 @@
       {{ form.email }}
     </div>
     <label for="id_password" class="lf">{{ form.password.label }}</label>
-    {% comment %}<!-- <div class="relative" x-data="{ show: true }">
+    {% comment %}<!--{% render_field form.email class=form %} <div class="relative" x-data="{ show: true }">
       <input :type="show ? 'password' : 'text'"  -->{% endcomment %}
       {{ form.password }}
     {% comment %}<!-- <button @click="show = !show" class="text-xs absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 mr-2 focus:outline-none" type="button">
@@ -58,7 +58,7 @@
   </p>
 </div>
 {% endblock%}
-{% comment %}<!--<fieldset><legend> <p x-show="click">{% trans 'Sending verification email' %}</p>
+{% comment %}<!--Show errors<fieldset><legend> <p x-show="click">{% trans 'Sending verification email' %}</p>
 Signing up means you read and agreed to our By signing up, you agree to the { { com }} Privacy Policy and Terms of Service. <svg class="fill-current h-4 w-4" viewbox="0 0 576 512">
   <use x-show="show" xlink:href="{% static 'img/svg-defs.svg' %}#show-psw"></use>
   <use x-show="!show" xlink:href="{% static 'img/svg-defs.svg' %}#!show-psw"></use>

@@ -2,7 +2,7 @@ import stripe
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext_lazy as _
 
 from .models import BillingProfile, Card
@@ -26,7 +26,7 @@ def payment_method_view(request):
         return redirect("cart:home")
     next_url = None
     next_ = request.GET.get("next")
-    if is_safe_url(next_, request.get_host()):
+    if url_has_allowed_host_and_scheme(next_, request.get_host()):
         next_url = next_
     return render(
         request,
@@ -37,7 +37,7 @@ def payment_method_view(request):
 
 def payment_method_createview(request):
     msg = _(" Please add your card.")
-    if request.method == "POST" and request.is_ajax():
+    if request.method == "POST" and request.accepts("application/json"):# text/html
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(
             request
         )

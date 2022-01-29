@@ -22,13 +22,14 @@
   </div>
   {% if address_qs %}
   <div class="space-y-4 md:space-y-0 md:space-x-8 md:inline-flex">
+    <div class="md:w-1/2">
+      {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' add_next_btn=shipping_address_required %}
+    </div>
     <div class="md:w-1/2 bordb md:border-none pb-6 md:pb-0">
       <p class="font-semibold">{% trans 'Same shipping address?' %}</p>
       {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='shipping' %}
     </div>
-    <div class="md:w-1/2">
-      {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' add_next_btn=shipping_address_required %}
-    </div>
+    
   </div>
   {% else %}
   <div class="mx-auto">
@@ -42,13 +43,14 @@
   </div>
   {% if shipping_address_required %}
   <div class="space-y-4 md:space-y-0 md:space-x-8 md:inline-flex">
+    <div class="md:w-1/2">
+      {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' add_next_btn=shipping_address_required %}
+    </div>
     <div class="md:w-1/2 bordb md:border-none pb-6 md:pb-0">
       <p class="font-semibold">{% trans 'Is it the same of your shipping address?' %}</p>
       {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='billing' %}
     </div>
-    <div class="md:w-1/2">
-      {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' add_next_btn=shipping_address_required %}
-    </div>
+    
   </div>
   {% else %}
   <div class="wxs">
@@ -61,63 +63,56 @@
     <div class="bordb text-center">
       <h1 class="h1">{% trans 'Review' %}</h1>
     </div>
-    <div class="space-y-1">
-      <p class="ml-1"><b>{% trans 'Cart' %}</b>:</p>{#<!--Product{% if object.cart.products.all|length > 1 %}s{% endif %}-->#}
+    <table class="w-full">
+      <tbody>
+{#<!--<div class="space-y-1"><p class="ml-1"><b><th class="text-left">{% trans 'Cart' %}:</th> Product{% if object.cart.products.all|length > 1 %}s{% endif %}-->#}
       {% for p in object.cart.products.all %}
-      <a href="{{ p.get_absolute_url }}" class="bt flex items-center space-x-3 pb-2 -ml-1" target="_blank" rel="noopener">
-        <img src="{{ p.thumbnail.url }}" alt="{{ p.name }}" class="w-20 h-20 rounded">
-        <p class="hover:underline">{{ p.name }}</p>
-        <p class="text-black">{% trans 'Quantity' %}: {{ p.order_qty }}</p>
-      </a>
+        <tr>
+          <td><a href="{{ p.get_absolute_url }}" class="cr2 inline-flex" target="_blank" rel="noopener"><img src="{{ p.thumbnail.url }}" alt="{{ p.name }}" class="w-24 h-24 rounded-xl"></a></td>
+          <td class="block text-right"><a href="{{ p.get_absolute_url }}" class="cr2 text-blue-600 hover:text-blue-700 hover:underline" target="_blank" rel="noopener">{{ p.name }}</a></td>
+          <td class="block text-black text-right">{% trans 'Quantity' %}: {{ p.order_qty }}</td>
+        </tr>
       {% endfor %}
-      <div class="ml-1">
-        <div><b>{% trans 'Billing Address' %}</b>: 
-          <div class="inline-flex">{{ object.billing_address.get_address|linebreaks }}</div>
-        </div>
-        <div class="space-x-2">
-          <b>{% trans 'Payment Card' %}</b>: 
-          <div class="inline-flex">
-            <p>{{ billing_profile.default_card }}**<br>
-              <a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" class="cr2 text-blue-600 hover:text-blue-700 hover:underline" target="_blank" rel="noopener">{% trans 'Change Card' %}</a>
-            </p>
-          </div>
-        </div>
+        <tr class="bordt">
+          <th class="text-left">{% trans 'Billing Address' %}:</th>
+          <td class="text-right">{{ object.billing_address.get_address|linebreaks }}</td>
+        </tr>
+        <tr class="bordt">
+          <th class="text-left">{% trans 'Payment Card' %}:</th>
+          <td class="block text-right">{{ billing_profile.default_card }}**</td>
+          <td class="block text-right"><a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" class="cr2 text-blue-600 hover:text-blue-700 hover:underline" target="_blank" rel="noopener">{% trans 'Change Card' %}</a></td>
+        </tr>
         {% if shipping_address_required %}
-        <div><b>{% trans 'Shipping Address' %}</b>: 
-          <div class="inline-flex">{{ object.shipping_address.get_address|linebreaks }}</div>
-        </div>
+        <tr class="bordt">
+          <th class="text-left">{% trans 'Shipping Address' %}:</th>
+          <td class="text-right">{{ object.shipping_address.get_address|linebreaks }}</td>
+        </tr>
         {% endif %}
-        <table class="text-right">
-          <tbody>
-            {% if shipping_address_required %}
-            <tr>
-              <th class="text-left">{% trans 'Shipping Total' %}:</th>
-              <td>{% include 'base/snippets/currency.html' %}{{ object.shipping_total }}</td>
-            </tr>
-            <tr>
-              <th class="text-left">{% trans 'Cart Total' %}:</th>
-              <td>{% include 'base/snippets/currency.html' %}{{ object.cart.total }}</td>
-            </tr>
-            {% endif %}
-            <tr>
-              <th class="text-left">{% trans 'Order Total' %}:</th>
-              <td><span class="text-2xl ml-2">{% include 'base/snippets/currency.html' %}{{ object.total }}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-      <div>
-      <form method="post" class="text-center text-xl"> {% csrf_token %}
-        <button type="submit" class="cbtn">
-          <span class="inline-flex items-center">
-            <svg class="w-5 h-5 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
-            {% trans 'Complete' %}
-          </span>
-        </button>
-      </form>
-      </div>
-    </div>
+        {% if shipping_address_required %}
+        <tr class="bordt text-right">
+          <th class="text-left">{% trans 'Shipping Total' %}:</th>
+          <td>{% include 'base/snippets/currency.html' %}{{ object.shipping_total }}</td>
+        </tr>
+        <tr class="text-right">
+          <th class="text-left">{% trans 'Cart Total' %}:</th>
+          <td>{% include 'base/snippets/currency.html' %}{{ object.cart.total }}</td>
+        </tr>
+        {% endif %}
+        <tr class="text-right">
+          <th class="text-left">{% trans 'Order Total' %}:</th>
+          <td><span class="text-2xl ml-2">{% include 'base/snippets/currency.html' %}{{ object.total }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <form method="post" class="text-center text-xl"> {% csrf_token %}
+      <button type="submit" class="cbtn">
+        <span class="inline-flex items-center">
+          <svg class="w-5 h-5 fill-current mr-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#checkout"></use></svg>
+          {% trans 'Complete' %}
+        </span>
+      </button>
+    </form>
+  </div>
   {% else %}
   {% include 'billing/payment-method.html' with publish_key=publish_key next_url=request.build_absolute_uri %}
   {% endif %}

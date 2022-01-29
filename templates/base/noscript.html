@@ -1,22 +1,49 @@
-
 {% load i18n static %}
 <noscript>
   <div class="mt-4 sm:mt-16 md:mt-20 lg:mt-30 max-w-xs mx-auto">
     <div class="rounded-xl border border-gray-400 bg-white shadow p-4">
       <div class="mb-2">
-        <svg class="animate-ping s fill-current w-24 mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+        <svg class="animate-ping s fill-current w-24 mx-auto">
+          <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+        </svg>
       </div>
       <div class="font-c-sans m-2">
-        <p class="mb-1">{% trans 'Hi' %} {% if request.user.first_name %}{{ request.user.first_name }}{% else %}noscripter{% endif %},</p>
+        <p class="mb-1">
+          {% trans 'Hi' %} {% if request.user.first_name %}{{
+          request.user.first_name }}{% else %}noscripter{% endif %},
+        </p>
         <p>To improve {{ com }}'s features, we use JavaScript.</p>
-        <p class="text-justify hyphens">{% trans 'We too share your precautions on privacy and security as you can read our' %} <a class="font-semibold un focus:outline-none focus:shadow-outline" title="Your rights" href="{{ privacy_url }}" target="_blank" rel="noopener">Privacy policy</a> and <a class="font-semibold un focus:outline-none focus:shadow-outline" title="Cookie Policy" href="{{ cookie_url }}" target="_blank" rel="noopener">Cookie use</a>, every data you generate, you can see on your account page.</p>
+        <p class="text-justify hyphens">
+          {% trans 'We too share your precautions on privacy and security as you
+          can read our' %}
+          <a
+            class="font-semibold un focus:outline-none focus:shadow-outline"
+            title="Your rights"
+            href="{{ privacy_url }}"
+            target="_blank"
+            rel="noopener"
+            >Privacy policy</a
+          >
+          and
+          <a
+            class="font-semibold un focus:outline-none focus:shadow-outline"
+            title="Cookie Policy"
+            href="{{ cookie_url }}"
+            target="_blank"
+            rel="noopener"
+            >Cookie use</a
+          >, every data you generate, you can see on your account page.
+        </p>
         <p>{% trans 'Please whitelist' %} {{ request.get_host }}</p>
         <p class="text-center leading-loose mt-2">{% trans 'Thank you' %}</p>
       </div>
     </div>
   </div>
 </noscript>
-<script>document.getElementById("nojs").style.display = "flex";</script>
+<script>
+  document.getElementById("nojs").style.display = "flex";
+</script>
 {% comment %}<!--{ % if login_url or register_url in request.path %}
 <script>document.getElementById("nojsrl").style.display = "block";</script>
-Leave your ad blockers on. Clavem works best with the latest versions of the browsers. You're using an outdated or unsupported browser and some AOL features may not work properly. Please update your browser version now.<code class="text-black">{{ url }}</code> <strong><b>We're sorry but this website doesn't work properly without JavaScript enabled. Please enable it and reload.</b>-->{% endcomment %}
+Leave your ad blockers on. Clavem works best with the latest versions of the browsers. You're using an outdated or unsupported browser and some AOL features may not work properly. Please update your browser version now.<code class="text-black">{{ url }}</code> <strong><b>We're sorry but this website doesn't work properly without JavaScript enabled. Please enable it and reload.</b>-->
+{% endcomment %}

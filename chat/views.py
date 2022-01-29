@@ -25,7 +25,7 @@ def contact(request):
             else:
                 name = request.POST.get("first_name")
             room = name + "-" + random_string_generator(8)
-            msg = str(request.POST.get("topic") + "\n" + request.POST.get("text"))
+            msg = str(request.POST.get("text"))  # request.POST.get("topic") + "\n" +
             # form Meta fields
             message = Message.objects.get_or_create(username=name, room=room, text=msg)
             return redirect(reverse("chat:room", args=[str(room)]) + f"?user={name}")
@@ -99,7 +99,7 @@ def room(request, room):
 #     form_class = ContactForm(request.POST or None)
 
 #     if form_class.is_valid():
-#         if request.is_ajax():
+#         if request.accepts("application/json"):
 #             return JsonResponse(
 #                 {"message": _("We will answer you as soon as humanly possible.")}
 #             )
@@ -115,7 +115,7 @@ def room(request, room):
 
 #     if form_class.errors:
 #         errors = form_class.errors.as_json()
-#         if request.is_ajax():
+#         if request.accepts("application/json"):
 #             return HttpResponse(errors, status=400, content_type="application/json")
 
 #     content = {

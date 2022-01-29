@@ -28,7 +28,7 @@
         <nav x-show="!menu" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="flex-grow md:block md:overflow-y-auto space-y-1 px-3 py-1">
           {% for c in menu_categories %}
           {% if c.active %}
-          <a href="{% url 'shop:category' c.slug %}" class="flex w-full bg-white text-gray-600 hover:text-yellow-500 hover:bg-gray-200 items-center overflow-hidden border-2 border-transparent hover:border-yellow-400 cr2 rounded-xl p-2">{{ c.name }}</a>
+          <a href="{% url 'shop:category' c.slug %}" class="flex w-full bg-white text-gray-600 hover:text-yellow-500 hover:bg-gray-100 items-center overflow-hidden border-2 border-transparent hover:border-yellow-400 cr2 rounded-xl p-2">{{ c.name }}</a>
           {% endif %}
           {% endfor %}
         </nav>
