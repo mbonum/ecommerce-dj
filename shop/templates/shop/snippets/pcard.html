@@ -1,10 +1,10 @@
 {% load i18n static %}
-<div class="self-start mt-6{% if not search_url in request.path %} md:mr-6{% endif %}">
+<div class="bg-transparent self-start mt-6{% if not search_url in request.path %} md:mr-6{% endif %}">
   <a href="{{ object.get_absolute_url }}" class="carditem">
     {% if object.img %}
     <img src="{{ object.thumbnail.url }}" alt="{{ object.name }} {% trans 'Image' %}" class="{% if search_url in request.path %}w-full{% else %}md:w-64{% endif %} w-full h-64 rounded-t-xl mx-auto">
     {% else %}
-    <svg class="w-64 h-64 text-gray-400 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    <svg class="w-64 h-64 text-gray-300 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
     {% endif %}
     <div class="space-y-2 m-4">
       <div class="flex items-center justify-between">

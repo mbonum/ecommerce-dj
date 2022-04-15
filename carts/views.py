@@ -178,8 +178,7 @@ def checkout_home(request):
 
 
 def checkout_done_view(request):
-    print(request)
-
+    # cart, new_obj = Cart.objects.new_or_get(request)
     # c = get_object_or_404(Cart, slug=slug)
     # o = c.products.all()
     # context = {"order_id": order.order_id,}

@@ -607,7 +607,7 @@ LANGUAGE_CODE = "en"  # -us
 LANGUAGES = (
     ("en", _("English")),
     ("de", _("German")),
-    ("ja", u"日本語"),
+    # ("ja", u"日本語"),
     ("it", _("Italian")),
     ("fr", _("French")),
     ("es", _("Spanish")),

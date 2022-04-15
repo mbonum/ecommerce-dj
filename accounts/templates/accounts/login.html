@@ -10,11 +10,11 @@
   <form method="post"{% if action_url %} {{ action_url }}{% endif %}> {% csrf_token %}
     <div class="space-y-3">
       <div>
-        <label for="id_email" class="lf">{{ form.email.label }}</label>
+        <label for="id_email" class="m-1">{{ form.email.label }}</label>
         {{ form.email }}
       </div>
       <div>
-        <label for="id_password" class="lf">{{ form.password.label }}</label>
+        <label for="id_password" class="m-1">{{ form.password.label }}</label>
         {% comment %}<!-- x-data="{ click: false }" <div class="relative" x-data="{ show: true }"><input :type="show ? 'password' : 'text'" -->{% endcomment %}
         {{ form.password }}
       </div>
@@ -24,7 +24,7 @@
       </button>
     </div>-->{% endcomment %}
     <div class="m-1">
-      <a class="text-sm un text-gray-800 hover:text-black cr2 p-1" href="{{ psw_reset_url }}" target="_blank" rel="noopener">{% trans 'Forgot password?' %}</a>
+      <a class="text-sm un cr p-1" href="{{ psw_reset_url }}" target="_blank" rel="noopener">{% trans 'Forgot password?' %}</a>
     </div>
     {{ form.captcha }}
     <button id="log" class="cbtn mt-4" type="submit">{% trans 'Continue' %}</button>

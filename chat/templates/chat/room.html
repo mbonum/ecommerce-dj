@@ -1,77 +1,122 @@
-{% extends 'base.html' %}
-{% load i18n static widget_tweaks %}
+{% extends 'base.html' %} {% load i18n static widget_tweaks %}
 {% block title %}{% trans 'Chat' %}{% endblock %}
 {% block content %}
 <div class="font-c-sans text-lg max-w-sm mx-auto">
   {% if texts %}
-    {% for t in texts %}
-    <div class="chat_text w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-xl shadow py-2 px-3 {% if not forloop.first > 1%}mb-4{% endif %}">
-      <p class="flex items-center">
-        {% if t.username == "Clvm" or t.username == "Clavem" or t.username == "clvm" or t.username == "clavem" %}
-        <svg class="h-8 w-10 mt-1 -ml-1 mr-1"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
-        {% endif %}
-{#<!-- <img src="{{ user.img.url }}" alt="{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.get_usrname }}{% endif %} {% trans 'Image' %}" class="h-11 w-11 border border-gray-300 rounded-full mr-2"> -->#}
-      {% if request.user.img %}
-        <img src="{{ request.user.img.url }}" alt="{% if t.username %}{{ t.username }}{% else %}{{ user }}{% endif %}" class="h-10 w-10 rounded-full mt-1 -ml-1 mr-1">
+  {% for t in texts %}
+  <div
+    class="chat_text w-full whitespace-pre-wrap bg-transparent border border-gray-300 rounded-xl shadow py-2 px-3 {% if not forloop.first > 1%}mb-4{% endif %}">
+    <div class="flex items-center space-x-2">
+      {% if t.username == "Clvm" or t.username == "Clavem" or t.username == "clvm" or t.username == "clavem" %}
+      <svg class="w-10 h-8">
+        <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+      </svg>
+      {#<!--{% endif %} <img src="{{ user.img.url }}" alt="{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.get_usrname }}{% endif %} {% trans 'Image' %}" class="h-11 w-11 border border-gray-300 rounded-full mr-2"> -->#}
+      {% elif request.user.img %}
+      <img
+        src="{{ request.user.img.url }}"
+        alt="{% if t.username %}{{ t.username }}{% else %}{{ user }}{% endif %}"
+        class="w-10 h-10 rounded-full" />
       {% endif %}
-        <b>{% if t.username %}{{ t.username }}{% else %}{{ user }}{% endif %}</b>: {{ t.text }}
-      </p>
+      <b>{% if t.username %}{{ t.username }}{% else %}{{ user }}{% endif %} ></b>
+      <p>{{ t.text }}</p>
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
   {% endif %}
   <form>
-    <textarea name="message" id="id_text" placeholder="{% trans 'Message' %}" class="w-full rounded-lg appearance-none border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 focus:outline-none focus:bg-white placeholder-black shadow hover:shadow-md focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-2 px-3 mt-3" spellcheck="true" required></textarea>
+    <textarea
+      name="message"
+      id="id_text"
+      placeholder="{% trans 'Message' %}"
+      class="w-full rounded-xl appearance-none border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 bg-white placeholder-black text-black shadow hover:shadow-md cr2 py-2 px-3 mt-3"
+      spellcheck="true"
+      required></textarea>
     <div class="text-right mt-6">
-      <a id="sendbtn" class="text-xl cursor-pointer w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 rounded-xl focus:outline-none focus:ring-1 ring-yellow-200 ring-offset-transparent ring-offset-2 py-2 px-3" type="submit">
-        <p class="inline-flex items-center">{% trans 'Send' %}
-          <svg class="fill-current h-4 w-4 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg>
+      <a
+        id="sendbtn"
+        class="text-xl cursor-pointer w-full bg-gradient-to-tr to-yellow-300 from-yellow-400 hover:to-yellow-300 hover:from-yellow-500 text-gray-800 border-2 border-yellow-300 hover:border-yellow-400 cr2 py-2 px-3"
+        type="submit">
+        <p class="inline-flex items-center">
+          {% trans 'Send' %}
+          <svg class="fill-current h-4 w-4 ml-2">
+            <use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use>
+          </svg>
         </p>
       </a>
     </div>
   </form>
 </div>
-<div hidden>
-  {{ user|json_script:"user" }}
-  {{ room|json_script:"room" }}
-</div>
+<div>{{ user|json_script:"user" }} {{ room|json_script:"room" }}</div>
 {% endblock %}
 {% block js %}
 <script>
-$(document).ready(function () {
-  const user = JSON.parse(document.getElementById('user').textContent),
-    room = JSON.parse(document.getElementById('room').textContent);
-  if (location.protocol == 'https:') {
-    ws = 'wss://';
-  } else {
-    ws = 'ws://';
-  }
-  const chatSocket = new WebSocket(ws + 'clavem.co:8001' + '/ws/contact/' + room + '/');// window.location.host if runserver 
-  chatSocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-    if (data.text) {
-      location.reload();
-      // document.getElementByClass('chat_text');
-      // t.insertAdjacentHTML('afterend', '<div class="w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-xl shadow py-2 px-3"><p><b>' + data.username + '</b>: ' + data.text + '</p></div>');
-    }
-  };
-  document.querySelector("#sendbtn").onclick = function (e) {
-    const msgInput = document.querySelector("#id_text");
-    const msg = msgInput.value;
-    if (msg != "") {
-      chatSocket.send(JSON.stringify({
-        'user': user,
-        'text': msg,
-        'room': room
-      }));
-      msgInput.value = '';
+  $(document).ready(function () {
+    const user = JSON.parse(document.getElementById('user').textContent),
+      room = JSON.parse(document.getElementById('room').textContent);
+    if (location.protocol == 'https:') {
+      ws = 'wss://';
     } else {
-      $.alert('Empty message');
+      ws = 'ws://';
     }
-  };
-});
+    const chatSocket = new WebSocket(
+      ws + 'clavem.co:8001' + '/ws/contact/' + room + '/',
+    ); // window.location.host if runserver
+    chatSocket.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+      if (data.text) {
+        location.reload();
+        // document.getElementByClass('chat_text');
+        // t.insertAdjacentHTML('afterend', '<div class="w-full whitespace-pre-wrap border border-gray-300 rounded-xl shadow py-2 px-3"><p><b>' + data.username + '</b>: ' + data.text + '</p></div>');
+      }
+    };
+    document.querySelector('#sendbtn').onclick = function (e) {
+      const msgInput = document.querySelector('#id_text');
+      const msg = msgInput.value;
+      if (msg != '') {
+        chatSocket.send(
+          JSON.stringify({
+            user: user,
+            text: msg,
+            room: room,
+          }),
+        );
+        msgInput.value = '';
+      } else {
+        // $.alert('Empty message');
+        $.alert({
+          title: '',
+          type: 'red',
+          typeAnimated: true,
+          draggable: true,
+          dragWindowGap: 15,
+          dragWindowBorder: true,
+          animateFromElement: true,
+          smoothContent: true,
+          content: 'Empty message',
+          boxWidth: '25%',
+          lazyOpen: false,
+          bgOpacity: true,
+          theme: 'light',
+          animation: 'scale',
+          closeAnimation: 'scale',
+          animationSpeed: 300,
+          animationBounce: 1,
+          rtl: false,
+          container: 'body',
+          containerFluid: false,
+          backgroundDismiss: true,
+          backgroundDismissAnimation: 'shake',
+          autoClose: true,
+          closeIcon: true,
+          useBootstrap: false,
+          // theme: 'modern', //supervan dark material bootstrap
+        });
+      }
+    };
+  });
 </script>
-{% endblock %}
-{% comment %}<!--// add usr img $.alert method="post" // scrollToBottom(); button style="max-height: 200px; overflow-y: scroll;"
+{% endblock %} {% comment %}<!--// add usr img $.alert method="post" // scrollToBottom(); button style="max-height: 200px; overflow-y: scroll;"
 chatSocket.onclose = function(e) {console.log('close')}
 // document.querySelector('.chat_text').innerHTML += ('<div class="w-full whitespace-pre-wrap bg-white border border-gray-300 rounded-lg shadow py-2 px-3"><p><b>' + data.username + '</b>: ' + data.text + '</p></div>');function scrollToBottom() {
   let objDiv = document.getElementsByClassName('chat_text');

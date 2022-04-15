@@ -18,16 +18,22 @@ from django.views.decorators.csrf import csrf_exempt
 # from .schema import schema
 from accounts.views import LoginView, RegisterView
 from core.views import robots_txt
-from .sitemaps import StaticViewSitemap, BookSitemap, CategorySitemap, EssaySitemap, ProductSitemap, TeamSitemap
+from .sitemaps import (
+    StaticViewSitemap,
+    BookSitemap,
+    CategorySitemap,
+    EssaySitemap,
+    ProductSitemap,
+    TeamSitemap,
+)
 
 # from essays.admin import essays_admin # add separate CMS for authors
 
 from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
 from orders.views import GenerateOrderPDF, LibraryView
 
-# # from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
-# # from two_factor.urls import urlpatterns as tf_urls
-
+# from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
+# from two_factor.urls import urlpatterns as tf_urls
 
 sitemaps = {
     "static": StaticViewSitemap,
@@ -84,6 +90,7 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
+    path("favicon.ico", RedirectView.as_view(url="/static/img/favicon/c-32-i.png")),
     path("robots.txt", robots_txt),  # or create template/robots.txt
     # TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots-txt",
     # # DL model

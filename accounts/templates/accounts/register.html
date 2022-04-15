@@ -3,7 +3,7 @@
 {% block title %}{% trans 'Sign Vp' %}{% endblock %}
 {% block content %}
 <div x-data="{ click: false }" class="mx-10 my-6">
-  <h1 class="text-2xl m-1">{% trans 'Sign Vp' %}</h1>
+  <h1 class="text-2xl  m-1">{% trans 'Sign Vp' %}</h1>
   <form method="post"> {% csrf_token %}
     <div class="mb-3">
       <label for="id_email" class="lf">{{ form.email.label }}</label>
@@ -45,10 +45,10 @@
     </div>
     {% endif %}
     {{ form.captcha }}
-    <p class="text-sm m-1 mt-3">{% trans 'Please read the' %}
+    <div class="text-sm py-2 px-1">{% trans 'Please read the' %}
       <a href="{{ privacy_url }}" class="polbtn un" target="_blank" rel="noopener" data-tippy-content="Your rights">Privacy</a> {% trans 'and' %}
       <a href="{{ terms_url }}" class="polbtn un" target="_blank" rel="noopener" data-tippy-content="{{ com }}'s rights">Terms</a> {% trans 'policies before signing up.' %}
-    </p>
+    </div>
     <button @click="click=!click" class="cbtn" type="submit">
       <p x-show="!click">{% trans 'Create account' %}</p>
     </button>

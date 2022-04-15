@@ -63,7 +63,35 @@
   </div>
 </header>
 {% block js %}
+
 <script>
+  // var p = window.location.pathname;
+  // if (p.indexOf('{{ essays_url }}') > -1 || p.indexOf('{{ edu_url }}') > -1 || p.indexOf('{{ privacy_url }}') > -1 || p.indexOf('{{ terms_url }}') > -1 || p.indexOf('{{ cookie_url }}') > -1) {
+  //   function focusMode(e) {
+  //     if (e.requestFullscreen) {
+  //       e.requestFullscreen();
+  //     } else if (e.mozRequestFullScreen) {
+  //       e.mozRequestFullScreen();
+  //     } else if (e.webkitRequestFullscreen) {
+  //       e.webkitRequestFullscreen();
+  //     } else if (e.msRequestFullscreen) {
+  //       e.msRequestFullscreen();
+  //     }
+  //   }
+  //   function exitFocusMode() {
+  //     if (document.fullscreenElement) {
+  //       document.exitFullscreen();
+  //     } else if (document.fullscreenElement) {
+  //       document.mozCancelFullScreen();
+  //     } else if (document.fullscreenElement) {
+  //       document.webkitExitFullscreen();
+  //     }
+  //   }
+  // }
+  // if (document.fullscreenElement) {
+  //   document.getElementById('navapp').style.display = 'hidden';
+  // }
+
   var navapp = new Vue({
     el: '#navapp',
     delimiters: ['[[', ']]'],

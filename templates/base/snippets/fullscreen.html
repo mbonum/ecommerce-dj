@@ -11,6 +11,8 @@
       } else if (e.msRequestFullscreen) {
         e.msRequestFullscreen();
       }
+      document.getElementById('navapp').classList.add('hidden');// style.visibility = 'hidden';
+      document.getElementById('fulscrin').classList.add('hidden');
     }
     function exitFocusMode() {
       if (document.fullscreenElement) {
@@ -20,6 +22,8 @@
       } else if (document.fullscreenElement) {
         document.webkitExitFullscreen();
       }
+      document.getElementById('navapp').classList.remove('hidden');
+      document.getElementById('fulscrin').classList.remove('hidden');
     }
   }
 </script>

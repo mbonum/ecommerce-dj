@@ -36,8 +36,8 @@ $nav: rgba(0, 0, 0, .9);// 242729 rgba(49,49,49,0.9) #171717 313131 313A45 24272
 $footer: #ecddcc; // E1CAAF FBFBFB F5F3EF
 $footer-d: #E7D5BF;// B8B1B2 969292 C9C5C5 E6DDDE C5C5C6
 $gray-hover: #E8E8E8;// e6ecf0 F1F8FF E8E8E8;
-$primary: #f0f1f3;// rgb(250, 251, 252) DDEDF7 1B2029 222833 F8F8F8 F2F1EB f2f2f2 F0F0F0 E9EBEE EDF0F5 EEEEEE F0F1F1 E5E5E5 F5F5F5/7
-$opposite: #141B1A;
+$primary: #121212;// rgb(250, 251, 252) DDEDF7 1B2029 222833 F8F8F8 F2F1EB f2f2f2 F0F0F0 E9EBEE EDF0F5 EEEEEE F0F1F1 E5E5E5 F5F5F5/7
+$opposite: #f0f1f3;
 $gray-aaa: #EBE4E5;// DCDCD4 EEF0F1
 $marzipan: #ecc781;//FBDD85 81A6EC A6EC81 C79206 FBDD85
 $maroon: #AC3833;// complementary 3833AC
@@ -45,6 +45,10 @@ $maroon: #AC3833;// complementary 3833AC
 // Find the hue 180 degrees away on the color wheel
 // $first-color: $primary;
 // $second-color: complement($primary);
+
+textarea {
+  color: #000;
+}
 
 .bg-gray-a { background-color: $nav; }
 .bg-cart { background-color: #F0D29A;}

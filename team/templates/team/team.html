@@ -15,10 +15,12 @@
   {% for m in team %}
   {% if m.show %}
   <div class="self-start mt-6">
-    <a {% if m.bio %}href="{{ m.get_absolute_url }}" {% endif %}id="{{ m.slug }}" class="carditem">
-      {% if m.img %}<img loading="lazy" src="{{ m.img.url }}" alt="{{ m.name }}" class="h-64 w-64 mx-auto object-center rounded-t-xl">
-      {% else %}
-      <svg class="h-64 w-64 text-gray-600 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+    <a {% if request.user.is_authenticated and m.bio %}href="{{ m.get_absolute_url }}" {% endif %}id="{{ m.slug }}" class="carditem">
+      {% if request.user.is_authenticated %}
+        {% if m.img %}<img loading="lazy" src="{{ m.img.url }}" alt="{{ m.name }}" class="w-64 h-64 object-center rounded-t-xl mx-auto">
+        {% else %}
+        <svg class="w-64 h-64 text-gray-600 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
+        {% endif %}
       {% endif %}
       <div class="text-center space-y-2 m-4">
         <p class="mb-1 mt-2">{{ m.name }}</p>

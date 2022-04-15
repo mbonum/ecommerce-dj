@@ -1,35 +1,99 @@
 {% load compress static %}
-<script src="https://unpkg.com/htmx.org@1.6.1" integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW" crossorigin="anonymous"></script>
-<script type="application/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/jsrender-1.0.11.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/marked.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'jq-confirm/jquery-confirm.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/alpine.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/popper-2.9.1.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'cookieconsent/cookieconsent.min.js' %}"></script>
+<script
+  src="https://unpkg.com/htmx.org@1.6.1"
+  integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW"
+  crossorigin="anonymous"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/jsrender-1.0.11.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/marked.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'jq-confirm/jquery-confirm.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/alpine.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/popper-2.9.1.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'cookieconsent/cookieconsent.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'aos/aos.js' %}"></script>
 {% include 'base/snippets/tippy.html' %}
 {% include 'base/snippets/aos.html' %}
 {% if sales_url in request.path %}
-<script type="application/javascript" src="{% static 'js/chart-2.9.4.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/chart-2.9.4.min.js' %}"></script>
 {% endif %}
 {% if essays_url in request.path or edu_url in request.path %}
-<script type="application/javascript" src="{% static 'js/sharect-2.0.0.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/sharect-2.0.0.min.js' %}"></script>
 {% endif %}
 {% if cart_url in request.path or billing_url in request.path %}
 <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 <script src="https://js.stripe.com/v3/"></script>
-<script type="application/javascript" src="{% static 'js/cdev.stripe.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/cdev.stripe.js' %}"></script>
 {% include 'billing/stripe-template.html' %}
 {% endif %}
 {% compress js %}
-<script type="application/javascript" src="{% static 'js/csrf.ajax.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/csrf.ajax.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/utils.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/cdev.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/zum.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/cdev.sales.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/zum.min.js' %}"></script>
+<script
+  type="application/javascript"
+  src="{% static 'js/cdev.sales.js' %}"></script>
 {% endcompress %}
-{% comment %}<!--<script type="application/javascript" src="{% static 'modal-video/jquery-modal-video.min.js' %}"></script>
+<script>
+  // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+  if (
+    localStorage.theme === 'dark' ||
+    (!('theme' in localStorage) &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+
+  // Whenever the user explicitly chooses light mode
+  localStorage.theme = 'light';
+
+  // Whenever the user explicitly chooses dark mode
+  localStorage.theme = 'dark';
+
+  // Whenever the user explicitly chooses to respect the OS preference
+  localStorage.removeItem('theme');
+
+  // Initialize the agent at application startup.
+  const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3').then(
+    FingerprintJS => FingerprintJS.load(),
+  );
+
+  // Get the visitor identifier when you need it.
+  fpPromise
+    .then(fp => fp.get())
+    .then(result => {
+      // This is the visitor identifier:
+      const visitorId = result.visitorId;
+      console.log(visitorId);
+    });
+</script>
+{% comment %}<!--<script type="application/javascript" src="{% static 'js/elevator.min.js' %}"></script><script type="application/javascript" src="{% static 'modal-video/jquery-modal-video.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'modal-video/modal-video.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/vue.min.js' %}"><script type="application/javascript" src="{% static 'js/vuex.min.js' %}"></script><link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ recaptchav3 }}"></script>
@@ -53,4 +117,5 @@ Markdown https://cdnjs.com/libraries/marked https://cdnjs.cloudflare.com/ajax/li
 Vue for prod <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script rel="preload" type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js" integrity="sha384-bF2gXog8EbftpjuWQY8G0T7aeq+FvNU9YWvxSRHybqv2F/lvV5msKMHvRgoukeQP" crossorigin="anonymous"></script>
 <script rel="preload" type="text/javascript" src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
-Icons <script src="https://kit.fontawesome.com/6db89c4710.js" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script src='{ % static 'js/bootstrap.min.js' % }'><\/script>")}</script>-->{% endcomment %}
+Icons <script src="https://kit.fontawesome.com/6db89c4710.js" crossorigin="anonymous"></script><script>window.jQuery || document.write("<script src='{ % static 'js/bootstrap.min.js' % }'><\/script>")}</script>-->
+{% endcomment %}

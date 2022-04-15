@@ -1,14 +1,14 @@
 {% load i18n static %}
 {% block css %}
 <style>
-  .bg { background-color: #030303; color: #fefefe;}
-  ::selection { background: #C9A9E5;}
+  .bg { background-color: #fefefe; color: #030303;}
+  /* ::selection { background: #C9A9E5;} */
 </style>
 {% endblock %}
 {% block content %}
 <div class="inline-flex items-center space-x-6 md:space-x-12">
   <span>{% trans 'Doubleclick to Focus' %}</span>
-  <div x-data="{ l: true }">
+  <div x-data="{ l: false }">
     <button class="inline-flex items-center rounded-full space-x-2 hover:text-yellow-500 cr2 px-2 py-1" data-tippy-content="{% trans 'Lux' %}" @click="l = !l" onclick="theme()">
       <svg class="focus:animate-spin fill-current w-5 h-5"><use xlink:href="{% static 'img/svg-defs.svg' %}#bulb"></use></svg>
       <span>{% trans 'Light/Dark' %}</span>

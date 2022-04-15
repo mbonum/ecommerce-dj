@@ -16,10 +16,10 @@
   {% include 'base/snippets/head.html' %}
   <title>{% block title %}{% endblock %} · {{ com }}</title>
 </head>
-<body class="bg-footer">
+<body class="bg-primary">
   <div id="nojs" class="max-w-xs py-16 mx-auto">
     {% include 'base/snippets/message.html' %}
-    <div class="font-c-sans border border-gray-300 shadow-md bg-primary text-black text-lg rounded-xl">
+    <div class="font-c-sans border border-gray-300 shadow-md bg-footer text-black text-lg rounded-xl">
       <div class="mt-8">
         <svg class="animate-pulse s w-24 h-24 fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
       </div>

@@ -21,12 +21,11 @@
   .usrbtn{@apply inline-flex border-2 border-gray-300 hover:border-white items-center hover:text-white overflow-hidden cr px-2 py-1;}
   .fbtn{@apply block un items-center overflow-hidden hover:text-black cr py-3 md:py-1 md:px-1;}
   .fsp{@apply md:w-1/3 text-center md:space-y-4;}
-  .lf{@apply text-gray-800 m-1;}
   .polbtn{@apply font-semibold cr2 px-1 pt-1;}
   .poli{@apply un md:rounded-xl hover:text-black px-2 py-1;}
   .ermsg{@apply text-2xl text-center my-5;}
-  .carditem{@apply block bg-white bord shadow-md hover:border-yellow-400 hover:shadow-lg cr2;}
-  .incard{@apply cursor-pointer inline-flex bg-white;}
+  .carditem{@apply block bg-transparent bord shadow-md hover:border-yellow-400 hover:shadow-lg cr2;}
+  .incard{@apply cursor-pointer inline-flex bg-transparent;}
   .h1{@apply text-2xl font-semibold pb-4;}
   .wxs{@apply font-c-sans text-lg max-w-xs mx-auto;}
   .pswsp{@apply space-y-2 mt-5;}
@@ -38,7 +37,7 @@
   .h2txt{@apply text-2xl font-semibold;}
   .bg-gray-hover{background-color: #E8E8E8;}
   .btntxt{@apply hover:text-black border-l border-gray-300 hover:bg-gray-hover;}
-  .regbtn{@apply border border-transparent text-blue-600 hover:text-blue-700 font-semibold hover:border-blue-500 cr2 px-2 py-1;}
+  .regbtn{@apply border border-transparent text-blue-600 hover:text-blue-700 font-semibold hover:border-blue-500 cr px-2 py-1;}
   .blubtn{@apply bg-blue-500 border-4 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-white rounded-xl cr px-2 py-1;}
   .bordb{@apply border-b border-gray-300;}
   .bordt{@apply border-t border-gray-300;}
@@ -47,16 +46,16 @@
   .qtybtn{@apply flex rounded-full cr2;}
   .addbtn{@apply w-5 h-5 text-yellow-400 hover:text-yellow-500 fill-current;}
   .rembtn{@apply w-5 h-5 text-gray-400 hover:text-red-500 fill-current;}
-  .showbtn{@apply bg-white border-2 border-yellow-300 hover:border-yellow-400 shadow cr2 px-3 py-1;}
+  .showbtn{@apply border-2 border-yellow-300 hover:border-yellow-400 shadow cr2 px-3 py-1;}
   .showsvg{@apply w-4 h-4 text-yellow-400 hover:text-yellow-500;}
-  .addr{@apply bord break-words bg-white shadow rounded-xl p-2 mt-1;}
+  .addr{@apply bord break-words bg-transparent shadow rounded-xl p-2 mt-1;}
   .qr{@apply addr w-64 h-64 mx-auto my-4;}
   .usra{@apply border border-transparent hover:border-yellow-400 text-gray-800 hover:text-black cr2 px-1;}
-  .usrt{@apply md:inline-block align-top bord bg-white rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-6 md:mr-6;}
+  .usrt{@apply md:inline-block align-top bord bg-transparent rounded-lg shadow hover:shadow-md p-3 overflow-hidden items-center mt-6 md:mr-6;}
   .form{@apply w-full bord focus:border-yellow-500 shadow placeholder-gray-600 cr2 px-2 py-1;}
-  #id_qty{@apply block cr2 bg-white bord shadow focus:border-yellow-500;}
+  #id_qty{@apply block cr2 bg-transparent bord shadow focus:border-yellow-500;}
   #serc{@apply w-full bg-transparent rounded-xl border-none ring-0 ring-white focus:outline-none py-1 px-0;}
-  #currency{@apply block cr2 bg-white bord rounded-lg shadow focus:border-yellow-500;}
+  #currency{@apply block cr2 bg-transparent bord rounded-lg shadow focus:border-yellow-500;}
   #chat_text{@apply flex w-full border border-gray-400 focus:border-yellow-500 hover:border-yellow-500 shadow hover:shadow-md cr2 px-2 py-1;}
   #id_note{@apply w-full text-black tracking-wide border border-gray-400 hover:border-yellow-500 focus:border-yellow-500 placeholder-gray-800 shadow hover:shadow-md cr2 px-2 py-1 mt-2;}
   #id_old_password{@apply form;}

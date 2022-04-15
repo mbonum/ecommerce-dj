@@ -2,7 +2,7 @@
 {% load i18n static %}
 {% block title %}Home{% endblock %}
 {% block media %}
-<div class="bg-black block h-screen space-y-8 shadow-xl">
+<div class="block bg-black h-screen space-y-8 shadow-xl">
   <div>
     <video loading="lazy" class="md:w-1/2 mx-auto" autoplay loop muted onerror="failed(e)">
       <source src="{% if object.media %}{{ object.media.url }}{% else %}{% static 'media/earth.mp4' %}{% endif %}" type="video/mp4">
@@ -21,8 +21,6 @@
     </div>
     {% endif %}
   </div>
-  <style>@keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px);} }
-  .logo { animation: bounce 0.8s; animation-direction: alternate; animation-iteration-count: infinite;}</style>
   <div>
     <svg class="text-gray-200 animate-pulse logo s fill-current mx-auto"><use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use></svg>
   </div>
@@ -40,7 +38,7 @@
         &rdquo;
       </div>
     </blockquote>
-    <p class="text-lg sc font-c text-gray-800 pt-2">— Øvtis</p>
+    <p class="text-lg sc font-c pt-2">— Øvtis</p>
   </div>
   <div class="my-8">
     {% if object.title or object.text %}

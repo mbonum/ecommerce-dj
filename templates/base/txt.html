@@ -98,8 +98,8 @@
       </div>
     </div>
   {% if edu_url in request.path or essays_url in request.path %}
-  <div class="text-center text-gray-700 my-4">
-    <div class="inline-flex overflow-hidden bord bg-white shadow rounded-lg">
+  <div class="text-center my-4">
+    <div class="inline-flex overflow-hidden bord bg-transparent shadow rounded-lg">
       {% if edu_url in request.path %}
       {% include 'base/snippets/backbtn.html' with url=edu_url id=object.slug %}
       {% elif essays_url in request.path %}
@@ -235,8 +235,8 @@
 </div>
 </div>
 {% else %}
-<div class="text-gray-900 wxs">
-  <h1 class="text-2xl text-black my-5">{% trans 'Work in progress' %}</h1>
+<div class="wxs">
+  <h1 class="text-2xl my-5">{% trans 'Work in progress' %}</h1>
   <p>{% trans 'If you would like to be notified when the work is published, please type your email and click on Get Vpdates. Thank you' %}</p>
 </div>
 {% endif %}

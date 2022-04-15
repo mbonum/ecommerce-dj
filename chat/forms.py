@@ -108,9 +108,9 @@ class ContactForm(forms.Form):
 
     def clean_first_name(self):
         fn = self.cleaned_data["first_name"]
-        cl = ["clavem", "clvm", "Clavem team"]
+        cl = ["clavem", "clvm", "Clavem", "Clvm", "CLVM","Clavem team"]
         if any(c in fn for c in cl):
-            raise ValidationError(_("Name reserved."))
+            raise ValidationError(_("Name reserved. Please type your name."))
         return fn
 
     # def send_email(self):

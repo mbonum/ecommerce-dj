@@ -55,8 +55,8 @@ INSTALLED_APPS += [
 
 AUTH_USER_MODEL = "accounts.CUser"
 
-SESSION_COOKIE_CART = 86400
-CART_SESSION_ID = "cart"
+# SESSION_COOKIE_CART = 86400
+# CART_SESSION_ID = "cart"
 
 # GRAPHENE = {"SCHEMA": "core.schema.schema"}
 
@@ -152,6 +152,8 @@ CSP_SCRIPT_SRC = (
     "https://commerce.coinbase.com/",
     "https://js.stripe.com/",
     "https://checkout.stripe.com",
+    "https://openfpcdn.io/fingerprintjs/v3",
+    # "https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
 )  # "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/", "https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.5.0/dist/alpine.min.js"  "'nonce-lrEwC5VX0M'" "https://chimpstatic.com/mcjs-connected/js/users/0e61ec17658f41b70da7d62f5/0a42a86cd2c1b1c3c4bc6025d.js", "https://hcaptcha.com", "https://*.hcaptcha.com", "https://chimpstatic.com/mcjs-connected/js/users/0e61ec17658f41b70da7d62f5/0a42a86cd2c1b1c3c4bc6025d.js", "https://polyfill.io/v3/polyfill.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.6/jsrender.js", "https://cdn.jsdelivr.net/npm/marked/marked.min.js", "https://cdn.jsdelivr.net/npm/darkmode-js@1.5.6/lib/darkmode-js.min.js",
 CSP_FRAME_SRC = (
     "'self'",
@@ -168,6 +170,7 @@ CSP_STYLE_SRC = (
     "'self'",
     "'unsafe-inline'",
     "'unsafe-eval'",
+    # "https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css",
 )  # , "https://hcaptcha.com", "https://*.hcaptcha.com", "https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css", "https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css",
 CSP_FONT_SRC = ("'self'",)
 CSP_IMG_SRC = (
