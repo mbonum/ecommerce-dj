@@ -24,7 +24,7 @@
             </a>
           </td>
           <td colspan="1" class="tabcol">
-            <div class="inline-flex items-center bg-white bord rounded-xl shadow space-x-2 px-2 py-1">
+            <div class="inline-flex items-center bg-white text-black bord rounded-xl shadow space-x-2 px-2 py-1">
               <button id="removeBtn" v-if="p.qty < 2" @click="remove(p.id, p.item_total)" class="qtybtn" data-tippy-content="{% trans 'Remove' %}">
                 <svg class="rembtn"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
               </button>

@@ -1,18 +1,21 @@
-# from django.utils.http import url_has_allowed_host_and_scheme from django_registration.forms import RegistrationForm
+# from django.utils.http import url_has_allowed_host_and_scheme
+# from django_registration.forms import RegistrationForm
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3#, ReCaptchaV2Checkbox
 from captcha.fields import CaptchaField, CaptchaTextInput
-from django.contrib import messages
-from core.utils import find_string
 from disposable_email_checker.validators import validate_disposable_email
 from django import forms
-from django.conf import settings
+
+# from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+
+from core.utils import find_string
 
 from .models import EmailActivation  # , CustomUser
 from .signals import USER_LOGGED_IN
@@ -52,9 +55,14 @@ class RegisterForm(forms.ModelForm):
         ),
         help_text=password_validation.password_validators_help_text_html(),
     )  # 'data-toggle': 'password,'
-    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
-                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr rounded-xl shadow py-1 px-2 ",
-            }))
+    captcha = CaptchaField(
+        widget=CustomCaptchaTextInput(
+            attrs={
+                "class": """bg-white border border-gray-300 hover:border-yellow-500
+                focus:border-yellow-500 cr rounded-xl shadow py-1 px-2""",
+            }
+        )
+    )
     # Removed to smooth UX
     # password2 = forms.CharField(label='', strip=False, widget=forms.PasswordInput(
     #     attrs={'placeholder': 'Confirm Password'
@@ -132,9 +140,14 @@ class LoginForm(forms.Form):
         ),
         help_text=password_validation.password_validators_help_text_html(),
     )  # 'data-toggle': 'password'
-    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={
-                "class": "bg-white border border-gray-300 hover:border-yellow-500 focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2 ",
-            }))
+    captcha = CaptchaField(
+        widget=CustomCaptchaTextInput(
+            attrs={
+                "class": """bg-white border border-gray-300 hover:border-yellow-500
+                focus:border-yellow-500 cr2 rounded-xl shadow py-1 px-2""",
+            }
+        )
+    )
     # ReCaptchaField(label='', widget=ReCaptchaV3)
 
     def __init__(self, request, *args, **kwargs):
@@ -192,7 +205,8 @@ class ReactivationEmailForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 # "placeholder": "Email",
-                "class": "mx-auto flex border border-gray-300 hover:border-gray-500 rounded-lg shadow placeholder-gray-600 focus:outline-none px-2 py-1 my-3",
+                "class": """mx-auto flex border border-gray-300 hover:border-gray-500 rounded-lg
+                shadow placeholder-gray-600 focus:outline-none px-2 py-1 my-3""",
             }
         ),
     )
@@ -232,7 +246,8 @@ class UserAdminCreationForm(forms.ModelForm):
             }
         ),
     )
-    # password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)# remove friction
+    # Remove friction
+    # password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     class Meta:
         model = USER
@@ -324,7 +339,8 @@ class UserDetailUpdateForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 # "placeholder": _("First name"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 shadow placeholder-gray-600 cr2 p-2",
+                "class": """w-full flex border border-gray-300
+                focus:border-yellow-500 shadow placeholder-gray-600 cr2 p-2""",
             }
         ),
     )
@@ -335,7 +351,8 @@ class UserDetailUpdateForm(forms.ModelForm):
             attrs={
                 # "id": "l"
                 # "placeholder": _("Last name"),
-                "class": "w-full flex border border-gray-300 focus:border-yellow-500 shadow placeholder-gray-600 cr2 p-2",
+                "class": """w-full flex border border-gray-300 focus:border-yellow-500
+                shadow placeholder-gray-600 cr2 p-2""",
             }
         ),
     )
@@ -377,7 +394,8 @@ class UserAdminChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-# birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'})) #pikaday # add if age requirements
+# birth_date = forms.DateField(widget=NumberInput(attrs={'type': 'date'}))
+# pikaday # add if age requirements
 
 # if not find_string("media/temp-emails.txt", email):
 #     user = super(RegisterForm, self).save(commit=False)

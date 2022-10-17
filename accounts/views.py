@@ -1,17 +1,16 @@
 # import json
 # import requests
 # from django.http import Http404, HttpResponse
-from core.mixins import NextUrlMixin, RequestFormAttachMixin
-
 # from core.utils import account_activation_token
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
 
 # from django.contrib.auth import authenticate, login#, get_user_model
 # from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import User
-# from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_decode, urlsafe_base64_encode
+# from django.utils.http import url_has_allowed_host_and_scheme,
+# urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.core.mail import EmailMessage, send_mail
@@ -28,11 +27,14 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DetailView, FormView, UpdateView, View
 from django.views.generic.edit import FormMixin
 
+from core.mixins import NextUrlMixin, RequestFormAttachMixin
+
 from .forms import LoginForm, ReactivationEmailForm, RegisterForm, UserDetailUpdateForm
 from .models import CUser, EmailActivation
 
 # RECAPTCHAV3_SECRET = getattr('RECAPTCHAV3_SECRET')
-# CAPTCHA_SECRET = getattr('CAPTCHA_SECRET')VERIFY_URL = settings('VERIFY_URL', 'https://hcaptcha.com/siteverify')
+# CAPTCHA_SECRET = getattr('CAPTCHA_SECRET')
+# VERIFY_URL = settings('VERIFY_URL', 'https://hcaptcha.com/siteverify')
 
 
 class AccountHomeView(LoginRequiredMixin, DetailView):
@@ -102,6 +104,7 @@ class AccountEmailActivateView(FormMixin, View):
         context = {"form": form, "key": self.key}
         return render(self.request, "registration/activation-error.html", context)
 
+
 # from .forms import UserUpdateForm,ProfileUpdateForm
 # @login_required
 # def profile(request):
@@ -131,7 +134,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super(UserDetailUpdateView, self).get_context_data(*args, **kwargs)
         context["title"] = _("Edit Profile")  # Personilize Account Details
-        context["img"] =  self.request.user.img
+        context["img"] = self.request.user.img
         if self.request.user.first_name:
             context["fn"] = self.request.user.first_name
         else:
@@ -139,9 +142,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(
-            self.request, _("Account Updated")
-        )
+        messages.success(self.request, _("Account Updated"))
         img = self.request.FILES
         # form.cleaned_data.get("img")
         first_name = form.cleaned_data.get("first_name")
@@ -196,16 +197,16 @@ class RegisterView(SuccessMessageMixin, CreateView):
     # send_mail(subject, msg, from_email, to_list, fail_silently=True)
 
     # if form.is_valid():
-    ## hCaptcha validation
+    # hCaptcha validation
     # token = requests.POST.get['h-captcha-response']
 
-    ## Build payload with secret key and token.
+    # Build payload with secret key and token.
     # data = { 'secret': settings.HCAPTCHA_SECRET_KEY, 'response': token }
 
-    ## Make POST request with data payload to hCaptcha API endpoint.
+    # Make POST request with data payload to hCaptcha API endpoint.
     # response = requests.post(url=settings.VERIFY_URL, data=data)
 
-    ## Parse JSON from response. Check for success or error codes.
+    # Parse JSON from response. Check for success or error codes.
     # response_json = json.parse(response.content)
     # success = response_json['success']
     # your_captcha_response = requests.POST.get('h-captcha-response')

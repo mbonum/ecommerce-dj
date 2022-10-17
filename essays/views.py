@@ -1,13 +1,15 @@
 # from urllib.parse import quote_plus
 # from datetime import datetime
 # # from io import BytesIO
-# from bs4 import BeautifulSoup
-import filecmp
+# import requests
+# import filecmp
 import os
 from pathlib import Path
-from core.utils import render_to_pdf
+
+from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -15,10 +17,12 @@ from django.urls.base import reverse
 from django.utils.translation import gettext as _
 from django.views.generic import View
 from gtts import gTTS
-from .models import Author, Essay
+
+from core.utils import render_to_pdf
 from notes.forms import NoteForm
 from notes.models import Note
-from notes.forms import NoteForm
+
+from .models import Author, Essay
 
 # CreateViewDetailView, ListView, RedirectView
 # from django.contrib.auth import get_user
@@ -34,10 +38,10 @@ from notes.forms import NoteForm
 
 
 def essays(request):
-    essays = Essay.objects.all().filter(publish=True).order_by("index")
+    _e = Essay.objects.all().filter(publish=True).order_by("index")
     context = {
         "title": _("Writings"),
-        "essays": essays,
+        "essays": _e,
     }
     return render(request, "essays/wlist.html", context)
 
@@ -49,11 +53,12 @@ def detail(request, slug: str):
     """
     try:
         essay = Essay.objects.get(slug=slug, publish=True)
-    except Essay.DoesNotExist:
+    except ObjectDoesNotExist:
         messages.info(
             request,
             _(
-                "Sorry, the text is private for now. Contact us to know when the product will be published."
+                """Sorry, the text is private for now.
+                Contact us to know when the product will be published."""
             ),
         )
     p = f"media/essays/{slug}/"
@@ -75,6 +80,8 @@ def detail(request, slug: str):
             if s.title:
                 e += s.title
             e += s.text
+            # payload = f"content={s.text}
+            # &response_type=html&request_type=html&fixation=1&saccade=10"
         txt = BeautifulSoup(e, "lxml")  # convert html to text
         tts = gTTS(txt.get_text(), lang="en")
         # if there's a file see if they are the same
@@ -83,8 +90,20 @@ def detail(request, slug: str):
     _id = essay.index + 1
     try:
         _next = get_object_or_404(Essay, index=_id)
-    except:
+    except ObjectDoesNotExist:
         _next = None
+
+    # url = "https://bionic-reading1.p.rapidapi.com/convert"
+
+    # headers = {
+    #     "content-type": "application/x-www-form-urlencoded",
+    #     "X-RapidAPI-Host": "bionic-reading1.p.rapidapi.com",
+    #     "X-RapidAPI-Key": "SIGN-UP-FOR-KEY"
+    # }
+
+    # response = requests.request("POST", url, data=payload, headers=headers)
+
+    # print(response.text)
 
     user_note = None
     if request.method == "POST":
@@ -135,7 +154,7 @@ def like_view(request, slug: str, pk: int):
 
 class GenerateEssayPDF(View):
     # Read Essay's fields in the database and generate pdf
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):  # *args,
         if request.user.email:
             if request.user.first_name:
                 n = request.user.first_name

@@ -1,21 +1,26 @@
-import os
-import random
+# import os
+# import random
 from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from core.utils import get_filename, unique_slug_generator  # random_string_generator
+
 from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import FileSystemStorage
+
+# from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MinValueValidator  # MaxValueValidator
 from django.db import models
 from django.db.models import Q  # search
 from django.db.models.signals import pre_save  # post_save
 from django.urls import reverse
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
+
+# from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from tinymce.models import HTMLField
-from PIL import Image
 from mptt.models import MPTTModel, TreeForeignKey
+from PIL import Image
+from tinymce.models import HTMLField
+
+from core.utils import get_filename, unique_slug_generator  # random_string_generator
 
 # from tags.models import Tag
 
@@ -42,8 +47,8 @@ USER = settings.AUTH_USER_MODEL
 
 def shop_media_path(self, filename):
     # Save file in static-cdn/media-root/products/...
-    s = self.slug  # add category
-    return f"shop/{s}/{filename}"
+    _s = self.slug  # add category
+    return f"shop/{_s}/{filename}"
 
 
 class ProductQuerySet(models.query.QuerySet):
@@ -98,16 +103,16 @@ class ProductManager(models.Manager):
     #     return self.get_queryset().featured()  # available
 
     def get_by_id(self, _id):
-        qs = self.get_queryset().filter(id=_id)
-        if qs.count() == 1:
-            return qs.first()
+        _qs = self.get_queryset().filter(id=_id)
+        if _qs.count() == 1:
+            return _qs.first()
         return None
 
     def check_inventory(self):
         # Check whether there are inventory inconsistencies
-        if self.qty_instock > 0 and self.active == False:
-            n = self.name
-            raise ValueError(f"Check product {n} inventory")
+        if self.qty_instock > 0 and self.active is False:
+            _n = self.name
+            raise ValueError(f"Check product {_n} inventory")
 
     def search(self, query):
         return self.get_queryset().active().search(query)
@@ -163,8 +168,10 @@ class Product(models.Model):
         default=9.99,
         validators=[MinValueValidator(0)],
         # help_text="EUR",
-    )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')# IntegerField(default=9999)#cents
-    # currency = models.ForeignKey(CUser.currency, related_name='currency', null=True, blank=True, on_delete=models.SET_NULL)
+    )  # MoneyField(max_digits=9, decimal_places=2, default_currency='USD')
+    # IntegerField(default=9999)#cents
+    # currency = models.ForeignKey(CUser.currency, related_name='currency',
+    # null=True, blank=True, on_delete=models.SET_NULL)
     # tags = models.ManyToManyField(Tag, blank=False)
     # product_type = models.CharField(
     #     max_length=8, choices=ProductType.choices, default=ProductType.EBOOK
@@ -199,8 +206,10 @@ class Product(models.Model):
     total_item = models.DecimalField(
         default=0.00, max_digits=19, decimal_places=2
     )  # order_qty*retail_price
-    # meta_keywords = models.CharField(max_length=255, help_text='Comma-delimited set of SEO keywords for meta tag')
-    # meta_description = models.CharField(max_length=255, help_text='Content for description meta tag')
+    # meta_keywords = models.CharField(max_length=255,
+    # help_text='Comma-delimited set of SEO keywords for meta tag')
+    # meta_description = models.CharField(max_length=255,
+    # help_text='Content for description meta tag')
     active = models.BooleanField(  # in_stock
         _("Show"), default=False, help_text=_("Hide if unavailable")
     )
@@ -226,7 +235,7 @@ class Product(models.Model):
 
     def img_tag(self):
         if self.thumbnail:
-            return mark_safe(
+            return format_html(
                 f'<img src="{self.thumbnail.url}" style="width:60px; height:60px;">'
             )
         else:
@@ -261,7 +270,8 @@ class Product(models.Model):
 
     @property
     def total_item(self):
-        return "{0:.2f}".format(float(self.order_qty * self.price))
+        return f"{round(self.order_qty * self.price, 2)}"
+        # return "{0:.2f}".format(float(self.order_qty * self.price))
 
     # If price is in cents
     # def display_price(self):
@@ -276,11 +286,11 @@ class Product(models.Model):
     # Update inventory after an order has been submitted -> signal
 
     def get_downloads(self):
-        qs = self.productfile_set.all()
-        return qs
+        _qs = self.productfile_set.all()
+        return _qs
 
 
-def product_pre_save_receiver(sender, instance, *args, **kwargs):
+def product_pre_save_receiver(instance, **kwargs):  # sender, *args
     # Use signals to set slugs
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
@@ -447,13 +457,14 @@ class Review(MPTTModel):
 
     def __str__(self):
         if self.user.first_name:
-            n = self.user.first_name
+            _n = self.user.first_name
         else:
-            n = self.user.email
-        return f"Review #{self.id} about {self.item} by {n}"
+            _n = self.user.email
+        return f"Review #{self.id} about {self.item} by {_n}"
 
     def tot_likes(self):
         return self.like.count()
+
 
 # compare md5 to remove duplicate files
 # class MediaFileSystemStorage(FileSystemStorage):

@@ -66,13 +66,13 @@
   <input type="hidden" name="product_id" value="{{ object.id }}"{% if  product.is_digital %} data-is-digital="true"{% endif%}>
   <span class="submit-span">
   { % if object in cart.products.all %}-->{% endcomment %}
-      <a v-if="added" href="{{ cart_url }}" class="upcart block rounded-full">
+      <a v-if="added" href="{{ cart_url }}" class="upcart block rounded-full text-black">
         <div class="inline-flex items-center space-x-2">
           <span>{% trans 'In Cart' %}</span>
           <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>
         </div>
       </a>
-      <button v-else @click="addItem(p.id, p.quantity, p.price)" class="upcart rounded-full">
+      <button v-else @click="addItem(p.id, p.quantity, p.price)" class="upcart rounded-full text-black">
         <div class="inline-flex items-center space-x-2">
           <span>{% trans 'Add to Cart' %}</span>
           <svg class="w-4 h-4 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#cart"></use></svg>

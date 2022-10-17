@@ -5,7 +5,8 @@ from django.views.decorators.http import require_GET
 @require_GET
 def robots_txt(request):
     """
-    robots.txt is a standard text file that tells search engine crawlers which pages they can access, scrape, and ultimately list in their search engine results.
+    robots.txt is a standard text file that tells search engine crawlers which pages
+    they can access, scrape, and ultimately list in their search engine results.
     """
     lines = [
         "User-Agent: *",  # Googlebot Bingbot Slurp

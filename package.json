@@ -1,5 +1,5 @@
 {
-  "name": "cw",
+  "name": "ce",
   "version": "1.1.0",
   "author": "<mgbonum@protonmail.com>",
   "license": "Apache-2.0",
@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "standard-version": "^9.3.2"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
   }
 }

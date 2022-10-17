@@ -24,7 +24,7 @@ class Contact(models.Model):
         unique=True,
         validators=[
             EmailValidator(
-                whitelist=["protonmail", "tutanota", "gmail", "yahoo", "hotmail"]
+                allowlist=["protonmail", "tutanota", "gmail", "yahoo", "hotmail"]
             )
         ],
     )

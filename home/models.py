@@ -1,11 +1,12 @@
-from django.db import models
 from django.conf import settings
+
+# from django.contrib.contenttypes.fields import GenericForeignKey
+# from django.contrib.contenttypes.models import ContentType
+from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from tinymce.models import HTMLField
 
-Clvm = getattr(settings, "ENV_NAME", "Clavem")
+CLVM = getattr(settings, "ENV_NAME", "Clavem")
 
 
 def policy_media_path(self, filename: str):
@@ -13,10 +14,10 @@ def policy_media_path(self, filename: str):
     slug = self.slug
     if filename is not slug:
         filename = slug
-    if C in filename:
+    if CLVM in filename:
         return f"policies/{filename}.pdf"
     else:
-        return f"policies/{Clvm}-{filename}.pdf"
+        return f"policies/{CLVM}-{filename}.pdf"
 
 
 class Page(models.Model):
@@ -146,7 +147,9 @@ class PSection(models.Model):
     )
 
 
-# Terms of Use on a website are terms which apply to every visitor. Terms and Conditions apply to particular users of the website, usually when the user is required to pay for a product and/or service.
+# Terms of Use on a website are terms which apply to every visitor.
+# Terms and Conditions apply to particular users of the website,
+# usually when the user is required to pay for a product and/or service.
 class Terms(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(blank=True, null=True, unique=True)
@@ -192,10 +195,11 @@ class Trademark(models.Model):
     class Meta:
         verbose_name_plural = _("Trademark")
 
+
 # Imprint
 
 # class Email(models.Model):
-## Add Email Policy if required
+# Add Email Policy if required
 #     title = models.CharField(max_length=250)
 #     sec1 = HTMLField('Body 1', blank=True, null=True)# models.TextField(blank=True, null=True)
 #     section2 = models.CharField(max_length=250, blank=True, null=True)

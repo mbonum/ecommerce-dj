@@ -1,6 +1,6 @@
 """
-https://docs.djangoproject.com/en/3.2/ref/settings/
-https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+https://docs.djangoproject.com/en/4.1/ref/settings/
+https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 """
 
 # import os
@@ -10,10 +10,10 @@ from pathlib import Path
 # , Csv # pip install python-decouple
 # import django_heroku
 import dj_database_url
-import psycopg2.extensions
+
+# import psycopg2.extensions
 from decouple import config
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ImproperlyConfigured
 
 # import lz4
 # ABSOLUTE_PATH = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
@@ -37,14 +37,15 @@ MANAGERS = [
 ]
 ADMINS = MANAGERS
 
-INTERNAL_IPS = ["127.0.0.1", "localhost"]
+INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
     # 'grappelli',
     # 'filebrowser',
-    "chat",
+    "chat.apps.ChatConfig",
     "channels",
-    "whitenoise.runserver_nostatic",  # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
+    "whitenoise.runserver_nostatic",
+    # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     "django.contrib.staticfiles",
     "django.contrib.admin",  # 'essays.apps.EssaysAdminConfig', # overrided default admin
     "django.contrib.auth",
@@ -57,7 +58,8 @@ INSTALLED_APPS = [
     # # "sslserver",  # https://pypi.org/project/django-sslserver
     # "django_hosts",  # https://pypi.org/project/django-hosts
     "tailwind",
-    "ui",
+    "django_browser_reload",
+    "theme",
     "django_extensions",  # https://pypi.org/project/django-extensions
     # "gdpr_assist",  # https://django-gdpr-assist.readthedocs.io/en/latest/installation.html
     # "gdpr",  # https://github.com/druids/django-GDPR
@@ -68,22 +70,24 @@ INSTALLED_APPS = [
     "captcha",  # https://pypi.org/project/django-simple-captcha
     "mptt",  # https://django-mptt.readthedocs.io/en/latest/install.html
     # "rosetta",  # https://pypi.org/project/django-rosetta
-    # "hitcount",  # https://dj-hitcount.readthedocs.io/en/latest/installation.html# 'django_cleanup.apps.CleanupConfig',
+    # "hitcount",
+    # https://dj-hitcount.readthedocs.io/en/latest/installation.html
+    # 'django_cleanup.apps.CleanupConfig',
     # "robots",  # https://pypi.org/project/django-robots
     "admin_honeypot",  # https://pypi.org/project/django-admin-honeypot
     "widget_tweaks",  # https://pypi.org/project/django-widget-tweaks
     # "django_celery_beat",
-    "django_celery_results",
-    "sslserver",
-    "rest_framework",
+    "django_celery_results",  # https://pypi.org/project/django-celery-results/
+    "sslserver",  # https://github.com/teddziuba/django-sslserver
+    "rest_framework",  # https://www.django-rest-framework.org/#installation
     "rest_framework.authtoken",
-    "drfpasswordless",
-    "sorl.thumbnail",
+    "drfpasswordless",  # https://github.com/aaronn/django-rest-framework-passwordless
+    "sorl.thumbnail",  # https://github.com/jazzband/sorl-thumbnail
     "tinymce",  # https://github.com/jazzband/django-tinymce
     "newsletter",  # https://django-newsletter.readthedocs.io/en/latest/installation.html
     # "embed_video",
     # "blacklist",
-    #'pwa',# https://github.com/silviolleite/django-pwa
+    # 'pwa',# https://github.com/silviolleite/django-pwa
     # 'xicon',# https://pypi.org/project/django-xicon
     # 'allauth',
     # 'allauth.account',
@@ -109,7 +113,7 @@ INSTALLED_APPS = [
     # 'crispy_forms',# https://pypi.org/project/django-crispy-forms/
     # 'webpack_loader',
 ]
-TAILWIND_APP_NAME = "ui"
+TAILWIND_APP_NAME = "theme"
 WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 # MAX_ACTIVE_TASKS = 2
@@ -157,12 +161,12 @@ CELERY_BEAT_SCHEDULE = {
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_CACHE_BACKEND = "default"
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": "cachedb",
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+#         "LOCATION": "cachedb",
+#     }
+# }
 # CELERY_RESULT_BACKEND = "django-cache"
 # CELERY_TIMEZONE = "Australia/Tasmania"
 # CELERY_TASK_TRACK_STARTED = True
@@ -176,7 +180,9 @@ CACHES = {
 MIDDLEWARE = [
     # "django_hosts.middleware.HostsRequestMiddleware",  # https://pypi.org/project/django-hosts/
     "django.middleware.security.SecurityMiddleware",
-    # 'tracking.middleware.VisitorCleanUpMiddleware',# 'tracking.middleware.VisitorTrackingMiddleware',
+    # 'tracking.middleware.VisitorCleanUpMiddleware',
+    # 'tracking.middleware.VisitorTrackingMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",  # between sessions and common
     "corsheaders.middleware.CorsMiddleware",  # https://pypi.org/project/django-cors-headers/
@@ -190,13 +196,14 @@ MIDDLEWARE = [
     # "csp.middleware.CSPMiddleware",  # https://pypi.org/project/django-csp/
     "whitenoise.middleware.WhiteNoiseMiddleware",
     # 'django_otp.middleware.OTPMiddleware',# django-two-factor-auth
-    # 'allauth_2fa.middleware.AllauthTwoFactorMiddleware',# 'allauth_2fa.middleware.BaseRequire2FAMiddleware',
+    # 'allauth_2fa.middleware.AllauthTwoFactorMiddleware',
+    # 'allauth_2fa.middleware.BaseRequire2FAMiddleware',
     # 'two_factor.middleware.threadlocals.ThreadLocals',
-    # # 'allauth.account.auth_backends.AuthenticationBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend',
     # "defender.middleware.FailedLoginMiddleware",
     # "django_hosts.middleware.HostsResponseMiddleware",
 ]
-# https://docs.djangoproject.com/en/3.2/ref/contrib/messages/
+# https://docs.djangoproject.com/en/4.1/ref/contrib/messages/
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 # https://django-embed-video.readthedocs.io/en/latest/installation.html
@@ -211,7 +218,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
 #     )  # https://pypi.org/project/django-debug-toolbar/
 # 'silk.middleware.SilkyMiddleware'
 # MIDDLEWARE += 'django.middleware.common.BrokenLinkEmailsMiddleware'
-# # https://docs.djangoproject.com/en/3.2/howto/error-reporting/
+# # https://docs.djangoproject.com/en/4.1/howto/error-reporting/
 
 ROOT_URLCONF = "core.urls"
 # ROOT_HOSTCONF = "core.hosts" # django_hosts
@@ -251,7 +258,7 @@ TEMPLATES = [
     },
 ]
 
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 DATABASES = {
     "default": dj_database_url.config(
         default=config("DB_URL"),
@@ -264,10 +271,11 @@ DATABASES = {
     #     "NAME": BASE_DIR / "gdpr-log.sqlite3",
     # },
 }
-# https://docs.djangoproject.com/en/3.2/topics/testing/advanced/#topics-testing-advanced-multidb
+# https://docs.djangoproject.com/en/4.1/topics/testing/advanced/#topics-testing-advanced-multidb
 if "test" in sys.argv:
     DATABASES["default"] = {"ENGINE": "django.db.backends.sqlite3"}
-    # SOUTH_TESTS_MIGRATE = False https://south.readthedocs.io/en/latest/installation.html#installation
+    # SOUTH_TESTS_MIGRATE = False
+    # https://south.readthedocs.io/en/latest/installation.html#installation
 
 # DATABASE_ROUTERS = ["gdpr_assist.routers.EventLogRouter"]
 
@@ -312,7 +320,7 @@ if "test" in sys.argv:
 # DATABASES["default"].update(DB_FROM_ENV)
 # DATABASES["default"]["CONN_MAX_AGE"] = 500
 
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -324,7 +332,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {
-            "min_length": 10,
+            "min_length": 12,
         },
     },
     {
@@ -369,20 +377,23 @@ TIME_ZONE = "UTC"
 USE_TZ = True  # set dynamic time according to geolocalization
 DATE_INPUT_FORMATS = [
     "%Y-%m-%d %H:%M"
-]  # https://docs.djangoproject.com/en/3.2/ref/settings/#date-input-formats
+]  # https://docs.djangoproject.com/en/4.1/ref/settings/#date-input-formats
 USE_I18N = True
 USE_L10N = False
 
-LOCALE_PATHS = (BASE_DIR / "locale",)
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
-# Static files (CSS, JavaScript, Images) https://docs.djangoproject.com/en/3.2/howto/static-files/
-# STATIC_HOST = config('STATIC_HOST', '')# http://whitenoise.evans.io/en/stable/django.html#use-a-content-delivery-network
+# Static files (CSS, JavaScript, Images) https://docs.djangoproject.com/en/4.1/howto/static-files/
+# STATIC_HOST = config('STATIC_HOST', '')
+# http://whitenoise.evans.io/en/stable/django.html#use-a-content-delivery-network
 # STATIC_URL = STATIC_HOST + '/static/'
 STATIC_URL = "/static/"
 
-STATIC_ROOT = (
-    BASE_DIR.parent / "static_cdn"
-)  # folder for collectstatic 'staticfiles'# os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'static_root')#Path(__file__).resolve(strict=True).parent
+STATIC_ROOT = BASE_DIR / "static_cdn"  # folder for collectstatic 'staticfiles'
+# os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'static_root')
+# #Path(__file__).resolve(strict=True).parent
 # '/var/www/clavem.co/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -463,6 +474,9 @@ ACCOUNT_ACTIVATION_DAYS = 7  # the user has 1 week to activate the account
 #     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 #     # 'PAGE_SIZE': 2
 # }
+
+BDEA_MESSAGE = _("Please add a valid email.")
+
 # https://django-newsletter.readthedocs.io/en/latest/settings.html
 NEWSLETTER_THUMBNAIL = "sorl-thumbnail"
 NEWSLETTER_CONFIRM_EMAIL = False
@@ -540,7 +554,7 @@ TINYMCE_DEFAULT_CONFIG = {
 
 # django-cors-headers https://django-csp.readthedocs.io/en/latest/configuration.html
 CORS_ALLOWED_ORIGINS = ["https://js.stripe.com", "https://polyfill.io"]
-#, "https://commerce.coinbase.com" CORS_ALLOWED_ORIGIN_REGEXES = [
+# , "https://commerce.coinbase.com" CORS_ALLOWED_ORIGIN_REGEXES = [
 #     #r"^https://\w+\.stripe\.com$",
 # ]
 SECURE_BROWSER_XSS_FILTER = True
@@ -552,7 +566,7 @@ SECURE_HSTS_SECONDS = 15768000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
+# that requests over HTTP are redirected to HTTPS. aslo can config in webserver
 SECURE_SSL_REDIRECT = True
 
 # for more security
@@ -602,7 +616,7 @@ CART_SESSION_ID = "cart"
 
 # django_heroku.settings(locals(), staticfiles=False)
 
-# https://docs.djangoproject.com/en/3.2/topics/i18n/# Add Chinese, Espanol
+# https://docs.djangoproject.com/en/4.1/topics/i18n/# Add Chinese, Espanol
 LANGUAGE_CODE = "en"  # -us
 LANGUAGES = (
     ("en", _("English")),
@@ -657,3 +671,5 @@ LANGUAGES = (
 # OPTIMIZELY_ACCOUNT_NUMBER = '1234567'
 # PERFORMABLE_API_KEY = '123abc'
 # WOOPRA_DOMAIN = 'abcde.com'
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

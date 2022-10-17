@@ -6,7 +6,7 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls.base import reverse
 
-from .forms import ChatForm, ContactForm
+from .forms import ChatForm, ContactForm, MessageForm
 from .models import Message
 
 
@@ -46,6 +46,7 @@ def room(request, room):
         request.GET.get("user") if request.GET.get("user") else room[: room.index("-")]
     )
     msg = Message.objects.filter(room=room)[0:25]
+    form = MessageForm(request.POST or None)
     return render(
         request,
         "chat/room.html",

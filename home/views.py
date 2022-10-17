@@ -3,24 +3,33 @@
 # from wsgiref.util import FileWrapper
 # from core.utils import unique_slug_generator
 # # from django.contrib.auth import authenticate, get_user_model, login, logout
-from io import BytesIO
+# from io import BytesIO
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import EmailMessage, send_mail
-from django.http import FileResponse, HttpResponse
-from django.shortcuts import render
-from django.template.loader import render_to_string
+from django.http import HttpResponse  # FileResponse,
+
+# from django.shortcuts import render
+# from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, View
-from django.views.generic.edit import FormView
+
 # from reportlab.lib import colors
 # from reportlab.lib.pagesizes import A4, landscape, letter
 # from reportlab.pdfbase import pdfmetrics
 # from reportlab.pdfbase.ttfonts import TTFont
 # from reportlab.pdfgen import canvas
 from core.utils import render_to_pdf
+
 from .models import Cookie, Donate, Page, Privacy, Terms, Trademark
+
+# from django.core.mail import EmailMessage, send_mail
+
+
+# from django.views.generic.edit import FormView
+
+
 # from subscribe.forms import JoinForm
 
 Clvm = getattr(settings, "ENV_NAME", "Clavem")
@@ -117,7 +126,7 @@ class CookieView(CreateView):
 
 class PrivacyView(CreateView):
     # Show privacy page
-    template_name = "base/txt.html"  
+    template_name = "base/txt.html"
     success_url = "/privacy/"
     model = Privacy
     fields = "__all__"
@@ -165,7 +174,7 @@ class TrademarkView(CreateView):
 
 class GeneratePolicyPDF(View):
     # If there is no pdf in the database, read policy's fields and generate pdf
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):  # *args,
         slug = kwargs.get("slug")
         try:
             pol = Privacy.objects.get(slug=slug)
@@ -184,17 +193,17 @@ class GeneratePolicyPDF(View):
                 except Terms.DoesNotExist:
                     pol, sec = None
         if sec:
-            p = ""
-            for s in sec:
-                if s.title:
-                    p += "<h2>" + s.title + "</h2>"
-                p += s.text
+            _p = ""
+            for _s in sec:
+                if _s.title:
+                    _p += "<h2>" + _s.title + "</h2>"
+                _p += _s.text
             date = pol.updated.strftime("%Y-%m-%d")
             context = {
                 "title": pol.title,
                 "author": "Clavem Legal Team",
                 "date": date,
-                "text": p,
+                "text": _p,
             }
             pdf = render_to_pdf("home/policy-pdf.html", context)
             if pdf:
@@ -210,7 +219,7 @@ class GeneratePolicyPDF(View):
         return messages.info(
             request,
             _(
-                "Sorry, the text is private for now. Contact us to know when the product will be published."
+                "Sorry, the text is private for now. Contact us to know when it will be available."
             ),
         )
 

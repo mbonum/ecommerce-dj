@@ -71,8 +71,8 @@
       }
     };
     document.querySelector('#sendbtn').onclick = function (e) {
-      const msgInput = document.querySelector('#id_text');
-      const msg = msgInput.value;
+      const msgInput = document.querySelector('#id_text'),
+        msg = msgInput.value;
       if (msg != '') {
         chatSocket.send(
           JSON.stringify({
@@ -82,37 +82,37 @@
           }),
         );
         msgInput.value = '';
-      } else {
-        // $.alert('Empty message');
-        $.alert({
-          title: '',
-          type: 'red',
-          typeAnimated: true,
-          draggable: true,
-          dragWindowGap: 15,
-          dragWindowBorder: true,
-          animateFromElement: true,
-          smoothContent: true,
-          content: 'Empty message',
-          boxWidth: '25%',
-          lazyOpen: false,
-          bgOpacity: true,
-          theme: 'light',
-          animation: 'scale',
-          closeAnimation: 'scale',
-          animationSpeed: 300,
-          animationBounce: 1,
-          rtl: false,
-          container: 'body',
-          containerFluid: false,
-          backgroundDismiss: true,
-          backgroundDismissAnimation: 'shake',
-          autoClose: true,
-          closeIcon: true,
-          useBootstrap: false,
-          // theme: 'modern', //supervan dark material bootstrap
-        });
-      }
+      } //else {
+        //js.confirm $.alert('Empty message');
+        // $.alert({
+        //   title: '',
+        //   type: 'red',
+        //   typeAnimated: true,
+        //   draggable: true,
+        //   dragWindowGap: 15,
+        //   dragWindowBorder: true,
+        //   animateFromElement: true,
+        //   smoothContent: true,
+        //   content: 'Cannot send an empty message',
+        //   boxWidth: '25%',
+        //   lazyOpen: false,
+        //   bgOpacity: true,
+        //   theme: 'light',
+        //   animation: 'scale',
+        //   closeAnimation: 'scale',
+        //   animationSpeed: 300,
+        //   animationBounce: 1,
+        //   rtl: false,
+        //   container: 'body',
+        //   containerFluid: false,
+        //   backgroundDismiss: true,
+        //   backgroundDismissAnimation: 'shake',
+        //   autoClose: true,
+        //   closeIcon: true,
+        //   useBootstrap: false,
+        //   // theme: 'modern', //supervan dark material bootstrap
+        // });
+     // }
     };
   });
 </script>

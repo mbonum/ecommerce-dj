@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Buy' %} {{ object.name_product }}{% endblock %}
+{% comment %}<!--<source src="{{ object.video.url }}" type="video/ogg"> Fallback if the browser doesn't support video tagmuted width="560" height="315"{ % for img in object.img.all %}
+{ % if img.is_feature %}<img src="{{ img.url }}" alt="{{ img.alt_text }}">
+{% endif %}{% endfor %} x-bind:value="{{ q }}"-->{% endcomment %}
+{% block content %}
+<div class="font-c-sans text-lg lg:flex space-y-8 lg:space-y-0 lg:space-x-2 xl:space-x-8 mx-auto" id="productapp">
+  <div class="lg:w-1/3">
+    {% if object.video %}
+    <video loading="lazy" class="rounded-lg bord shadow" controls>
+      <source src="{{ object.video.url }}" type="video/mp4">
+      <embed src="{flash_swf_file}.swf" type="application/x-shockwave-flash"></embed>
+    </video>
+    {% elif object.video_link %}
+    <iframe src="{{ object.video_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    {% elif object.img %}
+    <div id="img-div">
+      <img loading="lazy" id="pic" src="{{ object.img.url }}" alt="{% trans 'Product detail' %}" class="bord rounded-xl shadow-md mx-auto">
+    </div>
+    {% else %}
+    <svg class="text-gray-400 fill-current lg:h-28 lg:w-28 mx-auto">
+      <use xlink:href="{% static 'img/svg-defs.svg' %}#clogo"></use>
+    </svg>
+    {% endif %}
+  </div>
+  <div class="lg:w-1/3">
+    <h1 class="text-2xl">{{ object.name_product }}</h1>
+    <div class="list-inside mt-2">
+      {{ object.text|safe|linebreaks }}
+    </div>
+  </div>
+  <div class="lg:w-1/3 space-y-8 bord bg-white rounded-xl shadow p-4 xl:p-6">
+    <div x-data="{ qty: '1' }" class="w-full inline-flex lg:block xl:inline-flex justify-between items-center">
+      <div class="text-left inline-flex items-center">
+        {% if object.is_digital %}
+        <p>{% trans 'Digital' %}</p>
+        {% else %}
+        <label for="id_qty" class="mr-2">{% trans 'Quantity' %}:</label>
+        <select id="id_qty" @change="qty = $event.target.value" name="qty">
+          {% for q in object.rangeqty %}
+          <option value="{{ q }}">{{ q }}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
+      </div>
+      <div class="text-right lg:text-left xl:text-right lg:mt-4 xl:mt-0">
+        <p>{% include 'base/snippets/currency.html' %}{{ object.price }}</p>
+        <p x-show="qty > 1" x-text="'&#215;' + qty" class="text-gray-500 text-sm"></p>
+      </div>
+    </div>
+    <div class="w-full inline-flex items-center justify-between">
+      {% include 'base/snippets/backbtn.html' with url=shop_url id=object.slug %}
+
+      <button @click="addToCart({{ object.id }})" class="cbtn">Buy</button>
+
+      {% include 'products/snippets/update-cart.html' with product=object cart=cart %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+  var productapp = new Vue({
+    el: '#productapp',
+    delimeters: ['[[', ']]'],
+    // store: store,
+    data () {
+      return {
+        showMessage: false,
+        mainImage: '{{ object.img.url }}',
+        images: ['{{ imagesstring|safe }}']
+      }
+    },
+    mounted () {
+      console.log('Mounted');
+    },
+    methods: {
+      changeMainImage(img) {
+        this.mainImg = img;
+      },
+      addToCart(productId) {
+        console.log('Product ID: ', productId)
+        var data = {
+          'product_id': productId, 
+          'update': false,
+          'quantity': 1
+        };
+
+        fetch('/api/add_to_cart/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(data)
+        })
+        .then((response) => {
+          console.log(response)
+
+          this.showMessage = true
+
+          // store.commit('increment', 1);
+
+          setTimeout(() => {this.showMessage = false}, 2000)
+        })
+        .catch(function (error) {
+          console.log('Error 2');
+          console.log(error);
+        })
+      }
+    }
+  })
+</script>
+{% endblock %}{% comment %}<!--$(document).ready(function() {$('#id_qty option:selected').text();})
+&times;
+custom_tags https://turingpi.com/ add video/gif Your browser does not support the video tag. 2E3A47 313A45 171717 cbd5e0 a0aec0 EEEEEE F39C12 FCEBB6 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
+{ % block css %}<style>
+#pic{
+  /* max-width: 500px;
+  max-height: 600px; */
+  /* border: 2px solid black; */
+  /* cursor: pointer;} */
+#img-div{
+  z-index: 1;
+  /* max-width: 400px;
+  max-height: 300px; */
+  position: relative;
+}
+#zum{
+  z-index: 2;
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  border:1px solid black;
+  background-repeat: no-repeat;
+  cursor: none;
+}</style>{ % endblock %}
+Add 360 gif or slideshow { % if not object.is_digital %}<div id="zum" class="hidden xl:block"></div>{ % endif %}
+<script>
+  $(document).on('click', '#buybtn', function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '{{ update_cart_url }}',
+      data: {
+        productid: $('#product_id').val(),
+        productqty: $('#qty-id option:selected').text(),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        document.getElementById("basket-qty").innerHTML = json.qty
+      },
+      error: function (xhr, errmsg, err) { }
+    });
+  })
+</script>
+<script type="text/javascript" src="{ % static 'js/zum.js' %}"></script>url: "{ % url 'cart:cart_add' %}", 
+<script>
+$(document).on('click', '#buybtn', function(e) {
+  e.preventDefault();
+  $.ajax({
+    type: 'POST',
+    data: {
+      productid: $('#product_id').val(),
+      productqty: $('#id_qty option:selected').text(),
+      csrfmiddlewaretoken: '{% csrf_token %}',
+      action: 'post's
+    },
+    success: function(json) {
+      console.log(json)
+    },
+    error: function(xhr, errmsg, err) {
+    }
+  })
+})</script>-->{% endcomment %}

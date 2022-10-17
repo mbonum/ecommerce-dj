@@ -19,7 +19,7 @@ class ContactForm(forms.Form):
         widget=forms.Select(
             attrs={
                 "id": "msgtype",
-                "class": "flex w-full appearance-none bg-white border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
+                "class": "flex w-full appearance-none bg-white text-black border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 py-1 px-2 rounded-lg shadow placeholder-gray-600 focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2",
             }
         ),
     )
@@ -30,7 +30,7 @@ class ContactForm(forms.Form):
             attrs={
                 "id": "chat_fn",
                 # "placeholder": _("First name"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                "class": "flex text-black border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
             }
         ),
     )
@@ -41,7 +41,7 @@ class ContactForm(forms.Form):
             attrs={
                 "id": "chat_ln",
                 # "placeholder": _("Last name"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                "class": "flex text-black border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "type": "text",
             }
         ),
@@ -53,7 +53,7 @@ class ContactForm(forms.Form):
             attrs={
                 "id": "chat_email",
                 # "placeholder": _("Email"),
-                "class": "flex border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                "class": "flex text-black border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "autofocus": True,
             }
         ),
@@ -65,7 +65,7 @@ class ContactForm(forms.Form):
             attrs={
                 "id": "chat_topic",
                 # "placeholder": _("Topic"),
-                "class": "flex w-full border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
+                "class": "flex text-black w-full border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 rounded-lg shadow placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-offset-transparent focus:ring-offset-2 py-1 px-2",
                 "spellcheck": "true",
             }
         ),
@@ -79,6 +79,7 @@ class ContactForm(forms.Form):
                 # "placeholder": _("How can we help?"),"class": "",
                 "rows": 4,
                 "spellcheck": "true",
+                "class": "text-black",
             }
         ),  #'cols': 80, 'rows': 40,
     )
@@ -108,7 +109,7 @@ class ContactForm(forms.Form):
 
     def clean_first_name(self):
         fn = self.cleaned_data["first_name"]
-        cl = ["clavem", "clvm", "Clavem", "Clvm", "CLVM","Clavem team"]
+        cl = ["clavem", "clvm", "Clavem", "Clvm", "CLVM", "Clavem team"]
         if any(c in fn for c in cl):
             raise ValidationError(_("Name reserved. Please type your name."))
         return fn
@@ -124,6 +125,8 @@ class ContactForm(forms.Form):
     #         self.cleaned_data["postal_code"],
     #     )
 
+
+# For authenticated users
 
 class ChatForm(forms.Form):
     message_type = forms.ChoiceField(
@@ -172,21 +175,21 @@ class ChatForm(forms.Form):
         )
 
 
-# class MessageForm(forms.Form):
-#     text = forms.CharField(
-#         label=_("Message"),
-#         required=True,
-#         widget=forms.Textarea(
-#             attrs={
-#                 "id": "chat_text",
-#                 "placeholder": _("How can we help?"),
-#                 "class": "flex w-full hover:border-yellow-600 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2",
-#                 "rows": 4,
-#                 "spellcheck": "true",
-#             }
-#         ),
-#     )
+class MessageForm(forms.Form):
+    text = forms.CharField(
+        # label=_("Message"),
+        required=True,
+        widget=forms.Textarea(
+            attrs={
+                "id": "id_text",
+                "placeholder": _("Message"),# How can we help?flex w-full hover:border-yellow-600 border border-gray-400 rounded-lg placeholder-gray-800 shadow hover:shadow-md focus:outline-none focus:ring-2 ring-yellow-200 ring-offset-transparent ring-offset-2 py-1 px-2
+                "class": "w-full rounded-xl appearance-none border border-gray-300 focus:border-yellow-500 hover:border-yellow-500 bg-white placeholder-black text-black shadow hover:shadow-md cr2 py-2 px-3 mt-3",
+                "rows": 4,
+                "spellcheck": "true",
+            }
+        ),
+    )
 
-#     class Meta:
-#         model = Message
-#         fields = ("text",)
+    class Meta:
+        model = Message
+        fields = ("text",)

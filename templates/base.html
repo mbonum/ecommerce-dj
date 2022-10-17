@@ -49,98 +49,97 @@ request.path # /some/content/
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 <head {% meta_namespaces %}>
 {#<!-- % analytical_head_top % { % include 'base/snippets/fullscreen.html' % -->#}
-  {% include 'base/snippets/head.html' %}
-  <title>{% block title %}{% endblock %} · {{ com }}</title>
-  
-  {% block css %}{% endblock %}
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-  {#<!-- <script>if (typeof Vue == 'undefined') {document.write(unescape("%3Cscript src='{% static '/js/vue.min.js' %} type='application/javascript'%3E%3C/script%3E"));}</script><link rel="stylesheet" href="https://csswizardry.com/ct/ct.css" class="ct"/>-->#}
+	{% include 'base/snippets/head.html' %}
+	<title>{% block title %}{% endblock %}{% if request.path != home_url %} · {% endif %}{{ com }}</title>
+	{% block css %}{% endblock %}
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+	{#<!-- <script>if (typeof Vue == 'undefined') {document.write(unescape("%3Cscript src='{% static '/js/vue.min.js' %} type='application/javascript'%3E%3C/script%3E"));}</script><link rel="stylesheet" href="https://csswizardry.com/ct/ct.css" class="ct"/>-->#}
 </head>
 <body class="bg-primary text-white cb">{#<!--% analytical_body_top %-->#}
-  <div id="nojs" class="flex-col w-screen h-screen">
-    <script src="https://unpkg.com/vuex@3.6.1/dist/vuex.js"></script>
-    <script>
-      var i = 0,//, x a = false, ids = [],
-        t = 0.00;
-      // if ({{ request.session.item_id }}) {
-      //   ids = {{ request.session.item_id }};
-      //   console.log(ids);
-      // }
-      // for (; ids['x']; x++) {
-      //   console.log(ids);
-      //   if (ids[x] === '{{ object.id }}') {
-      //     a = true;
-      //   }
-      // }
-      if ('{{ request.session.cart_items }}') {
-        i = parseInt('{{ request.session.cart_items }}');
-      }
-      if ('{{ cart.total }}') {
-        t = parseFloat('{{ cart.total }}').toFixed(2);
-      }
-      var store = new Vuex.Store({
-        state: {
-          // added: false,
-          // items: [],
-          nrItems: i,
-          totalOrder: t
-        },
-        mutations: {
-          // addedItem(state, added) {
-          //   state.added = added;
-          // //   for p in cart.products.all
-          // // p.name
-          // },
-          // itemList(state, itemId) { state.items += itemId }
-          updateNrItems(state, qty) {
-            state.nrItems += qty;
-          },
-          updateTotal(state, newItem) {
-            state.totalOrder = parseFloat(state.totalOrder) + parseFloat(newItem);
-            state.totalOrder = parseFloat(state.totalOrder).toFixed(2)
-          }
-        }
-      })
-    </script>
-    {% include 'base/nav.html' %}
-    <main class="px-2 md:px-0 mb-auto">
-      {% block media %}{% endblock %}
-      <div class="cw py-8">
-        {% include 'base/snippets/message.html' %}
-        {% block content %}{% endblock %}
-      </div>
-    <input type="hidden" name="y" id="y" value="{{ current_year }}">
-    <input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
-    </main>
-    {% include 'base/footer.html' %}
-  </div>
-  {% include 'base/noscript.html' %}
-  {% include 'base/js.html' %}
-  {% block js %}{% endblock %}
-  {% if not request.user.email %}
-  {% include 'base/snippets/cookieconsent.html' %}
-  <!-- <script>
-    window.cookieconsent.initialise({
-      "palette": {
-        "popup": {
-          "background": "#000"
-        },
-        "button": {
-          "background": "#f1d600"
-        }
-      },
-      "theme": "edgeless",
-      "type": "opt-out",
-      "content": {
-        "dismiss": "Ok",
-        "deny": "Opt out",
-        "link": "Cookie Policy",
-        "href": "{{ cookie_url }}",
-        "target": "_blank"
-      }
-    });
-    </script> -->
-  {% endif %}
+	<div id="nojs" class="flex-col w-screen h-screen">
+		<script src="https://unpkg.com/vuex@3.6.1/dist/vuex.js"></script>
+		<script>
+			var i = 0,//, x a = false, ids = [],
+				t = 0.00;
+			// if ({{ request.session.item_id }}) {
+			//	 ids = {{ request.session.item_id }};
+			//	 console.log(ids);
+			// }
+			// for (; ids['x']; x++) {
+			//	 console.log(ids);
+			//	 if (ids[x] === '{{ object.id }}') {
+			//		 a = true;
+			//	 }
+			// }
+			if ('{{ request.session.cart_items }}') {
+				i = parseInt('{{ request.session.cart_items }}');
+			}
+			if ('{{ cart.total }}') {
+				t = parseFloat('{{ cart.total }}').toFixed(2);
+			}
+			var store = new Vuex.Store({
+				state: {
+					// added: false,
+					// items: [],
+					nrItems: i,
+					totalOrder: t
+				},
+				mutations: {
+					// addedItem(state, added) {
+					//	 state.added = added;
+					// //	 for p in cart.products.all
+					// // p.name
+					// },
+					// itemList(state, itemId) { state.items += itemId }
+					updateNrItems(state, qty) {
+						state.nrItems += qty;
+					},
+					updateTotal(state, newItem) {
+						state.totalOrder = parseFloat(state.totalOrder) + parseFloat(newItem);
+						state.totalOrder = parseFloat(state.totalOrder).toFixed(2)
+					}
+				}
+			})
+		</script>
+		{% include 'base/nav.html' %}
+		<main class="px-2 md:px-0 mb-auto">
+			{% block media %}{% endblock %}
+			<div class="cw py-8">
+				{% include 'base/snippets/message.html' %}
+				{% block content %}{% endblock %}
+			</div>
+		<input type="hidden" name="y" id="y" value="{{ current_year }}">
+		<input type="hidden" name="launchDate" id="launchDate" value="{{ launched }}">
+		</main>
+		{% include 'base/footer.html' %}
+	</div>
+	{% include 'base/noscript.html' %}
+	{% include 'base/js.html' %}
+	{% block js %}{% endblock %}
+	{% if not request.user.email %}
+	{% include 'base/snippets/cookieconsent.html' %}
+	<!-- <script>
+		window.cookieconsent.initialise({
+			"palette": {
+				"popup": {
+					"background": "#000"
+				},
+				"button": {
+					"background": "#f1d600"
+				}
+			},
+			"theme": "edgeless",
+			"type": "opt-out",
+			"content": {
+				"dismiss": "Ok",
+				"deny": "Opt out",
+				"link": "Cookie Policy",
+				"href": "{{ cookie_url }}",
+				"target": "_blank"
+			}
+		});
+		</script> -->
+	{% endif %}
 </body>
 </html>
 {% endautoescape %}

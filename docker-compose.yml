@@ -1,40 +1,64 @@
-version: "3.8"
+# version: "3.9"
+# services:
+#   django:
+#     build: .
+#     image: app:cw
+#     container_name: cw_container
+#     command: python manage.py runserver 0.0.0.0:8000
+#     volumes:
+#       - .:/code
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       - DEBUG=1
+#       - DJANGO_ALLOWED_HOSTS=www.clavem.co localhost 127.0.0.1
+#       - CELERY_BROKER=redis://redis:6379/0
+#       - CELERY_BACKEND=redis://redis:6379/0
+#       depends_on:
+#       - db
+#       - redis
+#   redis:
+#     build: .
+#     command: celery worker --app=core --loglevel=info
+#     volumes:
+#       - .:/code
+#     depends on:
+#       - django
+#       - redis
+#   db:
+#     image: postgres
+#     container_name: postgres_db
+#     environment:
+#       - POSTGRES_DB=postgres
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#     volumes:
+#       - ./db:/var/lib/postgresql/
+#   redis:
+#     image: "redis:alpine"
+# volumes:
+#   pgdata:
+version: "3.9"
+
 services:
-  django:
-    build: .
-    image: app:clvm
-    container_name: clvm_container
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/clvm
-    ports:
-      - "8000:8000"
-    environment:
-      - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=www.clavem.co localhost 127.0.0.1
-      - CELERY_BROKER=redis://redis:6379/0
-      - CELERY_BACKEND=redis://redis:6379/0
-      depends_on:
-      - db
-      - redis
-  redis:
-    build: .
-    command: celery worker --app=core --loglevel=info
-    volumes:
-      - .:/clvm
-    depends on:
-      - django
-      - redis
   db:
     image: postgres
-    container_name: postgres_db
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./db:/var/lib/postgresql/
-  redis:
-    image: "redis:alpine"
-volumes:
-  pgdata:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db

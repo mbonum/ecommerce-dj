@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load i18n static %}
-{% block title %}Home{% endblock %}
 {% block media %}
 <div class="block bg-black h-screen space-y-8 shadow-xl">
   <div>
@@ -29,14 +28,14 @@
 {% block content %}
 <div class="max-w-sm mx-auto text-center">
   <div class="text-xl font-c-serif" data-aos="fade-in">
-    <blockquote class="relative p-4 italic">
+    <blockquote class="relativ p-4 italic">
       <div style="font-size: 5rem;" class="-ml-7 text-yellow-200 opacity-75 absolute top-0 leading-none" aria-hidden="true">
         &ldquo;
       </div>
       <div>{% if object.quote %}{{ object.quote|safe }}{% else %}{% trans 'The only human limits are lack of imagination, long-term thinking and persistence.' %}{% endif %}</div>
-      <div style="font-size: 5rem;" class="-mt-8 text-yellow-200 opacity-75 absolute right-1 leading-none" aria-hidden="true">
+      {% comment %}<!-- <div style="font-size: 5rem;" class="-mt-8 text-yellow-200 opacity-75 absolute right-1 leading-none" aria-hidden="true">
         &rdquo;
-      </div>
+      </div> -->{% endcomment %}
     </blockquote>
     <p class="text-lg sc font-c pt-2">— Øvtis</p>
   </div>

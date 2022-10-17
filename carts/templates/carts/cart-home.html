@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block title %}{% trans 'Cart' %}{% endblock %}
+{#<!--if edited user currency qty, update cdev.js 184 https://html.spec.whatwg.org/multipage/tables.html#the-th-element-->#}
+{% block content %}
+<div id="cartapp" class="font-c-sans max-w-sm mx-auto">
+  <div v-if="products.length > 0">
+    <h1 class="h1 text-center">{% trans 'Cart' %}</h1>
+    <table class="cart-tabl e text-lg mx-auto">
+      <thead class="border-b border-gray-500">
+        <tr>
+          <th scope="col" colspan="1"><span hidden>Index</span></th>
+          <th scope="col" class="tabcol">{% trans 'Product' %}</th>
+          <th scope="col" class="tabcol"><label for="id_qty">{% trans 'Quantity' %}</label></th>
+          <th scope="col" class="tabcol">{% trans 'Price' %}</th>
+          <th scope="col" colspan="1"><span hidden>Pad</span></th>
+        </tr>
+      </thead>
+      <tbody class="cart-bod y items-center">
+        <tr v-for="p in products" class="cart-produc t bordb">
+          <td scope="row" colspan="1"></td>
+          <td class="p-4">
+            <a :href="p.url" class="bt">[[ p.name ]]</a>
+          </td>
+          <!-- id="product-cart" <div id="product-cart-tip" class="hidden">
+            <img loading="lazy" :src="p.img" alt="p.name {% trans 'Image' %}" class="w-64 h-64">
+          </div> -->
+          <td class="px-4">
+            <div class="flex items-center bg-white bord rounded-xl shadow space-x-2 px-2 py-1">
+              <button v-if="p.quantity < 2" @click="removeItem(p.id)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
+                <svg class="w-5 h-5 text-gray-400 hover:text-red-500 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
+              </button>
+              <button v-if="p.quantity > 1" @click="decrementQty(p.id, p.quantity, p.price)" class="rounded-full cr2">
+                <svg class="w-5 h-5 text-gray-400 hover:text-red-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#remove"></use></svg>
+              </button>
+              <span>[[ p.quantity ]]</span>
+              <button v-if="p.quantity < p.qty_instock" @click="incrementQty(p.id, p.quantity, p.qty_instock, p.price)" class="rounded-full cr2">
+                <svg class="w-5 h-5 text-yellow-400 hover:text-yellow-500"><use xlink:href="{% static 'img/svg-defs.svg' %}#add"></use></svg>
+              </button>
+              <span v-if="p.quantity >= p.qty_instock" class="rounded-full cr2">
+                {% trans 'Max' %}
+              </span>
+            </div>
+          </td>
+          <td class="px-4">
+            <span>{% if user.currency == "USD" %}${% else %}€{% endif %}[[ p.item_total ]]</span>
+          </td>
+          <td class="cart-item-remove-for m pl- 4">
+{#<!-- % include 'carts/snippets/remove-product.html' with id=object.id cart=cart in_cart=True % -->#}
+            <button @click="removeItem(p.id)" class="flex rounded-full cr2" data-tippy-content="{% trans 'Remove' %}">
+              <svg class="w-5 h-5 text-gray-400 hover:text-red-500 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#delete"></use></svg><span hidden>{% trans 'Remove' %}</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"></td>
+  {#<!-- if shipment cost + tax <th>Subtotal <p class="cart-subtotal">{{ cart.subtotal }}</p></td></tr>{ { object.tax }}% include 'base/snippets/currency.html' %}-->#}
+          <th scope="col" class="border-b border-gray-500 py-2">{% trans 'Total' %}</th>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+          <td class="tabcol">
+            <p class="cart-total">{% if user.currency == "USD" %}${% else %}€{% endif %}[[ totalOrder ]]</p>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="flex items-center justify-around text-lg mt-6">
+      {% include 'base/snippets/backbtn.html' with url=shop_url %}
+      <a class="inline-flex text-yellow-500 hover:text-yellow-600 rounded-full cr2 my-1" href="https://commerce.coinbase.com/checkout/7f1639eb-d280-4b97-afdd-168c0ec50cd8" data-tippy-content="{% trans 'Buy with Crypto' %} ⚡">
+        <svg class="h-9 w-9 fill-current"><use xlink:href="{% static 'img/svg-defs.svg' %}#btc"></use></svg>
+        <span hidden>{% trans 'Buy with Crypto' %}</span>
+      </a>
+      {% include 'carts/snippets/checkbtn.html' %}
+    </div>
+  </div>
+  <div v-if="products.length === 0" class="text-center">
+    <h1 class="h1 my-6">{% trans 'Your cart is empty' %}</h1>
+    {% include 'base/snippets/sad.html' %}
+  </div>
+</div>{{ products|safe }}
+{% endblock %}
+{% block js %}
+<script>
+  var cartapp = new Vue({
+    el: '#cartapp',
+    delimiters: ['[[', ']]'],
+    store: store,
+    data () {
+      return {
+        errors: [],
+        // first_name: '{{ first_name }}',
+        // last_name: '{{ last_name }}',
+        // email: '{{ email }}',
+        // address: '{{ address }}',
+        // zipcode: '{{ zipcode }}',
+        // place: '{{ place }}',
+        // phone: '{{ phone }}',
+        products: [{{ products|safe }}]
+      }
+    },
+    computed: {
+      nrItems: function() {
+        return store.state.nrItems
+      },
+      totalOrder: function() {
+        return store.state.totalOrder
+      }
+    //,   totalCostWithCoupon: function() {
+    //     if (this.coupon_value > 0) {
+    //         return store.state.total * (parseInt(this.coupon_value) / 100);
+    //     } else {
+    //         return store.state.total;
+    //     }
+    //   }
+    },
+    methods: {
+      decrementQty(productId, qty, price) {
+        var data = {
+          'product_id': productId, 
+          'update': true,
+          'quantity': parseInt(qty) - 1
+        };
+        console.log(qty);
+        if (parseInt(qty) - 1 === 0) {
+          this.removeItem(productId);
+        } else {
+          store.commit('increment', -1);
+          store.commit('changeTotal', -parseFloat(price));
+          fetch('/api/add-to-cart/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify(data)
+          })
+          .then((response) => {
+            for (var i = 0; i < this.products.length; i++) {
+              var p = this.products[i];
+              if (p.id === productId && qty < qty_instock) {
+                p.quantity = parseInt(p.quantity);
+                p.item_total = parseInt(p.quantity) * parseFloat(p.price);
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+        }
+      },
+      incrementQty(productId, qty, qty_instock, price) {
+        // for (var i = 0; i < this.products.length; i++) {
+        //   var product = this.products[i];
+
+        //   if (product.id === productId) {
+        //     if (quantity < product.num_available) {
+              var data = {
+                'product_id': productId,
+                'quantity': parseInt(qty) + 1,
+                'update': true
+              };
+              store.commit('increment', 1);
+              store.commit('changeTotal', parseFloat(price));
+              
+              fetch('/api/add-to-cart/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+              })
+              .then((response) => {
+                for (var i = 0; i < this.products.length; i++) {
+                  var p = this.products[i];
+                  if (p.id === productId && qty < qty_instock) {
+                    p.quantity = parseInt(data.quantity);//data.quantity);
+                    p.item_total = parseInt(p.quantity) * parseFloat(p.price);
+                  }
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              })
+          //   } else {
+          //     alert('Out of stock. Contact us to be notified when the product is available.');
+          //   }
+          // }
+        // }
+      },
+      removeItem(productId) {
+        var data = {
+          'product_id': productId,
+        };
+        fetch('/api/remove-from-cart/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(data)
+        })
+        // .then((result) => {
+        //   console.log(result)
+        //   if(result.error) {
+        //     throw result;
+        //   }
+        // })
+        .then((response) => {
+          if(response) {
+            console.log('Removed from cart');
+          }
+          this.products = this.products.filter(product => product.id !== productId)
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      }
+    }
+  })
+</script>
+{% endblock %}
+{% comment %}<!--._. currency update total
+Algorand blockchain <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script> -->{% endcomment %}

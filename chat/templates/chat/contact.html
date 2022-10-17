@@ -8,7 +8,7 @@
       {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
       <div class="space-y-2 text-center">
         {% if form.message_type %}
-        <label for="msgtype">
+        <label for="msgtype" class="text-black">
           {{ form.message_type.label }}
         </label>
         <div class="text-base lg:text-lg relative md:w-1/2 mx-auto">
@@ -19,16 +19,16 @@
       <div class="space-y-3 mx-auto mt-3">
         {% if not request.user.is_authenticated %}
         <div>
-          <label class="text-gray-700 m-1" for="chat_fn">{{ form.first_name.label }}</label>
+          <label class="text-black m-1" for="chat_fn">{{ form.first_name.label }}</label>
           {{ form.first_name }}
           <div class="text-red-500 ml-1">{{ form.errors.first_name }}</div>
         </div>
         <div>
-          <label class="text-gray-700 m-1" for="chat_ln">{{ form.last_name.label }}</label>
+          <label class="text-black m-1" for="chat_ln">{{ form.last_name.label }}</label>
           {{ form.last_name }}
         </div>
         <div>
-          <label class="text-gray-700 m-1" for="chat_email">{{ form.email.label }}</label>
+          <label class="text-black m-1" for="chat_email">{{ form.email.label }}</label>
           {{ form.email }}
         </div>
 {% comment %}<!--<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600">
@@ -38,24 +38,67 @@
 {{ form.postal_code }}-->{% endcomment %}
         {% endif %}
         <div>
-          <label class="text-gray-700 m-1" for="chat_topic">{{ form.topic.label }}</label>
+          <label class="text-black m-1" for="chat_topic">{{ form.topic.label }}</label>
           {{ form.topic }}
         </div>
         <div>
-          <label class="text-gray-700 m-1" for="chat_text">{{ form.text.label }}</label>
+          <label class="text-black m-1" for="chat_text">{{ form.text.label }}</label>
           {{ form.text }}
         </div>
       </div>
       <div class="mt-6">
-        <button id="sendbtn" class="cbtn">
+        <button id="sendbtn" class="cbtn text-black">
           <span class="inline-flex items-center text-center">{% trans 'Send' %}<svg class="fill-current h-3 w-3 ml-2"><use xlink:href="{% static 'img/svg-defs.svg' %}#send"></use></svg></span>
         </button>
       </div>
     </form>
   </div>
 </div>
-{% endblock %}{% comment %}<!--{ % block js %}
+{% endblock %}
+{% block js %}
 <script>
+$(document).ready(function () {
+  document.querySelector('#sendbtn').onclick = function (e) {
+    const msgInput = document.querySelector('#chat_email'),
+      msg = msgInput.value;
+      // res = /^(([^<>()\[\]\\.,;:\[msg]"]+(\.[^<>()\[\]\\.,;:\[msg]"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // if (msg == '') {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(msg)) {
+    } else {
+      // js.confirm $.alert('Empty message');
+      $.alert({
+        title: '',
+        type: 'red',
+        typeAnimated: true,
+        draggable: true,
+        dragWindowGap: 15,
+        dragWindowBorder: true,
+        animateFromElement: true,
+        smoothContent: true,
+        content: 'Cannot send an empty message',
+        boxWidth: '25%',
+        lazyOpen: false,
+        bgOpacity: true,
+        theme: 'light',
+        animation: 'scale',
+        closeAnimation: 'scale',
+        animationSpeed: 300,
+        animationBounce: 1,
+        rtl: false,
+        container: 'body',
+        containerFluid: false,
+        backgroundDismiss: true,
+        backgroundDismissAnimation: 'shake',
+        autoClose: true,
+        closeIcon: true,
+        useBootstrap: false,
+        // theme: 'modern', //supervan dark material bootstrap
+      });
+    }
+  };
+});
+</script>
+{% endblock %}{% comment %}<!--
   if (document.querySelector("#chat_fn").value) {
     document.querySelector("#sendbtn").onclick = function (e) {
       var room = document.querySelector("#chat_fn").value + "-" + Math.floor(Math.random() * 1000000);

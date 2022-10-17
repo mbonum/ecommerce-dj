@@ -1,7 +1,9 @@
 from django.contrib import admin
-from django.forms import ModelForm
+
 # from django_toggle_switch_widget.widgets import DjangoToggleSwitchWidget
 from .models import Order, ProductPurchase
+
+# from django.forms import ModelForm
 
 
 # class OrderModelForm(ModelForm):

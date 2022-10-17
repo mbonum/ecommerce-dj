@@ -1,4 +1,7 @@
+.venv/
 .vscode/
+static/
+static_cdn/
 
 *.py[co]
 __pycache__

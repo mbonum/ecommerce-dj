@@ -1,3 +1,4 @@
+# from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sitemaps import Sitemap
 from django.shortcuts import reverse
 from education.models import Book
@@ -9,8 +10,8 @@ from team.models import Member
 class StaticViewSitemap(Sitemap):
     def items(self):
         return [
-            "learn:booklist",
-            "read:index",
+            "learn:list",
+            "read:list",
             "shop:list",
         ]
 
@@ -24,8 +25,8 @@ class BookSitemap(Sitemap):
 
 
 class EssaySitemap(Sitemap):
-    # changefreq = "weekly"
-    # priority = 0.8
+    changefreq = "weekly"
+    priority = 0.8
 
     def items(self):
         return Essay.objects.all()

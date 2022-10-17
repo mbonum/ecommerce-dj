@@ -29,15 +29,15 @@
 // $secondary-font-color: darken($primary-color, 33%);
 // $accent-font-color: $accent-color-dark;
 
-$shadow-outline-color: rgba(66, 153, 225, 0.5);/* rgba(217, 239, 255, 0.5) #D9EFFF FFD617 */
+// $shadow-outline-color: rgba(66, 153, 225, .5);/* rgba(217, 239, 255, 0.5) #D9EFFF FFD617 */
 $selection-color: rgba(255, 255, 130, .8);
 $blue: #81A6EC;//rgba(0, 113, 227, .8)rgba(70, 77, 119, .8);
 $nav: rgba(0, 0, 0, .9);// 242729 rgba(49,49,49,0.9) #171717 313131 313A45 242729
 $footer: #ecddcc; // E1CAAF FBFBFB F5F3EF
 $footer-d: #E7D5BF;// B8B1B2 969292 C9C5C5 E6DDDE C5C5C6
 $gray-hover: #E8E8E8;// e6ecf0 F1F8FF E8E8E8;
-$primary: #121212;// rgb(250, 251, 252) DDEDF7 1B2029 222833 F8F8F8 F2F1EB f2f2f2 F0F0F0 E9EBEE EDF0F5 EEEEEE F0F1F1 E5E5E5 F5F5F5/7
-$opposite: #f0f1f3;
+$primary: #121212;//0A0A0A 121212 161618#181818#192734#212121#212124#22303C#242526#282828#3A3B3C#404040 rgb(250, 251, 252) DDEDF7 1B2029 222833 F8F8F8 F2F1EB f2f2f2 F0F0F0 E9EBEE EDF0F5 EEEEEE F0F1F1 E5E5E5 F5F5F5/7
+$opposite: complement($primary);//#f0f1f3;
 $gray-aaa: #EBE4E5;// DCDCD4 EEF0F1
 $marzipan: #ecc781;//FBDD85 81A6EC A6EC81 C79206 FBDD85
 $maroon: #AC3833;// complementary 3833AC

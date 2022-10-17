@@ -162,7 +162,7 @@ class CUser(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return str(self.first_name + " " + self.last_name)
-    
+
     def get_usrname(self):
         e = self.email
         return str(e[: e.index("@")])

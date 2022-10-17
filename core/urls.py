@@ -2,38 +2,39 @@
 # from ariadne.contrib.django.views import (
 #     GraphQLView,
 # )  # from graphene_django.views import GraphQLView
+# from essays.admin import essays_admin # add separate CMS for authors
+# from filebrowser.sites import site
+# from .schema import schema
+# from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
+# from two_factor.urls import urlpatterns as tf_urls
 from django.conf import settings
-from django.conf.urls.i18n import i18n_patterns
+
+# from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-
 from django.contrib.sitemaps.views import sitemap
+
+# from django.core.exceptions import ObjectDoesNotExist
 from django.urls import include, path  # , re_path
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import RedirectView, TemplateView
-from django.views.decorators.csrf import csrf_exempt
 
-# from filebrowser.sites import site
-# from .schema import schema
+# from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import RedirectView  # , TemplateView
+
 from accounts.views import LoginView, RegisterView
 from core.views import robots_txt
+from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
+from orders.views import GenerateOrderPDF, LibraryView
+
 from .sitemaps import (
-    StaticViewSitemap,
     BookSitemap,
     CategorySitemap,
     EssaySitemap,
     ProductSitemap,
+    StaticViewSitemap,
     TeamSitemap,
 )
-
-# from essays.admin import essays_admin # add separate CMS for authors
-
-from marketing.views import MailchimpWebhookView, MarketingPreferenceUpdateView
-from orders.views import GenerateOrderPDF, LibraryView
-
-# from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
-# from two_factor.urls import urlpatterns as tf_urls
 
 sitemaps = {
     "static": StaticViewSitemap,
@@ -74,7 +75,7 @@ urlpatterns = [
     path(_("account/"), include("accounts.urls", namespace="account")),
     path(_("accounts/"), include("accounts.passwords.urls")),  # templates/registration
     path(_("analytics/"), include("analytics.urls", namespace="analytics")),
-    path(_("newsletter/"), include("newsletter.urls")),  # , namespace='newsletter'
+    # path(_("newsletter/"), include("newsletter.urls")),  # , namespace='newsletter'
     path(
         _("settings/email/"),
         MarketingPreferenceUpdateView.as_view(),
@@ -92,20 +93,22 @@ urlpatterns = [
     ),
     path("favicon.ico", RedirectView.as_view(url="/static/img/favicon/c-32-i.png")),
     path("robots.txt", robots_txt),  # or create template/robots.txt
-    # TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots-txt",
-    # # DL model
-    # # path('classify/', views.call_model.as_view()),
-    # # path('note/', include('todolists.api.urls', namespace='note')),
-    # # path('ebook/', include('ebooks.api.urls', namespace='ebook')),
-    # # path('profile/', include('profiles.api.urls', namespace='profile')),
+    # TemplateView.as_view(template_name="robots.txt", content_type="text/plain")
+    # , name="robots-txt",
+    # DL model
+    # path('classify/', views.call_model.as_view()),
+    # path('note/', include('todolists.api.urls', namespace='note')),
+    # path('ebook/', include('ebooks.api.urls', namespace='ebook')),
+    # path('profile/', include('profiles.api.urls', namespace='profile')),
     # path("tinymce/", include("tinymce.urls")),
-    # # path('c2l0ZW1hcHMudHh/', sitemap, {'sitemaps': SITEMAPS}, name='django.contrib.sitemaps.views'),
-    # # 64encode sitemaps.txt robot.xml
+    # path('c2l0ZW1hHMudH/', sitemap, {'sitemaps': SITEMAPS}, name='django.contrib.sitemaps.views'),
+    # 64encode sitemaps.txt robot.xml
     # path('cm9ib3QueG1s0/', include('robots.urls')),
-    # # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
-    # # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
-    path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
+    # path('InRyYWNrLWluZyJcbm90TUU=/', include('tracking.urls')),# tracking2 "track-ing"\notME
+    # path("bmltZGEtbWdiLTI1Cg/defender/", include("defender.urls")),
+    # path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
     # path("graphql/", GraphQLView.as_view(schema=schema), name="graphql"),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 # urlpatterns += i18n_patterns()
@@ -113,12 +116,12 @@ urlpatterns = [
 if "rosetta" in settings.INSTALLED_APPS:
     urlpatterns.append(path("rosetta/", include("rosetta.urls")))
 
-try:
-    urlpatterns.append(
-        path("bmltZGEtbWdiLTI1Cg/", include(admin.site.urls, namespace="admin"))
-    )
-except:
-    urlpatterns.append(path("bmltZGEtbWdiLTI1Cg/", admin.site.urls, name="admin"))
+# try:
+#     urlpatterns.append(
+#         path("bmltZGEtbWdiLTI1Cg/", include(admin.site.urls, namespace="admin"))
+#     )
+# except ObjectDoesNotExist:
+urlpatterns.append(path("bmltZGEtbWdiLTI1Cg/", admin.site.urls, name="admin"))
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
@@ -136,7 +139,6 @@ if settings.DEBUG:
     #         "graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))
     #     ),
     # )
-
 
 admin.site.site_header = getattr(settings, "ENV_NAME", "Clavem") + " admin"
 admin.site.index_title = "Home"

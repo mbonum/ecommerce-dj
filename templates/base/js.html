@@ -78,8 +78,8 @@
 
   // Whenever the user explicitly chooses to respect the OS preference
   localStorage.removeItem('theme');
-
-  // Initialize the agent at application startup.
+</script>
+{% comment %}<!--  // Initialize the agent at application startup.
   const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3').then(
     FingerprintJS => FingerprintJS.load(),
   );
@@ -92,8 +92,7 @@
       const visitorId = result.visitorId;
       console.log(visitorId);
     });
-</script>
-{% comment %}<!--<script type="application/javascript" src="{% static 'js/elevator.min.js' %}"></script><script type="application/javascript" src="{% static 'modal-video/jquery-modal-video.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'js/elevator.min.js' %}"></script><script type="application/javascript" src="{% static 'modal-video/jquery-modal-video.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'modal-video/modal-video.min.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/vue.min.js' %}"><script type="application/javascript" src="{% static 'js/vuex.min.js' %}"></script><link rel="preload" href="main.js" as="script"><script type="text/javascript" src="{% static 'js/removebtn.js' %}"></script> utils.js defer roman+date
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ recaptchav3 }}"></script>

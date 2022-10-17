@@ -2,8 +2,10 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_hosts.resolvers import reverse
+
 # from analytics.models import ClickEvent
 from core.utils import create_shortcode
+
 from .validators import validate_url  # validate_dotcom_url,
 
 SHORTCODE_MAX = getattr(settings, "SHORTCODE_MAX", 7)
@@ -46,7 +48,7 @@ class ClUrl(models.Model):
         ordering = ["-updated"]
 
     def __str__(self):
-        return self.url
+        return str(self.url)
 
     def save(self, *args, **kwargs):
         if self.shortcode is None or self.shortcode == "":
@@ -54,7 +56,7 @@ class ClUrl(models.Model):
         url = self.url
         # if not "https" in url:
         #     url = "https://" + url
-        # print("&&&&&&&& ", url)
+        # print("* ", url)
         super(ClUrl, self).save(*args, **kwargs)
 
     def get_short_url(self):
