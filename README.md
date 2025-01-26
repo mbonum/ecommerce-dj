@@ -1,6 +1,6 @@
-# Eshop
+# Ecommerce
 
-Goal: Develop a website with ecommerce features.
+Goal: Develop an ecommerce website.
 
 ## Instructions to set up the development environment and run the project locally on Linux
 
@@ -88,4 +88,4 @@ Goal: Develop a website with ecommerce features.
 
 7. Run tests
 
-    ./manage.py test
+    `./manage.py test`
